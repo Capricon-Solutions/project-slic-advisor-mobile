@@ -12,7 +12,7 @@ export const Styles = StyleSheet.create({
 
 	container: {
 		flex: 1,
-		backgroundColor: '#f5f5f5',
+		backgroundColor: COLORS.background,
 		paddingHorizontal: 20,
 	},
 	// Login
@@ -21,13 +21,11 @@ export const Styles = StyleSheet.create({
 		flex: 1,
 		padding: (window.width) * 0.055,
 		height: Dimensions.get('window').height
-		// alignItems: "center", flex: 1,
 	},
 	checkboxContainer: {
 		borderWidth: 2,
 		borderColor: 'red', // Default border color
 		borderRadius: 4,
-		// Ensures spacing inside the border
 	},
 	checkedBorder: {
 		borderColor: 'green', // Border color when checked
@@ -40,7 +38,6 @@ export const Styles = StyleSheet.create({
 		paddingLeft: 0,
 		fontWeight: 'bold',
 		color: COLORS.textInputText,
-		// marginVertical: 10,
 		height: 50,
 	},
 	topBackground: {
@@ -51,13 +48,10 @@ export const Styles = StyleSheet.create({
 	},
 	squaretextInput: {
 		borderColor: COLORS.borderColor,
-		// borderWidth: 1,
 		borderRadius: 30,
-		// paddingHorizontal: 10,
 		backgroundColor: COLORS.white,
 		color: COLORS.textInputColor,
 		height: 45,
-		// paddingLeft: 20,
 		marginTop: 5,
 		width: '100%'
 	},
@@ -106,7 +100,6 @@ export const Styles = StyleSheet.create({
 		backgroundColor: COLORS.primaryColor,
 		borderRadius: 8,
 		width: '100%',
-		//maxWidth: (window.width) * 0.7,
 		height: 45,
 		fontFamily: Fonts.Roboto.Bold,
 		justifyContent: 'center',
@@ -134,14 +127,10 @@ export const Styles = StyleSheet.create({
 	buttonText: {
 		color: 'white',
 		fontSize: 16,
-
 		fontFamily: Fonts.Roboto.Bold
 	},
 
-
-
 	// Dashboard
-
 
 	iconGrid: {
 		borderRadius: 10,
@@ -151,7 +140,6 @@ export const Styles = StyleSheet.create({
 		elevation: 3,
 		justifyContent: 'center',
 		alignItems: 'center',
-
 	},
 	gridText:
 	{
@@ -175,5 +163,66 @@ export const Styles = StyleSheet.create({
 		marginBottom: 40,
 		overflow: 'hidden',
 		flexDirection: 'row'
+	},
+
+
+	// contact List Item
+
+	itemcontentBorder: {
+		marginBottom: 10,
+		borderTopWidth: 1,
+		borderColor: COLORS.lightBorder,
+		padding: 12,
+		borderWidth: 1,
+		borderRadius: 10,
+	},
+	itemcontentTitile: {
+		fontFamily: Fonts.Roboto.Medium,
+		fontSize: 14,
+		color: COLORS.title,
+		marginBottom: 6,
+	},
+	itemcontentdata: {
+		fontFamily: Fonts.Roboto.Regular,
+		fontSize: 13,
+		color: COLORS.gray,
+		marginBottom: 3,
+	},
+	contactlistWrap: {
+		backgroundColor: COLORS.white,
+		marginVertical: 8,
+		alignItems: 'center',
+		paddingHorizontal: 18,
+		justifyContent: 'space-between',
+		marginHorizontal: 5,
+		borderRadius: 10,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 3,
+	},
+	departmentListWrap: {
+		backgroundColor: COLORS.background,
+		marginVertical: 8,
+		alignItems: 'center',
+		paddingHorizontal: 10,
+		justifyContent: 'space-between',
+		marginHorizontal: 5,
+		borderRadius: 10,
+		shadowColor: "#000",
+		height: 111,
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		borderWidth: 1,
+		borderColor: COLORS.lightBorder
+		// elevation: 3,
 	}
 });

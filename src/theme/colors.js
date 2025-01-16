@@ -17,6 +17,12 @@ const COLORS = {
     textInputText: "#757575",
     textInputBackground: "#F3F3F3",
     iconDisabled: "#5F6368",
+    grayText: "#7E7E7E",
+    lightBorder: "#EAECF0",
+    warmGray: "#AAAAAA",
+    ashBlue: "#4C5980",
+
+
 
 };
 

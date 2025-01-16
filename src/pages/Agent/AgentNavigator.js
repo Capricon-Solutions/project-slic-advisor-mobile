@@ -89,6 +89,7 @@ export default function MyTabs() {
     return (
         <Tab.Navigator
             tabBar={(props) => <AgengNavigator {...props} />}
+
             screenOptions={{
                 headerShown: false,
             }}
