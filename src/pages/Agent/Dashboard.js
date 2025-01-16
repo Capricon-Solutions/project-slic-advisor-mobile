@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, Image, Modal, TouchableOpacity, } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../theme/colors';
 import Fonts from '../../theme/Fonts';
@@ -22,10 +22,83 @@ const window = Dimensions.get('window');
 export default function Dashboard({ navigation }) {
 
     const value = 40 // 40% of the gauge. min=0 max=100
-
+    const [modalVisible, setModalVisible] = useState(false);
 
     return (
         <View style={Styles.container}>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <View style={{
+                            flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+                            marginBottom: 15
+
+                        }}>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Text style={styles.modalTitle}>Sales Performance Type</Text>
+
+                            </View>
+                            <TouchableOpacity onPress={() => setModalVisible(false)}
+                                style={{
+                                    borderRadius: 100,
+                                    padding: 2,
+                                    height: 27,
+                                    width: 27,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: COLORS.lightBorder,
+                                }}>
+                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
+
+                            </TouchableOpacity>
+
+                        </View>
+                        <TouchableOpacity style={{
+                            flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 18,
+                            borderWidth: 1.5,
+                            borderRadius: 10,
+                            borderColor: COLORS.modalBorder,
+                            marginVertical: 10,
+                        }}>
+                            <View style={{ flex: 0.15, alignItems: 'center' }}>
+                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
+
+                            </View>
+
+                            <View style={{ flex: 0.85, }}>
+                                <Text style={{ fontSize: 15, fontFamily: Fonts.Roboto.Medium, color: COLORS.islandRank }}>Individual Performance</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{
+                            flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 18,
+                            borderWidth: 1.5,
+                            borderRadius: 10,
+                            borderColor: COLORS.modalBorder,
+                            marginVertical: 10,
+                        }}>
+                            <View style={{ flex: 0.15, alignItems: 'center' }}>
+                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
+
+                            </View>
+
+                            <View style={{ flex: 0.85, }}>
+                                <Text style={{ fontSize: 15, fontFamily: Fonts.Roboto.Medium, color: COLORS.islandRank }}>Team Performance</Text>
+                            </View>
+                        </TouchableOpacity>
+
+
+                    </View>
+                </View>
+            </Modal>
+
+
+
             <HeaderBackground />
             <Header Title="Advisor Dashboard"
                 onPress={() => navigation.goBack()}
@@ -156,10 +229,10 @@ export default function Dashboard({ navigation }) {
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 13, }}>
-                <View style={Styles.iconGrid}>
+                <TouchableOpacity onPress={() => setModalVisible(true)} style={Styles.iconGrid}>
                     <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
                     <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={Styles.iconGrid}>
                     <Image style={Styles.gridIcon} source={GENERAL}></Image>
                     <Text style={Styles.gridText}>GENERAL</Text>
@@ -205,5 +278,49 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#333',
+    },
+    userName: { fontSize: 16, color: '#333', fontFamily: Fonts.Roboto.SemiBold },
+    userRegion: { fontSize: 12, color: '#333', fontFamily: Fonts.Roboto.SemiBold },
+    userRole: { fontSize: 10, color: '#333', fontFamily: Fonts.Roboto.Medium },
+    sectionTitle: { fontFamily: Fonts.Roboto.Bold, color: COLORS.black, fontSize: 14 },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.2)',
+
+        // backgroundColor: 'rgba(0,0,0,0)',
+
+    },
+    modalContainer: {
+        width: '100%',
+        padding: 25,
+        backgroundColor: COLORS.white,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        elevation: 25,
+        borderWidth: 1,
+        borderColor: COLORS.lightBorder,
+    },
+    modalTitle: {
+        fontSize: 17,
+        fontFamily: Fonts.Roboto.Medium,
+        color: COLORS.title,
+    },
+    modalContent: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    closeButton: {
+        backgroundColor: COLORS.primary,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    closeButtonText: {
+        color: '#fff',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
 });

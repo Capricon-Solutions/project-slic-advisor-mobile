@@ -25,7 +25,7 @@ const COLORS = {
     islandRank: "#00ADBB",
     regionalRank: "#00C4B7",
     branchRank: "#11BDDC",
-
+    modalBorder: "#DDDDDD",
 
 };
 
