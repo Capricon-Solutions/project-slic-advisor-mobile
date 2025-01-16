@@ -221,8 +221,8 @@ export const Styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
-		borderWidth: 1,
-		borderColor: COLORS.lightBorder
-		// elevation: 3,
+		// borderWidth: 1,
+		// borderColor: COLORS.lightBorder,
+		elevation: 3,
 	}
 });

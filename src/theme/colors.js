@@ -21,7 +21,7 @@ const COLORS = {
     lightBorder: "#EAECF0",
     warmGray: "#AAAAAA",
     ashBlue: "#4C5980",
-
+    TopBackColor: "#FAE8D8"
 
 
 };

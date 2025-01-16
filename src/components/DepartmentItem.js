@@ -23,9 +23,9 @@ export default function DepartmentItem({ item }) {
 				<View style={{ marginLeft: 5, justifyContent: 'space-evenly', flex: 1, height: '100%' }}>
 					<Text style={{ fontFamily: Fonts.Roboto.Medium, color: COLORS.black, fontSize: 14 }}>{item.name}</Text>
 					<Text style={{ fontFamily: Fonts.Roboto.Regular, color: COLORS.ashBlue, fontSize: 12 }}>{item.department}</Text>
-					<Text style={{ fontFamily: Fonts.Roboto.Regular, color: COLORS.ashBlue, fontSize: 12 }}>{item.contact}</Text>
+					<Text style={{ fontFamily: Fonts.Roboto.Regular, color: COLORS.ashBlue, fontSize: 12 }}>Contact Number - {item.contact}</Text>
 				</View>
-				<TouchableOpacity onPress={() => handleCall(item.contact)} style={{ flexDirection: 'row', alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: COLORS.lightBorder, padding: 5 }}>
+				<TouchableOpacity onPress={() => handleCall(item.contact)} style={{ flexDirection: 'row', alignItems: 'center', borderRadius: 10, borderWidth: 1, borderColor: COLORS.lightBorder, padding: 7 }}>
 					<MaterialCommunityIcons name="phone-outline" style={{}} color={COLORS.primaryGreen} size={24} />
 				</TouchableOpacity>
 			</View>

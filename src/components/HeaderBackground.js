@@ -20,7 +20,7 @@ export default function HeaderBackground({ Title, }) {
 			style={Styles.topBackground}
 		>
 			<Path
-				fill="#fde4d1"
+				fill={COLORS.TopBackColor}
 				d={`
 					M0,0 
 					H${window.width} 
