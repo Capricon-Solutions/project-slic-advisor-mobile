@@ -56,28 +56,87 @@ export default function Dashboard({ navigation }) {
             <View style={Styles.rankWrap}>
 
                 <View style={{
-                    backgroundColor: "red",
+
                     flex: 0.65,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    opacity: 0.5
+
                 }}>
-                    <Text>Chart</Text>
-                    <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text>
+                    <View style={{
+                        width: 160,
+                        height: 160,
+                        borderRadius: 100,
+                        borderWidth: 14,
+                        borderColor: COLORS.islandRank,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        position: 'relative',
+                    }}>
+                        <Text style={{
+                            fontFamily: Fonts.Roboto.Bold,
+                            fontSize: 24,
+                            color: COLORS.black,
+                        }}>550</Text>
+                        <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text>
+
+                    </View>
+                    {/* <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text> */}
 
                 </View>
                 <View style={{
-                    backgroundColor: "blue",
                     flex: 0.35,
-                    opacity: 0.5
+
                 }}>
-                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "green" }}>
-                        <Text>Chart</Text>
-                        <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Regional Rank</Text>
+                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', }}>
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <View style={{
+                                width: 65,
+                                height: 65,
+                                borderRadius: 100,
+                                borderWidth: 8,
+                                borderColor: COLORS.regionalRank,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 5,
+                            }}>
+                                <Text style={{
+                                    fontFamily: Fonts.Roboto.Bold,
+                                    fontSize: 12,
+                                    color: COLORS.black,
+
+                                }}>30/60</Text>
+                            </View>
+                            <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Regional Rank</Text>
+                        </View>
+
                     </View>
-                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "yellow" }}>
-                        <Text>Chart</Text>
-                        <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Branch Rank</Text>
+                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', }}>
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <View style={{
+                                width: 65,
+                                height: 65,
+                                borderRadius: 100,
+                                borderWidth: 8,
+                                borderColor: COLORS.branchRank,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: 5,
+                            }}>
+                                <Text style={{
+                                    fontFamily: Fonts.Roboto.Bold,
+                                    fontSize: 12,
+                                    color: COLORS.black,
+                                }}>30/60</Text>
+                            </View>
+                            <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Branch Rank</Text>
+
+                        </View>
 
                     </View>
 

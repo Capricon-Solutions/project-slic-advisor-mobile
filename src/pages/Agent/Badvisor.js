@@ -8,7 +8,7 @@ export default function Badvisor({ navigation }) {
     return (
         <View style={Styles.container}>
             <HeaderBackground />
-            <Header Title="Contacts"
+            <Header Title="B-Advisor"
                 onPress={() => navigation.goBack()} />
         </View>
     );

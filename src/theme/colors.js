@@ -21,7 +21,10 @@ const COLORS = {
     lightBorder: "#EAECF0",
     warmGray: "#AAAAAA",
     ashBlue: "#4C5980",
-    TopBackColor: "#FAE8D8"
+    TopBackColor: "#FAE8D8",
+    islandRank: "#00ADBB",
+    regionalRank: "#00C4B7",
+    branchRank: "#11BDDC",
 
 
 };
