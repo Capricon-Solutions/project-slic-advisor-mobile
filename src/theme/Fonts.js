@@ -13,16 +13,11 @@ const Fonts = {
     ExtraLight: "Roboto-ExtraLight",
   },
   SFPro: {
-
     Bold: "SFPRODISPLAYBOLD",
-    // SemiBold: "Roboto-SemiBold",
     Medium: "SFPRODISPLAYMEDIUM",
     Regular: "SFPRODISPLAYREGULAR",
     SemiBoldItalic: "SFPRODISPLAYSEMIBOLDITALIC",
-    //  Light: "Roboto-Light",
-    // Thin: "Roboto-Thin",
     ExtraBold: "SFPRODISPLAYBLACKITALIC",
-    //  ExtraLight: "Roboto-ExtraLight",
   },
 
 

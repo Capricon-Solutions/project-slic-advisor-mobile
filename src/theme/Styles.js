@@ -166,4 +166,14 @@ export const Styles = StyleSheet.create({
 		width: 24,
 		resizeMode: 'contain',
 	},
+	rankWrap: {
+		borderRadius: 20,
+		backgroundColor: COLORS.white,
+		height: 227,
+		marginVertical: 20,
+		elevation: 3,
+		marginBottom: 40,
+		overflow: 'hidden',
+		flexDirection: 'row'
+	}
 });

@@ -4,7 +4,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import COLORS from '../../theme/colors';
 import Fonts from '../../theme/Fonts';
 import { Styles } from '../../theme/Styles';
-import Svg, { Path } from 'react-native-svg';
 import Header from '../../components/Header';
 import HeaderBackground from '../../components/HeaderBackground';
 import { Avatar } from 'react-native-paper';
@@ -15,11 +14,16 @@ import PRODUCT_PORTFOLIO from '../../icons/PRODUCT_PORTFOLIO.png'; // Replace wi
 import E_CORNER from '../../icons/E-CORNER.png'; // Replace with the actual logo path
 import CLUB from '../../icons/CLUB.png'; // Replace with the actual logo path
 import B_PLANNER from '../../icons/B-PLANNER.png'; // Replace with the actual logo path
+// import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 
 const window = Dimensions.get('window');
 
 export default function Dashboard({ navigation }) {
+
+    const value = 40 // 40% of the gauge. min=0 max=100
+
+
     return (
         <View style={Styles.container}>
             <HeaderBackground />
@@ -49,7 +53,47 @@ export default function Dashboard({ navigation }) {
                 <Text style={{ fontFamily: Fonts.Roboto.Bold, color: COLORS.black, fontSize: 14 }}>Advisor Summary</Text>
             </View>
 
-            <View style={{ borderRadius: 20, backgroundColor: COLORS.white, height: 220, marginVertical: 20, elevation: 3, marginBottom: 50 }}></View>
+            <View style={Styles.rankWrap}>
+
+                <View style={{
+                    backgroundColor: "red",
+                    flex: 0.65,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    opacity: 0.5
+                }}>
+                    <Text>Chart</Text>
+                    <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text>
+
+                </View>
+                <View style={{
+                    backgroundColor: "blue",
+                    flex: 0.35,
+                    opacity: 0.5
+                }}>
+                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "green" }}>
+                        <Text>Chart</Text>
+                        <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Regional Rank</Text>
+                    </View>
+                    <View style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "yellow" }}>
+                        <Text>Chart</Text>
+                        <Text style={{ fontSize: 13, fontFamily: Fonts.Roboto.Regular }}>Branch Rank</Text>
+
+                    </View>
+
+                </View>
+                {/* <AnimatedGaugeProgress
+                    size={200}
+                    width={15}
+                    fill={100}
+                    rotation={90}
+                    cropDegree={90}
+                    tintColor="#4682b4"
+                    delay={0}
+                    backgroundColor="#b0c4de"
+                    stroke={[2, 2]} //For a equaly dashed line
+                    strokeCap="circle" /> */}
+            </View>
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 13, }}>
