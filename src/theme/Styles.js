@@ -225,4 +225,25 @@ export const Styles = StyleSheet.create({
 		// borderColor: COLORS.lightBorder,
 		elevation: 3,
 	}
+	,
+
+	noticeContainer: {
+		backgroundColor: COLORS.yellow,
+		padding: 20,
+		borderRadius: 8,
+		marginTop: 16,
+		marginHorizontal: 20
+	},
+	noticeTitle: {
+		color: COLORS.importantRed,
+		fontSize: 12,
+		fontFamily: Fonts.Roboto.Regular
+	},
+	noticeText: {
+		color: '#333',
+		marginTop: 4,
+		fontSize: 12,
+		color: COLORS.black,
+		fontFamily: Fonts.Roboto.Regular
+	}
 });

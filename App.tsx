@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator';
+import Profile from './src/pages/Profile/Profile';
+import SalesMeter from './src/pages/Agent/SalesMeter';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -51,6 +53,8 @@ function App(): React.JSX.Element {
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="SalesMeter" component={SalesMeter} />
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
       </Stack.Navigator>

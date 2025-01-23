@@ -9,11 +9,16 @@ import HeaderBackground from '../../components/HeaderBackground';
 import { Avatar } from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
 import SALES_PERFORMANCE from '../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
+import individualPerforamance from '../../icons/individualPerforamance.png'; // Replace with the actual logo path
+import teamPerformance from '../../icons/teamPerformance.png'; // Replace with the actual logo path
 import GENERAL from '../../icons/GENERAL.png'; // Replace with the actual logo path
 import PRODUCT_PORTFOLIO from '../../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
 import E_CORNER from '../../icons/E-CORNER.png'; // Replace with the actual logo path
 import CLUB from '../../icons/CLUB.png'; // Replace with the actual logo path
 import B_PLANNER from '../../icons/B-PLANNER.png'; // Replace with the actual logo path
+import SalesModal from '../../components/SalesModal';
+import IndividualModal from '../../components/IndividualModal';
+import AboutModal from '../../components/AboutModal';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 
@@ -23,79 +28,17 @@ export default function Dashboard({ navigation }) {
 
     const value = 40 // 40% of the gauge. min=0 max=100
     const [modalVisible, setModalVisible] = useState(false);
+    const [generaModalVisible, setgeneraModalVisible] = useState(false);
 
     return (
         <View style={Styles.container}>
 
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}>
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContainer}>
-                        <View style={{
-                            flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-                            marginBottom: 15
 
-                        }}>
-                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={styles.modalTitle}>Sales Performance Type</Text>
-
-                            </View>
-                            <TouchableOpacity onPress={() => setModalVisible(false)}
-                                style={{
-                                    borderRadius: 100,
-                                    padding: 2,
-                                    height: 27,
-                                    width: 27,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: COLORS.lightBorder,
-                                }}>
-                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
-
-                            </TouchableOpacity>
-
-                        </View>
-                        <TouchableOpacity style={{
-                            flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 18,
-                            borderWidth: 1.5,
-                            borderRadius: 10,
-                            borderColor: COLORS.modalBorder,
-                            marginVertical: 10,
-                        }}>
-                            <View style={{ flex: 0.15, alignItems: 'center' }}>
-                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
-
-                            </View>
-
-                            <View style={{ flex: 0.85, }}>
-                                <Text style={{ fontSize: 15, fontFamily: Fonts.Roboto.Medium, color: COLORS.islandRank }}>Individual Performance</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{
-                            flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 18,
-                            borderWidth: 1.5,
-                            borderRadius: 10,
-                            borderColor: COLORS.modalBorder,
-                            marginVertical: 10,
-                        }}>
-                            <View style={{ flex: 0.15, alignItems: 'center' }}>
-                                <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} />
-
-                            </View>
-
-                            <View style={{ flex: 0.85, }}>
-                                <Text style={{ fontSize: 15, fontFamily: Fonts.Roboto.Medium, color: COLORS.islandRank }}>Team Performance</Text>
-                            </View>
-                        </TouchableOpacity>
-
-
-                    </View>
-                </View>
-            </Modal>
+            <SalesModal modalVisible={modalVisible}
+                onPressOne={() => setgeneraModalVisible(true)}
+                // onPressTwo={() => setModalVisible(false)}
+                setModalVisible={setModalVisible} />
+            <IndividualModal modalVisible={generaModalVisible} setModalVisible={setgeneraModalVisible} />
 
 
 
@@ -105,15 +48,16 @@ export default function Dashboard({ navigation }) {
             />
 
             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginVertical: 3 }}>
-                <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center', }}>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile")}
+                    Title={"Sign In"} style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center', }}>
                     <Avatar.Image size={57} source={avatar} />
-                </View>
-                <View style={{ flex: 0.6, justifyContent: 'center', }}>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ flex: 0.6, justifyContent: 'center', }}>
                     <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.SemiBold, fontSize: 16 }}>Mr. Sanjeewa Atukorale</Text>
                     <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.SemiBold, fontSize: 12 }}>region name - Central 1</Text>
                     <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.Medium, fontSize: 10 }}>(Advisor)</Text>
 
-                </View>
+                </TouchableOpacity>
 
                 <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
                     <MaterialCommunityIcons name="bell-outline" color={COLORS.iconDisabled} size={26} />
@@ -126,13 +70,14 @@ export default function Dashboard({ navigation }) {
                 <Text style={{ fontFamily: Fonts.Roboto.Bold, color: COLORS.black, fontSize: 14 }}>Advisor Summary</Text>
             </View>
 
-            <View style={Styles.rankWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate("SalesMeter")} style={Styles.rankWrap}>
 
                 <View style={{
 
                     flex: 0.65,
                     justifyContent: 'center',
                     alignItems: 'center',
+
 
                 }}>
                     <View style={{
@@ -153,7 +98,6 @@ export default function Dashboard({ navigation }) {
                         <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text>
 
                     </View>
-                    {/* <Text style={{ fontSize: 17, fontFamily: Fonts.Roboto.Regular }}>Island Rank</Text> */}
 
                 </View>
                 <View style={{
@@ -225,7 +169,7 @@ export default function Dashboard({ navigation }) {
                     backgroundColor="#b0c4de"
                     stroke={[2, 2]} //For a equaly dashed line
                     strokeCap="circle" /> */}
-            </View>
+            </TouchableOpacity>
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 13, }}>

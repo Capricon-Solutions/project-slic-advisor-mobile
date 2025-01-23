@@ -16,6 +16,7 @@ import Button from '../../components/Button';
 import { Styles } from '../../theme/Styles';
 import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
+import AboutModal from '../../components/AboutModal';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
@@ -24,6 +25,8 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const handleLogin = () => {
     console.log('Email:', email);
@@ -33,6 +36,9 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Rectangle with Curved Bottom */}
+
+      <AboutModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+
 
       <HeaderBackground />
       {/* Logo */}
@@ -82,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       <View>
-        <Text style={Styles.bottomText}>Having trouble logging in? <Text style={Styles.hyperlink}>Click here</Text> for help.</Text>
+        <Text style={Styles.bottomText}>Having trouble logging in? <Text onPress={() => setModalVisible(true)} style={Styles.hyperlink}>Click here</Text> for help.</Text>
       </View>
     </View>
   );

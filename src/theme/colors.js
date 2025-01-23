@@ -26,6 +26,10 @@ const COLORS = {
     regionalRank: "#00C4B7",
     branchRank: "#11BDDC",
     modalBorder: "#DDDDDD",
+    yellow: "#FFEB3B",
+    importantRed: "#EF4B5C",
+
+
 
 };
 
