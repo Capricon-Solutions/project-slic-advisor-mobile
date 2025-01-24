@@ -28,6 +28,7 @@ const COLORS = {
     modalBorder: "#DDDDDD",
     yellow: "#FFEB3B",
     importantRed: "#EF4B5C",
+    darkText: "#2D3142",
 
 
 
