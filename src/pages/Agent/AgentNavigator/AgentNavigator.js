@@ -6,14 +6,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
-// Import your screen components
-import Dashboard from './Dashboard';
-
-import Contacts from './Contacts';
-import TrainingCalender from './TrainingCalender';
-import Badvisor from './Badvisor';
-import COLORS from '../../theme/colors';
+import Dashboard from '../Dashboard/Dashboard';
+import Contacts from '../Contacts/Contacts';
+import TrainingCalender from '../TrainingCalender/TrainingCalender';
+import Badvisor from '../Badvisor/Badvisor';
+import COLORS from '../../../theme/colors';
+import { Styles } from './Styles';
 
 function AgengNavigator({ state, descriptors, navigation }) {
     const { colors } = useTheme();
@@ -62,14 +60,7 @@ function AgengNavigator({ state, descriptors, navigation }) {
                         android_ripple={{ color: 'transparent' }}  // Removes ripple effect on Android
                         onPress={onPress}
                         onLongPress={onLongPress}
-
-                        style={{
-                            flex: 1,
-                            paddingVertical: 23,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-
-                        }}
+                        style={Styles.platformStyle}
                     >
                         {Icon && <Icon color={isFocused ? COLORS.primary : COLORS.iconDisabled} size={22} />}
                         <Text style={{ color: isFocused ? COLORS.primary : COLORS.iconDisabled, fontSize: 10, marginTop: 5 }}>
@@ -134,7 +125,6 @@ export default function MyTabs() {
                     ),
                 }}
             />
-
 
         </Tab.Navigator>
     );

@@ -16,9 +16,9 @@ import {
   useColorScheme,
 } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
-import AgentNavigator from './src/pages/Agent/AgentNavigator';
+import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
-import SalesMeter from './src/pages/Agent/SalesMeter';
+import SalesMeter from './src/pages/Agent/SalesMeter/SalesMeter';
 
 // Sample Home Screen
 const HomeScreen = () => {

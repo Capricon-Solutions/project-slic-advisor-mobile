@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, Modal, TouchableOpacity, } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import COLORS from '../../theme/colors';
-import Fonts from '../../theme/Fonts';
-import { Styles } from '../../theme/Styles';
-import Header from '../../components/Header';
-import HeaderBackground from '../../components/HeaderBackground';
+import COLORS from '../../../theme/colors';
+import Fonts from '../../../theme/Fonts';
+import { Styles } from '../../../theme/Styles';
+import Header from '../../../components/Header';
+import HeaderBackground from '../../../components/HeaderBackground';
 import { Avatar } from 'react-native-paper';
-import avatar from '../../images/avatar.png'; // Replace with the actual logo path
-import SALES_PERFORMANCE from '../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
-import individualPerforamance from '../../icons/individualPerforamance.png'; // Replace with the actual logo path
-import teamPerformance from '../../icons/teamPerformance.png'; // Replace with the actual logo path
-import GENERAL from '../../icons/GENERAL.png'; // Replace with the actual logo path
-import PRODUCT_PORTFOLIO from '../../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
-import E_CORNER from '../../icons/E-CORNER.png'; // Replace with the actual logo path
-import CLUB from '../../icons/CLUB.png'; // Replace with the actual logo path
-import B_PLANNER from '../../icons/B-PLANNER.png'; // Replace with the actual logo path
-import SalesModal from '../../components/SalesModal';
-import IndividualModal from '../../components/IndividualModal';
-import AboutModal from '../../components/AboutModal';
-// import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
-
+import avatar from '../../../images/avatar.png'; // Replace with the actual logo path
+import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
+import GENERAL from '../../../icons/GENERAL.png'; // Replace with the actual logo path
+import PRODUCT_PORTFOLIO from '../../../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
+import E_CORNER from '../../../icons/E-CORNER.png'; // Replace with the actual logo path
+import CLUB from '../../../icons/CLUB.png'; // Replace with the actual logo path
+import B_PLANNER from '../../../icons/B-PLANNER.png'; // Replace with the actual logo path
+import SalesModal from '../../../components/SalesModal';
+import IndividualModal from '../../../components/IndividualModal';
+import { styles } from './styles';
 
 const window = Dimensions.get('window');
 
@@ -33,35 +29,31 @@ export default function Dashboard({ navigation }) {
     return (
         <View style={Styles.container}>
 
-
             <SalesModal modalVisible={modalVisible}
                 onPressOne={() => setgeneraModalVisible(true)}
                 // onPressTwo={() => setModalVisible(false)}
                 setModalVisible={setModalVisible} />
             <IndividualModal modalVisible={generaModalVisible} setModalVisible={setgeneraModalVisible} />
 
-
-
             <HeaderBackground />
             <Header Title="Advisor Dashboard"
                 onPress={() => navigation.goBack()}
             />
 
-            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginVertical: 3 }}>
+            <View style={styles.mainWrap}>
                 <TouchableOpacity onPress={() => navigation.navigate("Profile")}
-                    Title={"Sign In"} style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center', }}>
+                    Title={"Sign In"} style={styles.profilePicture}>
                     <Avatar.Image size={57} source={avatar} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={{ flex: 0.6, justifyContent: 'center', }}>
-                    <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.SemiBold, fontSize: 16 }}>Mr. Sanjeewa Atukorale</Text>
-                    <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.SemiBold, fontSize: 12 }}>region name - Central 1</Text>
-                    <Text style={{ fontSize: 20, color: '#333', fontFamily: Fonts.Roboto.Medium, fontSize: 10 }}>(Advisor)</Text>
+                    <Text style={styles.UserName}>Mr. Sanjeewa Atukorale</Text>
+                    <Text style={styles.regionName}>region name - Central 1</Text>
+                    <Text style={styles.position}>(Advisor)</Text>
 
                 </TouchableOpacity>
 
-                <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
+                <View style={styles.notiIcon}>
                     <MaterialCommunityIcons name="bell-outline" color={COLORS.iconDisabled} size={26} />
-
                 </View>
 
             </View>
@@ -73,23 +65,11 @@ export default function Dashboard({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate("SalesMeter")} style={Styles.rankWrap}>
 
                 <View style={{
-
                     flex: 0.65,
                     justifyContent: 'center',
                     alignItems: 'center',
-
-
                 }}>
-                    <View style={{
-                        width: 160,
-                        height: 160,
-                        borderRadius: 100,
-                        borderWidth: 14,
-                        borderColor: COLORS.islandRank,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'relative',
-                    }}>
+                    <View style={styles.IslandRank}>
                         <Text style={{
                             fontFamily: Fonts.Roboto.Bold,
                             fontSize: 24,
@@ -109,16 +89,7 @@ export default function Dashboard({ navigation }) {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <View style={{
-                                width: 65,
-                                height: 65,
-                                borderRadius: 100,
-                                borderWidth: 8,
-                                borderColor: COLORS.regionalRank,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: 5,
-                            }}>
+                            <View style={styles.regionalRank}>
                                 <Text style={{
                                     fontFamily: Fonts.Roboto.Bold,
                                     fontSize: 12,
@@ -135,16 +106,7 @@ export default function Dashboard({ navigation }) {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <View style={{
-                                width: 65,
-                                height: 65,
-                                borderRadius: 100,
-                                borderWidth: 8,
-                                borderColor: COLORS.branchRank,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginBottom: 5,
-                            }}>
+                            <View style={styles.branchRank}>
                                 <Text style={{
                                     fontFamily: Fonts.Roboto.Bold,
                                     fontSize: 12,
@@ -211,60 +173,3 @@ export default function Dashboard({ navigation }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-
-
-        backgroundColor: '#f5f5f5',
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    userName: { fontSize: 16, color: '#333', fontFamily: Fonts.Roboto.SemiBold },
-    userRegion: { fontSize: 12, color: '#333', fontFamily: Fonts.Roboto.SemiBold },
-    userRole: { fontSize: 10, color: '#333', fontFamily: Fonts.Roboto.Medium },
-    sectionTitle: { fontFamily: Fonts.Roboto.Bold, color: COLORS.black, fontSize: 14 },
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.2)',
-
-        // backgroundColor: 'rgba(0,0,0,0)',
-
-    },
-    modalContainer: {
-        width: '100%',
-        padding: 25,
-        backgroundColor: COLORS.white,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        elevation: 25,
-        borderWidth: 1,
-        borderColor: COLORS.lightBorder,
-    },
-    modalTitle: {
-        fontSize: 17,
-        fontFamily: Fonts.Roboto.Medium,
-        color: COLORS.title,
-    },
-    modalContent: {
-        fontSize: 14,
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-    closeButton: {
-        backgroundColor: COLORS.primary,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-    },
-    closeButtonText: {
-        color: '#fff',
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
-});

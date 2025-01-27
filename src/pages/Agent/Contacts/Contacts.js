@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Dimensions } from 'react-native';
-import { Styles } from '../../theme/Styles';
-import HeaderBackground from '../../components/HeaderBackground';
-import Header from '../../components/Header';
-import COLORS from '../../theme/colors';
-import Fonts from '../../theme/Fonts';
+import { Styles } from '../../../theme/Styles';
+import HeaderBackground from '../../../components/HeaderBackground';
+import Header from '../../../components/Header';
+import COLORS from '../../../theme/colors';
+import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { FlatList } from 'react-native';
-import { LinearGradient } from 'react-native-svg';
-import ContactListItem from '../../components/contactListItem';
-import DepartmentItem from '../../components/DepartmentItem';
+import ContactListItem from '../../../components/contactListItem';
+import DepartmentItem from '../../../components/DepartmentItem';
+import { styles } from './styles';
 const window = Dimensions.get('window');
 
 const locations = [
@@ -79,12 +77,9 @@ const departments = [
 
 ];
 
-
 export default function Contacts({ navigation }) {
 
     const [SelectedType, setSelectedType] = useState(1);
-
-
 
     const renderItem = ({ item }) => (
         <ContactListItem item={item} />
@@ -99,61 +94,25 @@ export default function Contacts({ navigation }) {
             <HeaderBackground />
             <Header Title="Contacts"
                 onPress={() => navigation.goBack()} />
-
-
-
-            <View style={
-                {
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    padding: 3,
-                    borderRadius: 16,
-                    backgroundColor: COLORS.white,
-                    marginTop: 20,
-                }
-            }>
+            <View style={styles.mainWrap}>
                 <TouchableOpacity onPress={() => setSelectedType(1)} style={{ backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white, borderRadius: 12, flex: 0.5, justifyContent: 'center', alignItems: 'center', paddingVertical: 5 }}>
                     <Text style={{ color: SelectedType == 1 ? COLORS.white : COLORS.black, fontFamily: Fonts.Roboto.SemiBold }}>Branches</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setSelectedType(2)} style={{ backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white, borderRadius: 12, flex: 0.5, justifyContent: 'center', alignItems: 'center', }}>
                     <Text style={{ color: SelectedType == 2 ? COLORS.white : COLORS.black, fontFamily: Fonts.Roboto.SemiBold }}>Department</Text>
                 </TouchableOpacity>
-
             </View>
 
-
-            <View style={
-                {
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    padding: 3,
-                    borderRadius: 20,
-                    backgroundColor: COLORS.white,
-                    marginVertical: 20,
-                    paddingLeft: 10,
-                    height: 44
-                }
-            }>
+            <View style={styles.searchWrap}>
                 <TextInput
-
-                    style={
-                        {
-                            flex: 1,
-                            fontFamily: Fonts.Roboto.Regular,
-                            color: COLORS.grayText,
-                            alignSelf: 'center',
-                            fontSize: 12,
-                        }
-                    }
+                    style={styles.textInput}
                     placeholder="Quick Search"
                 />
-                <TouchableOpacity style={{ backgroundColor: COLORS.primary, borderRadius: 20, paddingVertical: 5, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity style={styles.searchButton}>
                     <Octicons name="search" color={COLORS.white} size={20} />
-
                 </TouchableOpacity>
 
             </View>
-
 
             <View>
 
@@ -183,11 +142,7 @@ export default function Contacts({ navigation }) {
                     />)
                 }
 
-
-
             </View>
-
-
 
         </View >
     );

@@ -29,9 +29,6 @@ const COLORS = {
     yellow: "#FFEB3B",
     importantRed: "#EF4B5C",
     darkText: "#2D3142",
-
-
-
 };
 
 export default COLORS;

@@ -1,7 +1,6 @@
 const Fonts = {
 
   Roboto: {
-
     Bold: "Roboto-Bold",
     SemiBold: "Roboto-SemiBold",
     Medium: "Roboto-Medium",
