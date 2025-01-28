@@ -51,9 +51,13 @@ const LoginScreen = ({navigation}) => {
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
 
-      <SquareTextBox Title={'Username'}></SquareTextBox>
+      <View style={{marginVertical: 5, width: '100%'}}>
+        <SquareTextBox Title={'Username'}></SquareTextBox>
+      </View>
 
-      <SquareTextBox Title={'Enter Password '}></SquareTextBox>
+      <View style={{marginVertical: 5, width: '100%'}}>
+        <SquareTextBox Title={'Enter Password '} Secure={true}></SquareTextBox>
+      </View>
 
       {/* Remember Me and Forgot Password */}
       <View style={styles.row}>

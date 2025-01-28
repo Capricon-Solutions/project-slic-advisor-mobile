@@ -41,7 +41,7 @@ export default function SalesMeter({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
 
-  const tableHead = ['Type', 'Premium', 'Income'];
+  const tableHead = ['Type', 'Premium', 'Income', 'evwe'];
   const tableData = [
     ['Gen. Collec. - Cash', '182,205.78', '182,205.78'],
     ['Gen. Collec. - Cash', '182,205.78', '182,205.78'],
@@ -268,6 +268,7 @@ export default function SalesMeter({navigation}) {
 
         {/* <Table headers={headers} data={data} /> */}
         <TableComponent
+          haveTotal={true}
           tableHead={tableHead}
           tableData={tableData}
           columnWidths={columnWidths}

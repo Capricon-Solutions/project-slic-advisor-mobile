@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.borderColor,
   },
   footer: {
-    marginTop: 20,
+    marginVertical: 20,
     width: '90%',
     marginHorizontal: 10,
   },
