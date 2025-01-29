@@ -100,6 +100,16 @@ export const Styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
   },
+  smallButtonStyle: {
+    backgroundColor: COLORS.primaryGreen,
+    borderRadius: 8,
+    width: '100%',
+    height: 38,
+    fontFamily: Fonts.Roboto.Bold,
+    justifyContent: 'center',
+    marginVertical: 10,
+    alignItems: 'center',
+  },
   squarebuttonStyle: {
     backgroundColor: COLORS.primaryColor,
     borderRadius: 6,

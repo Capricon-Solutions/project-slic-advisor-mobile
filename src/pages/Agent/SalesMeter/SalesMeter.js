@@ -32,6 +32,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import AboutModal from '../../../components/AboutModal';
 import TableComponent from '../../../components/TableComponent';
 import {styles} from './styles';
+import SetTargetModal from '../../../components/SetTargetModal';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -39,7 +40,7 @@ const window = Dimensions.get('window');
 export default function SalesMeter({navigation}) {
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
-  const [generaModalVisible, setgeneraModalVisible] = useState(false);
+  const [target, setTarget] = useState('');
 
   const tableHead = ['Type', 'Premium', 'Income', 'evwe'];
   const tableData = [
@@ -52,14 +53,20 @@ export default function SalesMeter({navigation}) {
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />
-      <SalesModal
+      <SetTargetModal
         modalVisible={modalVisible}
-        onPressOne={() => setgeneraModalVisible(true)}
+        // onPressOne={() => setModalVisible(true)}
         setModalVisible={setModalVisible}
       />
 
       <View style={{paddingHorizontal: 20}}>
-        <Header Title="Sales meter" onPress={() => navigation.goBack()} />
+        <Header
+          Title="Sales meter"
+          onPress={() => navigation.goBack()}
+          haveButton={true}
+          ButtonTitle={'Set Target'}
+          onButton={() => setModalVisible(true)}
+        />
       </View>
       <ScrollView>
         <View

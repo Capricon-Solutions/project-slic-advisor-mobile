@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   conditionsWrap: {
     backgroundColor: COLORS.lightGreen,
-    width: '50%',
+    width: '62%',
     borderRadius: 11,
     flexDirection: 'row',
     alignItems: 'center',
