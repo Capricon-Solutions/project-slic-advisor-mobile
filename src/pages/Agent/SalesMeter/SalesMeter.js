@@ -55,7 +55,6 @@ export default function SalesMeter({navigation}) {
       <HeaderBackground />
       <SetTargetModal
         modalVisible={modalVisible}
-        // onPressOne={() => setModalVisible(true)}
         setModalVisible={setModalVisible}
       />
 

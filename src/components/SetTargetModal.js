@@ -124,6 +124,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 15,
+    textAlign: 'center',
+    marginTop: 15,
     fontFamily: Fonts.Roboto.Medium,
     color: COLORS.textColor,
   },
