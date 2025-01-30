@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
@@ -16,6 +17,8 @@ export default function Header({
   ButtonTitle,
   haveButton,
   onButton,
+  haveFilters,
+  haveMenu,
 }) {
   return (
     <View
@@ -32,7 +35,7 @@ export default function Header({
           style={{
             height: 38,
             width: 38,
-            borderRadius: 16,
+            borderRadius: 13,
             backgroundColor: COLORS.white,
             alignItems: 'center',
             justifyContent: 'center',
@@ -54,10 +57,41 @@ export default function Header({
           {Title}
         </Text>
       </View>
-      <View style={{flex: 0.25}}>
+      <View
+        style={{
+          flex: 0.25,
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}>
         {haveButton && (
           <View>
             <SmallButton Title={ButtonTitle} onPress={onButton}></SmallButton>
+          </View>
+        )}
+
+        {haveFilters && (
+          <View>
+            <View
+              style={{
+                backgroundColor: COLORS.primary,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: COLORS.white,
+                height: 36,
+                width: 36,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Octicons name="search" color={COLORS.white} size={18} />
+            </View>
+          </View>
+        )}
+        {haveMenu && (
+          <View style={{marginLeft: 5}}>
+            <View style={{}}>
+              <MaterialIcons name="more-vert" color={COLORS.black} size={27} />
+            </View>
           </View>
         )}
       </View>

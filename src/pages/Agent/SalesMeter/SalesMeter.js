@@ -26,7 +26,6 @@ import PRODUCT_PORTFOLIO from '../../../icons/PRODUCT_PORTFOLIO.png'; // Replace
 import E_CORNER from '../../../icons/E-CORNER.png'; // Replace with the actual logo path
 import CLUB from '../../../icons/CLUB.png'; // Replace with the actual logo path
 import B_PLANNER from '../../../icons/B-PLANNER.png'; // Replace with the actual logo path
-import SalesModal from '../../../components/SalesModal';
 import IndividualModal from '../../../components/IndividualModal';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AboutModal from '../../../components/AboutModal';

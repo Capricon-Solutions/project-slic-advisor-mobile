@@ -22,10 +22,14 @@ import PRODUCT_PORTFOLIO from '../../../icons/PRODUCT_PORTFOLIO.png'; // Replace
 import E_CORNER from '../../../icons/E-CORNER.png'; // Replace with the actual logo path
 import CLUB from '../../../icons/CLUB.png'; // Replace with the actual logo path
 import B_PLANNER from '../../../icons/B-PLANNER.png'; // Replace with the actual logo path
-import SalesModal from '../../../components/SalesModal';
 import IndividualModal from '../../../components/IndividualModal';
+import individualPerforamance from '../../../icons/individualPerforamance.png'; // Replace with the actual logo path
+import policyRenewal from '../../../icons/policyRenewal.png'; // Replace with the actual logo path
+
 import {styles} from './styles';
-import GeneralModal from '../../../components/GeneralModal';
+// import GeneralModal from '../../../components/GeneralModal';
+import BottomModal from '../../../components/BottomModal';
+import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 
 const window = Dimensions.get('window');
 
@@ -35,16 +39,44 @@ export default function Dashboard({navigation}) {
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
   const [salesModalVisible, setsalesModalVisible] = useState(false);
 
+  const GeneralModal = [
+    {
+      title: 'Policy Details',
+      icon: individualPerforamance,
+      onPress: () => {
+        navigation.navigate('GeneralPolicyList');
+        setgeneraModalVisible(false);
+      },
+    },
+    {title: 'Policy Renewals', icon: policyRenewal},
+    {title: 'PPW Cancellation', icon: policyRenewal},
+  ];
+
+  const SalesModal = [
+    {
+      title: 'Individual Performance',
+      icon: individualPerforamance,
+      onPress: () => setModalVisible(true),
+    },
+    {
+      title: 'Team Performance',
+      icon: teamPerformance,
+      // onPress: () => setModalVisible(true),
+    },
+  ];
+
   return (
     <View style={Styles.container}>
-      <SalesModal
+      <BottomModal
+        ButtonList={SalesModal}
         modalVisible={salesModalVisible}
         onPressOne={() => setModalVisible(true)}
         setModalVisible={setsalesModalVisible}
       />
 
-      <GeneralModal
+      <BottomModal
         modalVisible={generaModalVisible}
+        ButtonList={GeneralModal}
         onPressOne={() => setModalVisible(true)}
         setModalVisible={setgeneraModalVisible}
       />

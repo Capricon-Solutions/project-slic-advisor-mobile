@@ -21,6 +21,7 @@ import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
 import SalesMeter from './src/pages/Agent/SalesMeter/SalesMeter';
 import Settings from './src/pages/Settings';
+import GeneralPolicyList from './src/pages/Agent/GeneralPolicyList';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -64,6 +65,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="SalesMeter" component={SalesMeter} />
+        <Stack.Screen name="GeneralPolicyList" component={GeneralPolicyList} />
+        
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
       </Stack.Navigator>

@@ -15,10 +15,12 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import individualPerforamance from '../icons/individualPerforamance.png'; // Replace with the actual logo path
-import policyRenewal from '../icons/policyRenewal.png'; // Replace with the actual logo path
 
-export default function GeneralModal({modalVisible, setModalVisible}) {
+export default function BottomModal({
+  modalVisible,
+  ButtonList,
+  setModalVisible,
+}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -59,6 +61,40 @@ export default function GeneralModal({modalVisible, setModalVisible}) {
       }).start();
     }
   }
+
+  const PolicyItem = ({title, icon, onPress}) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingVertical: 18,
+          borderWidth: 1.5,
+          borderRadius: 10,
+          borderColor: COLORS.modalBorder,
+          marginVertical: 10,
+        }}
+        onPress={onPress}>
+        <View style={{flex: 0.15, alignItems: 'center'}}>
+          <Image
+            source={icon}
+            style={{height: 20, width: 20, resizeMode: 'contain'}}
+          />
+        </View>
+
+        <View style={{flex: 0.85}}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontFamily: Fonts.Roboto.Medium,
+              color: COLORS.islandRank,
+            }}>
+            {title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Modal
@@ -105,93 +141,17 @@ export default function GeneralModal({modalVisible, setModalVisible}) {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 18,
-              borderWidth: 1.5,
-              borderRadius: 10,
-              borderColor: COLORS.modalBorder,
-              marginVertical: 10,
-            }}>
-            <View style={{flex: 0.15, alignItems: 'center'}}>
-              {/* <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} /> */}
-              <Image
-                source={individualPerforamance}
-                style={{height: 20, width: 20, resizeMode: 'contain'}}
+
+          <View>
+            {ButtonList?.map((item, index) => (
+              <PolicyItem
+                key={index}
+                title={item.title}
+                icon={item.icon}
+                onPress={item.onPress}
               />
-            </View>
-
-            <View style={{flex: 0.85}}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: Fonts.Roboto.Medium,
-                  color: COLORS.islandRank,
-                }}>
-                Policy Details
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 18,
-              borderWidth: 1.5,
-              borderRadius: 10,
-              borderColor: COLORS.modalBorder,
-              marginVertical: 10,
-            }}>
-            <View style={{flex: 0.15, alignItems: 'center'}}>
-              <Image
-                source={policyRenewal}
-                style={{height: 20, width: 20, resizeMode: 'contain'}}
-              />
-            </View>
-
-            <View style={{flex: 0.85}}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: Fonts.Roboto.Medium,
-                  color: COLORS.islandRank,
-                }}>
-                Policy Renewals
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: 18,
-              borderWidth: 1.5,
-              borderRadius: 10,
-              borderColor: COLORS.modalBorder,
-              marginVertical: 10,
-            }}>
-            <View style={{flex: 0.15, alignItems: 'center'}}>
-              <Image
-                source={policyRenewal}
-                style={{height: 20, width: 20, resizeMode: 'contain'}}
-              />
-            </View>
-
-            <View style={{flex: 0.85}}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily: Fonts.Roboto.Medium,
-                  color: COLORS.islandRank,
-                }}>
-                PPW Cancellation
-              </Text>
-            </View>
-          </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </Animated.View>
     </Modal>
