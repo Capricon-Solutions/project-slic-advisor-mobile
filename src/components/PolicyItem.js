@@ -7,6 +7,7 @@ import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 import motor from '../icons/motor.png'; // Replace with the actual logo path
 import {TextInput} from 'react-native-paper';
@@ -61,7 +62,7 @@ export default function PolicyItem({item}) {
         <TextInput
           mode="outlined"
           label="Insured Name"
-          radOnly
+          readOnly
           style={{marginVertical: 3}}
           textColor={COLORS.ashBlue}
           outlineStyle={{borderRadius: 10}}
@@ -72,7 +73,7 @@ export default function PolicyItem({item}) {
         <TextInput
           mode="outlined"
           label="Policy Number"
-          radOnly
+          readOnly
           style={{marginVertical: 3}}
           textColor={COLORS.ashBlue}
           outlineStyle={{borderRadius: 10}}
@@ -83,7 +84,7 @@ export default function PolicyItem({item}) {
         <TextInput
           mode="outlined"
           label="Vehicle Number"
-          radOnly
+          readOnly
           style={{marginVertical: 3}}
           textColor={COLORS.ashBlue}
           outlineStyle={{borderRadius: 10}}
@@ -101,7 +102,7 @@ export default function PolicyItem({item}) {
             <TextInput
               mode="outlined"
               label="Start"
-              radOnly
+              readOnly
               style={{marginVertical: 3}}
               textColor={COLORS.ashBlue}
               outlineStyle={{borderRadius: 10}}
@@ -113,7 +114,7 @@ export default function PolicyItem({item}) {
             <TextInput
               mode="outlined"
               label="End"
-              radOnly
+              readOnly
               style={{marginVertical: 3}}
               textColor={COLORS.ashBlue}
               outlineStyle={{borderRadius: 10}}
@@ -133,8 +134,9 @@ export default function PolicyItem({item}) {
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
-                width: 46,
+                flex: 1,
                 height: 40,
+                marginRight: 4,
                 borderRadius: 10,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -150,8 +152,9 @@ export default function PolicyItem({item}) {
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
-                width: 46,
+                flex: 1,
                 height: 40,
+                marginRight: 4,
                 borderRadius: 10,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -167,8 +170,9 @@ export default function PolicyItem({item}) {
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
-                width: 46,
+                flex: 1,
                 height: 40,
+                marginRight: 4,
                 borderRadius: 10,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -176,6 +180,7 @@ export default function PolicyItem({item}) {
               <MaterialCommunityIcons
                 name="phone-outline"
                 color={COLORS.primary}
+                style={{transform: [{rotate: '90deg'}]}} // Rotate 90 degrees
                 size={22}
               />
             </View>
@@ -184,7 +189,7 @@ export default function PolicyItem({item}) {
               style={{
                 backgroundColor: COLORS.primary,
                 borderRadius: 8,
-                width: 131,
+                width: 130,
                 height: 40,
                 fontFamily: Fonts.Roboto.Bold,
                 justifyContent: 'center',
