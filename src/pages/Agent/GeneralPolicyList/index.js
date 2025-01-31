@@ -97,7 +97,9 @@ export default function GeneralPolicyList({navigation}) {
     },
   ];
 
-  const renderPolicyItem = ({item}) => <PolicyItem item={item} />;
+  const renderPolicyItem = ({item}) => (
+    <PolicyItem item={item} navigation={navigation} />
+  );
 
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>

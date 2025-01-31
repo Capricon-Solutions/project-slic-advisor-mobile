@@ -13,7 +13,7 @@ import motor from '../icons/motor.png'; // Replace with the actual logo path
 import {TextInput} from 'react-native-paper';
 import Button from './Button';
 
-export default function PolicyItem({item}) {
+export default function PolicyItem({item, navigation}) {
   const [visible, setVisible] = React.useState(false);
 
   return (
@@ -51,79 +51,79 @@ export default function PolicyItem({item}) {
           />
         </TouchableOpacity>
       </TouchableOpacity>
-
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: COLORS.white,
-          paddingBottom: 5,
-          paddingTop: 0,
-        }}>
-        <TextInput
-          mode="outlined"
-          label="Insured Name"
-          readOnly
-          style={{marginVertical: 3}}
-          textColor={COLORS.ashBlue}
-          outlineStyle={{borderRadius: 10}}
-          outlineColor={COLORS.lightBorder}
-          value={item.InsuredName}
-        />
-
-        <TextInput
-          mode="outlined"
-          label="Policy Number"
-          readOnly
-          style={{marginVertical: 3}}
-          textColor={COLORS.ashBlue}
-          outlineStyle={{borderRadius: 10}}
-          outlineColor={COLORS.lightBorder}
-          value={item.PolicyNumber}
-        />
-
-        <TextInput
-          mode="outlined"
-          label="Vehicle Number"
-          readOnly
-          style={{marginVertical: 3}}
-          textColor={COLORS.ashBlue}
-          outlineStyle={{borderRadius: 10}}
-          outlineColor={COLORS.lightBorder}
-          value={item.VehicleNumber}
-        />
-
+      {visible && (
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            flex: 1,
+            width: '100%',
+            backgroundColor: COLORS.white,
+            paddingBottom: 5,
+            paddingTop: 0,
           }}>
-          <View style={{flex: 0.48}}>
-            <TextInput
-              mode="outlined"
-              label="Start"
-              readOnly
-              style={{marginVertical: 3}}
-              textColor={COLORS.ashBlue}
-              outlineStyle={{borderRadius: 10}}
-              outlineColor={COLORS.lightBorder}
-              value={item.StartDate}
-            />
+          <TextInput
+            mode="outlined"
+            label="Insured Name"
+            readOnly
+            style={{marginVertical: 3}}
+            textColor={COLORS.ashBlue}
+            outlineStyle={{borderRadius: 10}}
+            outlineColor={COLORS.lightBorder}
+            value={item.InsuredName}
+          />
+
+          <TextInput
+            mode="outlined"
+            label="Policy Number"
+            readOnly
+            style={{marginVertical: 3}}
+            textColor={COLORS.ashBlue}
+            outlineStyle={{borderRadius: 10}}
+            outlineColor={COLORS.lightBorder}
+            value={item.PolicyNumber}
+          />
+
+          <TextInput
+            mode="outlined"
+            label="Vehicle Number"
+            readOnly
+            style={{marginVertical: 3}}
+            textColor={COLORS.ashBlue}
+            outlineStyle={{borderRadius: 10}}
+            outlineColor={COLORS.lightBorder}
+            value={item.VehicleNumber}
+          />
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              flex: 1,
+            }}>
+            <View style={{flex: 0.48}}>
+              <TextInput
+                mode="outlined"
+                label="Start"
+                readOnly
+                style={{marginVertical: 3}}
+                textColor={COLORS.ashBlue}
+                outlineStyle={{borderRadius: 10}}
+                outlineColor={COLORS.lightBorder}
+                value={item.StartDate}
+              />
+            </View>
+            <View style={{flex: 0.48}}>
+              <TextInput
+                mode="outlined"
+                label="End"
+                readOnly
+                style={{marginVertical: 3}}
+                textColor={COLORS.ashBlue}
+                outlineStyle={{borderRadius: 10}}
+                outlineColor={COLORS.lightBorder}
+                value={item.EndDate}
+              />
+            </View>
           </View>
-          <View style={{flex: 0.48}}>
-            <TextInput
-              mode="outlined"
-              label="End"
-              readOnly
-              style={{marginVertical: 3}}
-              textColor={COLORS.ashBlue}
-              outlineStyle={{borderRadius: 10}}
-              outlineColor={COLORS.lightBorder}
-              value={item.EndDate}
-            />
-          </View>
-        </View>
-        {visible && (
+
           <View
             style={{
               flexDirection: 'row',
@@ -194,12 +194,13 @@ export default function PolicyItem({item}) {
                 fontFamily: Fonts.Roboto.Bold,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+              onPress={() => navigation.navigate('PolicyDetails')}>
               <Text style={Styles.buttonText}>Go to Policy</Text>
             </TouchableOpacity>
           </View>
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 }

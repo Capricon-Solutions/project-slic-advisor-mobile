@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
+import {
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  View,
+  Image,
+  Linking,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,6 +26,8 @@ export default function Header({
   onButton,
   haveFilters,
   haveMenu,
+  haveCall,
+  haveWhatsapp,
 }) {
   return (
     <View
@@ -85,6 +94,55 @@ export default function Header({
               }}>
               <Octicons name="search" color={COLORS.white} size={18} />
             </View>
+          </View>
+        )}
+
+        {haveCall && (
+          <View>
+            <View
+              style={{
+                backgroundColor: COLORS.primary,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: COLORS.white,
+                height: 36,
+                width: 36,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MaterialCommunityIcons
+                name="phone-outline"
+                color={COLORS.white}
+                size={18}
+              />
+            </View>
+          </View>
+        )}
+
+        {haveWhatsapp && (
+          <View>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  'whatsapp://send?text=hello&phone=xxxxxxxxxxxxx',
+                )
+              }
+              style={{
+                backgroundColor: COLORS.primary,
+                borderRadius: 10,
+                borderWidth: 1,
+                borderColor: COLORS.white,
+                height: 36,
+                width: 36,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <MaterialCommunityIcons
+                name="whatsapp"
+                color={COLORS.white}
+                size={18}
+              />
+            </TouchableOpacity>
           </View>
         )}
         {haveMenu && (

@@ -107,7 +107,7 @@ export const Styles = StyleSheet.create({
     height: 38,
     fontFamily: Fonts.Roboto.Bold,
     justifyContent: 'center',
-    marginVertical: 10,
+    marginVertical: 8,
     alignItems: 'center',
   },
   squarebuttonStyle: {

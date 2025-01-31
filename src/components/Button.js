@@ -14,7 +14,7 @@ export default function Button({
   disabledButton,
 }) {
   return (
-    <TouchableRipple
+    <TouchableOpacity
       disabled={disabledButton}
       onPress={onPress}
       style={[
@@ -25,6 +25,6 @@ export default function Button({
         },
       ]}>
       <Text style={Styles.buttonText}>{Title}</Text>
-    </TouchableRipple>
+    </TouchableOpacity>
   );
 }

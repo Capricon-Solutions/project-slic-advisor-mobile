@@ -22,6 +22,8 @@ import Profile from './src/pages/Profile/Profile';
 import SalesMeter from './src/pages/Agent/SalesMeter/SalesMeter';
 import Settings from './src/pages/Settings';
 import GeneralPolicyList from './src/pages/Agent/GeneralPolicyList';
+import PolicyDetails from './src/pages/Agent/PolicyDetails';
+import ClaimHistory from './src/pages/Agent/ClaimHistory';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -66,6 +68,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="SalesMeter" component={SalesMeter} />
         <Stack.Screen name="GeneralPolicyList" component={GeneralPolicyList} />
+        <Stack.Screen name="PolicyDetails" component={PolicyDetails} />
+        <Stack.Screen name="ClaimHistory" component={ClaimHistory} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
