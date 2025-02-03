@@ -24,6 +24,8 @@ import Settings from './src/pages/Settings';
 import GeneralPolicyList from './src/pages/Agent/GeneralPolicyList';
 import PolicyDetails from './src/pages/Agent/PolicyDetails';
 import ClaimHistory from './src/pages/Agent/ClaimHistory';
+import PremiumHistory from './src/pages/Agent/PremiumHistory';
+import DebitSettlement from './src/pages/Agent/DebitSettlement';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -70,6 +72,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="GeneralPolicyList" component={GeneralPolicyList} />
         <Stack.Screen name="PolicyDetails" component={PolicyDetails} />
         <Stack.Screen name="ClaimHistory" component={ClaimHistory} />
+        <Stack.Screen name="PremiumHistory" component={PremiumHistory} />
+        <Stack.Screen name="DebitSettlement" component={DebitSettlement} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

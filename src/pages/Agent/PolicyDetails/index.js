@@ -115,8 +115,16 @@ export default function PolicyDetails({navigation}) {
           disabledButton={false}
           Title={'View Claim History'}
         />
-        <SmallButton Title={'View Premium(NB/Renewal) History'} />
-        <SmallButton Title={'Debit Renewal'} />
+        <SmallButton
+          onPress={() => navigation.navigate('PremiumHistory')}
+          disabledButton={false}
+          Title={'View Premium(NB/Renewal) History'}
+        />
+        <SmallButton
+          onPress={() => navigation.navigate('DebitSettlement')}
+          disabledButton={false}
+          Title={'Debit Renewal'}
+        />
         <SmallButton Title={'Debit Settlement/ Payment'} />
       </View>
     </View>

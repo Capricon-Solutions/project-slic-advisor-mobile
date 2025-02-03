@@ -29,7 +29,7 @@ export default function SquareTextBox({
         <Text
           style={{
             marginBottom: 5,
-            fontFamily: Fonts.Inter.Bold,
+            fontFamily: Fonts.Roboto.Bold,
             color: COLORS.textColor,
           }}>
           {Label}
