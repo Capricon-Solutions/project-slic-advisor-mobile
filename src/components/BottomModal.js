@@ -20,6 +20,7 @@ export default function BottomModal({
   modalVisible,
   ButtonList,
   setModalVisible,
+  Name,
 }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
@@ -121,7 +122,7 @@ export default function BottomModal({
               marginBottom: 15,
             }}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.modalTitle}>General Insurance</Text>
+              <Text style={styles.modalTitle}>{Name}</Text>
             </View>
             <TouchableOpacity
               onPress={() => hide()}

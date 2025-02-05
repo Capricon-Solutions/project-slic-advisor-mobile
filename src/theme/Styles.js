@@ -109,6 +109,7 @@ export const Styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 8,
     alignItems: 'center',
+    paddingHorizontal: 5,
   },
   squarebuttonStyle: {
     backgroundColor: COLORS.primaryColor,

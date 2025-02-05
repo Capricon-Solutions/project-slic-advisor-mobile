@@ -61,6 +61,7 @@ export default function PolicyDetails({navigation}) {
           onPress={() => navigation.goBack()}
           haveFilters={false}
           haveWhatsapp={true}
+          haveCall={true}
           haveMenu={false}
           onButton={() => setModalVisible(true)}
         />

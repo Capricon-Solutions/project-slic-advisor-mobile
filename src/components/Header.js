@@ -107,6 +107,7 @@ export default function Header({
                 borderColor: COLORS.white,
                 height: 36,
                 width: 36,
+                marginHorizontal: 2,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
@@ -131,6 +132,7 @@ export default function Header({
                 backgroundColor: COLORS.primary,
                 borderRadius: 10,
                 borderWidth: 1,
+                marginHorizontal: 2,
                 borderColor: COLORS.white,
                 height: 36,
                 width: 36,

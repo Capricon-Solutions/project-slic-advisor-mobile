@@ -68,6 +68,7 @@ export default function Dashboard({navigation}) {
   return (
     <View style={Styles.container}>
       <BottomModal
+        Name={'Individual Performance'}
         ButtonList={SalesModal}
         modalVisible={salesModalVisible}
         onPressOne={() => setModalVisible(true)}
@@ -75,6 +76,7 @@ export default function Dashboard({navigation}) {
       />
 
       <BottomModal
+        Name={'General Insurance'}
         modalVisible={generaModalVisible}
         ButtonList={GeneralModal}
         onPressOne={() => setModalVisible(true)}

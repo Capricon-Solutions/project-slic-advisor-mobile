@@ -23,14 +23,22 @@ import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
 import {TextInput} from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
+import SendPaymentLink from '../../../components/SendPaymentLink';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function DebitSettlement({navigation}) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />
+
+      <SendPaymentLink
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={{paddingHorizontal: 20}}>
         <Header
@@ -50,7 +58,10 @@ export default function DebitSettlement({navigation}) {
           <SquareTextBox Title={'2025/01/25'} Label={'Due Date'} />
 
           <View style={{marginTop: 15}}>
-            <Button Title={'Send Payment Link'} />
+            <Button
+              onPress={() => setModalVisible(true)}
+              Title={'Send Payment Link'}
+            />
           </View>
         </View>
       </View>
