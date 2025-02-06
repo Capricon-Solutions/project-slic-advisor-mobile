@@ -24,12 +24,15 @@ import SmallButton from '../../../components/SmallButton';
 import {TextInput} from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
+import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function DebitSettlement({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
@@ -51,12 +54,28 @@ export default function DebitSettlement({navigation}) {
         />
 
         <View style={styles.card}>
-          <SquareTextBox Title={'Debit Settlemement'} Label={'Select type'} />
+          <Text
+            style={{
+              marginBottom: 5,
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.textColor,
+            }}>
+            Select type
+          </Text>
+          <AutocompleteDropdown
+            clearOnFocus={true}
+            closeOnBlur={true}
+            closeOnSubmit={false}
+            // initialValue={{id: '2'}} // or just '2'
+            onSelectItem={setSelectedItem}
+            dataSet={[
+              {id: '1', title: 'Debit Settlement'},
+              {id: '2', title: 'Payment'},
+            ]}
+          />
 
           <SquareTextBox Title={'LKR 360000.00'} Label={'Outstanding Due'} />
-
           <SquareTextBox Title={'2025/01/25'} Label={'Due Date'} />
-
           <View style={{marginTop: 15}}>
             <Button
               onPress={() => setModalVisible(true)}

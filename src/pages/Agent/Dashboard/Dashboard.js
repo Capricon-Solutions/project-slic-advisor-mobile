@@ -230,7 +230,7 @@ export default function Dashboard({navigation}) {
           <Text style={Styles.gridText}>GENERAL</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          //   onPress={() => setsalesModalVisible(true)}
+          onPress={() => navigation.navigate('ClubInformation')}
           style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={CLUB}></Image>
           <Text style={Styles.gridText}>CLUB</Text>
@@ -251,10 +251,12 @@ export default function Dashboard({navigation}) {
           <Image style={Styles.gridIcon} source={E_CORNER}></Image>
           <Text style={Styles.gridText}>E-CORNER</Text>
         </View>
-        <View style={Styles.iconGrid}>
+        <TouchableOpacity
+          style={Styles.iconGrid}
+          onPress={() => navigation.navigate('ProductPortfolio')}>
           <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
           <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

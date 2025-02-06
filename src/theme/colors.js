@@ -31,6 +31,7 @@ const COLORS = {
   darkText: '#2D3142',
   text: '#1E1E1E',
   lightGreen: '#E0F7F7',
+  lightBlue: '#00ADBB33',
 };
 
 export default COLORS;
