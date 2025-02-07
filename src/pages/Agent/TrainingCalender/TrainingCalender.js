@@ -29,6 +29,7 @@ import {
   LocaleConfig,
 } from 'react-native-calendars';
 import SmallButton from '../../../components/SmallButton';
+import NotAttending from '../../../components/NotAttending';
 
 const window = Dimensions.get('window');
 
@@ -78,6 +79,7 @@ LocaleConfig.defaultLocale = 'fr';
 
 export default function TrainingCalender({navigation}) {
   const [selectedItem, setSelectedItem] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = useState({
     '2025-02-01': {selected: true, marked: true, selectedColor: 'blue'},
     '2025-02-02': {marked: true},
@@ -86,6 +88,10 @@ export default function TrainingCalender({navigation}) {
 
   return (
     <View style={{height: window.height * 1}}>
+      <NotAttending
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={Styles.container}>
         <HeaderBackground />
         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
@@ -162,7 +168,7 @@ export default function TrainingCalender({navigation}) {
             {/* <SmallButton Title={'View Training List'} /> */}
             <TouchableOpacity
               style={styles.smallButton}
-              onPress={() => onLoad(fromDate, toDate)}>
+              onPress={() => setModalVisible(true)}>
               <Text style={styles.smallButtonText}>View Training List</Text>
             </TouchableOpacity>
           </View>
