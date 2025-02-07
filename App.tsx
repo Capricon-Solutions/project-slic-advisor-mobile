@@ -28,6 +28,8 @@ import PremiumHistory from './src/pages/Agent/PremiumHistory';
 import DebitSettlement from './src/pages/Agent/DebitSettlement';
 import ProductPortfolio from './src/pages/Agent/ProductPortfolio';
 import ClubInformation from './src/pages/Agent/ClubInformation';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/services/store';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -63,6 +65,7 @@ function App(): React.JSX.Element {
   };
 
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
@@ -83,6 +86,7 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
