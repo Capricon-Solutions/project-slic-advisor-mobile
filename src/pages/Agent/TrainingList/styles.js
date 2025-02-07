@@ -10,18 +10,6 @@ export const styles = StyleSheet.create({
   //     backgroundColor: COLORS.background,
   //     paddingHorizontal: 20,
   // },
-  smallButton: {
-    backgroundColor: '#00796B',
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    marginLeft: 13,
-  },
-  smallButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontFamily: Fonts.Roboto.Medium,
-  },
 
   mainWrap: {
     flexDirection: 'row',

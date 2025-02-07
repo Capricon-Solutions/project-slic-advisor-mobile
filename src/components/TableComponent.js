@@ -50,7 +50,7 @@ const TableComponent = ({tableHead, tableData, columnWidths, haveTotal}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 10},
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',

@@ -21,141 +21,165 @@ import DepartmentItem from '../../../components/DepartmentItem';
 import {styles} from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
+import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import {
+  Calendar,
+  CalendarList,
+  Agenda,
+  LocaleConfig,
+} from 'react-native-calendars';
+import SmallButton from '../../../components/SmallButton';
+
 const window = Dimensions.get('window');
 
-const locations = [
-  {id: 1, name: 'Akkaraipattu'},
-  {id: 2, name: 'Akuressa'},
-  {id: 3, name: 'Aluthgama'},
-  {id: 4, name: 'Ambalangoda'},
-  {id: 5, name: 'Ambalantota'},
-  {id: 6, name: 'Ampara'},
-  {id: 7, name: 'Anuradhapura'},
-  {id: 8, name: 'Badulla'},
-  {id: 9, name: 'Batticaloa'},
-  {id: 10, name: 'Colombo'},
-  {id: 11, name: 'Dambulla'},
-  {id: 12, name: 'Galle'},
-  {id: 13, name: 'Hambantota'},
-  {id: 14, name: 'Jaffna'},
-  {id: 15, name: 'Kandy'},
-  {id: 16, name: 'Kurunegala'},
-];
+LocaleConfig.locales['fr'] = {
+  monthNames: [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ],
+  monthNamesShort: [
+    'Jan.',
+    'Feb.',
+    'Mar.',
+    'Apr.',
+    'May',
+    'Jun.',
+    'Jul.',
+    'Aug.',
+    'Sep.',
+    'Oct.',
+    'Nov.',
+    'Dec.',
+  ],
+  dayNames: [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ],
+  dayNamesShort: ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'],
+  today: 'Today',
+};
 
-const departments = [
-  {
-    id: 1,
-    name: 'Mr. Saman Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 2,
-    name: 'Mr. Poorna Gamage',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 3,
-    name: 'Mr. Saman Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 4,
-    name: 'Mr. Kamal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 5,
-    name: 'Mr. Nimal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 6,
-    name: 'Mr. Sumal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 7,
-    name: 'Mr. Kevin gamage',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-];
+LocaleConfig.defaultLocale = 'fr';
 
 export default function TrainingCalender({navigation}) {
-  const [SelectedType, setSelectedType] = useState(1);
-  const tableHead = [
-    'Training No.',
-    'Topic',
-    'General',
-    'Date and Time',
-    'Status',
-  ];
-  const tableData = [
-    [
-      '01',
-      'Social Media Marketing',
-      'General',
-      '21/12/2024 03:45pm',
-      'Completed',
-    ],
-    ['02', 'Content Writing', 'General', '15/11/2024 10:30am', 'In Progress'],
-    ['03', 'SEO Optimization', 'General', '05/09/2024 02:15pm', 'Pending'],
-    ['04', 'Email Marketing', 'General', '28/08/2024 04:50pm', 'Completed'],
-    ['05', 'Affiliate Marketing', 'General', '10/07/2024 01:00pm', 'On Hold'],
-    ['06', 'Pay-Per-Click Ads', 'General', '22/06/2024 09:45am', 'Completed'],
-    ['07', 'Video Marketing', 'General', '18/05/2024 11:20am', 'In Progress'],
-    [
-      '08',
-      'Influencer Marketing',
-      'General',
-      '09/04/2024 05:10pm',
-      'Completed',
-    ],
-    ['09', 'Mobile Marketing', 'General', '30/03/2024 08:55am', 'Pending'],
-    ['10', 'Podcast Marketing', 'General', '12/02/2024 06:40pm', 'On Hold'],
-  ];
-  const columnWidths = [100, 160, 100, 130, 100];
-
-  const renderItem = ({item}) => <ContactListItem item={item} />;
-
-  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
-
-  const handleLoad = (from, to) => {
-    console.log('Selected From:', from);
-    console.log('Selected To:', to);
-  };
+  const [selectedItem, setSelectedItem] = useState();
+  const [selected, setSelected] = useState({
+    '2025-02-01': {selected: true, marked: true, selectedColor: 'blue'},
+    '2025-02-02': {marked: true},
+    '2025-02-03': {selected: true, marked: true, selectedColor: 'blue'},
+  });
 
   return (
-    <ScrollView style={{}}>
+    <View style={{height: window.height * 1}}>
       <View style={Styles.container}>
         <HeaderBackground />
-        <Header Title="Contacts" onPress={() => navigation.goBack()} />
+        <Header Title="Training Calender" onPress={() => navigation.goBack()} />
 
-        {/* <DateRangePicker onLoad={handleLoad} /> */}
-        <DateRangePicker
-          onLoad={(from, to) => console.log('From:', from, 'To:', to)}
-        />
-
-        <View style={styles.searchWrap}>
-          <TextInput style={styles.textInput} placeholder="Quick Search" />
-          <TouchableOpacity style={styles.searchButton}>
-            <Octicons name="search" color={COLORS.white} size={20} />
-          </TouchableOpacity>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontFamily: Fonts.Roboto.SemiBold,
+              color: COLORS.textColor,
+            }}>
+            Select User Type
+          </Text>
+          <View style={{width: '45%'}}>
+            <AutocompleteDropdown
+              clearOnFocus={true}
+              closeOnBlur={true}
+              closeOnSubmit={false}
+              // initialValue={{id: '2'}} // or just '2'
+              onSelectItem={setSelectedItem}
+              dataSet={[
+                {id: '1', title: 'Myself'},
+                {id: '2', title: 'Marketing executive'},
+                {id: '2', title: 'Team Leader'},
+                {id: '2', title: 'All'},
+              ]}
+            />
+          </View>
         </View>
 
-        <TableComponent
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableData}
-          columnWidths={columnWidths}
-        />
+        <View
+          style={{
+            borderRadius: 15,
+            backgroundColor: COLORS.white,
+            padding: 5,
+          }}>
+          <Calendar
+            onDayPress={day => {
+              setSelected(day.dateString);
+            }}
+            style={{
+              borderColor: 'gray',
+              height: 350,
+            }}
+            theme={{
+              backgroundColor: '#ffffff',
+              calendarBackground: '#ffffff',
+              textSectionTitleColor: '#b6c1cd',
+              selectedDayBackgroundColor: COLORS.primary,
+              selectedDayTextColor: 'white',
+              todayTextColor: '#00adf5',
+              dayTextColor: '#2d4150',
+              textDisabledColor: '#dd99ee',
+            }}
+            markedDates={selected}
+          />
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.SemiBold,
+              fontSize: 14,
+              color: COLORS.textColor,
+            }}>
+            Monday, 22/January/2025
+          </Text>
+          <View>
+            {/* <SmallButton Title={'View Training List'} /> */}
+            <TouchableOpacity
+              style={styles.smallButton}
+              onPress={() => onLoad(fromDate, toDate)}>
+              <Text style={styles.smallButtonText}>View Training List</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Medium,
+              fontSize: 14,
+              color: COLORS.grayText,
+              textAlign: 'center',
+            }}>
+            NO EVENTS FOR THE SELECTED DATE
+          </Text>
+        </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }
