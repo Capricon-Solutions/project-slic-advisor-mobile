@@ -76,60 +76,57 @@ export default function Contacts({navigation}) {
 
   const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  } else {
-    return (
-      <View style={Styles.container}>
-        <HeaderBackground />
-        <Header Title="Contacts" onPress={() => navigation.goBack()} />
-        <View style={styles.mainWrap}>
-          <TouchableOpacity
-            onPress={() => setSelectedType(1)}
+  return (
+    <View style={Styles.container}>
+      <HeaderBackground />
+      <Header Title="Contacts" onPress={() => navigation.goBack()} />
+      <View style={styles.mainWrap}>
+        <TouchableOpacity
+          onPress={() => setSelectedType(1)}
+          style={{
+            backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white,
+            borderRadius: 12,
+            flex: 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 5,
+          }}>
+          <Text
             style={{
-              backgroundColor:
-                SelectedType == 1 ? COLORS.primary : COLORS.white,
-              borderRadius: 12,
-              flex: 0.5,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 5,
+              color: SelectedType == 1 ? COLORS.white : COLORS.black,
+              fontFamily: Fonts.Roboto.SemiBold,
             }}>
-            <Text
-              style={{
-                color: SelectedType == 1 ? COLORS.white : COLORS.black,
-                fontFamily: Fonts.Roboto.SemiBold,
-              }}>
-              Branches
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setSelectedType(2)}
+            Branches
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedType(2)}
+          style={{
+            backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white,
+            borderRadius: 12,
+            flex: 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
             style={{
-              backgroundColor:
-                SelectedType == 2 ? COLORS.primary : COLORS.white,
-              borderRadius: 12,
-              flex: 0.5,
-              justifyContent: 'center',
-              alignItems: 'center',
+              color: SelectedType == 2 ? COLORS.white : COLORS.black,
+              fontFamily: Fonts.Roboto.SemiBold,
             }}>
-            <Text
-              style={{
-                color: SelectedType == 2 ? COLORS.white : COLORS.black,
-                fontFamily: Fonts.Roboto.SemiBold,
-              }}>
-              Department
-            </Text>
-          </TouchableOpacity>
-        </View>
+            Department
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.searchWrap}>
-          <TextInput style={styles.textInput} placeholder="Quick Search" />
-          <TouchableOpacity style={styles.searchButton}>
-            <Octicons name="search" color={COLORS.white} size={20} />
-          </TouchableOpacity>
-        </View>
-
+      <View style={styles.searchWrap}>
+        <TextInput style={styles.textInput} placeholder="Quick Search" />
+        <TouchableOpacity style={styles.searchButton}>
+          <Octicons name="search" color={COLORS.white} size={20} />
+        </TouchableOpacity>
+      </View>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
         <View>
           {SelectedType == 1 ? (
             <FlatList
@@ -157,7 +154,7 @@ export default function Contacts({navigation}) {
             />
           )}
         </View>
-      </View>
-    );
-  }
+      )}
+    </View>
+  );
 }
