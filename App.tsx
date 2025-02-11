@@ -30,6 +30,8 @@ import ProductPortfolio from './src/pages/Agent/ProductPortfolio';
 import ClubInformation from './src/pages/Agent/ClubInformation';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/services/store';
+import PolicyRenewals from './src/pages/Agent/PolicyRenewals';
+import TrainingList from './src/pages/Agent/TrainingList/TrainingList';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -81,6 +83,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="DebitSettlement" component={DebitSettlement} />
         <Stack.Screen name="ProductPortfolio" component={ProductPortfolio} />
         <Stack.Screen name="ClubInformation" component={ClubInformation} />
+        <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} />
+        <Stack.Screen name="TrainingList" component={TrainingList} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

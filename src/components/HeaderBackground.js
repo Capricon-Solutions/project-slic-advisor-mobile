@@ -15,7 +15,7 @@ export default function HeaderBackground({Title}) {
   return (
     <Svg
       height="35%" // Use 25% of the screen height
-      width={window.width} // Full width of the screen
+      width={window.width * 1} // Full width of the screen
       // viewBox={`0 0 ${window.width} 200`} // Dynamically set viewBox height
       style={Styles.topBackground}>
       <Path

@@ -1,0 +1,206 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+  FlatList,
+} from 'react-native';
+import {Styles} from '../../../theme/Styles';
+import HeaderBackground from '../../../components/HeaderBackground';
+import Header from '../../../components/Header';
+import COLORS from '../../../theme/colors';
+import Fonts from '../../../theme/Fonts';
+import Feather from 'react-native-vector-icons/Feather';
+import {styles} from './styles';
+import {useGetBranchesQuery} from '../../../redux/services/api';
+import LoadingScreen from '../../../components/LoadingScreen';
+import TableComponent from '../../../components/TableComponent';
+const window = Dimensions.get('window');
+
+export default function PolicyRenewals({navigation}) {
+  const {data: branches, isLoading, error} = useGetBranchesQuery();
+
+  const [SelectedType, setSelectedType] = useState(1);
+
+  const tableHead = [
+    'Due Date',
+    'Customer Name',
+    'Vehicle No',
+    'Policy No',
+    'NCB Perc',
+    'Sum Insured',
+    'Premium Amt',
+    'Policy Status',
+  ];
+  const tableData = [
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+    [
+      '01/12/2024',
+      'H G R L K RANAVIRA',
+      'K L W 4578',
+      '435345',
+      'cacsscs',
+      'cacsscs',
+      'cacsscs',
+      'complete',
+    ],
+  ];
+  const columnWidths = [110, 150, 110, 110, 110, 110, 110, 110];
+
+  return (
+    <View style={Styles.container}>
+      <HeaderBackground />
+      <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
+      <View style={styles.mainWrap}>
+        <TouchableOpacity
+          onPress={() => setSelectedType(1)}
+          style={{
+            backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white,
+            borderRadius: 12,
+            flex: 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 5,
+          }}>
+          <Text
+            style={{
+              color: SelectedType == 1 ? COLORS.white : COLORS.black,
+              fontFamily: Fonts.Roboto.SemiBold,
+            }}>
+            Motor Renewals
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setSelectedType(2)}
+          style={{
+            backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white,
+            borderRadius: 12,
+            flex: 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: SelectedType == 2 ? COLORS.white : COLORS.black,
+              fontFamily: Fonts.Roboto.SemiBold,
+            }}>
+            non-motor renewals
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.searchWrap}>
+        <TextInput style={styles.textInput} placeholder="11/2024" />
+        <TouchableOpacity style={styles.searchButton}>
+          <Feather name="calendar" color={COLORS.white} size={20} />
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text
+          style={{
+            fontFamily: Fonts.Roboto.Regular,
+            fontSize: 14,
+            marginBottom: 10,
+          }}>
+          (Click on policy Number to view details)
+        </Text>
+      </View>
+
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <View>
+          <TableComponent
+            tableHead={tableHead}
+            tableData={tableData}
+            columnWidths={columnWidths}
+            haveTotal={false}
+          />
+        </View>
+      )}
+    </View>
+  );
+}

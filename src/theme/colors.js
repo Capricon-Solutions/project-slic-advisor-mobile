@@ -33,6 +33,7 @@ const COLORS = {
   lightGreen: '#E0F7F7',
   lightBlue: '#00ADBB33',
   darkGreen: '#00796B',
+  trainingCard: '#F2FBFC',
 };
 
 export default COLORS;

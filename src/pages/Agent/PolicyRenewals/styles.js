@@ -5,31 +5,6 @@ import Fonts from '../../../theme/Fonts';
 const window = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  // container: {
-  //     flex: 1,
-  //     backgroundColor: COLORS.background,
-  //     paddingHorizontal: 20,
-  // },
-  smallButton: {
-    backgroundColor: '#00796B',
-    paddingVertical: 7,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    marginLeft: 13,
-  },
-  smallButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontFamily: Fonts.Roboto.Medium,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 13,
-    right: 13,
-    borderRadius: 15,
-    padding: 2,
-    backgroundColor: COLORS.lightBorder,
-  },
   mainWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -57,9 +32,9 @@ export const styles = StyleSheet.create({
   },
   searchButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 20,
+    borderRadius: 11,
     paddingVertical: 5,
-    paddingHorizontal: 20,
+    paddingHorizontal: 17,
     justifyContent: 'center',
     alignItems: 'center',
   },

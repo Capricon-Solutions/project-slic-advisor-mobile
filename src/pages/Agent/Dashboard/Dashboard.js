@@ -48,7 +48,14 @@ export default function Dashboard({navigation}) {
         setgeneraModalVisible(false);
       },
     },
-    {title: 'Policy Renewals', icon: policyRenewal},
+    {
+      title: 'Policy Renewals',
+      icon: policyRenewal,
+      onPress: () => {
+        navigation.navigate('PolicyRenewals');
+        setgeneraModalVisible(false);
+      },
+    },
     {title: 'PPW Cancellation', icon: policyRenewal},
   ];
 
