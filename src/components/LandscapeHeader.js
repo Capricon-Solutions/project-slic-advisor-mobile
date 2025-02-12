@@ -5,12 +5,15 @@ import {
   Text,
   View,
   Image,
+  TextInput,
   Linking,
+  StyleSheet,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
+import Feather from 'react-native-vector-icons/Feather';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import Button from './Button';
@@ -18,12 +21,12 @@ import SmallButton from './SmallButton';
 
 // import { useSelector } from "react-redux";
 
-export default function Header({
+export default function LandscapeHeader({
   Title,
   onPress,
   ButtonTitle,
   haveButton,
-  onFilterPress,
+  haveSearch,
   onButton,
   haveFilters,
   haveMenu,
@@ -39,7 +42,7 @@ export default function Header({
         height: 70,
         marginTop: 5,
       }}>
-      <View style={{justifyContent: 'center', flex: 0.25}}>
+      <View style={{justifyContent: 'center', flex: 0.1}}>
         <TouchableOpacity
           onPress={onPress}
           style={{
@@ -57,7 +60,7 @@ export default function Header({
           />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 0.5, alignItems: 'center'}}>
+      <View style={{flex: 0.25, alignItems: 'flex-start'}}>
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
@@ -69,9 +72,8 @@ export default function Header({
       </View>
       <View
         style={{
-          flex: 0.25,
+          flex: 0.65,
           flexDirection: 'row',
-          justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
         {haveButton && (
@@ -82,8 +84,7 @@ export default function Header({
 
         {haveFilters && (
           <View>
-            <TouchableOpacity
-              onPress={onFilterPress}
+            <View
               style={{
                 backgroundColor: COLORS.primary,
                 borderRadius: 10,
@@ -95,6 +96,15 @@ export default function Header({
                 justifyContent: 'center',
               }}>
               <Octicons name="search" color={COLORS.white} size={18} />
+            </View>
+          </View>
+        )}
+
+        {haveSearch && (
+          <View style={styles.searchWrap}>
+            <TextInput style={styles.textInput} placeholder="11/2024" />
+            <TouchableOpacity style={styles.searchButton}>
+              <Feather name="calendar" color={COLORS.primaryGreen} size={20} />
             </TouchableOpacity>
           </View>
         )}
@@ -160,3 +170,42 @@ export default function Header({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 3,
+    borderRadius: 16,
+    backgroundColor: COLORS.white,
+    marginTop: 20,
+  },
+  searchWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 3,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: COLORS.warmGray,
+    borderRadius: 10,
+    backgroundColor: COLORS.calenderInput,
+    marginVertical: 20,
+    paddingLeft: 10,
+    height: 44,
+  },
+  textInput: {
+    flex: 1,
+    fontFamily: Fonts.Roboto.Medium,
+    color: COLORS.textColor,
+    backgroundColor: COLORS.calenderInput,
+    alignSelf: 'center',
+    fontSize: 12,
+  },
+  searchButton: {
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

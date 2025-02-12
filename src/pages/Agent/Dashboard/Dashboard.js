@@ -56,7 +56,14 @@ export default function Dashboard({navigation}) {
         setgeneraModalVisible(false);
       },
     },
-    {title: 'PPW Cancellation', icon: policyRenewal},
+    {
+      title: 'PPW Cancellation',
+      icon: policyRenewal,
+      onPress: () => {
+        navigation.navigate('PPWCancellation');
+        setgeneraModalVisible(false);
+      },
+    },
   ];
 
   const SalesModal = [
@@ -65,8 +72,30 @@ export default function Dashboard({navigation}) {
       icon: individualPerforamance,
       onPress: () => setModalVisible(true),
     },
+    // {
+    //   title: 'Team Performance',
+    //   icon: teamPerformance,
+    //   // onPress: () => setModalVisible(true),
+    // },
+  ];
+
+  const IndividualPerformanceType = [
     {
-      title: 'Team Performance',
+      title: 'Individual Statistics',
+      icon: individualPerforamance,
+      onPress: () => {
+        setsalesModalVisible(false);
+        setModalVisible(false);
+        navigation.navigate('IndividualStatistics');
+      },
+    },
+    {
+      title: 'Individual performance Comparison',
+      icon: teamPerformance,
+      // onPress: () => setModalVisible(true),
+    },
+    {
+      title: 'Branch sales performance',
       icon: teamPerformance,
       // onPress: () => setModalVisible(true),
     },
@@ -78,7 +107,6 @@ export default function Dashboard({navigation}) {
         Name={'Individual Performance'}
         ButtonList={SalesModal}
         modalVisible={salesModalVisible}
-        onPressOne={() => setModalVisible(true)}
         setModalVisible={setsalesModalVisible}
       />
 
@@ -86,14 +114,20 @@ export default function Dashboard({navigation}) {
         Name={'General Insurance'}
         modalVisible={generaModalVisible}
         ButtonList={GeneralModal}
-        onPressOne={() => setModalVisible(true)}
         setModalVisible={setgeneraModalVisible}
       />
 
+      <BottomModal
+        Name={'Individual Performance'}
+        modalVisible={modalVisible}
+        ButtonList={IndividualPerformanceType}
+        setModalVisible={setModalVisible}
+      />
+      {/* 
       <IndividualModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
 
       <HeaderBackground />
       <Header Title="Advisor Dashboard" onPress={() => navigation.goBack()} />
@@ -113,13 +147,15 @@ export default function Dashboard({navigation}) {
           <Text style={styles.position}>(Advisor)</Text>
         </TouchableOpacity>
 
-        <View style={styles.notiIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Notification')}
+          style={styles.notiIcon}>
           <MaterialCommunityIcons
             name="bell-outline"
             color={COLORS.iconDisabled}
             size={26}
           />
-        </View>
+        </TouchableOpacity>
       </View>
 
       <View style={{marginTop: 15}}>

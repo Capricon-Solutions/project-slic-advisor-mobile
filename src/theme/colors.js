@@ -34,6 +34,7 @@ const COLORS = {
   lightBlue: '#00ADBB33',
   darkGreen: '#00796B',
   trainingCard: '#F2FBFC',
+  calenderInput: '#F4F6FA',
 };
 
 export default COLORS;

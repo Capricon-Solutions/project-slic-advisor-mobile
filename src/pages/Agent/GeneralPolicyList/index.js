@@ -19,11 +19,14 @@ import HeaderBackground from '../../../components/HeaderBackground';
 import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
+import PolicyFilter from '../../../components/PolicyFilter';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function GeneralPolicyList({navigation}) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   const PolicyList = [
     {
       id: 1,
@@ -110,8 +113,14 @@ export default function GeneralPolicyList({navigation}) {
           Title="General Policy List"
           onPress={() => navigation.goBack()}
           haveFilters={true}
+          onFilterPress={() => setModalVisible(true)}
           haveMenu={true}
-          onButton={() => setModalVisible(true)}
+        />
+
+        <PolicyFilter
+          Name={'Policy Information Search Click'}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
         />
 
         <FlatList

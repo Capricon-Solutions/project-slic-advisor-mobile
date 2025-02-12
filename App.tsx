@@ -32,6 +32,9 @@ import { Provider } from 'react-redux';
 import { store } from './src/redux/services/store';
 import PolicyRenewals from './src/pages/Agent/PolicyRenewals';
 import TrainingList from './src/pages/Agent/TrainingList/TrainingList';
+import IndividualStatistics from './src/pages/Agent/IndividualStatistics';
+import PPWCancellation from './src/pages/Agent/PPWCancellation';
+import Notification from './src/pages/Agent/Notification';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -69,7 +72,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -85,6 +88,9 @@ function App(): React.JSX.Element {
         <Stack.Screen name="ClubInformation" component={ClubInformation} />
         <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} />
         <Stack.Screen name="TrainingList" component={TrainingList} />
+        <Stack.Screen options={{orientation:'landscape'}}  name="IndividualStatistics" component={IndividualStatistics} />
+        <Stack.Screen  name="PPWCancellation" component={PPWCancellation} />
+        <Stack.Screen  name="Notification" component={Notification} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

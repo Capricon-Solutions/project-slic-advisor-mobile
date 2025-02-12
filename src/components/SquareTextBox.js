@@ -17,6 +17,7 @@ export default function SquareTextBox({
   value,
   keyboardType,
   setValue,
+  LabelColor,
   errorBorder,
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ export default function SquareTextBox({
           style={{
             marginBottom: 5,
             fontFamily: Fonts.Roboto.Bold,
-            color: COLORS.textColor,
+            color: LabelColor ? LabelColor : COLORS.textColor,
           }}>
           {Label}
         </Text>
