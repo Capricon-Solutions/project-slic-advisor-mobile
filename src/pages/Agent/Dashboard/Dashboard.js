@@ -7,8 +7,11 @@ import {
   Image,
   Modal,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CircularProgress from 'react-native-circular-progress-indicator';
+
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import {Styles} from '../../../theme/Styles';
@@ -104,7 +107,7 @@ export default function Dashboard({navigation}) {
   ];
 
   return (
-    <View style={Styles.container}>
+    <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <BottomModal
         Name={'Individual Performance'}
         ButtonList={SalesModal}
@@ -137,54 +140,55 @@ export default function Dashboard({navigation}) {
 
       <HeaderBackground />
       <Header Title="Advisor Dashboard" onPress={() => navigation.goBack()} />
+      <ScrollView
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
+        <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Profile')}
+            Title={'Sign In'}
+            style={styles.profilePicture}>
+            <Avatar.Image size={57} source={avatar} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Profile')}
+            style={{flex: 0.6, justifyContent: 'center'}}>
+            <Text style={styles.UserName}>Mr. Sanjeewa Atukorale</Text>
+            <Text style={styles.regionName}>region name - Central 1</Text>
+            <Text style={styles.position}>(Advisor)</Text>
+          </TouchableOpacity>
 
-      <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Notification')}
+            style={styles.notiIcon}>
+            <MaterialCommunityIcons
+              name="bell-outline"
+              color={COLORS.iconDisabled}
+              size={26}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={{marginTop: 15}}>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.black,
+              fontSize: 14,
+            }}>
+            Advisor Summary
+          </Text>
+        </View>
+
         <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-          Title={'Sign In'}
-          style={styles.profilePicture}>
-          <Avatar.Image size={57} source={avatar} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-          style={{flex: 0.6, justifyContent: 'center'}}>
-          <Text style={styles.UserName}>Mr. Sanjeewa Atukorale</Text>
-          <Text style={styles.regionName}>region name - Central 1</Text>
-          <Text style={styles.position}>(Advisor)</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Notification')}
-          style={styles.notiIcon}>
-          <MaterialCommunityIcons
-            name="bell-outline"
-            color={COLORS.iconDisabled}
-            size={26}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={{marginTop: 15}}>
-        <Text
-          style={{
-            fontFamily: Fonts.Roboto.Bold,
-            color: COLORS.black,
-            fontSize: 14,
-          }}>
-          Advisor Summary
-        </Text>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('SalesMeter')}
-        style={Styles.rankWrap}>
-        <View
-          style={{
-            flex: 0.65,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View style={styles.IslandRank}>
+          onPress={() => navigation.navigate('SalesMeter')}
+          style={Styles.rankWrap}>
+          <View
+            style={{
+              flex: 0.65,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {/* <View style={styles.IslandRank}>
             <Text
               style={{
                 fontFamily: Fonts.Roboto.Bold,
@@ -196,58 +200,126 @@ export default function Dashboard({navigation}) {
             <Text style={{fontSize: 17, fontFamily: Fonts.Roboto.Regular}}>
               Island Rank
             </Text>
+          </View> */}
+            <CircularProgress
+              value={550}
+              radius={80}
+              duration={2000}
+              progressValueColor={COLORS.textColor}
+              maxValue={995}
+              activeStrokeWidth={20}
+              inActiveStrokeWidth={20}
+              activeStrokeColor={COLORS.primary}
+              inActiveStrokeColor={COLORS.lightBorder}
+              // title={'Progress'}
+              valueSuffix={'/995'}
+              // titleColor={'red'}
+              titleStyle={{fontWeight: 'bold'}}
+              progressValueStyle={{
+                fontSize: 25,
+                fontFamily: Fonts.Roboto.Bold,
+              }}
+              valueSuffixStyle={{fontSize: 22, color: COLORS.textColor}}
+              // titleColor={'red'}
+            />
+            <Text
+              style={{
+                fontSize: 18,
+                marginTop: 5,
+                fontFamily: Fonts.Roboto.Medium,
+                color: COLORS.textColor,
+              }}>
+              Island Rank
+            </Text>
           </View>
-        </View>
-        <View
-          style={{
-            flex: 0.35,
-          }}>
           <View
-            style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}>
+            style={{
+              flex: 0.35,
+            }}>
             <View
               style={{
+                flex: 0.5,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CircularProgress
+                  value={30}
+                  radius={35}
+                  duration={2000}
+                  progressValueColor={COLORS.regionalRank}
+                  maxValue={60}
+                  activeStrokeWidth={12}
+                  inActiveStrokeWidth={12}
+                  activeStrokeColor={COLORS.regionalRank}
+                  inActiveStrokeColor={COLORS.lightBorder}
+                  // title={'Progress'}
+                  valueSuffix={'/60'}
+                  progressValueStyle={{
+                    fontSize: 18,
+                    fontFamily: Fonts.Roboto.Bold,
+                  }}
+                  valueSuffixStyle={{fontSize: 14, color: COLORS.regionalRank}}
+                  // titleColor={'red'}
+                  titleStyle={{fontWeight: 'bold'}}
+                />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontFamily: Fonts.Roboto.Regular,
+                    color: COLORS.textColor,
+                  }}>
+                  Regional Rank
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 0.5,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <View style={styles.regionalRank}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CircularProgress
+                  value={2}
+                  radius={35}
+                  duration={2000}
+                  progressValueColor={COLORS.branchRank}
+                  maxValue={10}
+                  activeStrokeWidth={12}
+                  inActiveStrokeWidth={12}
+                  activeStrokeColor={COLORS.branchRank}
+                  inActiveStrokeColor={COLORS.lightBorder}
+                  // title={'Progress'}
+                  valueSuffix={'/10'}
+                  progressValueStyle={{
+                    fontSize: 18,
+                    fontFamily: Fonts.Roboto.Bold,
+                  }}
+                  valueSuffixStyle={{fontSize: 14, color: COLORS.branchRank}}
+                  // titleColor={'red'}
+                  titleStyle={{fontWeight: 'bold'}}
+                />
                 <Text
                   style={{
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 12,
-                    color: COLORS.black,
+                    fontSize: 13,
+                    fontFamily: Fonts.Roboto.Regular,
+                    color: COLORS.textColor,
                   }}>
-                  30/60
+                  Branch Rank
                 </Text>
               </View>
-              <Text style={{fontSize: 13, fontFamily: Fonts.Roboto.Regular}}>
-                Regional Rank
-              </Text>
             </View>
           </View>
-          <View
-            style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View style={styles.branchRank}>
-                <Text
-                  style={{
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 12,
-                    color: COLORS.black,
-                  }}>
-                  30/60
-                </Text>
-              </View>
-              <Text style={{fontSize: 13, fontFamily: Fonts.Roboto.Regular}}>
-                Branch Rank
-              </Text>
-            </View>
-          </View>
-        </View>
-        {/* <AnimatedGaugeProgress
+          {/* <AnimatedGaugeProgress
                     size={200}
                     width={15}
                     fill={100}
@@ -258,57 +330,58 @@ export default function Dashboard({navigation}) {
                     backgroundColor="#b0c4de"
                     stroke={[2, 2]} //For a equaly dashed line
                     strokeCap="circle" /> */}
-      </TouchableOpacity>
+        </TouchableOpacity>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginVertical: 13,
-        }}>
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
-          <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setgeneraModalVisible(true)}
-          style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={GENERAL}></Image>
-          <Text style={Styles.gridText}>GENERAL</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ClubInformation')}
-          style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={CLUB}></Image>
-          <Text style={Styles.gridText}>CLUB</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginVertical: 13,
-        }}>
-        <TouchableOpacity
-          onPress={() => setFlagVisible(true)}
-          style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
-          <Text style={Styles.gridText}>B-PLANNER</Text>
-        </TouchableOpacity>
-        <View style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={E_CORNER}></Image>
-          <Text style={Styles.gridText}>E-CORNER</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginVertical: 13,
+          }}>
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={Styles.iconGrid}>
+            <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
+            <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setgeneraModalVisible(true)}
+            style={Styles.iconGrid}>
+            <Image style={Styles.gridIcon} source={GENERAL}></Image>
+            <Text style={Styles.gridText}>GENERAL</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ClubInformation')}
+            style={Styles.iconGrid}>
+            <Image style={Styles.gridIcon} source={CLUB}></Image>
+            <Text style={Styles.gridText}>CLUB</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={Styles.iconGrid}
-          onPress={() => navigation.navigate('ProductPortfolio')}>
-          <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
-          <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-        </TouchableOpacity>
-      </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginVertical: 13,
+          }}>
+          <TouchableOpacity
+            onPress={() => setFlagVisible(true)}
+            style={Styles.iconGrid}>
+            <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
+            <Text style={Styles.gridText}>B-PLANNER</Text>
+          </TouchableOpacity>
+          <View style={Styles.iconGrid}>
+            <Image style={Styles.gridIcon} source={E_CORNER}></Image>
+            <Text style={Styles.gridText}>E-CORNER</Text>
+          </View>
+          <TouchableOpacity
+            style={Styles.iconGrid}
+            onPress={() => navigation.navigate('ProductPortfolio')}>
+            <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
+            <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }

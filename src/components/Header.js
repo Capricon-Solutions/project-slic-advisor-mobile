@@ -38,6 +38,7 @@ export default function Header({
         alignItems: 'center',
         height: 70,
         marginTop: 5,
+        marginHorizontal: 20,
       }}>
       <View style={{justifyContent: 'center', flex: 0.25}}>
         <TouchableOpacity

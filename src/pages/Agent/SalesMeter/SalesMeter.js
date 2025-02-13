@@ -14,6 +14,8 @@ import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
+import CircularProgress from 'react-native-circular-progress-indicator';
+
 import HeaderBackground from '../../../components/HeaderBackground';
 import {Avatar} from 'react-native-paper';
 import trophy from '../../../icons/trophy.png'; // Replace with the actual logo path
@@ -88,16 +90,24 @@ export default function SalesMeter({navigation}) {
                   size={20}
                 />
               </View>
-              <View
-                style={{
-                  alignItems: 'center',
-                  flex: 1,
-                  justifyContent: 'center',
-                }}>
-                <View style={styles.monthlyChart}>
-                  <Text style={styles.monthlyPercentage}>30%</Text>
-                </View>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <CircularProgress
+                  value={38}
+                  radius={63}
+                  duration={2000}
+                  progressValueColor={COLORS.textColor}
+                  maxValue={100}
+                  activeStrokeWidth={15}
+                  inActiveStrokeWidth={15}
+                  activeStrokeColor={COLORS.primary}
+                  inActiveStrokeColor={COLORS.lightBorder}
+                  // title={'Progress'}
+                  valueSuffix={'%'}
+                  // titleColor={'red'}
+                  titleStyle={{fontWeight: 'bold'}}
+                />
               </View>
+
               <View style={styles.monthlyAmount}>
                 <Text
                   style={{
