@@ -30,6 +30,7 @@ import {styles} from './styles';
 // import GeneralModal from '../../../components/GeneralModal';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
+import Flag from '../../../components/Flag';
 
 const window = Dimensions.get('window');
 
@@ -38,6 +39,7 @@ export default function Dashboard({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
   const [salesModalVisible, setsalesModalVisible] = useState(false);
+  const [flagVisible, setFlagVisible] = useState(false);
 
   const GeneralModal = [
     {
@@ -116,7 +118,11 @@ export default function Dashboard({navigation}) {
         ButtonList={GeneralModal}
         setModalVisible={setgeneraModalVisible}
       />
-
+      <Flag
+        Name={'Flag this for quick access?'}
+        modalVisible={flagVisible}
+        setModalVisible={setFlagVisible}
+      />
       <BottomModal
         Name={'Individual Performance'}
         modalVisible={modalVisible}
@@ -261,7 +267,7 @@ export default function Dashboard({navigation}) {
           marginVertical: 13,
         }}>
         <TouchableOpacity
-          onPress={() => setsalesModalVisible(true)}
+          onPress={() => setModalVisible(true)}
           style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
           <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
@@ -286,10 +292,12 @@ export default function Dashboard({navigation}) {
           justifyContent: 'space-around',
           marginVertical: 13,
         }}>
-        <View style={Styles.iconGrid}>
+        <TouchableOpacity
+          onPress={() => setFlagVisible(true)}
+          style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
           <Text style={Styles.gridText}>B-PLANNER</Text>
-        </View>
+        </TouchableOpacity>
         <View style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={E_CORNER}></Image>
           <Text style={Styles.gridText}>E-CORNER</Text>

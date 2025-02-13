@@ -20,24 +20,51 @@ import {useGetBranchesQuery} from '../../../redux/services/api';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import ContactListItem from '../../../components/contactListItem';
+import NotificationItem from '../../../components/NotificationItem';
 const window = Dimensions.get('window');
 
 export default function Notification({navigation}) {
   const notifications = [
     {
       id: 1,
+      Title: 'Claim Intimated',
+      name: 'Dr A N HEWAGE',
+      date: '12/04/2024 5:53:04 PM',
+      plicyNo: 'VMI119001710000672',
+      type: 'COMPREHENSIVE',
+      intimated_date: '12/04/2024 5:53:04 PM',
+      phone: '0772616625',
     },
-    {id: 2},
+    {
+      id: 2,
+      Title: 'Claim Intimated',
+      name: 'Dr A N HEWAGE',
+      date: '12/04/2024 5:53:04 PM',
+      plicyNo: 'VMI119001710000672',
+      type: 'COMPREHENSIVE',
+      intimated_date: '12/04/2024 5:53:04 PM',
+      phone: '0772616625',
+    },
+    {
+      id: 3,
+      Title: 'Claim Intimated',
+      name: 'Dr A N HEWAGE',
+      date: '12/04/2024 5:53:04 PM',
+      plicyNo: 'VMI119001710000672',
+      type: 'COMPREHENSIVE',
+      intimated_date: '12/04/2024 5:53:04 PM',
+      phone: '0772616625',
+    },
   ];
 
   const {data: branches, isLoading, error} = useGetBranchesQuery();
 
   const [SelectedType, setSelectedType] = useState(1);
 
-  const renderItem = ({item}) => <ContactListItem item={item} />;
+  const renderItem = ({item}) => <NotificationItem item={item} />;
 
   return (
-    <View style={Styles.container}>
+    <View style={[Styles.container, {backgroundColor: COLORS.grayBackground}]}>
       <HeaderBackground />
       <Header Title="Notification" onPress={() => navigation.goBack()} />
 

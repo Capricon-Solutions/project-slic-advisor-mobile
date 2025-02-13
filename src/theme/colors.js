@@ -35,6 +35,7 @@ const COLORS = {
   darkGreen: '#00796B',
   trainingCard: '#F2FBFC',
   calenderInput: '#F4F6FA',
+  grayBackground: '#FAFAFC',
 };
 
 export default COLORS;
