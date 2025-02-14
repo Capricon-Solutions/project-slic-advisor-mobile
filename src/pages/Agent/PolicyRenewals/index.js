@@ -16,9 +16,9 @@ import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
 import {styles} from './styles';
-import {useGetBranchesQuery} from '../../../redux/services/api';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
+import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
 const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {

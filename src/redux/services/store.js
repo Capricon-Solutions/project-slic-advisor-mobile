@@ -1,13 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {setupListeners} from '@reduxjs/toolkit/query';
-import {api} from './api';
+import {baseApi} from '../services/api'; // Import the base API
 
 export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer, // Register the API reducer
+    [baseApi.reducerPath]: baseApi.reducer, // Register the base API reducer
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(api.middleware), // Add RTK Query middleware
+    getDefaultMiddleware().concat(baseApi.middleware), // Add RTK Query middleware
 });
 
 // Enables automatic refetching of queries based on focus, reconnect, etc.

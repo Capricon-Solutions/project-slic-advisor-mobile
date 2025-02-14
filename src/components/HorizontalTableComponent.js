@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet, Text} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 
@@ -9,6 +15,10 @@ const HorizontalTableComponent = ({
   columnWidths,
   haveTotal,
 }) => {
+  const handleCellPress = cellData => {
+    console.log('Clicked Cell:', cellData);
+  };
+
   return (
     <ScrollView horizontal>
       <View style={styles.container}>
@@ -46,7 +56,21 @@ const HorizontalTableComponent = ({
             {tableData.map((rowData, index) => (
               <Row
                 key={index}
-                data={rowData}
+                data={rowData.map((cellData, cellIndex) => (
+                  <TouchableOpacity
+                    key={cellIndex}
+                    onPress={() => handleCellPress(cellData)}>
+                    <Text
+                      style={[
+                        styles.text,
+                        haveTotal &&
+                          rowIndex === tableData.length - 1 &&
+                          styles.boldText,
+                      ]}>
+                      {cellData}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
                 widthArr={columnWidths}
                 style={[
                   styles.row,

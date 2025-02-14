@@ -46,7 +46,7 @@ export default function DepartmentItem({item}) {
               color: COLORS.black,
               fontSize: 14,
             }}>
-            {item.name}
+            {item.contactName}
           </Text>
           <Text
             style={{
@@ -54,7 +54,7 @@ export default function DepartmentItem({item}) {
               color: COLORS.ashBlue,
               fontSize: 12,
             }}>
-            {item.department}
+            {item.position}
           </Text>
           <Text
             style={{
@@ -62,11 +62,11 @@ export default function DepartmentItem({item}) {
               color: COLORS.ashBlue,
               fontSize: 12,
             }}>
-            Contact Number - {item.contact}
+            Contact Number - {item.contactNo1}
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => handleCall(item.contact)}
+          onPress={() => handleCall(item.contactNo1)}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

@@ -1,33 +1,16 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-export const api = createApi({
+export const baseApi = createApi({
   reducerPath: 'api',
-
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://122.255.4.181:2001/api/', // Replace with your API URL
+    baseUrl: 'http://122.255.4.181:2001/api/', // API base URL
     prepareHeaders: (headers, {getState}) => {
-      const token = getState()?.auth?.token; // Adjust according to your state
+      const token = getState()?.auth?.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
   }),
-
-  endpoints: builder => ({
-    getBranches: builder.query({
-      query: () => 'agent/getBranches',
-    }),
-
-    addBranches: builder.mutation({
-      query: newPlant => ({
-        url: 'agent/getBranches',
-        method: 'POST',
-        body: newPlant,
-      }),
-    }),
-  }),
+  endpoints: () => ({}), // Empty endpoints, will be extended
 });
-
-// Export auto-generated hooks
-export const {useGetBranchesQuery, useAddBranchesMutation} = api;

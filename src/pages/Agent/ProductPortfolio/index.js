@@ -22,6 +22,7 @@ import ProductListItem from '../../../components/ProductListItem';
 import Motorplus from '../../../icons/Motorplus.png'; // Replace with the actual logo path
 import MotorLady from '../../../icons/MotorLady.png'; // Replace with the actual logo path
 import OtherListItem from '../../../components/OtherListItem';
+import {useGetProductListQuery} from '../../../redux/services/productSlice';
 
 const window = Dimensions.get('window');
 
@@ -58,6 +59,10 @@ const others = [
 
 export default function ProductPortfolio({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
+  const {data: products, isLoading, error} = useGetProductListQuery();
+
+  const otherList = products?.data?.filter(item => item.documentUrl);
+  const productList = products?.data?.filter(item => !item.documentUrl);
 
   const renderItem = ({item}) => <ProductListItem item={item} />;
 
@@ -115,7 +120,7 @@ export default function ProductPortfolio({navigation}) {
       <View>
         {SelectedType == 1 ? (
           <FlatList
-            data={products}
+            data={productList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               fadeDuration: 1000,
@@ -123,11 +128,11 @@ export default function ProductPortfolio({navigation}) {
               paddingBottom: window.height * 0.25,
             }}
             renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
+            // keyExtractor={item => item.id.toString()}
           />
         ) : (
           <FlatList
-            data={others}
+            data={otherList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               fadeDuration: 1000,
@@ -135,7 +140,7 @@ export default function ProductPortfolio({navigation}) {
               paddingBottom: window.height * 0.25,
             }}
             renderItem={renderDepartmentItem}
-            keyExtractor={item => item.id.toString()}
+            // keyExtractor={item => item.id.toString()}
           />
         )}
       </View>

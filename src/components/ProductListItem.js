@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import Octicons from 'react-native-vector-icons/Octicons';
+import Logo from '../icons/Logo.png'; // Replace with the actual logo path
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
@@ -69,7 +70,8 @@ export default function ProductListItem({item}) {
           }}>
           <Image
             style={{height: '100%', width: '100%', resizeMode: 'contain'}}
-            source={item.icon}></Image>
+            source={item?.imageUrl ? {uri: item.imageUrl} : Logo}
+          />
         </View>
 
         <View
@@ -84,7 +86,7 @@ export default function ProductListItem({item}) {
               color: COLORS.black,
               fontSize: 14,
             }}>
-            {item.name}
+            {item.productName}
           </Text>
         </View>
         <TouchableOpacity

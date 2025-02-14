@@ -15,6 +15,7 @@ import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import SmallButton from './SmallButton';
+import Logo from '../icons/Logo.png'; // Replace with the actual logo path
 
 export default function OtherListItem({item}) {
   const handleCall = phoneNumber => {
@@ -69,7 +70,8 @@ export default function OtherListItem({item}) {
           }}>
           <Image
             style={{height: '100%', width: '100%', resizeMode: 'contain'}}
-            source={item.icon}></Image>
+            source={item?.imageUrl ? {uri: item.imageUrl} : Logo}
+          />
         </View>
 
         <View
@@ -84,7 +86,7 @@ export default function OtherListItem({item}) {
               color: COLORS.black,
               fontSize: 14,
             }}>
-            {item.name}
+            {item.productName}
           </Text>
           <Text
             style={{

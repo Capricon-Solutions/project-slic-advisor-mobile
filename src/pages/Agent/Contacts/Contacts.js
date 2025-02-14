@@ -18,8 +18,11 @@ import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
 import {styles} from './styles';
-import {useGetBranchesQuery} from '../../../redux/services/api';
 import LoadingScreen from '../../../components/LoadingScreen';
+import {
+  useGetBranchesQuery,
+  useGetDepartmentQuery,
+} from '../../../redux/services/contactSlice';
 const window = Dimensions.get('window');
 
 const departments = [
@@ -69,6 +72,7 @@ const departments = [
 
 export default function Contacts({navigation}) {
   const {data: branches, isLoading, error} = useGetBranchesQuery();
+  const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
 
   const [SelectedType, setSelectedType] = useState(1);
 
@@ -138,11 +142,11 @@ export default function Contacts({navigation}) {
                 paddingBottom: window.height * 0.25,
               }}
               renderItem={renderItem}
-              keyExtractor={item => item?.id?.toString()}
+              // keyExtractor={item => item?.id?.toString()}
             />
           ) : (
             <FlatList
-              data={departments}
+              data={departments?.data}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 fadeDuration: 1000,
@@ -150,7 +154,7 @@ export default function Contacts({navigation}) {
                 paddingBottom: window.height * 0.25,
               }}
               renderItem={renderDepartmentItem}
-              keyExtractor={item => item.id.toString()}
+              // keyExtractor={item => item.id.toString()}
             />
           )}
         </View>

@@ -1,9 +1,19 @@
 import React from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 
 const TableComponent = ({tableHead, tableData, columnWidths, haveTotal}) => {
+  const handleCellPress = cellData => {
+    console.log('Clicked Cell:', cellData);
+  };
+
   return (
     <ScrollView horizontal>
       <View style={styles.container}>
@@ -24,21 +34,32 @@ const TableComponent = ({tableHead, tableData, columnWidths, haveTotal}) => {
             {tableData.map((rowData, index) => (
               <Row
                 key={index}
-                data={rowData}
+                // data={rowData}
+                data={rowData.map((cellData, cellIndex, rowIndex) => (
+                  <TouchableOpacity
+                    key={cellIndex}
+                    onPress={() => handleCellPress(cellData)}>
+                    <Text
+                      style={[
+                        styles.text,
+                        haveTotal &&
+                          rowIndex === tableData.length - 1 &&
+                          styles.boldText,
+                      ]}>
+                      {cellData}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
                 widthArr={columnWidths}
                 style={[
                   styles.row,
                   index % 2 === 0 ? styles.rowGray : styles.rowWhite,
                 ]}
-                // textStyle={[
-                //   styles.text,
-                //   index === tableData.length - 1 && styles.boldText, // Apply bold text for the last row
-                // ]}
                 textStyle={[
                   styles.text,
                   haveTotal &&
                     index === tableData.length - 1 &&
-                    styles.boldText, // Apply boldText only if hasTotal is true
+                    styles.boldText,
                 ]}
               />
             ))}
