@@ -1,29 +1,110 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
-  Dimensions,
   Text,
   View,
   Image,
-  Linking,
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  ToastAndroid,
 } from 'react-native';
 
-import Octicons from 'react-native-vector-icons/Octicons';
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Linking} from 'react-native';
+import RNFS from 'react-native-fs'; // File system for downloads
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import SmallButton from './SmallButton';
 import Logo from '../icons/Logo.png'; // Replace with the actual logo path
 
 export default function OtherListItem({item}) {
-  const handleCall = phoneNumber => {
-    // Open the phone dialer with the contact number
-    const phoneURL = `tel:${phoneNumber}`;
-    Linking.openURL(phoneURL).catch(err =>
-      console.error('Failed to make a call:', err),
-    );
+  const [loading, setLoading] = useState(false);
+  const [Progress, setProgress] = useState(0);
+
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        if (Platform.Version < 33) {
+          // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'This app needs access to storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Storage permission granted');
+            return true;
+          } else {
+            console.log('Storage permission denied');
+            return false;
+          }
+        } else {
+          console.log('No need to request storage permission on Android 13+');
+          return true;
+        }
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    }
+    return true; // iOS doesn't require storage permission for downloads
+  };
+
+  const openDocument = async url => {
+    if (!url) {
+      console.log('No document URL available');
+      return;
+    }
+
+    const fileName = url.split('/').pop(); // Extract file name from URL
+    const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+    const hasPermission = await requestStoragePermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Denied',
+        'Storage permission is required to download files.',
+      );
+      return;
+    } else {
+      setLoading(true);
+    }
+
+    RNFS.downloadFile({
+      fromUrl: url,
+      toFile: localFilePath,
+      progress: res => {
+        console.log(
+          `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
+        );
+        const progressPercent = (res.bytesWritten / res.contentLength) * 100;
+        setProgress(progressPercent);
+      },
+    })
+      .promise.then(() => {
+        setLoading(false);
+        // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
+        ToastAndroid.show(
+          `Download Complete: File saved to ${localFilePath}`,
+          ToastAndroid.LONG,
+        );
+
+        Linking.openURL(url).catch(err =>
+          console.error("Couldn't open URL", err),
+        );
+      })
+      .catch(error => {
+        console.error('Download failed', error);
+        setLoading(false);
+        Alert.alert(
+          'Download Failed',
+          'There was an error downloading the file.',
+        );
+      });
   };
 
   return (
@@ -37,12 +118,8 @@ export default function OtherListItem({item}) {
         marginHorizontal: 5,
         borderRadius: 10,
         shadowColor: '#000',
-
         height: 95,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 3,
@@ -66,7 +143,6 @@ export default function OtherListItem({item}) {
             borderRadius: 5,
             paddingHorizontal: 4,
             backgroundColor: COLORS.lightBlue,
-            // height: '100%',
           }}>
           <Image
             style={{height: '100%', width: '100%', resizeMode: 'contain'}}
@@ -75,11 +151,7 @@ export default function OtherListItem({item}) {
         </View>
 
         <View
-          style={{
-            marginLeft: 5,
-            justifyContent: 'space-evenly',
-            flex: 0.55,
-          }}>
+          style={{marginLeft: 5, justifyContent: 'space-evenly', flex: 0.55}}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.Bold,
@@ -99,16 +171,16 @@ export default function OtherListItem({item}) {
             {item.description}
           </Text>
         </View>
-        <View style={{flex: 0.23}}>
+
+        <View style={{flex: 0.25}}>
           <TouchableOpacity
+            disabled={loading}
+            onPress={() => openDocument(item.documentUrl)}
             style={{
-              backgroundColor: COLORS.primaryGreen,
+              backgroundColor: loading ? COLORS.warmGray : COLORS.primaryGreen,
               borderRadius: 8,
-              // width: '100%',
               height: 30,
-              fontFamily: Fonts.Roboto.Bold,
               justifyContent: 'center',
-              marginVertical: 8,
               alignItems: 'center',
               paddingHorizontal: 5,
             }}>
@@ -118,7 +190,7 @@ export default function OtherListItem({item}) {
                 fontSize: 12,
                 fontFamily: Fonts.Roboto.Regular,
               }}>
-              {'Download'}
+              {loading ? `${Progress.toFixed(0)}%` : 'Download'}
             </Text>
           </TouchableOpacity>
         </View>

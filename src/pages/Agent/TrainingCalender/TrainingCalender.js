@@ -97,7 +97,10 @@ export default function TrainingCalender({navigation}) {
       <View style={[Styles.container, {overflow: 'scroll', marginBottom: 110}]}>
         <HeaderBackground />
         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
-        <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingHorizontal: 20}}
+          style={{}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={{

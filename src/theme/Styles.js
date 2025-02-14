@@ -142,6 +142,7 @@ export const Styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     height: 100,
     width: 100,
+    padding: 5,
     elevation: 7,
     justifyContent: 'center',
     alignItems: 'center',

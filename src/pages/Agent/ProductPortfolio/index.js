@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -23,50 +23,48 @@ import Motorplus from '../../../icons/Motorplus.png'; // Replace with the actual
 import MotorLady from '../../../icons/MotorLady.png'; // Replace with the actual logo path
 import OtherListItem from '../../../components/OtherListItem';
 import {useGetProductListQuery} from '../../../redux/services/productSlice';
+import LoadingScreen from '../../../components/LoadingScreen';
 
 const window = Dimensions.get('window');
-
-const products = [
-  {id: 1, name: 'Motor Plus', icon: Motorplus},
-  {id: 2, name: 'Motor Plus Ladies only', icon: MotorLady},
-  {id: 3, name: 'Motor Plus rider', icon: MotorLady},
-  {id: 4, name: 'Motor Plus commercial', icon: MotorLady},
-  {id: 5, name: 'Motor Plus tuk', icon: MotorLady},
-];
-
-const others = [
-  {
-    id: 1,
-    name: 'Company profile ',
-    description: 'SLIC Company profile ',
-    icon: Motorplus,
-  },
-  {
-    id: 2,
-    name: 'user manual',
-    description:
-      'BConnect user manual : The latest version of user-manual is available here.',
-    icon: MotorLady,
-  },
-  {
-    id: 3,
-    name: 'Motor Plus Loyalty Rewards',
-    description:
-      'Motor Plus Loyalty Rewards is a loyalty scheme for the Motor Plus Comprehensive policy holders Read more',
-    icon: MotorLady,
-  },
-];
 
 export default function ProductPortfolio({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
   const {data: products, isLoading, error} = useGetProductListQuery();
 
-  const otherList = products?.data?.filter(item => item.documentUrl);
-  const productList = products?.data?.filter(item => !item.documentUrl);
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState(productList);
 
   const renderItem = ({item}) => <ProductListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <OtherListItem item={item} />;
+
+  useEffect(() => {
+    // When the component mounts or when products are fetched, show all data initially
+    setFilteredData(products?.data || []);
+  }, [products]);
+
+  useEffect(() => {
+    if (searchText == '') {
+      setFilteredData(products?.data || []);
+    }
+  }, [searchText]);
+
+  const handleSearch = () => {
+    setSearchText(searchText);
+    if (searchText === '') {
+      setFilteredData(products?.data || []); // Reset to show all products
+    } else {
+      console.log('searchText', searchText);
+      // return;
+      const filtered = products?.data?.filter(item =>
+        item.productName.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      setFilteredData(filtered);
+    }
+  };
+
+  const otherList = filteredData?.filter(item => item.documentUrl);
+  const productList = filteredData?.filter(item => !item.documentUrl);
 
   return (
     <View style={Styles.container}>
@@ -111,39 +109,49 @@ export default function ProductPortfolio({navigation}) {
       </View>
 
       <View style={styles.searchWrap}>
-        <TextInput style={styles.textInput} placeholder="Quick Search" />
-        <TouchableOpacity style={styles.searchButton}>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={v => setSearchText(v)}
+          placeholder="Quick Search"
+        />
+        <TouchableOpacity
+          onPress={() => handleSearch()}
+          style={styles.searchButton}>
           <Octicons name="search" color={COLORS.white} size={20} />
         </TouchableOpacity>
       </View>
 
-      <View>
-        {SelectedType == 1 ? (
-          <FlatList
-            data={productList}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-            }}
-            renderItem={renderItem}
-            // keyExtractor={item => item.id.toString()}
-          />
-        ) : (
-          <FlatList
-            data={otherList}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-            }}
-            renderItem={renderDepartmentItem}
-            // keyExtractor={item => item.id.toString()}
-          />
-        )}
-      </View>
+      {isLoading == true ? (
+        <LoadingScreen />
+      ) : (
+        <View>
+          {SelectedType == 1 ? (
+            <FlatList
+              data={productList}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                fadeDuration: 1000,
+                backgroundColor: 'transparent',
+                paddingBottom: window.height * 0.25,
+              }}
+              renderItem={renderItem}
+              // keyExtractor={item => item.id.toString()}
+            />
+          ) : (
+            <FlatList
+              data={otherList}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                fadeDuration: 1000,
+                backgroundColor: 'transparent',
+                paddingBottom: window.height * 0.25,
+              }}
+              renderItem={renderDepartmentItem}
+              // keyExtractor={item => item.id.toString()}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 }
