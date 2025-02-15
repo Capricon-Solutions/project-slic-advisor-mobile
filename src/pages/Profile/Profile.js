@@ -21,8 +21,29 @@ import Feather from 'react-native-vector-icons/Feather';
 import {Avatar} from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
 import {styles} from './styles';
+import {useDispatch, useSelector} from 'react-redux';
+import {GetprofileResponse} from '../../redux/services/ProfileSlice';
 
 export default function Profile({navigation}) {
+  const dispatch = useDispatch;
+  const profileResponse = useSelector(
+    state => state.Profile.profileResponse.data,
+  );
+
+  // API Binds
+  const name = profileResponse?.name;
+  const regionName = profileResponse?.regionName;
+  const designation = profileResponse?.designation;
+  const imageUrl = profileResponse?.imageUrl;
+  const personalCode = profileResponse?.personalCode;
+  const nic = profileResponse?.nic;
+  const email = profileResponse?.email;
+  const phone = profileResponse?.phone;
+  const contact = profileResponse?.contact;
+  const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
+  const status = profileResponse?.status;
+  const agentCode = profileResponse?.agentCode;
+
   return (
     <View style={Styles.container}>
       <HeaderBackground />
@@ -31,47 +52,46 @@ export default function Profile({navigation}) {
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
-            <Avatar.Image size={125} source={avatar} />
+            <Avatar.Image size={125} source={{uri: imageUrl}} />
             <TouchableOpacity style={styles.editIcon}>
               <Feather name="edit-3" color={COLORS.black} size={20} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.profileName}>Mr. Sanjeewa Atukorale</Text>
-          <Text style={styles.profileRole}>Advisor</Text>
+          <Text style={styles.profileName}>{name}</Text>
+          <Text style={styles.profileRole}>{designation}</Text>
         </View>
 
         {/* Profile Form */}
         <View style={styles.formContainer}>
           <View style={styles.activeWrap}>
             <Text style={styles.activeDot}>•</Text>
-            <Text style={styles.activeStatus}>Active</Text>
+            <Text style={styles.activeStatus}>{status}</Text>
           </View>
 
           <SquareTextBoxOutlined
-            Title={'360017'}
-            Label={'Agent Code'}></SquareTextBoxOutlined>
+            Label={'Agent Code'}
+            value={agentCode?.toString() ?? ''}
+          />
 
           <SquareTextBoxOutlined
             Label={'Personal Code'}
-            Title={'4678990'}></SquareTextBoxOutlined>
+            value={personalCode?.toString() ?? ''}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'NIC Number'}
-            Title={'19890345678V'}></SquareTextBoxOutlined>
+            value={nic?.toString() ?? ''}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'E-mail Address'}
-            Title={
-              'sanjeewaatukorale@srilankainsurance.com'
-            }></SquareTextBoxOutlined>
+            value={email?.toString() ?? ''}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Mobile Number'}
-            Title={'0702566986'}></SquareTextBoxOutlined>
+            value={phone?.toString() ?? ''}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Contact Number'}
-            Title={'(45)345 5233'}></SquareTextBoxOutlined>
+            value={contact?.toString() ?? ''}></SquareTextBoxOutlined>
         </View>
 
         {/* Settings & Logout */}

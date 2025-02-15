@@ -34,6 +34,7 @@ import AboutModal from '../../../components/AboutModal';
 import TableComponent from '../../../components/TableComponent';
 import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -43,13 +44,28 @@ export default function SalesMeter({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [target, setTarget] = useState('');
 
-  const tableHead = ['Type', 'Premium', 'Income', 'evwe'];
-  const tableData = [
-    ['Gen. Collec. - Cash', '182,205.78', '182,205.78'],
-    ['Gen. Collec. - Cash', '182,205.78', '182,205.78'],
-    ['Total', '865,179.79', '72,285.66'],
-  ];
+  const salesMeterResponse = useSelector(
+    state => state.SalesMeter.SalesMeterResponse.data,
+  );
+
+  const tableHead = ['Type', 'Premium', 'Income'];
+  const tableData = salesMeterResponse?.tableData.map(item => [
+    item.type,
+    item.premium,
+    item.income,
+  ]);
   const columnWidths = [150, 120, 120];
+
+  // API Binds
+
+  const monthlySalePercentage = salesMeterResponse.monthlySalePercentage;
+  const monthlySale = salesMeterResponse.monthlySale;
+  const lastYearAchievement = salesMeterResponse.lastYearAchievement;
+  const currentYearAchivement = salesMeterResponse.currentYearAchivement;
+  const lastYearTarget = salesMeterResponse.lastYearTarget;
+  const currentYearGrowth = salesMeterResponse.currentYearGrowth;
+  const lastYear = salesMeterResponse.lastYear;
+  const currentYear = salesMeterResponse.currentYear;
 
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
@@ -92,7 +108,7 @@ export default function SalesMeter({navigation}) {
               </View>
               <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <CircularProgress
-                  value={38}
+                  value={monthlySalePercentage}
                   radius={63}
                   duration={2000}
                   progressValueColor={COLORS.textColor}
@@ -115,7 +131,7 @@ export default function SalesMeter({navigation}) {
                     fontSize: 16,
                     fontFamily: Fonts.Roboto.Medium,
                   }}>
-                  LKR 11,359,419
+                  LKR {monthlySale}
                 </Text>
               </View>
             </View>
@@ -160,7 +176,10 @@ export default function SalesMeter({navigation}) {
                         2025
                       </Text>
                     </View>
-                    <Text style={styles.cardValue}>LKR 46,614,790</Text>
+                    <Text style={styles.cardValue}>
+                      {' '}
+                      LKR {lastYearAchievement}
+                    </Text>
                   </View>
                 </View>
                 <View
@@ -194,7 +213,7 @@ export default function SalesMeter({navigation}) {
                       </Text>
                     </Text>
 
-                    <Text style={styles.cardValue}>LKR 43,492,058</Text>
+                    <Text style={styles.cardValue}>LKR {lastYearTarget}</Text>
                   </View>
                 </View>
               </View>
@@ -234,7 +253,9 @@ export default function SalesMeter({navigation}) {
                         2025
                       </Text>
                     </View>
-                    <Text style={styles.cardValue}>26%</Text>
+                    <Text style={styles.cardValue}>
+                      {currentYearAchivement}%
+                    </Text>
                   </View>
                 </View>
                 <View
@@ -273,7 +294,7 @@ export default function SalesMeter({navigation}) {
                       </Text>
                     </View>
 
-                    <Text style={styles.cardValue}>-76%</Text>
+                    <Text style={styles.cardValue}>{currentYearGrowth}%</Text>
                   </View>
                 </View>
               </View>
@@ -282,12 +303,14 @@ export default function SalesMeter({navigation}) {
         </View>
 
         {/* <Table headers={headers} data={data} /> */}
-        <TableComponent
-          haveTotal={true}
-          tableHead={tableHead}
-          tableData={tableData}
-          columnWidths={columnWidths}
-        />
+        <View style={{alignItems: 'center'}}>
+          <TableComponent
+            haveTotal={true}
+            tableHead={tableHead}
+            tableData={tableData}
+            columnWidths={columnWidths}
+          />
+        </View>
 
         {/* Important Notice */}
         <View style={Styles.noticeContainer}>

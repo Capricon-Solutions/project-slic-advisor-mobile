@@ -34,6 +34,7 @@ import {styles} from './styles';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
+import {useSelector} from 'react-redux';
 
 const window = Dimensions.get('window');
 
@@ -43,6 +44,21 @@ export default function Dashboard({navigation}) {
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
   const [salesModalVisible, setsalesModalVisible] = useState(false);
   const [flagVisible, setFlagVisible] = useState(false);
+  const profileResponse = useSelector(
+    state => state.Profile.profileResponse.data,
+  );
+
+  // API Binds
+  const name = profileResponse?.name;
+  const regionName = profileResponse?.regionName;
+  const designation = profileResponse?.designation;
+  const imageUrl = profileResponse?.imageUrl;
+  const totalIslandRank = profileResponse?.Summery.totalIslandRank;
+  const islandRank = profileResponse?.Summery.islandRank;
+  const regionalRank = profileResponse?.Summery.regionalRank;
+  const totalNumberofRegions = profileResponse?.Summery.totalNumberofRegions;
+  const branchRank = profileResponse?.Summery.branchRank;
+  const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
 
   const GeneralModal = [
     {
@@ -147,14 +163,18 @@ export default function Dashboard({navigation}) {
             onPress={() => navigation.navigate('Profile')}
             Title={'Sign In'}
             style={styles.profilePicture}>
-            <Avatar.Image size={57} source={avatar} />
+            <Avatar.Image
+              size={57}
+              style={{backgroundColor: 'transparent'}}
+              source={{uri: imageUrl}}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
             style={{flex: 0.6, justifyContent: 'center'}}>
-            <Text style={styles.UserName}>Mr. Sanjeewa Atukorale</Text>
-            <Text style={styles.regionName}>region name - Central 1</Text>
-            <Text style={styles.position}>(Advisor)</Text>
+            <Text style={styles.UserName}>{name}</Text>
+            <Text style={styles.regionName}>region name - {regionName}</Text>
+            <Text style={styles.position}>( {designation})</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -202,17 +222,17 @@ export default function Dashboard({navigation}) {
             </Text>
           </View> */}
             <CircularProgress
-              value={550}
+              value={islandRank}
               radius={80}
               duration={2000}
               progressValueColor={COLORS.textColor}
-              maxValue={995}
+              maxValue={totalIslandRank}
               activeStrokeWidth={20}
               inActiveStrokeWidth={20}
               activeStrokeColor={COLORS.primary}
               inActiveStrokeColor={COLORS.lightBorder}
               // title={'Progress'}
-              valueSuffix={'/995'}
+              valueSuffix={'/' + totalIslandRank}
               // titleColor={'red'}
               titleStyle={{fontWeight: 'bold'}}
               progressValueStyle={{
@@ -248,17 +268,17 @@ export default function Dashboard({navigation}) {
                   alignItems: 'center',
                 }}>
                 <CircularProgress
-                  value={30}
+                  value={regionalRank}
                   radius={35}
                   duration={2000}
                   progressValueColor={COLORS.regionalRank}
-                  maxValue={60}
+                  maxValue={totalNumberofRegions}
                   activeStrokeWidth={12}
                   inActiveStrokeWidth={12}
                   activeStrokeColor={COLORS.regionalRank}
                   inActiveStrokeColor={COLORS.lightBorder}
                   // title={'Progress'}
-                  valueSuffix={'/60'}
+                  valueSuffix={'/' + totalNumberofRegions}
                   progressValueStyle={{
                     fontSize: 18,
                     fontFamily: Fonts.Roboto.Bold,
@@ -289,17 +309,17 @@ export default function Dashboard({navigation}) {
                   alignItems: 'center',
                 }}>
                 <CircularProgress
-                  value={2}
+                  value={branchRank}
                   radius={35}
                   duration={2000}
                   progressValueColor={COLORS.branchRank}
-                  maxValue={10}
+                  maxValue={totalNumberofBranches}
                   activeStrokeWidth={12}
                   inActiveStrokeWidth={12}
                   activeStrokeColor={COLORS.branchRank}
                   inActiveStrokeColor={COLORS.lightBorder}
                   // title={'Progress'}
-                  valueSuffix={'/10'}
+                  valueSuffix={'/' + totalNumberofBranches}
                   progressValueStyle={{
                     fontSize: 18,
                     fontFamily: Fonts.Roboto.Bold,

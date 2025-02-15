@@ -131,7 +131,7 @@ export const Styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: window.width * 0.035,
     fontFamily: Fonts.Roboto.Bold,
   },
 

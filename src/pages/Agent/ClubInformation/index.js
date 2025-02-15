@@ -28,6 +28,7 @@ import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
 import clubInfo from '../../../icons/clubInfo.png';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -36,15 +37,30 @@ export default function ClubInformation({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const clubInfoResponse = useSelector(
+    state => state.clubInfo.clubInfoResponse.data,
+  );
+
   const tableHead = ['Total', 'Endorsement'];
-  const tableData = [
-    ['2024', '1,135,750'],
-    ['2023', '1,135,750'],
-    ['2022', '1,135,750'],
-    ['2021', '1,135,750'],
-    ['2020', '1,135,750'],
-  ];
+
   const columnWidths = [window.width * 0.39, window.width * 0.39];
+
+  const tableData = clubInfoResponse?.tableData?.map(item => [
+    item?.total.toString() ?? '',
+    item?.endorsement.toString() ?? '',
+  ]);
+
+  // API Binds
+
+  const currentClub = clubInfoResponse.currentClub;
+  const currentClublimit = clubInfoResponse.currentClublimit;
+  const generalAppointmentDate = clubInfoResponse.generalAppointmentDate;
+  const generalPersistency = clubInfoResponse.generalPersistency;
+  const last5YearAverage = clubInfoResponse.last5YearAverage;
+  const nextClub = clubInfoResponse.nextClub;
+  const platinumClub = clubInfoResponse.platinumClub;
+  const lastUpdatedDate = clubInfoResponse.lastUpdatedDate;
+  const annualIncomeUpTo = clubInfoResponse.annualIncomeUpTo;
 
   return (
     <View style={[Styles.container, {paddingHorizontal: 10}]}>
@@ -97,14 +113,14 @@ export default function ClubInformation({navigation}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Current Club'}
-                    value={'Millionaires Club'}
+                    value={currentClub?.toString() ?? ''}
                   />
                 </View>
 
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Current Club’s Limit'}
-                    value={'1,500,000.00'}
+                    value={currentClublimit?.toString() ?? ''}
                   />
                 </View>
               </View>
@@ -118,21 +134,21 @@ export default function ClubInformation({navigation}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'General Appt. Date'}
-                    value={'2001/04/11'}
+                    value={generalAppointmentDate?.toString() ?? ''}
                   />
                 </View>
 
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'gen. persistency'}
-                    value={'82.02%'}
+                    value={generalPersistency?.toString() ?? ''}
                   />
                 </View>
               </View>
 
               <OutlinedTextBox
                 Title={'Last 5 year avg. '}
-                value={'3,335,511.31'}
+                value={last5YearAverage?.toString() ?? ''}
               />
 
               <View
@@ -144,25 +160,25 @@ export default function ClubInformation({navigation}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Next club'}
-                    value={'Platinum Club'}
+                    value={nextClub?.toString() ?? ''}
                   />
                 </View>
 
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Platinum Club'}
-                    value={'3,750,000.00'}
+                    value={platinumClub?.toString() ?? ''}
                   />
                 </View>
               </View>
 
               <OutlinedTextBox
                 Title={'Last Updated Date'}
-                value={'2024/10/31'}
+                value={lastUpdatedDate?.toString() ?? ''}
               />
               <OutlinedTextBox
-                Title={'Annual income up to 2024/10/31'}
-                value={'3,750,000.00'}
+                Title={'Annual income up to ' + annualIncomeUpTo?.date}
+                value={annualIncomeUpTo?.amount?.toString() ?? ''}
               />
             </View>
             <TableComponent

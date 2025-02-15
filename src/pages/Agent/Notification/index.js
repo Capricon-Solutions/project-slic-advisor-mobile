@@ -16,14 +16,18 @@ import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
 import {styles} from './styles';
-import {useGetBranchesQuery} from '../../../redux/services/api';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import ContactListItem from '../../../components/contactListItem';
 import NotificationItem from '../../../components/NotificationItem';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function Notification({navigation}) {
+  const notificationResponse = useSelector(
+    state => state.Notifications.notificationsResponse,
+  );
+
   const notifications = [
     {
       id: 1,
@@ -57,8 +61,6 @@ export default function Notification({navigation}) {
     },
   ];
 
-  const {data: branches, isLoading, error} = useGetBranchesQuery();
-
   const [SelectedType, setSelectedType] = useState(1);
 
   const renderItem = ({item}) => <NotificationItem item={item} />;
@@ -76,7 +78,7 @@ export default function Notification({navigation}) {
       </View>
 
       <FlatList
-        data={notifications}
+        data={notificationResponse?.data}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           fadeDuration: 1000,
