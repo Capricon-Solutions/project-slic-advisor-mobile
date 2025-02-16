@@ -6,6 +6,8 @@ import profileReducer from './ProfileSlice'; // Import the reducer from the slic
 import notificationsReducer from './NotificationSlice'; // Import the reducer from the slice
 import SalesMeterReducer from './SalesMeterSlice';
 import clubInfoReducer from './clubInfoSlice';
+import individualStatReducer from './individualStatSlice';
+import trainingListReducer from './trainingListSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
     Notifications: notificationsReducer,
     SalesMeter: SalesMeterReducer,
     clubInfo: clubInfoReducer,
+    individualStat: individualStatReducer,
+    trainingList: trainingListReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(baseApi.middleware),

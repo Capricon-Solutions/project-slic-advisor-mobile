@@ -24,55 +24,68 @@ import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function IndividualStatistics({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
-  const tableData = [
-    [
-      'Premium for November',
-      'Social Media Marketing',
-      'General',
-      '1,283',
-      '0',
-      '1,135,750',
-    ],
-    [
-      'Premium for 2024',
-      'Social Media Marketing',
-      'General',
-      '1,283',
-      '0',
-      '1,135,750',
-    ],
-    [
-      'No. of Policies for November',
-      'Social Media Marketing',
-      'General',
-      '1,283',
-      '0',
-      '1,135,750',
-    ],
-    [
-      'No. of Policies for 2024',
-      'Social Media Marketing',
-      'General',
-      '1,283',
-      '0',
-      '1,135,750',
-    ],
-    [
-      'Premium for 2024',
-      'Social Media Marketing',
-      'General',
-      '1,283',
-      '0',
-      '1,135,750',
-    ],
-  ];
+  // const tableData = [
+  //   [
+  //     'Premium for November',
+  //     'Social Media Marketing',
+  //     'General',
+  //     '1,283',
+  //     '0',
+  //     '1,135,750',
+  //   ],
+  //   [
+  //     'Premium for 2024',
+  //     'Social Media Marketing',
+  //     'General',
+  //     '1,283',
+  //     '0',
+  //     '1,135,750',
+  //   ],
+  //   [
+  //     'No. of Policies for November',
+  //     'Social Media Marketing',
+  //     'General',
+  //     '1,283',
+  //     '0',
+  //     '1,135,750',
+  //   ],
+  //   [
+  //     'No. of Policies for 2024',
+  //     'Social Media Marketing',
+  //     'General',
+  //     '1,283',
+  //     '0',
+  //     '1,135,750',
+  //   ],
+  //   [
+  //     'Premium for 2024',
+  //     'Social Media Marketing',
+  //     'General',
+  //     '1,283',
+  //     '0',
+  //     '1,135,750',
+  //   ],
+  // ];
   const columnWidths = [200, 160, 120, 130, 120, 100];
 
+  const IndividualStatResponse = useSelector(
+    state => state.individualStat.IndividualStatResponse.data,
+  );
+
+  const tableData = IndividualStatResponse?.tableData?.map(item => [
+    item?.first.toString() ?? '',
+    item?.Renewals.toString() ?? '',
+    item?.New.toString() ?? '',
+    item?.Refunds.toString() ?? '',
+    item?.Endorsements.toString() ?? '',
+    item?.Total.toString() ?? '',
+  ]);
   const renderItem = ({item}) => <ContactListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
