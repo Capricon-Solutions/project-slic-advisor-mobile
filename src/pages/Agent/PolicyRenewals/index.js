@@ -19,11 +19,10 @@ import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {
-  const {data: branches, isLoading, error} = useGetBranchesQuery();
-
   const [SelectedType, setSelectedType] = useState(1);
 
   const tableHead = [
@@ -36,99 +35,49 @@ export default function PolicyRenewals({navigation}) {
     'Premium Amt',
     'Policy Status',
   ];
-  const tableData = [
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
+
+  const tableHead2 = [
+    'Due Date',
+    'Customer Name',
+    'Policy No',
+    'NCB Perc',
+    'Sum Insured',
+    'Premium Amt',
+    'Policy Status',
   ];
-  const columnWidths = [110, 150, 110, 110, 110, 110, 110, 110];
+
+  const motorRenewalsResponse = useSelector(
+    state => state.policyRenewals.motorRenewalsResponse.data,
+  );
+
+  const nonMotorRenewalsResponse = useSelector(
+    state => state.policyRenewals.nonMotorRenewalsResponse.data,
+  );
+
+  const tableData = motorRenewalsResponse?.tableData?.map(item => [
+    item?.date.toString() ?? '',
+    item?.name.toString() ?? '',
+    item?.vehicleNo.toString() ?? '',
+    item?.policyNo.toString() ?? '',
+    item?.ncb.toString() ?? '',
+    item?.sum.toString() ?? '',
+    item?.premiumAmount.toString() ?? '',
+    item?.status.toString() ?? '',
+  ]);
+
+  const tableData2 = nonMotorRenewalsResponse?.tableData?.map(item => [
+    item?.date.toString() ?? '',
+    item?.name.toString() ?? '',
+    item?.policyNo.toString() ?? '',
+    item?.ncb.toString() ?? '',
+    item?.sum.toString() ?? '',
+    item?.premiumAmount.toString() ?? '',
+    item?.status.toString() ?? '',
+  ]);
+
+  const columnWidths = [110, 150, 100, 120, 90, 110, 110, 110];
+
+  const columnWidths2 = [110, 150, 120, 90, 110, 110, 110];
 
   return (
     <View style={Styles.container}>
@@ -189,9 +138,11 @@ export default function PolicyRenewals({navigation}) {
         </Text>
       </View>
 
-      {isLoading == true ? (
+      {/* {isLoading == true ? (
         <LoadingScreen />
-      ) : (
+      ) : ( */}
+
+      {SelectedType == 1 ? (
         <View>
           <TableComponent
             tableHead={tableHead}
@@ -200,7 +151,18 @@ export default function PolicyRenewals({navigation}) {
             haveTotal={false}
           />
         </View>
+      ) : (
+        <View>
+          <TableComponent
+            tableHead={tableHead2}
+            tableData={tableData2}
+            columnWidths={columnWidths2}
+            haveTotal={false}
+          />
+        </View>
       )}
+
+      {/* )} */}
     </View>
   );
 }

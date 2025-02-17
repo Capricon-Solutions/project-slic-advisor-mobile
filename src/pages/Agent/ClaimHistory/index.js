@@ -21,31 +21,16 @@ import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function ClaimHistory({navigation}) {
-  const ClaimList = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-  ];
+  const claimHistoryResponse = useSelector(
+    state => state.claimHistory.claimHistoryResponse.data,
+  );
+  console.log('claimHistoryResponse', claimHistoryResponse);
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -96,7 +81,7 @@ export default function ClaimHistory({navigation}) {
     );
   };
 
-  const Card = ({Title, detail}) => {
+  const Card = ({item}) => {
     return (
       <View style={styles.card}>
         <View>
@@ -107,18 +92,18 @@ export default function ClaimHistory({navigation}) {
               marginBottom: 3,
               color: COLORS.primary,
             }}>
-            V/CH/I/OI 0/1035796/2023
+            {item.policyNumber}
           </Text>
         </View>
-        <DetailLine Title={'Intimated On'} detail={'2023-06-05'} />
-        <DetailLine Title={'Voucher'} detail={'Dr.Kalahe Hewage Sarananda'} />
-        <DetailLineBold Title={'Date of Loss'} detail={'2023-06-05'} />
-        <DetailLine Title={'Reg . Date'} detail={'2023-06-12'} />
-        <DetailLine Title={'Payment Type'} detail={'Slip'} />
-        <DetailLine Title={'Voucher Status'} detail={'Paid'} />
-        <DetailLine Title={'Paid amount'} detail={'LKR 45,000.00'} />
-        <DetailLine Title={'Paid Date'} detail={'2023-07-07'} />
-        <DetailLine Title={'Voucher No'} detail={'M/23/010/CH/118354'} />
+        <DetailLine Title={'Intimated On'} detail={item.intimatedOn} />
+        <DetailLine Title={'Voucher'} detail={item.voucher} />
+        <DetailLineBold Title={'Date of Loss'} detail={item.dateOfLoss} />
+        <DetailLine Title={'Reg . Date'} detail={item.regDate} />
+        <DetailLine Title={'Payment Type'} detail={item.paymentType} />
+        <DetailLine Title={'Voucher Status'} detail={item.voucherStatus} />
+        <DetailLine Title={'Paid amount'} detail={'LKR ' + item.amount} />
+        <DetailLine Title={'Paid Date'} detail={item.paidDate} />
+        <DetailLine Title={'Voucher No'} detail={item.voucherNo} />
       </View>
     );
   };
@@ -151,10 +136,10 @@ export default function ClaimHistory({navigation}) {
 
         <View>
           <FlatList
-            data={ClaimList}
+            data={claimHistoryResponse}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingHorizontal: 8}}
-            renderItem={() => <Card />}
+            renderItem={({item}) => <Card item={item} />}
             keyExtractor={item => item.id.toString()}
           />
         </View>

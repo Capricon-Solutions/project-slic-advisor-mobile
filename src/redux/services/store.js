@@ -8,6 +8,10 @@ import SalesMeterReducer from './SalesMeterSlice';
 import clubInfoReducer from './clubInfoSlice';
 import individualStatReducer from './individualStatSlice';
 import trainingListReducer from './trainingListSlice';
+import policyDetailsReducer from './policyDetailsSlice';
+import claimHistoryReducer from './claimHistorySlice';
+import premiumPaymentReducer from './premiumPaymentSlice';
+import policyRenewalsReducer from './policyRenewalsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +22,10 @@ export const store = configureStore({
     clubInfo: clubInfoReducer,
     individualStat: individualStatReducer,
     trainingList: trainingListReducer,
+    policyDetails: policyDetailsReducer,
+    claimHistory: claimHistoryReducer,
+    premiumPayment: premiumPaymentReducer,
+    policyRenewals: policyRenewalsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(baseApi.middleware),

@@ -21,11 +21,33 @@ import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function PolicyDetails({navigation}) {
+  const policyDetailsResponse = useSelector(
+    state => state.policyDetails.policyDetailsResponse.data,
+  );
+
+  const id = policyDetailsResponse?.id;
+  const policyNumber = policyDetailsResponse?.policyNumber;
+  const insName = policyDetailsResponse?.insName;
+  const Address = policyDetailsResponse?.Address;
+  const phone = policyDetailsResponse?.phone;
+  const startDate = policyDetailsResponse?.startDate;
+  const endDate = policyDetailsResponse?.endDate;
+  const sumInsured = policyDetailsResponse?.sumInsured;
+  const refNo = policyDetailsResponse?.refNo;
+  const addCovers = policyDetailsResponse?.addCovers;
+  const vehicleNo = policyDetailsResponse?.vehicleInfo.vehicleNo;
+  const makeYear = policyDetailsResponse?.vehicleInfo.makeYear;
+  const brand = policyDetailsResponse?.vehicleInfo.brand;
+  const chasisNo = policyDetailsResponse?.vehicleInfo.chasisNo;
+  const engineNo = policyDetailsResponse?.vehicleInfo.engineNo;
+  const capacity = policyDetailsResponse?.vehicleInfo.capacity;
+
   const DetailLine = ({Title, detail}) => {
     return (
       <View
@@ -67,26 +89,15 @@ export default function PolicyDetails({navigation}) {
         />
 
         <View style={styles.card}>
-          <DetailLine Title={'Policy Number'} detail={'VM1113001710000480'} />
-          <DetailLine
-            Title={'Ins. Name'}
-            detail={'Dr.Kalahe Hewage Sarananda'}
-          />
-          <DetailLine
-            Title={'Address'}
-            detail={'No.36, Wijethunga Mawatha Pilimathalawa'}
-          />
-          <DetailLine Title={'Mobile No.'} detail={'714425877'} />
-          <DetailLine Title={'Started Date'} detail={'2024/11/26'} />
-          <DetailLine Title={'End Date'} detail={'2024/11/26'} />
-          <DetailLine Title={'Sum Insured'} detail={'Rs. 59,670,000.00'} />
-          <DetailLine Title={'CDM Ref. No.'} detail={'500207383'} />
-          <DetailLine
-            Title={'Add. Covers'}
-            detail={
-              'Basic Premium Adjustment\nModify Loading\nMultiple Rebate (20%)\nNCB (70%)\nNatural Disaster Cover'
-            }
-          />
+          <DetailLine Title={'Policy Number'} detail={policyNumber} />
+          <DetailLine Title={'Ins. Name'} detail={insName} />
+          <DetailLine Title={'Address'} detail={Address} />
+          <DetailLine Title={'Mobile No.'} detail={phone} />
+          <DetailLine Title={'Started Date'} detail={startDate} />
+          <DetailLine Title={'End Date'} detail={endDate} />
+          <DetailLine Title={'Sum Insured'} detail={sumInsured} />
+          <DetailLine Title={'CDM Ref. No.'} detail={refNo} />
+          <DetailLine Title={'Add. Covers'} detail={addCovers} />
         </View>
 
         <View style={[styles.card, {marginTop: 10}]}>
@@ -101,12 +112,12 @@ export default function PolicyDetails({navigation}) {
               Vehicle Information
             </Text>
           </View>
-          <DetailLine Title={'Vehicle No.'} detail={'KX 4173'} />
-          <DetailLine Title={'Make Year'} detail={'2013'} />
-          <DetailLine Title={'Make'} detail={'Toyota'} />
-          <DetailLine Title={'Chasis No.'} detail={'KSP1302077303'} />
-          <DetailLine Title={'Engine No.'} detail={'JKR1302077303'} />
-          <DetailLine Title={'Engine Cap.'} detail={'990'} />
+          <DetailLine Title={'Vehicle No.'} detail={vehicleNo} />
+          <DetailLine Title={'Make Year'} detail={makeYear} />
+          <DetailLine Title={'Make'} detail={brand} />
+          <DetailLine Title={'Chasis No.'} detail={chasisNo} />
+          <DetailLine Title={'Engine No.'} detail={engineNo} />
+          <DetailLine Title={'Engine Cap.'} detail={capacity} />
         </View>
       </View>
 

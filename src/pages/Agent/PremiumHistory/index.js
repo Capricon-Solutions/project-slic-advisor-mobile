@@ -21,31 +21,15 @@ import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function PremiumHistory({navigation}) {
-  const ClaimList = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-  ];
+  const premiumPaymentResponse = useSelector(
+    state => state.premiumPayment.premiumPaymentResponse.data,
+  );
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -98,7 +82,7 @@ export default function PremiumHistory({navigation}) {
     );
   };
 
-  const Card = ({Title, detail}) => {
+  const Card = ({item}) => {
     return (
       <View style={styles.card}>
         <View>
@@ -110,19 +94,64 @@ export default function PremiumHistory({navigation}) {
               textAlign: 'center',
               color: COLORS.textColor,
             }}>
-            From 2024-02-01 To 2025-01-31
+            From {item.startDate} To {item.endDate}
           </Text>
         </View>
-        <DetailLine Title={'Basic Premium'} detail={'LKR 45,000.00'} />
-        <DetailLine Title={'RCC'} detail={'LKR 45,000.00'} />
-        <DetailLine Title={'TCC'} detail={'LKR 45,000.00'} />
+        <DetailLine
+          Title={'Basic Premium'}
+          detail={
+            'LKR ' +
+            Number(item.premium).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
+        <DetailLine
+          Title={'RCC'}
+          detail={
+            'LKR ' +
+            Number(item.rcc).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
+        <DetailLine
+          Title={'TCC'}
+          detail={
+            'LKR ' +
+            Number(item.tcc).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
         <View style={styles.border}></View>
-        <DetailLineBold Title={'Total Premium'} detail={'LKR 85,745.00'} />
+        <DetailLineBold
+          Title={'Total Premium'}
+          detail={
+            'LKR ' +
+            Number(item.totalPremium).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
         <View style={styles.border}></View>
 
-        <DetailLine Title={'premium Paid'} detail={'LKR 85,745.00'} />
-        <DetailLine Title={'No. of Claims'} detail={'0'} />
-        <DetailLine Title={'Paid Date'} detail={'2024/03/01'} />
+        <DetailLine
+          Title={'premium Paid'}
+          detail={
+            'LKR ' +
+            Number(item.paid).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
+        <DetailLine Title={'No. of Claims'} detail={item.noOfClaims} />
+        <DetailLine Title={'Paid Date'} detail={item.paidDate} />
       </View>
     );
   };
@@ -155,10 +184,10 @@ export default function PremiumHistory({navigation}) {
 
         <View>
           <FlatList
-            data={ClaimList}
+            data={premiumPaymentResponse}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingHorizontal: 8}}
-            renderItem={() => <Card />}
+            renderItem={({item}) => <Card item={item} />}
             keyExtractor={item => item.id.toString()}
           />
         </View>
