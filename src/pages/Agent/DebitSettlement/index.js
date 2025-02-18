@@ -34,6 +34,24 @@ export default function DebitSettlement({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // API Binds
+
+  // const apiUrl = `http://122.255.4.181:2001/api/debit_settlement/${policyId}`;
+
+  // const headers = {
+  //   Authorization: `Bearer ${token}`,
+  //   'Content-Type': 'application/json',
+  // };
+
+  // const method ='POST';
+
+  // const body = {
+  //   type: 'Debit settlement',
+  //   Outstanding_due: '36000',
+  //   due_date: '2025/02/24',
+  //   contact: '0145245875',
+  // };
+
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />

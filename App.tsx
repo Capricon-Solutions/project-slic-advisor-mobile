@@ -36,6 +36,7 @@ import IndividualStatistics from './src/pages/Agent/IndividualStatistics';
 import PPWCancellation from './src/pages/Agent/PPWCancellation';
 import Notification from './src/pages/Agent/Notification';
 import PDFViewer from './src/pages/PDFViewer/PDFViewer';
+import ProductDetails from './src/pages/Agent/ProductDetails';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -93,6 +94,7 @@ function App(): React.JSX.Element {
         <Stack.Screen  name="PPWCancellation" component={PPWCancellation} />
         <Stack.Screen  name="Notification" component={Notification} />
         <Stack.Screen  name="PDFViewer" component={PDFViewer} />
+        <Stack.Screen  name="ProductDetails" component={ProductDetails} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

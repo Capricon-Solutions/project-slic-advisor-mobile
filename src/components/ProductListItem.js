@@ -16,15 +16,7 @@ import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 
-export default function ProductListItem({item}) {
-  const handleCall = phoneNumber => {
-    // Open the phone dialer with the contact number
-    const phoneURL = `tel:${phoneNumber}`;
-    Linking.openURL(phoneURL).catch(err =>
-      console.error('Failed to make a call:', err),
-    );
-  };
-
+export default function ProductListItem({item, onPress}) {
   return (
     <View
       style={{
@@ -90,7 +82,7 @@ export default function ProductListItem({item}) {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => handleCall(item.contact)}
+          onPress={onPress}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

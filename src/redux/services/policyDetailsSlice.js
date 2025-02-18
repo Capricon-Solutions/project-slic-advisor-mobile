@@ -10,6 +10,7 @@ const initialState = {
       phone: '714425877',
       startDate: '2024/11/26',
       endDate: '2025/11/25',
+      outstanding: '59,670,000.00',
       sumInsured: '59,670,000.00',
       refNo: '500207383',
       addCovers:

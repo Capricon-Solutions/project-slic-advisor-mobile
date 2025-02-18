@@ -20,6 +20,7 @@ import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function PPWCancellation({navigation}) {
@@ -29,108 +30,145 @@ export default function PPWCancellation({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
 
   const tableHead = [
-    'Due Date',
+    'Policy No',
     'Customer Name',
     'Vehicle No',
+    'Debit Amount',
+    'Payment Date',
+    'Due Date',
+  ];
+
+  const tableHead2 = [
     'Policy No',
-    'NCB Perc',
-    'Sum Insured',
-    'Premium Amt',
-    'Policy Status',
+    'Customer Name',
+    'Vehicle No',
+    'Debit Amount',
+    'Payment Date',
+    'Cancelled Date',
+    'Re-Instate Date',
+    'Due Date',
   ];
-  const tableData = [
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-    [
-      '01/12/2024',
-      'H G R L K RANAVIRA',
-      'K L W 4578',
-      '435345',
-      'cacsscs',
-      'cacsscs',
-      'cacsscs',
-      'complete',
-    ],
-  ];
-  const columnWidths = [110, 150, 110, 110, 110, 110, 110, 110];
+  // const tableData = [
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  //   [
+  //     '01/12/2024',
+  //     'H G R L K RANAVIRA',
+  //     'K L W 4578',
+  //     '435345',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'cacsscs',
+  //     'complete',
+  //   ],
+  // ];
+  const columnWidths = [120, 150, 110, 110, 130, 110];
+  const columnWidths2 = [120, 150, 110, 110, 130, 110, 120, 110];
+
+  const ppwCancelationReminderResponse = useSelector(
+    state => state.ppwCancelation.ppwCancelationReminderResponse.data,
+  );
+
+  const ppwCancelationCancelledResponse = useSelector(
+    state => state.ppwCancelation.ppwCancelationCancelledResponse.data,
+  );
+
+  const tableData = ppwCancelationReminderResponse?.tableData?.map(item => [
+    item?.policyNo.toString() ?? '',
+    item?.costumorName.toString() ?? '',
+    item?.vehicleNo.toString() ?? '',
+    item?.debitAmount.toString() ?? '',
+    item?.paymentDate.toString() ?? '',
+    item?.dueDate.toString() ?? '',
+  ]);
+  const tableData2 = ppwCancelationCancelledResponse?.tableData?.map(item => [
+    item?.policyNo.toString() ?? '',
+    item?.costumorName.toString() ?? '',
+    item?.vehicleNo.toString() ?? '',
+    item?.debitAmount.toString() ?? '',
+    item?.paymentDate.toString() ?? '',
+    item?.cancelledDate.toString() ?? '',
+    item?.reInstateDate.toString() ?? '',
+    item?.dueDate.toString() ?? '',
+  ]);
 
   return (
     <View style={Styles.container}>
@@ -211,9 +249,10 @@ export default function PPWCancellation({navigation}) {
         </Text>
       </View>
 
-      {isLoading == true ? (
+      {/* {isLoading == true ? (
         <LoadingScreen />
-      ) : (
+      ) : ( */}
+      {SelectedType == 1 ? (
         <View>
           <TableComponent
             tableHead={tableHead}
@@ -222,7 +261,18 @@ export default function PPWCancellation({navigation}) {
             haveTotal={false}
           />
         </View>
+      ) : (
+        <View>
+          <TableComponent
+            tableHead={tableHead2}
+            tableData={tableData2}
+            columnWidths={columnWidths2}
+            haveTotal={false}
+          />
+        </View>
       )}
+
+      {/* )} */}
     </View>
   );
 }
