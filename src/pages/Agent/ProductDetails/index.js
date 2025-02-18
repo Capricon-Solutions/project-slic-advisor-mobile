@@ -29,7 +29,7 @@ import Logo from '../../../icons/Logo.png'; // Replace with the actual logo path
 
 const window = Dimensions.get('window');
 
-export default function ProductDetails({navigation, route}) {
+export default function c({navigation, route}) {
   const {item} = route.params; // Extract item from params
   console.log('item', item);
   const [SelectedType, setSelectedType] = useState(1);
