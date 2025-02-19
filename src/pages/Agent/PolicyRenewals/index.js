@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -83,86 +84,90 @@ export default function PolicyRenewals({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
-      <View style={styles.mainWrap}>
-        <TouchableOpacity
-          onPress={() => setSelectedType(1)}
-          style={{
-            backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 5,
-          }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+        <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => setSelectedType(1)}
+            style={{
+              backgroundColor:
+                SelectedType == 1 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 5,
+            }}>
+            <Text
+              style={{
+                color: SelectedType == 1 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Motor Renewals
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelectedType(2)}
+            style={{
+              backgroundColor:
+                SelectedType == 2 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: SelectedType == 2 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              non-motor renewals
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.searchWrap}>
+          <TextInput style={styles.textInput} placeholder="11/2024" />
+          <TouchableOpacity style={styles.searchButton}>
+            <Feather name="calendar" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+        <View>
           <Text
             style={{
-              color: SelectedType == 1 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
+              fontFamily: Fonts.Roboto.Regular,
+              fontSize: 14,
+              marginBottom: 10,
             }}>
-            Motor Renewals
+            (Click on policy Number to view details)
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedType(2)}
-          style={{
-            backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              color: SelectedType == 2 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
-            }}>
-            non-motor renewals
-          </Text>
-        </TouchableOpacity>
-      </View>
+        </View>
 
-      <View style={styles.searchWrap}>
-        <TextInput style={styles.textInput} placeholder="11/2024" />
-        <TouchableOpacity style={styles.searchButton}>
-          <Feather name="calendar" color={COLORS.white} size={20} />
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Text
-          style={{
-            fontFamily: Fonts.Roboto.Regular,
-            fontSize: 14,
-            marginBottom: 10,
-          }}>
-          (Click on policy Number to view details)
-        </Text>
-      </View>
-
-      {/* {isLoading == true ? (
+        {/* {isLoading == true ? (
         <LoadingScreen />
       ) : ( */}
 
-      {SelectedType == 1 ? (
-        <View>
-          <TableComponent
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-            haveTotal={false}
-          />
-        </View>
-      ) : (
-        <View>
-          <TableComponent
-            tableHead={tableHead2}
-            tableData={tableData2}
-            columnWidths={columnWidths2}
-            haveTotal={false}
-          />
-        </View>
-      )}
+        {SelectedType == 1 ? (
+          <View>
+            <TableComponent
+              tableHead={tableHead}
+              tableData={tableData}
+              columnWidths={columnWidths}
+              haveTotal={false}
+            />
+          </View>
+        ) : (
+          <View>
+            <TableComponent
+              tableHead={tableHead2}
+              tableData={tableData2}
+              columnWidths={columnWidths2}
+              haveTotal={false}
+            />
+          </View>
+        )}
 
-      {/* )} */}
+        {/* )} */}
+      </ScrollView>
     </View>
   );
 }

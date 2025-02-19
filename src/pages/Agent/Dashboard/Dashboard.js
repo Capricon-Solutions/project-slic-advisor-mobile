@@ -110,16 +110,16 @@ export default function Dashboard({navigation}) {
         navigation.navigate('IndividualStatistics');
       },
     },
-    {
-      title: 'Individual performance Comparison',
-      icon: teamPerformance,
-      // onPress: () => setModalVisible(true),
-    },
-    {
-      title: 'Branch sales performance',
-      icon: teamPerformance,
-      // onPress: () => setModalVisible(true),
-    },
+    // {
+    //   title: 'Individual performance Comparison',
+    //   icon: teamPerformance,
+    //   // onPress: () => setModalVisible(true),
+    // },
+    // {
+    //   title: 'Branch sales performance',
+    //   icon: teamPerformance,
+    //   // onPress: () => setModalVisible(true),
+    // },
   ];
 
   return (
@@ -157,6 +157,8 @@ export default function Dashboard({navigation}) {
       <HeaderBackground />
       <Header Title="Advisor Dashboard" onPress={() => navigation.goBack()} />
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        fadingEdgeLength={20}
         contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
@@ -171,7 +173,7 @@ export default function Dashboard({navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
-            style={{flex: 0.6, justifyContent: 'center'}}>
+            style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>region name - {regionName}</Text>
             <Text style={styles.position}>( {designation})</Text>
@@ -188,12 +190,12 @@ export default function Dashboard({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 15}}>
+        <View style={{marginTop: 14}}>
           <Text
             style={{
-              fontFamily: Fonts.Roboto.Bold,
+              fontFamily: Fonts.Roboto.ExtraBold,
               color: COLORS.black,
-              fontSize: 14,
+              fontSize: window.width * 0.044,
             }}>
             Advisor Summary
           </Text>
@@ -289,8 +291,9 @@ export default function Dashboard({navigation}) {
                 />
                 <Text
                   style={{
-                    fontSize: 13,
-                    fontFamily: Fonts.Roboto.Regular,
+                    marginTop: 2,
+                    fontSize: window.width * 0.035,
+                    fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.textColor,
                   }}>
                   Regional Rank
@@ -330,8 +333,9 @@ export default function Dashboard({navigation}) {
                 />
                 <Text
                   style={{
-                    fontSize: 13,
-                    fontFamily: Fonts.Roboto.Regular,
+                    marginTop: 2,
+                    fontSize: window.width * 0.035,
+                    fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.textColor,
                   }}>
                   Branch Rank
@@ -356,7 +360,7 @@ export default function Dashboard({navigation}) {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginVertical: 13,
+            marginVertical: window.height * 0.02,
           }}>
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
@@ -385,7 +389,7 @@ export default function Dashboard({navigation}) {
             marginVertical: 13,
           }}>
           <TouchableOpacity
-            onPress={() => setFlagVisible(true)}
+            // onPress={() => setFlagVisible(true)}
             style={Styles.iconGrid}>
             <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
             <Text style={Styles.gridText}>B-PLANNER</Text>

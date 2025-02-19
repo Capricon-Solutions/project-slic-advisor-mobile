@@ -108,7 +108,7 @@ export default function GeneralPolicyList({navigation}) {
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />
 
-      <View style={{paddingHorizontal: 20}}>
+      <View>
         <Header
           Title="General Policy List"
           onPress={() => navigation.goBack()}
@@ -130,6 +130,7 @@ export default function GeneralPolicyList({navigation}) {
             fadeDuration: 1000,
             backgroundColor: 'transparent',
             paddingBottom: window.height * 0.25,
+            paddingHorizontal: 15,
           }}
           renderItem={renderPolicyItem}
           keyExtractor={item => item.id.toString()}

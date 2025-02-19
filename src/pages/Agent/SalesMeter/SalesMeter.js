@@ -54,7 +54,7 @@ export default function SalesMeter({navigation}) {
     item.premium,
     item.income,
   ]);
-  const columnWidths = [150, 120, 120];
+  const columnWidths = [130, 110, 110];
 
   // API Binds
 
@@ -75,7 +75,7 @@ export default function SalesMeter({navigation}) {
         setModalVisible={setModalVisible}
       />
 
-      <View style={{paddingHorizontal: 20}}>
+      <View>
         <Header
           Title="Sales meter"
           onPress={() => navigation.goBack()}
@@ -84,18 +84,19 @@ export default function SalesMeter({navigation}) {
           onButton={() => setModalVisible(true)}
         />
       </View>
-      <ScrollView>
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{paddingHorizontal: 10}}>
         <View
           style={{
-            backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
+            // backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
             marginVertical: 10,
-            padding: 10,
           }}>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              height: 230,
+              height: 220,
             }}>
             <View style={styles.monthlyCardWrap}>
               <View style={styles.monthlyCard}>
@@ -128,8 +129,8 @@ export default function SalesMeter({navigation}) {
                 <Text
                   style={{
                     color: COLORS.black,
-                    fontSize: 16,
-                    fontFamily: Fonts.Roboto.Medium,
+                    fontSize: window.width * 0.04,
+                    fontFamily: Fonts.Roboto.SemiBold,
                   }}>
                   LKR {monthlySale}
                 </Text>
@@ -149,9 +150,9 @@ export default function SalesMeter({navigation}) {
                   }}>
                   <View
                     style={{
-                      flex: 0.3,
+                      flex: 0.26,
+
                       justifyContent: 'center',
-                      alignItems: 'center',
                     }}>
                     <View style={styles.cardIcon}>
                       <Image
@@ -159,23 +160,26 @@ export default function SalesMeter({navigation}) {
                         style={styles.cardiconimage}></Image>
                     </View>
                   </View>
-
                   <View
                     style={{
-                      flex: 0.7,
+                      flex: 0.74,
                       justifyContent: 'center',
                     }}>
-                    <View style={styles.achivemantSubCard}>
-                      <Text style={styles.cardText}>Achievement </Text>
-
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text style={styles.cardText}>Achievement</Text>
                       <Text
-                        style={{
-                          fontFamily: Fonts.Roboto.SemiBold,
-                          color: COLORS.black,
-                        }}>
+                        style={[
+                          styles.cardText,
+                          {fontFamily: Fonts.Roboto.SemiBold},
+                        ]}>
                         2025
                       </Text>
                     </View>
+
                     <Text style={styles.cardValue}>
                       {' '}
                       LKR {lastYearAchievement}
@@ -190,9 +194,8 @@ export default function SalesMeter({navigation}) {
                   }}>
                   <View
                     style={{
-                      flex: 0.3,
+                      flex: 0.26,
                       justifyContent: 'center',
-                      alignItems: 'center',
                     }}>
                     <View style={styles.cardIcon}>
                       <Image
@@ -203,20 +206,29 @@ export default function SalesMeter({navigation}) {
 
                   <View
                     style={{
-                      flex: 0.7,
+                      flex: 0.74,
                       justifyContent: 'center',
                     }}>
-                    <Text style={styles.cardText}>
-                      Target{' '}
-                      <Text style={{fontFamily: Fonts.Roboto.SemiBold}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text style={styles.cardText}>Target</Text>
+                      <Text
+                        style={[
+                          styles.cardText,
+                          {fontFamily: Fonts.Roboto.SemiBold},
+                        ]}>
                         2025
                       </Text>
-                    </Text>
+                    </View>
 
-                    <Text style={styles.cardValue}>LKR {lastYearTarget}</Text>
+                    <Text style={styles.cardValue}> LKR {lastYearTarget}</Text>
                   </View>
                 </View>
               </View>
+
               <View style={styles.achivemantBottomCard}>
                 <View
                   style={{
@@ -226,7 +238,7 @@ export default function SalesMeter({navigation}) {
                   }}>
                   <View
                     style={{
-                      flex: 0.3,
+                      flex: 0.26,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
@@ -236,27 +248,33 @@ export default function SalesMeter({navigation}) {
                         style={styles.cardiconimage}></Image>
                     </View>
                   </View>
-
+                  {/* ///////////////// */}
                   <View
                     style={{
-                      flex: 0.7,
+                      flex: 0.74,
                       justifyContent: 'center',
                     }}>
-                    <View style={styles.achivemantSubCard}>
-                      <Text style={styles.cardText}>Achievement </Text>
-
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text style={styles.cardText}>Achievement</Text>
                       <Text
-                        style={{
-                          fontFamily: Fonts.Roboto.SemiBold,
-                          color: COLORS.black,
-                        }}>
+                        style={[
+                          styles.cardText,
+                          {fontFamily: Fonts.Roboto.SemiBold},
+                        ]}>
                         2025
                       </Text>
                     </View>
+
                     <Text style={styles.cardValue}>
+                      {' '}
                       {currentYearAchivement}%
                     </Text>
                   </View>
+                  {/* //////////// */}
                 </View>
                 <View
                   style={{
@@ -266,7 +284,7 @@ export default function SalesMeter({navigation}) {
                   }}>
                   <View
                     style={{
-                      flex: 0.3,
+                      flex: 0.26,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
@@ -276,26 +294,30 @@ export default function SalesMeter({navigation}) {
                         style={styles.cardiconimage}></Image>
                     </View>
                   </View>
-
+                  {/* ///////////////// */}
                   <View
                     style={{
-                      flex: 0.7,
+                      flex: 0.74,
                       justifyContent: 'center',
                     }}>
-                    <View style={styles.achivemantSubCard}>
-                      <Text style={styles.cardText}>Growth </Text>
-
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text style={styles.cardText}>Growth</Text>
                       <Text
-                        style={{
-                          fontFamily: Fonts.Roboto.SemiBold,
-                          color: COLORS.black,
-                        }}>
+                        style={[
+                          styles.cardText,
+                          {fontFamily: Fonts.Roboto.SemiBold},
+                        ]}>
                         2025
                       </Text>
                     </View>
 
-                    <Text style={styles.cardValue}>{currentYearGrowth}%</Text>
+                    <Text style={styles.cardValue}> {currentYearGrowth}%</Text>
                   </View>
+                  {/* //////////// */}
                 </View>
               </View>
             </View>
@@ -318,14 +340,14 @@ export default function SalesMeter({navigation}) {
           <Text style={Styles.noticeText}>
             Please note that the commission income figures shown on this page
             are only based on the businesses issued for the current month.{' '}
-            {'\n\n'}
+            {'\n'}
             In particular, debit commission income shown here is based on the
             debit businesses received and not on the debit premiums settled
             during the month. Also, the figures do not include other income
-            types such as bonuses, incentives, or ORC commissions. In summary,
-            this is only an indicative estimate for you to plan your activities.
-            The final figures are subject to change according to applicable
-            company policies.
+            types such as bonuses, incentives, or ORC commissions. {'\n'}In
+            summary, this is only an indicative estimate for you to plan your
+            activities. The final figures are subject to change according to
+            applicable company policies.
           </Text>
         </View>
       </ScrollView>

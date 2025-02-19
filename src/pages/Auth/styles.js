@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 25,
     justifyContent: 'center',
   },
   topBackground: {
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     color: COLORS.title,
   },
   subText: {
-    fontSize: 16,
+    fontSize: 15,
     textAlign: 'center',
     color: COLORS.subtitle,
     marginBottom: 10,
@@ -73,5 +73,16 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
     marginBottom: 16,
+  },
+  hyperlink: {
+    fontSize: window.width * 0.037,
+    fontFamily: Fonts.Roboto.Medium,
+    color: COLORS.primary,
+  },
+  bottomText: {
+    marginTop: 3,
+    fontSize: window.width * 0.037,
+    fontFamily: Fonts.Roboto.Regular,
+    color: COLORS.grayText,
   },
 });

@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -76,18 +77,20 @@ export default function Notification({navigation}) {
           <Feather name="calendar" color={COLORS.white} size={20} />
         </TouchableOpacity>
       </View>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+        <FlatList
+          data={notificationResponse?.data}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            fadeDuration: 1000,
 
-      <FlatList
-        data={notificationResponse?.data}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          fadeDuration: 1000,
-          backgroundColor: 'transparent',
-          paddingBottom: window.height * 0.25,
-        }}
-        renderItem={renderItem}
-        keyExtractor={item => item?.id?.toString()}
-      />
+            backgroundColor: 'transparent',
+            paddingBottom: window.height * 0.25,
+          }}
+          renderItem={renderItem}
+          keyExtractor={item => item?.id?.toString()}
+        />
+      </ScrollView>
     </View>
   );
 }

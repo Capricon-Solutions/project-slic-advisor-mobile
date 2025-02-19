@@ -98,11 +98,13 @@ export default function IndividualStatistics({navigation}) {
   return (
     <View style={Styles.container}>
       {/* <HeaderBackground /> */}
-      <LandscapeHeader
-        haveSearch={true}
-        Title="IndividualStatistics"
-        onPress={() => navigation.goBack()}
-      />
+      <View style={{paddingHorizontal: 20}}>
+        <LandscapeHeader
+          haveSearch={true}
+          Title="IndividualStatistics"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
 
       {/* <View>
         <View style={styles.searchWrap}>
@@ -116,7 +118,8 @@ export default function IndividualStatistics({navigation}) {
       <ScrollView
         contentContainerStyle={{
           alignItems: 'center',
-          paddingVertical: 20,
+          paddingHorizontal: 20,
+          paddingVertical: 10,
         }}
         style={{}}>
         <HorizontalTableComponent

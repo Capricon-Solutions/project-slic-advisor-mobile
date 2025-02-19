@@ -76,7 +76,7 @@ export default function Header({
           alignItems: 'center',
         }}>
         {haveButton && (
-          <View>
+          <View style={{width: '100%'}}>
             <SmallButton Title={ButtonTitle} onPress={onButton}></SmallButton>
           </View>
         )}

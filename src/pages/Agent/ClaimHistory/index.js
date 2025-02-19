@@ -109,19 +109,20 @@ export default function ClaimHistory({navigation}) {
   };
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={Styles.container}>
       <HeaderBackground />
 
-      <View style={{paddingHorizontal: 20}}>
-        <Header
-          Title="Claim History"
-          onPress={() => navigation.goBack()}
-          haveFilters={false}
-          haveWhatsapp={true}
-          haveMenu={false}
-          onButton={() => setModalVisible(true)}
-        />
-
+      <Header
+        Title="Claim History"
+        onPress={() => navigation.goBack()}
+        haveFilters={false}
+        haveWhatsapp={true}
+        haveMenu={false}
+        onButton={() => setModalVisible(true)}
+      />
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
         <View>
           <Text
             style={{
@@ -138,12 +139,12 @@ export default function ClaimHistory({navigation}) {
           <FlatList
             data={claimHistoryResponse}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingHorizontal: 8}}
+            contentContainerStyle={{paddingHorizontal: 7}}
             renderItem={({item}) => <Card item={item} />}
             keyExtractor={item => item.id.toString()}
           />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

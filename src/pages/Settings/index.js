@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {Styles} from '../../theme/Styles';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -22,14 +23,17 @@ import {Avatar} from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
 import {styles} from './styles';
 import Button from '../../components/Button';
-
+const window = Dimensions.get('window');
 export default function Settings({navigation}) {
   return (
     <View style={{flex: 1}}>
-      <View style={[Styles.container, {paddingHorizontal: 30}]}>
+      <View style={Styles.container}>
         {/* <HeaderBackground /> */}
         <Header Title="Change Password" onPress={() => navigation.goBack()} />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          fadingEdgeLength={20}
+          contentContainerStyle={{paddingHorizontal: 20}}>
           <View>
             <Text style={styles.topics}>Set a new password</Text>
           </View>
@@ -37,7 +41,7 @@ export default function Settings({navigation}) {
           <View>
             <Text
               style={{
-                fontSize: 15,
+                fontSize: window.width * 0.035,
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.subtext,
                 marginVertical: 5,
@@ -63,7 +67,7 @@ export default function Settings({navigation}) {
             Title={'Enter your new password'}
             Secure={true}></SquareTextBox>
 
-          <View style={{marginVertical: 10}}>
+          <View style={{marginTop: window.height * 0.02}}>
             <View style={styles.conditionsWrap}>
               <View style={styles.condIconWrap}>
                 <MaterialCommunityIcons
@@ -131,18 +135,19 @@ export default function Settings({navigation}) {
           <SquareTextBox
             Title={'Enter Confirm Password'}
             Secure={true}></SquareTextBox>
-        </ScrollView>
-      </View>
 
-      <View
-        style={{
-          marginVertical: 20,
-          paddingHorizontal: 40,
-          position: 'absolute',
-          width: '100%',
-          bottom: 20,
-        }}>
-        <Button onPress={() => navigation.goBack()} Title={'Submit'}></Button>
+          <View
+            style={{
+              marginVertical: 12,
+              paddingHorizontal: 20,
+              // position: 'absolute',
+              width: '100%',
+            }}>
+            <Button
+              onPress={() => navigation.goBack()}
+              Title={'Submit'}></Button>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

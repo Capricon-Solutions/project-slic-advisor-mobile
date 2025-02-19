@@ -53,7 +53,7 @@ export default function DebitSettlement({navigation}) {
   // };
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={Styles.container}>
       <HeaderBackground />
 
       <SendPaymentLink
@@ -61,16 +61,15 @@ export default function DebitSettlement({navigation}) {
         setModalVisible={setModalVisible}
       />
 
-      <View style={{paddingHorizontal: 20}}>
-        <Header
-          Title="Debit Settlement/ Payment"
-          onPress={() => navigation.goBack()}
-          haveFilters={false}
-          haveWhatsapp={true}
-          haveMenu={false}
-          onButton={() => setModalVisible(true)}
-        />
-
+      <Header
+        Title="Debit Settlement/ Payment"
+        onPress={() => navigation.goBack()}
+        haveFilters={false}
+        haveWhatsapp={true}
+        haveMenu={false}
+        onButton={() => setModalVisible(true)}
+      />
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.card}>
           <Text
             style={{
@@ -101,7 +100,7 @@ export default function DebitSettlement({navigation}) {
             />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

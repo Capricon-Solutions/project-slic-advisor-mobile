@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: COLORS.white,
     marginVertical: 20,
+    marginHorizontal: 20,
     paddingLeft: 10,
     height: 44,
   },
@@ -32,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   searchButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 11,
+    borderRadius: 20,
     paddingVertical: 5,
     paddingHorizontal: 17,
     justifyContent: 'center',

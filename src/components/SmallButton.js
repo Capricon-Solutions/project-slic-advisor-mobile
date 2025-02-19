@@ -25,7 +25,7 @@ export default function SmallButton({
               : COLORS.primaryGreen,
         },
       ]}>
-      <Text style={Styles.buttonText}>{Title}</Text>
+      <Text style={Styles.smallbuttonText}>{Title}</Text>
     </TouchableOpacity>
   );
 }

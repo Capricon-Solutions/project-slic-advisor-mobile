@@ -74,7 +74,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -89,7 +89,7 @@ function App(): React.JSX.Element {
         <Stack.Screen name="ProductPortfolio" component={ProductPortfolio} />
         <Stack.Screen name="ClubInformation" component={ClubInformation} />
         <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} />
-        <Stack.Screen name="TrainingList" component={TrainingList} />
+        <Stack.Screen  name="TrainingList" component={TrainingList} />
         <Stack.Screen options={{orientation:'landscape'}}  name="IndividualStatistics" component={IndividualStatistics} />
         <Stack.Screen  name="PPWCancellation" component={PPWCancellation} />
         <Stack.Screen  name="Notification" component={Notification} />

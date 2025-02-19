@@ -81,11 +81,12 @@ export default function TrainingList({navigation}) {
   };
 
   return (
-    <ScrollView style={{}}>
-      <View style={[Styles.container, {flex: 1, height: window.height * 1}]}>
-        <HeaderBackground />
-        <Header Title="Training List" onPress={() => navigation.goBack()} />
-
+    <View style={Styles.container}>
+      <HeaderBackground />
+      <Header Title="Training List" onPress={() => navigation.goBack()} />
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}>
         {/* <DateRangePicker onLoad={handleLoad} /> */}
         <DateRangePicker
           onLoad={(from, to) => console.log('From:', from, 'To:', to)}
@@ -104,7 +105,7 @@ export default function TrainingList({navigation}) {
           tableData={tableData}
           columnWidths={columnWidths}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }

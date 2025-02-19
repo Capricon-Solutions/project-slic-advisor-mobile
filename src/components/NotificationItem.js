@@ -53,8 +53,8 @@ const style = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: COLORS.white,
-    elevation: 7,
-    marginHorizontal: 10,
+    elevation: 5,
+    marginHorizontal: 5,
   },
   leftBorder: {
     flex: 0.1,

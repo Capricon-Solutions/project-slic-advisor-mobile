@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   smallButtonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: window.width * 0.035,
     fontFamily: Fonts.Roboto.Medium,
   },
   closeButton: {
@@ -62,5 +62,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  cardWrap: {
+    padding: 15,
+    paddingRight: 0,
+    backgroundColor: COLORS.trainingCard,
+    marginTop: 10,
+    borderRadius: 10,
+    marginBottom: 10,
   },
 });

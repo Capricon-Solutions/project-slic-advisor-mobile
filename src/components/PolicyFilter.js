@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -20,6 +21,8 @@ import SquareTextBoxOutlined from './SquareTextBoxOutlined';
 import SmallButton from './SmallButton';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
+
+const window = Dimensions.get('window');
 
 export default function PolicyFilter({
   modalVisible,
@@ -84,7 +87,10 @@ export default function PolicyFilter({
             }),
           },
         ]}>
-        <View style={styles.modalContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{padding: 20}}
+          style={styles.modalContainer}>
           <View
             style={{
               flexDirection: 'row',
@@ -117,11 +123,31 @@ export default function PolicyFilter({
           <View
             style={{borderTopWidth: 0.5, borderColor: COLORS.warmGray}}></View>
 
-          <SquareTextBox Title={'All'} Label={'Business Type'} />
-          <SquareTextBox Title={'Search by Type'} Label={'Policy Status'} />
-          <SquareTextBox Title={''} Label={'Policy Number'} />
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
+            Title={'All'}
+            Label={'Business Type'}
+          />
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
+            Title={'Search by Type'}
+            Label={'Policy Status'}
+          />
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
+            Title={''}
+            Label={'Policy Number'}
+          />
 
-          <Text style={{marginTop: 10}}>Vehicle Number</Text>
+          <Text
+            style={{
+              marginTop: 10,
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.textColor,
+              fontSize: window.width * 0.035,
+            }}>
+            Vehicle Number
+          </Text>
           <View
             style={{
               flexDirection: 'row',
@@ -142,7 +168,15 @@ export default function PolicyFilter({
             </View>
           </View>
 
-          <Text style={{marginTop: 10}}>Start Date</Text>
+          <Text
+            style={{
+              marginTop: 10,
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.textColor,
+              fontSize: window.width * 0.035,
+            }}>
+            Start Date
+          </Text>
           <View
             style={{
               flexDirection: 'row',
@@ -165,13 +199,22 @@ export default function PolicyFilter({
             </View>
           </View>
 
-          <SquareTextBox
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
             LabelColor={COLORS.ashBlue}
             Title={''}
             Label={'Mobile Number'}
           />
-          <SquareTextBox Title={''} Label={'NIC Number'} />
-          <SquareTextBox Title={''} Label={'Bus. Reg. No'} />
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
+            Title={''}
+            Label={'NIC Number'}
+          />
+          <SquareTextBoxOutlined
+            borderColor={COLORS.warmGray}
+            Title={''}
+            Label={'Bus. Reg. No'}
+          />
 
           <View
             style={{
@@ -187,7 +230,7 @@ export default function PolicyFilter({
               <AlertButton Title={'Search'} />
             </View>
           </View>
-        </View>
+        </ScrollView>
       </Animated.View>
     </Modal>
   );
@@ -196,12 +239,13 @@ export default function PolicyFilter({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
+    paddingVertical: window.height * 0.02,
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContainer: {
-    width: '100%',
-    padding: 25,
+    width: '95%',
+
     backgroundColor: COLORS.white,
     borderRadius: 10,
     elevation: 25,

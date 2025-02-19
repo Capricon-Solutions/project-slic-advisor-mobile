@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Fonts from '../theme/Fonts';
 import COLORS from '../theme/colors';
+const window = Dimensions.get('window');
 
 const DateRangePicker = ({onLoad, initialFrom, initialTo}) => {
   const [fromDate, setFromDate] = useState(
@@ -71,12 +78,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    backgroundColor: 'transparent',
+    paddingVertical: 10,
+    justifyContent: 'space-between',
     borderRadius: 10,
   },
   label: {
-    fontSize: 16,
+    fontSize: window.width * 0.035,
     marginHorizontal: 5,
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.black,
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
   },
   loadButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: window.width * 0.03,
     fontWeight: 'bold',
   },
 });

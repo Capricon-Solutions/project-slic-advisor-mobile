@@ -74,20 +74,19 @@ export default function PolicyDetails({navigation}) {
   };
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={Styles.container}>
       <HeaderBackground />
 
-      <View style={{paddingHorizontal: 20}}>
-        <Header
-          Title="Policy Details"
-          onPress={() => navigation.goBack()}
-          haveFilters={false}
-          haveWhatsapp={true}
-          haveCall={true}
-          haveMenu={false}
-          onButton={() => setModalVisible(true)}
-        />
-
+      <Header
+        Title="Policy Details"
+        onPress={() => navigation.goBack()}
+        haveFilters={false}
+        haveWhatsapp={true}
+        haveCall={true}
+        haveMenu={false}
+        onButton={() => setModalVisible(true)}
+      />
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.card}>
           <DetailLine Title={'Policy Number'} detail={policyNumber} />
           <DetailLine Title={'Ins. Name'} detail={insName} />
@@ -119,26 +118,31 @@ export default function PolicyDetails({navigation}) {
           <DetailLine Title={'Engine No.'} detail={engineNo} />
           <DetailLine Title={'Engine Cap.'} detail={capacity} />
         </View>
-      </View>
 
-      <View style={{marginHorizontal: window.width * 0.15, marginVertical: 10}}>
-        <SmallButton
-          onPress={() => navigation.navigate('ClaimHistory')}
-          disabledButton={false}
-          Title={'View Claim History'}
-        />
-        <SmallButton
-          onPress={() => navigation.navigate('PremiumHistory')}
-          disabledButton={false}
-          Title={'View Premium(NB/Renewal) History'}
-        />
-        <SmallButton
-          onPress={() => navigation.navigate('DebitSettlement')}
-          disabledButton={false}
-          Title={'Debit Renewal'}
-        />
-        <SmallButton Title={'Debit Settlement/ Payment'} />
-      </View>
+        <View
+          style={{marginHorizontal: window.width * 0.07, marginVertical: 10}}>
+          <SmallButton
+            onPress={() => navigation.navigate('ClaimHistory')}
+            disabledButton={false}
+            Title={'View Claim History'}
+          />
+          <SmallButton
+            onPress={() => navigation.navigate('PremiumHistory')}
+            disabledButton={false}
+            Title={'View Premium(NB/Renewal) History'}
+          />
+          <SmallButton
+            onPress={() => navigation.navigate('DebitSettlement')}
+            disabledButton={false}
+            Title={'Debit Renewal'}
+          />
+          <SmallButton
+            Title={'Debit Settlement/ Payment'}
+            onPress={() => navigation.navigate('DebitSettlement')}
+            disabledButton={false}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }

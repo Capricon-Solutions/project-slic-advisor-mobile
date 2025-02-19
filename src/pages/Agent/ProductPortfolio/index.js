@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -75,88 +76,92 @@ export default function ProductPortfolio({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
-      <View style={styles.mainWrap}>
-        <TouchableOpacity
-          onPress={() => setSelectedType(1)}
-          style={{
-            backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 5,
-          }}>
-          <Text
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+        <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => setSelectedType(1)}
             style={{
-              color: SelectedType == 1 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
+              backgroundColor:
+                SelectedType == 1 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 5,
             }}>
-            Product
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedType(2)}
-          style={{
-            backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
+            <Text
+              style={{
+                color: SelectedType == 1 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Product
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelectedType(2)}
             style={{
-              color: SelectedType == 2 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
+              backgroundColor:
+                SelectedType == 2 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            Other
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.searchWrap}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={v => setSearchText(v)}
-          placeholder="Quick Search"
-        />
-        <TouchableOpacity
-          onPress={() => handleSearch()}
-          style={styles.searchButton}>
-          <Octicons name="search" color={COLORS.white} size={20} />
-        </TouchableOpacity>
-      </View>
-
-      {isLoading == true ? (
-        <LoadingScreen />
-      ) : (
-        <View>
-          {SelectedType == 1 ? (
-            <FlatList
-              data={productList}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                fadeDuration: 1000,
-                backgroundColor: 'transparent',
-                paddingBottom: window.height * 0.25,
-              }}
-              renderItem={renderItem}
-              // keyExtractor={item => item.id.toString()}
-            />
-          ) : (
-            <FlatList
-              data={otherList}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                fadeDuration: 1000,
-                backgroundColor: 'transparent',
-                paddingBottom: window.height * 0.25,
-              }}
-              renderItem={renderDepartmentItem}
-              // keyExtractor={item => item.id.toString()}
-            />
-          )}
+            <Text
+              style={{
+                color: SelectedType == 2 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Other
+            </Text>
+          </TouchableOpacity>
         </View>
-      )}
+
+        <View style={styles.searchWrap}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={v => setSearchText(v)}
+            placeholder="Quick Search"
+          />
+          <TouchableOpacity
+            onPress={() => handleSearch()}
+            style={styles.searchButton}>
+            <Octicons name="search" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+
+        {isLoading == true ? (
+          <LoadingScreen />
+        ) : (
+          <View>
+            {SelectedType == 1 ? (
+              <FlatList
+                data={productList}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                }}
+                renderItem={renderItem}
+                // keyExtractor={item => item.id.toString()}
+              />
+            ) : (
+              <FlatList
+                data={otherList}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                }}
+                renderItem={renderDepartmentItem}
+                // keyExtractor={item => item.id.toString()}
+              />
+            )}
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 }

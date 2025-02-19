@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {Styles} from '../../theme/Styles';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -23,6 +24,10 @@ import avatar from '../../images/avatar.png'; // Replace with the actual logo pa
 import {styles} from './styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {GetprofileResponse} from '../../redux/services/ProfileSlice';
+
+const window = Dimensions.get('window');
+
+const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
 
 export default function Profile({navigation}) {
   const dispatch = useDispatch;
@@ -48,11 +53,14 @@ export default function Profile({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Profile" onPress={() => navigation.goBack()} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        fadingEdgeLength={20}
+        contentContainerStyle={{paddingHorizontal: 13}}>
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
-            <Avatar.Image size={125} source={{uri: imageUrl}} />
+            <Avatar.Image size={pictureSize} source={{uri: imageUrl}} />
             <TouchableOpacity style={styles.editIcon}>
               <Feather name="edit-3" color={COLORS.black} size={20} />
             </TouchableOpacity>

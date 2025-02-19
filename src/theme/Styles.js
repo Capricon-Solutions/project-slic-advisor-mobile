@@ -3,12 +3,13 @@ import COLORS from './colors';
 import Fonts from './Fonts';
 
 const window = Dimensions.get('window');
-
+const squareSize = Math.min(window.width * 0.25, window.height * 0.15); // Use the smaller value
+const textSize = Math.min(window.width * 0.0255, window.height * 0.0255); // Use the smaller value
+const iconSize = Math.min(window.width * 0.07, window.height * 0.07); // Use the smaller value
 export const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingHorizontal: 20,
   },
   // Login
 
@@ -32,8 +33,8 @@ export const Styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 0,
     fontWeight: 'bold',
-    color: COLORS.textInputText,
-    height: 50,
+    color: COLORS.grayText,
+    height: 48,
   },
   topBackground: {
     position: 'absolute',
@@ -94,7 +95,7 @@ export const Styles = StyleSheet.create({
     backgroundColor: COLORS.primaryColor,
     borderRadius: 8,
     width: '100%',
-    height: 45,
+    height: 43,
     fontFamily: Fonts.Roboto.Bold,
     justifyContent: 'center',
     marginVertical: 10,
@@ -131,41 +132,45 @@ export const Styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: window.width * 0.035,
-    fontFamily: Fonts.Roboto.Bold,
+    fontSize: window.width * 0.04,
+    fontFamily: Fonts.Roboto.SemiBold,
   },
-
+  smallbuttonText: {
+    color: 'white',
+    fontSize: window.width * 0.037,
+    fontFamily: Fonts.Roboto.SemiBold,
+  },
   // Dashboard
 
   iconGrid: {
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    height: 100,
-    width: 100,
+    height: squareSize,
+    width: squareSize,
     padding: 5,
     elevation: 7,
     justifyContent: 'center',
     alignItems: 'center',
   },
   gridText: {
-    fontSize: 10,
+    fontSize: textSize,
     textAlign: 'center',
     color: COLORS.primary,
-    fontFamily: Fonts.Roboto.Regular,
+    fontFamily: Fonts.Roboto.Medium,
     marginTop: 5,
   },
   gridIcon: {
-    height: 24,
-    width: 24,
+    height: iconSize,
+    width: iconSize,
     resizeMode: 'contain',
   },
   rankWrap: {
     borderRadius: 20,
     backgroundColor: COLORS.white,
     height: 227,
-    marginVertical: 20,
+    marginVertical: window.height * 0.02,
     elevation: 10,
-    marginBottom: 40,
+
     overflow: 'hidden',
     flexDirection: 'row',
   },
@@ -239,21 +244,21 @@ export const Styles = StyleSheet.create({
   },
   noticeContainer: {
     backgroundColor: COLORS.yellow,
-    padding: 20,
+    padding: 15,
     borderRadius: 8,
-    marginTop: 16,
-    marginHorizontal: 20,
+    marginVertical: 16,
+    marginHorizontal: 5,
   },
   noticeTitle: {
     color: COLORS.importantRed,
     fontSize: 12,
-    fontFamily: Fonts.Roboto.Regular,
+    fontFamily: Fonts.Roboto.SemiBold,
   },
   noticeText: {
     color: '#333',
     marginTop: 4,
     fontSize: 12,
     color: COLORS.black,
-    fontFamily: Fonts.Roboto.Regular,
+    fontFamily: Fonts.Roboto.Medium,
   },
 });

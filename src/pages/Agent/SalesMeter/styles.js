@@ -3,6 +3,7 @@ import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
 const window = Dimensions.get('window');
+const squareSize = Math.min(window.width * 0.09, window.height * 0.09); // Use the smaller value
 
 export const styles = StyleSheet.create({
   monthlyCard: {
@@ -40,7 +41,7 @@ export const styles = StyleSheet.create({
   monthlyAmount: {
     backgroundColor: COLORS.white,
     height: 24,
-    marginVertical: 12,
+    marginVertical: '3%',
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     alignItems: 'center',
@@ -51,14 +52,14 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardText: {
-    fontSize: 13,
+    fontSize: window.width * 0.032,
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.black,
   },
   cardIcon: {
     backgroundColor: COLORS.primaryGreen,
-    height: 35,
-    width: 35,
+    height: squareSize,
+    width: squareSize,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -68,7 +69,7 @@ export const styles = StyleSheet.create({
     width: 18,
   },
   cardValue: {
-    fontSize: 14,
+    fontSize: window.width * 0.034,
     fontFamily: Fonts.Roboto.Bold,
     color: COLORS.black,
   },

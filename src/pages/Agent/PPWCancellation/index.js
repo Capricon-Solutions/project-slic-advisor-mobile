@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -174,105 +175,110 @@ export default function PPWCancellation({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="PPW Cancellation" onPress={() => navigation.goBack()} />
-      <View style={styles.mainWrap}>
-        <TouchableOpacity
-          onPress={() => setSelectedType(1)}
-          style={{
-            backgroundColor: SelectedType == 1 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 5,
-          }}>
-          <Text
+
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+        <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => setSelectedType(1)}
             style={{
-              color: SelectedType == 1 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
+              backgroundColor:
+                SelectedType == 1 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 5,
             }}>
-            Reminders List
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedType(2)}
-          style={{
-            backgroundColor: SelectedType == 2 ? COLORS.primary : COLORS.white,
-            borderRadius: 12,
-            flex: 0.5,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
+            <Text
+              style={{
+                color: SelectedType == 1 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Reminders List
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelectedType(2)}
             style={{
-              color: SelectedType == 2 ? COLORS.white : COLORS.black,
-              fontFamily: Fonts.Roboto.SemiBold,
+              backgroundColor:
+                SelectedType == 2 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            Cancelled list
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <View style={[styles.searchWrap, {flex: 0.65}]}>
-          <TextInput style={styles.textInput} placeholder="11/2024" />
-          <TouchableOpacity style={styles.searchButton}>
-            <Feather name="calendar" color={COLORS.white} size={20} />
+            <Text
+              style={{
+                color: SelectedType == 2 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Cancelled list
+            </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 0.35, padding: 2}}>
-          <AutocompleteDropdown
-            clearOnFocus={true}
-            closeOnBlur={true}
-            closeOnSubmit={false}
-            initialValue={{id: '1'}} // or just '2'
-            onSelectItem={setSelectedItem}
-            dataSet={[
-              {id: '1', title: 'Motor'},
-              {id: '2', title: 'Non-Motor'},
-            ]}
-          />
-        </View>
-      </View>
-
-      <View>
-        <Text
+        <View
           style={{
-            fontFamily: Fonts.Roboto.Regular,
-            fontSize: 14,
-            marginBottom: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          (Click on policy Number to view details)
-        </Text>
-      </View>
+          <View style={[styles.searchWrap, {flex: 0.6}]}>
+            <TextInput style={styles.textInput} placeholder="11/2024" />
+            <TouchableOpacity style={styles.searchButton}>
+              <Feather name="calendar" color={COLORS.white} size={20} />
+            </TouchableOpacity>
+          </View>
+          <View style={{flex: 0.4, padding: 2}}>
+            <AutocompleteDropdown
+              clearOnFocus={true}
+              closeOnBlur={true}
+              closeOnSubmit={false}
+              initialValue={{id: '1'}} // or just '2'
+              onSelectItem={setSelectedItem}
+              dataSet={[
+                {id: '1', title: 'Motor'},
+                {id: '2', title: 'Non-Motor'},
+              ]}
+            />
+          </View>
+        </View>
 
-      {/* {isLoading == true ? (
+        <View>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Regular,
+              fontSize: 14,
+              marginBottom: 10,
+            }}>
+            (Click on policy Number to view details)
+          </Text>
+        </View>
+
+        {/* {isLoading == true ? (
         <LoadingScreen />
       ) : ( */}
-      {SelectedType == 1 ? (
-        <View>
-          <TableComponent
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-            haveTotal={false}
-          />
-        </View>
-      ) : (
-        <View>
-          <TableComponent
-            tableHead={tableHead2}
-            tableData={tableData2}
-            columnWidths={columnWidths2}
-            haveTotal={false}
-          />
-        </View>
-      )}
+        {SelectedType == 1 ? (
+          <View>
+            <TableComponent
+              tableHead={tableHead}
+              tableData={tableData}
+              columnWidths={columnWidths}
+              haveTotal={false}
+            />
+          </View>
+        ) : (
+          <View>
+            <TableComponent
+              tableHead={tableHead2}
+              tableData={tableData2}
+              columnWidths={columnWidths2}
+              haveTotal={false}
+            />
+          </View>
+        )}
 
-      {/* )} */}
+        {/* )} */}
+      </ScrollView>
     </View>
   );
 }

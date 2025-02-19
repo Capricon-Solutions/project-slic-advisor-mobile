@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   profileContainer: {
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: window.height * 0.02,
   },
   imageContainer: {
     position: 'relative',
@@ -49,13 +49,14 @@ export const styles = StyleSheet.create({
     fontSize: 12,
   },
   profileName: {
-    fontSize: 18,
+    fontSize: window.width * 0.055,
     fontWeight: 'bold',
     color: COLORS.black,
     marginTop: 8,
   },
   profileRole: {
-    fontSize: 14,
+    fontSize: window.width * 0.04,
+    fontFamily: Fonts.Roboto.SemiBold,
     color: '#7C7C7C',
   },
   formContainer: {
@@ -65,6 +66,7 @@ export const styles = StyleSheet.create({
     position: 'relative',
     paddingBottom: 15,
     marginTop: 20,
+    paddingTop: 10,
     elevation: 2,
     marginHorizontal: 10,
   },
@@ -77,8 +79,8 @@ export const styles = StyleSheet.create({
   },
   activeStatus: {
     color: COLORS.primaryGreen,
-    fontFamily: Fonts.Roboto.Regular,
-    fontSize: 10,
+    fontFamily: Fonts.Roboto.Medium,
+    fontSize: 11,
     marginLeft: 3,
     justifyContent: 'center',
     alignItems: 'center',
@@ -96,9 +98,9 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.borderColor,
   },
   footer: {
-    marginVertical: 20,
+    marginVertical: 10,
     width: '90%',
-    marginHorizontal: 10,
+    marginHorizontal: 20,
   },
   option: {
     paddingVertical: 8,
@@ -114,14 +116,14 @@ export const styles = StyleSheet.create({
   activeWrap: {
     position: 'absolute',
     right: 10,
-    top: 0,
+    top: -2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   activeDot: {
     fontFamily: Fonts.Roboto.Bold,
-    fontSize: 25,
+    fontSize: 26,
     color: COLORS.primaryGreen,
   },
 });

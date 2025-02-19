@@ -89,17 +89,18 @@ export default function TrainingCalender({navigation}) {
   });
 
   return (
-    <View style={{height: window.height * 1}}>
+    <View style={Styles.container}>
       <NotAttending
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-      <View style={[Styles.container, {overflow: 'scroll', marginBottom: 110}]}>
+      <View style={[Styles.container, {overflow: 'scroll'}]}>
         <HeaderBackground />
         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 20}}
+          fadingEdgeLength={20}
+          contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
           style={{}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
@@ -110,7 +111,7 @@ export default function TrainingCalender({navigation}) {
               }}>
               Select User Type
             </Text>
-            <View style={{width: '50%', marginLeft: 10}}>
+            <View style={{width: '60%', marginLeft: 10}}>
               <AutocompleteDropdown
                 clearOnFocus={true}
                 closeOnBlur={true}
@@ -133,7 +134,7 @@ export default function TrainingCalender({navigation}) {
               backgroundColor: COLORS.white,
               padding: 5,
               elevation: 5,
-              marginHorizontal: 5,
+
               marginVertical: 15,
             }}>
             <Calendar
@@ -142,7 +143,6 @@ export default function TrainingCalender({navigation}) {
               }}
               style={{
                 borderColor: 'gray',
-                height: 350,
               }}
               theme={{
                 backgroundColor: '#ffffff',
@@ -163,6 +163,7 @@ export default function TrainingCalender({navigation}) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
+              marginTop: 5,
             }}>
             <Text
               style={{
@@ -201,20 +202,13 @@ export default function TrainingCalender({navigation}) {
                 fontFamily: Fonts.Roboto.SemiBold,
                 color: COLORS.textColor,
                 fontSize: 14,
+                marginVertical: 3,
               }}>
               Upcoming Training Sessions
             </Text>
           </View>
 
-          <View
-            style={{
-              padding: 18,
-              paddingRight: 10,
-              backgroundColor: COLORS.trainingCard,
-              marginVertical: 20,
-              borderRadius: 10,
-              marginBottom: 10,
-            }}>
+          <View style={styles.cardWrap}>
             <View
               style={{
                 flexDirection: 'row',
@@ -241,7 +235,7 @@ export default function TrainingCalender({navigation}) {
                 <MaterialCommunityIcons
                   name="close"
                   color={COLORS.primaryGreen}
-                  size={24}
+                  size={20}
                 />
               </TouchableOpacity>
             </View>
@@ -308,7 +302,7 @@ export default function TrainingCalender({navigation}) {
                     width: '100%',
                     paddingHorizontal: 10,
                   }}>
-                  <Button Title={'View Details'} />
+                  <SmallButton Title={'View Details'} />
                 </View>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                   <Text
@@ -324,15 +318,7 @@ export default function TrainingCalender({navigation}) {
             </View>
           </View>
 
-          <View
-            style={{
-              padding: 18,
-              paddingRight: 10,
-              backgroundColor: COLORS.trainingCard,
-              marginVertical: 20,
-              borderRadius: 10,
-              marginBottom: 10,
-            }}>
+          <View style={styles.cardWrap}>
             <View
               style={{
                 flexDirection: 'row',
@@ -359,7 +345,7 @@ export default function TrainingCalender({navigation}) {
                 <MaterialCommunityIcons
                   name="close"
                   color={COLORS.primaryGreen}
-                  size={24}
+                  size={20}
                 />
               </TouchableOpacity>
             </View>
@@ -426,7 +412,7 @@ export default function TrainingCalender({navigation}) {
                     width: '100%',
                     paddingHorizontal: 10,
                   }}>
-                  <Button Title={'View Details'} />
+                  <SmallButton Title={'View Details'} />
                 </View>
                 <Text
                   style={{

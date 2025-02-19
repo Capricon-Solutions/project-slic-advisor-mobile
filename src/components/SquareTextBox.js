@@ -32,6 +32,7 @@ export default function SquareTextBox({
             marginBottom: 5,
             fontFamily: Fonts.Roboto.Bold,
             color: LabelColor ? LabelColor : COLORS.textColor,
+            fontSize: window.width * 0.035,
           }}>
           {Label}
         </Text>
@@ -40,7 +41,7 @@ export default function SquareTextBox({
         <TextInput
           mode={'outlined'}
           outlineColor={errorBorder ? COLORS.errorBorder : COLORS.borderColor}
-          outlineStyle={{borderRadius: 5, borderWidth: 0}}
+          outlineStyle={{borderRadius: 8, borderWidth: 0}}
           style={[
             Styles.textInput,
             {

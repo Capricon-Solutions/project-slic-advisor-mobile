@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     elevation: 5,
     padding: 15,
-    paddingHorizontal: window.width * 0.05,
-    marginBottom: 15,
+    paddingHorizontal: window.width * 0.02,
+    marginVertical: 8,
   },
   border: {
     borderTopWidth: 1,

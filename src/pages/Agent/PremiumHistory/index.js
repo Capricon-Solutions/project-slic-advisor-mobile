@@ -157,19 +157,20 @@ export default function PremiumHistory({navigation}) {
   };
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={Styles.container}>
       <HeaderBackground />
 
-      <View style={{paddingHorizontal: 20}}>
-        <Header
-          Title="Premium Payment"
-          onPress={() => navigation.goBack()}
-          haveFilters={false}
-          haveWhatsapp={true}
-          haveMenu={false}
-          onButton={() => setModalVisible(true)}
-        />
-
+      <Header
+        Title="Premium Payment"
+        onPress={() => navigation.goBack()}
+        haveFilters={false}
+        haveWhatsapp={true}
+        haveMenu={false}
+        onButton={() => setModalVisible(true)}
+      />
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{paddingHorizontal: 17, paddingBottom: 10}}>
         <View>
           <Text
             style={{
@@ -191,7 +192,7 @@ export default function PremiumHistory({navigation}) {
             keyExtractor={item => item.id.toString()}
           />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

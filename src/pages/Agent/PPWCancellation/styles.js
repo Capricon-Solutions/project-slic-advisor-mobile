@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   searchButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: 11,
+    borderRadius: 16,
     paddingVertical: 5,
     paddingHorizontal: 17,
     justifyContent: 'center',
