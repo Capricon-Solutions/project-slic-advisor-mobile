@@ -14,8 +14,10 @@ const HorizontalTableComponent = ({
   tableData,
   columnWidths,
   haveTotal,
+  onPress,
 }) => {
   const handleCellPress = cellData => {
+    onPress();
     console.log('Clicked Cell:', cellData);
   };
 
@@ -29,13 +31,6 @@ const HorizontalTableComponent = ({
               borderColor: COLORS.white,
             }}>
             {/* Table Header */}
-
-            {/* <Row
-              data={tableHead}
-              widthArr={columnWidths}
-              style={styles.head}
-              textStyle={styles.headText}
-            /> */}
 
             <Row
               data={tableHead.map((item, index) => (

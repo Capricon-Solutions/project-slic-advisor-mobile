@@ -22,13 +22,34 @@ import TableComponent from '../../../components/TableComponent';
 import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
 import {useSelector} from 'react-redux';
+import {
+  useGetPPWCanceledListQuery,
+  useGetPPWReminderListQuery,
+} from '../../../redux/services/ppwCancelationSlice';
 const window = Dimensions.get('window');
 
 export default function PPWCancellation({navigation}) {
-  const {data: branches, isLoading, error} = useGetBranchesQuery();
+  // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
 
   const [SelectedType, setSelectedType] = useState(1);
+  const {
+    data: PPWCanceledList,
+    errorC,
+    isLoadingC,
+  } = useGetPPWCanceledListQuery({
+    id: 907719, // Dynamic ID
+    pType: selectedItem,
+  });
+
+  const {
+    data: PPWReminderList,
+    error,
+    isLoading,
+  } = useGetPPWReminderListQuery({
+    id: 907719, // Dynamic ID
+    pType: selectedItem,
+  });
 
   const tableHead = [
     'Policy No',
@@ -49,121 +70,27 @@ export default function PPWCancellation({navigation}) {
     'Re-Instate Date',
     'Due Date',
   ];
-  // const tableData = [
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  //   [
-  //     '01/12/2024',
-  //     'H G R L K RANAVIRA',
-  //     'K L W 4578',
-  //     '435345',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'cacsscs',
-  //     'complete',
-  //   ],
-  // ];
+
   const columnWidths = [120, 150, 110, 110, 130, 110];
   const columnWidths2 = [120, 150, 110, 110, 130, 110, 120, 110];
 
-  const ppwCancelationReminderResponse = useSelector(
-    state => state.ppwCancelation.ppwCancelationReminderResponse.data,
-  );
+  // const ppwCancelationReminderResponse = useSelector(
+  //   state => state.ppwCancelation.ppwCancelationReminderResponse.data,
+  // );
 
-  const ppwCancelationCancelledResponse = useSelector(
-    state => state.ppwCancelation.ppwCancelationCancelledResponse.data,
-  );
-
-  const tableData = ppwCancelationReminderResponse?.tableData?.map(item => [
-    item?.policyNo.toString() ?? '',
-    item?.costumorName.toString() ?? '',
-    item?.vehicleNo.toString() ?? '',
+  const tableData = PPWReminderList?.data?.map(item => [
+    item?.policyNumber.toString() ?? '',
+    item?.customerName.toString() ?? '',
+    item?.vehicleNumber.toString() ?? '',
     item?.debitAmount.toString() ?? '',
     item?.paymentDate.toString() ?? '',
     item?.dueDate.toString() ?? '',
   ]);
-  const tableData2 = ppwCancelationCancelledResponse?.tableData?.map(item => [
-    item?.policyNo.toString() ?? '',
-    item?.costumorName.toString() ?? '',
-    item?.vehicleNo.toString() ?? '',
+
+  const tableData2 = PPWCanceledList?.data.map(item => [
+    item?.policyNumber.toString() ?? '',
+    item?.customerName.toString() ?? '',
+    item?.vehicleNumber.toString() ?? '',
     item?.debitAmount.toString() ?? '',
     item?.paymentDate.toString() ?? '',
     item?.cancelledDate.toString() ?? '',
@@ -233,16 +160,15 @@ export default function PPWCancellation({navigation}) {
               clearOnFocus={true}
               closeOnBlur={true}
               closeOnSubmit={false}
-              initialValue={{id: '1'}} // or just '2'
+              initialValue={{id: 'Motor'}} // or just '2'
               onSelectItem={setSelectedItem}
               dataSet={[
-                {id: '1', title: 'Motor'},
-                {id: '2', title: 'Non-Motor'},
+                {id: 'Motor', title: 'Motor'},
+                {id: 'Non-Motor', title: 'Non-Motor'},
               ]}
             />
           </View>
         </View>
-
         <View>
           <Text
             style={{
@@ -253,31 +179,37 @@ export default function PPWCancellation({navigation}) {
             (Click on policy Number to view details)
           </Text>
         </View>
-
-        {/* {isLoading == true ? (
-        <LoadingScreen />
-      ) : ( */}
-        {SelectedType == 1 ? (
-          <View>
-            <TableComponent
-              tableHead={tableHead}
-              tableData={tableData}
-              columnWidths={columnWidths}
-              haveTotal={false}
-            />
-          </View>
-        ) : (
-          <View>
-            <TableComponent
-              tableHead={tableHead2}
-              tableData={tableData2}
-              columnWidths={columnWidths2}
-              haveTotal={false}
-            />
-          </View>
-        )}
-
-        {/* )} */}
+        <View>
+          {SelectedType == 1 ? (
+            <View>
+              {isLoading == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponent
+                  Error={error?.data?.Error}
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  columnWidths={columnWidths}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          ) : (
+            <View>
+              {isLoadingC == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponent
+                  Error={errorC?.data?.Error}
+                  tableHead={tableHead2}
+                  tableData={tableData2}
+                  columnWidths={columnWidths2}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          )}
+        </View>
       </ScrollView>
     </View>
   );

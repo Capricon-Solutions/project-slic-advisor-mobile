@@ -16,12 +16,20 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import {ActivityIndicator} from 'react-native-paper';
+const window = Dimensions.get('window');
 
 export default function LoadingScreen({isLoading}) {
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+
+        height: window.height * 0.6,
+      }}>
       {/* {isLoading && ( */}
-      <View>
+      <View style={{}}>
         <ActivityIndicator color={COLORS.primary} size={'large'} />
         {/* <Text>load</Text> */}
       </View>

@@ -123,6 +123,7 @@ export default function IndividualStatistics({navigation}) {
         }}
         style={{}}>
         <HorizontalTableComponent
+          onPress={() => navigation.navigate('PolicyDetails')}
           haveTotal={false}
           tableHead={tableHead}
           tableData={tableData}

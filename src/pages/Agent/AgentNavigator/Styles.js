@@ -11,7 +11,7 @@ export const Styles = StyleSheet.create({
   },
   platformStyle: {
     flex: 1,
-    paddingVertical: 15,
+    paddingVertical: window.height * 0.015,
     alignItems: 'center',
     justifyContent: 'center',
   },

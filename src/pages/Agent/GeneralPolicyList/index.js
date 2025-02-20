@@ -20,6 +20,8 @@ import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import PolicyFilter from '../../../components/PolicyFilter';
+import {useGetPolicyListQuery} from '../../../redux/services/policyListSlice';
+import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -27,79 +29,85 @@ const window = Dimensions.get('window');
 export default function GeneralPolicyList({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const PolicyList = [
-    {
-      id: 1,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 2,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 3,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 4,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 5,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 6,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-    {
-      id: 7,
-      title: 'Motor Comp. Private Car',
-      InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
-      PolicyNumber: 'VM11300171000480',
-      VehicleNumber: 'KX 4173',
-      StartDate: '2025/11/26',
-      EndDate: '2025/11/26',
-      mobileNumber: '0123456789',
-    },
-  ];
+  const {
+    data: PolicyListResponse,
+    isLoading,
+    diperror,
+  } = useGetPolicyListQuery();
 
+  // const PolicyList = [
+  //   {
+  //     id: 1,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 4,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 5,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 6,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  //   {
+  //     id: 7,
+  //     title: 'Motor Comp. Private Car',
+  //     InsuredName: 'TRANS ASIA FREIGHT AND LOGI..',
+  //     PolicyNumber: 'VM11300171000480',
+  //     VehicleNumber: 'KX 4173',
+  //     StartDate: '2025/11/26',
+  //     EndDate: '2025/11/26',
+  //     mobileNumber: '0123456789',
+  //   },
+  // ];
+  const PolicyList = PolicyListResponse?.data;
   const renderPolicyItem = ({item}) => (
     <PolicyItem item={item} navigation={navigation} />
   );
@@ -122,19 +130,25 @@ export default function GeneralPolicyList({navigation}) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
-
-        <FlatList
-          data={PolicyList}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            fadeDuration: 1000,
-            backgroundColor: 'transparent',
-            paddingBottom: window.height * 0.25,
-            paddingHorizontal: 15,
-          }}
-          renderItem={renderPolicyItem}
-          keyExtractor={item => item.id.toString()}
-        />
+        {isLoading == true ? (
+          <LoadingScreen />
+        ) : (
+          <View>
+            <FlatList
+              data={PolicyList}
+              showsVerticalScrollIndicator={false}
+              // LoadingScreen={<LoadingScreen />}
+              contentContainerStyle={{
+                fadeDuration: 1000,
+                backgroundColor: 'transparent',
+                paddingBottom: window.height * 0.25,
+                paddingHorizontal: 15,
+              }}
+              renderItem={renderPolicyItem}
+              // keyExtractor={item => item.id.toString()}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    marginVertical: 3,
   },
 
   container: {
@@ -74,22 +73,21 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   UserName: {
-    fontSize: 20,
+    fontSize: window.width * 0.041,
     color: '#333',
     fontFamily: Fonts.Roboto.SemiBold,
-    fontSize: 16,
   },
   regionName: {
     fontSize: 20,
     color: '#333',
     fontFamily: Fonts.Roboto.SemiBold,
-    fontSize: 12,
+    fontSize: window.width * 0.03,
   },
   position: {
     fontSize: 20,
     color: '#333',
     fontFamily: Fonts.Roboto.Medium,
-    fontSize: 10,
+    fontSize: window.width * 0.027,
   },
   notiIcon: {
     flex: 0.2,

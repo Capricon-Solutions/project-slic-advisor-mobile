@@ -16,7 +16,7 @@ import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 import Logo from '../icons/Logo.png'; // Replace with the actual logo path
 
-export default function OtherListItem({item}) {
+export default function OtherListItem({item, onPress}) {
   const [loading, setLoading] = useState(false);
   const [Progress, setProgress] = useState(0);
 
@@ -108,7 +108,8 @@ export default function OtherListItem({item}) {
   };
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         backgroundColor: COLORS.background,
         marginVertical: 8,
@@ -195,6 +196,6 @@ export default function OtherListItem({item}) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

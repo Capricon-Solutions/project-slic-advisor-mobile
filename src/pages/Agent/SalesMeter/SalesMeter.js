@@ -35,6 +35,7 @@ import TableComponent from '../../../components/TableComponent';
 import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import {useSelector} from 'react-redux';
+import {useGetDepartmentMutation} from '../../../redux/services/setTargetSlice';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');

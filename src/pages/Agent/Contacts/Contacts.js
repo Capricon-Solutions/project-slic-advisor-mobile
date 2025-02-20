@@ -26,51 +26,6 @@ import {
 } from '../../../redux/services/contactSlice';
 const window = Dimensions.get('window');
 
-const departments = [
-  {
-    id: 1,
-    name: 'Mr. Saman Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 2,
-    name: 'Mr. Poorna Gamage',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 3,
-    name: 'Mr. Saman Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 4,
-    name: 'Mr. Kamal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 5,
-    name: 'Mr. Nimal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 6,
-    name: 'Mr. Sumal Priyantha',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-  {
-    id: 7,
-    name: 'Mr. Kevin gamage',
-    department: 'ICT Department',
-    contact: '0762456721',
-  },
-];
-
 export default function Contacts({navigation}) {
   const {data: branches, isLoading, error} = useGetBranchesQuery();
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();

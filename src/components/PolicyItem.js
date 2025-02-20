@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
+import {
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  View,
+  Image,
+  Linking,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -15,7 +22,13 @@ import Button from './Button';
 
 export default function PolicyItem({item, navigation}) {
   const [visible, setVisible] = React.useState(false);
-
+  const handleCall = phoneNumber => {
+    // Open the phone dialer with the contact number
+    const phoneURL = `tel:${phoneNumber}`;
+    Linking.openURL(phoneURL).catch(err =>
+      console.error('Failed to make a call:', err),
+    );
+  };
   return (
     <View style={Styles.contactlistWrap}>
       <TouchableOpacity
@@ -38,7 +51,7 @@ export default function PolicyItem({item, navigation}) {
               color: COLORS.black,
               marginLeft: 10,
             }}>
-            {item.title}
+            {item.policyNo}
           </Text>
         </View>
         <TouchableOpacity
@@ -67,7 +80,7 @@ export default function PolicyItem({item, navigation}) {
             textColor={COLORS.ashBlue}
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
-            value={item.InsuredName}
+            value={item.customerName}
           />
 
           <TextInput
@@ -78,7 +91,7 @@ export default function PolicyItem({item, navigation}) {
             textColor={COLORS.ashBlue}
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
-            value={item.PolicyNumber}
+            value={item.policyNo}
           />
 
           <TextInput
@@ -89,7 +102,7 @@ export default function PolicyItem({item, navigation}) {
             textColor={COLORS.ashBlue}
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
-            value={item.VehicleNumber}
+            value={item.vehicleNo}
           />
 
           <View
@@ -107,7 +120,7 @@ export default function PolicyItem({item, navigation}) {
                 textColor={COLORS.ashBlue}
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
-                value={item.StartDate}
+                value={item.startDate}
               />
             </View>
             <View style={{flex: 0.48}}>
@@ -119,7 +132,7 @@ export default function PolicyItem({item, navigation}) {
                 textColor={COLORS.ashBlue}
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
-                value={item.EndDate}
+                value={item.endDate}
               />
             </View>
           </View>
@@ -166,7 +179,8 @@ export default function PolicyItem({item, navigation}) {
               />
             </View>
 
-            <View
+            <TouchableOpacity
+              onPress={() => handleCall(item.telephone)}
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
@@ -183,7 +197,7 @@ export default function PolicyItem({item, navigation}) {
                 style={{transform: [{rotate: '90deg'}]}} // Rotate 90 degrees
                 size={22}
               />
-            </View>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={{

@@ -26,12 +26,13 @@ import OtherListItem from '../../../components/OtherListItem';
 import {useGetProductListQuery} from '../../../redux/services/productSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Logo from '../../../icons/Logo.png'; // Replace with the actual logo path
+import ReadMore from 'react-native-read-more-text';
 
 const window = Dimensions.get('window');
 
-export default function ({navigation, route}) {
+export default function ProductDetails({navigation, route}) {
   const {item} = route.params; // Extract item from params
-  console.log('item', item);
+  console.log('itemvvvvvv', item);
   const [SelectedType, setSelectedType] = useState(1);
   const {data: products, isLoading, error} = useGetProductListQuery();
 
@@ -69,18 +70,28 @@ export default function ({navigation, route}) {
 
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
-  const apiText =
-    'Affordable insurance premiums. \nEntry to the Motor Plus Loyalty Rewards Program with the chance to avail amazing rewards from reputed brands and companies in Sri Lanka. \nEligibility to utilize SLIC’s partnership with leading vehicle agents in Sri Lanka in the event of a collision, so that the vehicle can be repaired and restored to manufacturer’s specifications, at no additional cost. \nEligibility to repair vehicles at the following Sri Lanka Insurance Motor Plus partner garages without owners account contribution deductions. \nObtain immediate and accurate claim settlement from the nearest regional office.';
 
+  _renderRevealedFooter = handlePress => {
+    return (
+      <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
+        Show less
+      </Text>
+    );
+  };
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
-      <ScrollView>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={{alignItems: 'center', marginVertical: 10}}>
           <Image
-            style={{height: 200, width: 255, borderRadius: 17}}
-            source={Logo}></Image>
+            style={{
+              height: window.width * 0.6,
+              width: window.width * 0.6,
+              borderRadius: 17,
+              objectFit: 'contain',
+            }}
+            source={{uri: item.imageUrl}}></Image>
         </View>
 
         <View
@@ -91,6 +102,7 @@ export default function ({navigation, route}) {
             height: 34,
             justifyContent: 'center',
             paddingHorizontal: 13,
+            marginTop: 20,
           }}>
           <Text
             style={{
@@ -98,30 +110,45 @@ export default function ({navigation, route}) {
               color: COLORS.white,
               fontSize: 16,
             }}>
-            Motor Plus
+            {item?.productName}
           </Text>
         </View>
         <Text
           style={{
-            marginTop: 10,
+            marginTop: 20,
             fontFamily: Fonts.Roboto.SemiBold,
             color: COLORS.black,
           }}>
-          Get the best protection for you and your vehicle with SLIC Motor Plus
-          Insurance. Stay secure and enjoy exclusive benefits designed for your
-          convenience.
+          {item?.shortDesc}
         </Text>
 
         <Text
           style={{
-            marginTop: 10,
+            marginVertical: 15,
             fontFamily: Fonts.Roboto.Bold,
-            color: COLORS.black,
+            color: COLORS.primaryGreen,
+            fontSize: window.width * 0.036,
           }}>
           Benefits:
         </Text>
 
-        <Text
+        <View style={{marginBottom: 20}}>
+          <ReadMore
+            numberOfLines={5}
+            renderTruncatedFooter={this._renderTruncatedFooter}
+            renderRevealedFooter={this._renderRevealedFooter}
+            onReady={this._handleTextReady}>
+            <Text
+              style={{
+                marginTop: 10,
+                fontFamily: Fonts.Roboto.SemiBold,
+                color: COLORS.black,
+              }}>
+              {item?.longDesc}
+            </Text>
+          </ReadMore>
+        </View>
+        {/* <Text
           style={{
             marginTop: 10,
             fontFamily: Fonts.Roboto.SemiBold,
@@ -132,7 +159,7 @@ export default function ({navigation, route}) {
               {line.trim() !== '' ? `\u2022 ${line.trim()}\n` : ''}
             </Text>
           ))}
-        </Text>
+        </Text> */}
       </ScrollView>
     </View>
   );

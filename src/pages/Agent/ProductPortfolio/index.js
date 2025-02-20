@@ -38,11 +38,19 @@ export default function ProductPortfolio({navigation}) {
   const renderItem = ({item}) => (
     <ProductListItem
       item={item}
-      onPress={() => navigation.navigate('ProductDetails', item)}
+      onPress={() => {
+        console.log('Navigating with item:', item); // Debugging
+        navigation.navigate('ProductDetails', {item});
+      }}
     />
   );
 
-  const renderDepartmentItem = ({item}) => <OtherListItem item={item} />;
+  const renderDepartmentItem = ({item}) => (
+    <OtherListItem
+      item={item}
+      onPress={() => navigation.navigate('ProductDetails', item)}
+    />
+  );
 
   useEffect(() => {
     // When the component mounts or when products are fetched, show all data initially
@@ -71,7 +79,7 @@ export default function ProductPortfolio({navigation}) {
 
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
-
+  console.log('res', products);
   return (
     <View style={Styles.container}>
       <HeaderBackground />

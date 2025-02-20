@@ -12,7 +12,7 @@ import policyDetailsReducer from './policyDetailsSlice';
 import claimHistoryReducer from './claimHistorySlice';
 import premiumPaymentReducer from './premiumPaymentSlice';
 import policyRenewalsReducer from './policyRenewalsSlice';
-import ppwCancelationReducr from './ppwCancelationSlice';
+// import ppwCancelationReducr from './ppwCancelationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -27,11 +27,16 @@ export const store = configureStore({
     claimHistory: claimHistoryReducer,
     premiumPayment: premiumPaymentReducer,
     policyRenewals: policyRenewalsReducer,
-    ppwCancelation: ppwCancelationReducr,
+    // ppwCancelation: ppwCancelationReducr,
   },
+  //   middleware: getDefaultMiddleware =>
+  //     getDefaultMiddleware().concat(baseApi.middleware),
+  // });
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware({
+      immutableCheck: false, // Disable immutable state check
+      serializableCheck: false, // Disable serializable state check
+    }).concat(baseApi.middleware), // Keep your baseApi middleware
 });
-
 // Enables automatic refetching of queries based on focus, reconnect, etc.
 setupListeners(store.dispatch);

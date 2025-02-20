@@ -17,6 +17,7 @@ import Button from './Button';
 import SmallButton from './SmallButton';
 
 // import { useSelector } from "react-redux";
+const window = Dimensions.get('window');
 
 export default function Header({
   Title,
@@ -36,7 +37,7 @@ export default function Header({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        height: 70,
+        height: window.height * 0.09,
         marginTop: 5,
         marginHorizontal: 20,
       }}>
@@ -44,8 +45,8 @@ export default function Header({
         <TouchableOpacity
           onPress={onPress}
           style={{
-            height: 38,
-            width: 38,
+            height: window.width * 0.1,
+            width: window.width * 0.1,
             borderRadius: 13,
             backgroundColor: COLORS.white,
             alignItems: 'center',

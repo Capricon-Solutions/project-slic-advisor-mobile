@@ -159,14 +159,14 @@ export default function Dashboard({navigation}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
             Title={'Sign In'}
             style={styles.profilePicture}>
             <Avatar.Image
-              size={57}
+              size={window.width * 0.15}
               style={{backgroundColor: 'transparent'}}
               source={{uri: imageUrl}}
             />
@@ -185,17 +185,17 @@ export default function Dashboard({navigation}) {
             <MaterialCommunityIcons
               name="bell-outline"
               color={COLORS.iconDisabled}
-              size={26}
+              size={window.width * 0.075}
             />
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 14}}>
+        <View style={{marginTop: 10}}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.ExtraBold,
               color: COLORS.black,
-              fontSize: window.width * 0.044,
+              fontSize: window.width * 0.043,
             }}>
             Advisor Summary
           </Text>
@@ -225,7 +225,7 @@ export default function Dashboard({navigation}) {
           </View> */}
             <CircularProgress
               value={islandRank}
-              radius={80}
+              radius={window.height * 0.1}
               duration={2000}
               progressValueColor={COLORS.textColor}
               maxValue={totalIslandRank}
@@ -246,7 +246,7 @@ export default function Dashboard({navigation}) {
             />
             <Text
               style={{
-                fontSize: 18,
+                fontSize: window.width * 0.045,
                 marginTop: 5,
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.textColor,
@@ -271,7 +271,7 @@ export default function Dashboard({navigation}) {
                 }}>
                 <CircularProgress
                   value={regionalRank}
-                  radius={35}
+                  radius={window.height * 0.045}
                   duration={2000}
                   progressValueColor={COLORS.regionalRank}
                   maxValue={totalNumberofRegions}
@@ -282,17 +282,20 @@ export default function Dashboard({navigation}) {
                   // title={'Progress'}
                   valueSuffix={'/' + totalNumberofRegions}
                   progressValueStyle={{
-                    fontSize: 18,
+                    fontSize: window.height * 0.025,
                     fontFamily: Fonts.Roboto.Bold,
                   }}
-                  valueSuffixStyle={{fontSize: 14, color: COLORS.regionalRank}}
+                  valueSuffixStyle={{
+                    fontSize: window.height * 0.02,
+                    color: COLORS.regionalRank,
+                  }}
                   // titleColor={'red'}
                   titleStyle={{fontWeight: 'bold'}}
                 />
                 <Text
                   style={{
                     marginTop: 2,
-                    fontSize: window.width * 0.035,
+                    fontSize: window.width * 0.03,
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.textColor,
                   }}>
@@ -313,7 +316,7 @@ export default function Dashboard({navigation}) {
                 }}>
                 <CircularProgress
                   value={branchRank}
-                  radius={35}
+                  radius={window.height * 0.045}
                   duration={2000}
                   progressValueColor={COLORS.branchRank}
                   maxValue={totalNumberofBranches}
@@ -324,17 +327,20 @@ export default function Dashboard({navigation}) {
                   // title={'Progress'}
                   valueSuffix={'/' + totalNumberofBranches}
                   progressValueStyle={{
-                    fontSize: 18,
+                    fontSize: window.height * 0.025,
                     fontFamily: Fonts.Roboto.Bold,
                   }}
-                  valueSuffixStyle={{fontSize: 14, color: COLORS.branchRank}}
+                  valueSuffixStyle={{
+                    fontSize: window.height * 0.02,
+                    color: COLORS.branchRank,
+                  }}
                   // titleColor={'red'}
                   titleStyle={{fontWeight: 'bold'}}
                 />
                 <Text
                   style={{
                     marginTop: 2,
-                    fontSize: window.width * 0.035,
+                    fontSize: window.width * 0.03,
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.textColor,
                   }}>
@@ -360,7 +366,7 @@ export default function Dashboard({navigation}) {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginVertical: window.height * 0.02,
+            marginVertical: window.height * 0.01,
           }}>
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
@@ -386,7 +392,7 @@ export default function Dashboard({navigation}) {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginVertical: 13,
+            marginVertical: 10,
           }}>
           <TouchableOpacity
             // onPress={() => setFlagVisible(true)}

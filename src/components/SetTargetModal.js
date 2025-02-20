@@ -17,11 +17,39 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import {TextInput} from 'react-native-paper';
 import Button from './Button';
+import {useSetTargetMutation} from '../redux/services/setTargetSlice';
 
 const window = Dimensions.get('window');
 
 export default function SetTargetModal({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
+  const [inputValue, setInputValue] = React.useState('');
+
+  // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
+  const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
+  // const handlePostRequest = () => {
+  //   setTarget({
+  //     agentCode: 2147483647,
+  //     yearMonth: '02/2025',
+  //     target: inputValue,
+  //   });
+  // };
+
+  const handlePostRequest = async () => {
+    try {
+      const response = await setTarget({
+        agentCode: 2147483647,
+        yearMonth: '02/2025',
+        target: inputValue, // Using input from state
+      }).unwrap(); // Unwraps the Promise to get response directly
+
+      console.log('Response:', response); // Handle success response
+    } catch (err) {
+      console.error('Error:', err); // Handle error response
+    }
+  };
+
+  // Usage example
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -79,6 +107,9 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
 
           <TextInput
             mode="flat"
+            keyboardType="numeric"
+            value={inputValue} // Controlled component
+            onChangeText={text => setInputValue(text)} // Store input value
             style={{
               backgroundColor: 'transparent',
               marginBottom: 15,
@@ -89,7 +120,10 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
           <View style={{paddingHorizontal: window.width * 0.2}}>
             <Button
               Title={'Set Target'}
-              onPress={() => setModalVisible(false)}></Button>
+              onPress={() => {
+                setModalVisible(false);
+                handlePostRequest();
+              }}></Button>
           </View>
         </View>
       </Animated.View>

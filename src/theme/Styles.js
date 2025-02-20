@@ -3,9 +3,9 @@ import COLORS from './colors';
 import Fonts from './Fonts';
 
 const window = Dimensions.get('window');
-const squareSize = Math.min(window.width * 0.25, window.height * 0.15); // Use the smaller value
-const textSize = Math.min(window.width * 0.0255, window.height * 0.0255); // Use the smaller value
-const iconSize = Math.min(window.width * 0.07, window.height * 0.07); // Use the smaller value
+const squareSize = Math.min(window.width * 0.233, window.height * 0.133); // Use the smaller value
+const textSize = Math.min(window.width * 0.024, window.height * 0.024); // Use the smaller value
+const iconSize = Math.min(window.width * 0.06, window.height * 0.06); // Use the smaller value
 export const Styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -167,7 +167,7 @@ export const Styles = StyleSheet.create({
   rankWrap: {
     borderRadius: 20,
     backgroundColor: COLORS.white,
-    height: 227,
+    height: window.height * 0.29,
     marginVertical: window.height * 0.02,
     elevation: 10,
 
