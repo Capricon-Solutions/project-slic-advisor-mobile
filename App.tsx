@@ -37,6 +37,8 @@ import PPWCancellation from './src/pages/Agent/PPWCancellation';
 import Notification from './src/pages/Agent/Notification';
 import PDFViewer from './src/pages/PDFViewer/PDFViewer';
 import ProductDetails from './src/pages/Agent/ProductDetails';
+import MyselfPerformance from './src/pages/Agent/MyselfPerformance';
+import TeamStatistics from './src/pages/Agent/TeamStatistics';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -74,7 +76,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -95,6 +97,8 @@ function App(): React.JSX.Element {
         <Stack.Screen  name="Notification" component={Notification} />
         <Stack.Screen  name="PDFViewer" component={PDFViewer} />
         <Stack.Screen  name="ProductDetails" component={ProductDetails} />
+        <Stack.Screen  options={{orientation:'landscape'}} name="MyselfPerformance" component={MyselfPerformance} />
+        <Stack.Screen  options={{orientation:'landscape'}} name="TeamStatistics" component={TeamStatistics} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

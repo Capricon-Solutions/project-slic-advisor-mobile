@@ -22,10 +22,9 @@ const TableComponent = ({
   const handleCellPress = cellData => {
     console.log('Clicked Cell:', cellData);
   };
-
   return (
     <View>
-      {tableData ? (
+      {tableData?.length > 0 ? (
         <ScrollView horizontal>
           <View style={styles.container}>
             <View style={styles.tableWrapper}>
@@ -78,6 +77,25 @@ const TableComponent = ({
             </View>
           </View>
         </ScrollView>
+      ) : tableData?.length == 0 ? (
+        <View
+          style={{
+            flex: 1,
+            height: window.height * 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+
+            marginHorizontal: window.width * 0.03,
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontFamily: Fonts.Roboto.SemiBold,
+              color: COLORS.primaryRed,
+            }}>
+            Don't have any data yet
+          </Text>
+        </View>
       ) : (
         <View
           style={{
@@ -118,7 +136,7 @@ const styles = StyleSheet.create({
   text: {
     marginVertical: 6,
     marginHorizontal: 10, // Add horizontal margin to create spacing between columns
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 13,
   },
   row: {height: 50},

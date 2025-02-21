@@ -15,6 +15,7 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
+const window = Dimensions.get('window');
 
 export default function BottomModal({
   modalVisible,
@@ -63,37 +64,107 @@ export default function BottomModal({
     }
   }
 
-  const PolicyItem = ({title, icon, onPress}) => {
+  const PolicyItem = ({title, icon, subButtons, onPress, expandable}) => {
+    const [visible, setVisible] = React.useState(false);
     return (
-      <TouchableOpacity
+      <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          paddingVertical: 18,
           borderWidth: 1.5,
           borderRadius: 10,
           borderColor: COLORS.modalBorder,
-          marginVertical: 10,
-        }}
-        onPress={onPress}>
-        <View style={{flex: 0.15, alignItems: 'center'}}>
-          <Image
-            source={icon}
-            style={{height: 20, width: 20, resizeMode: 'contain'}}
-          />
-        </View>
+          paddingVertical: 18,
 
-        <View style={{flex: 0.85}}>
-          <Text
+          marginVertical: 10,
+        }}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+          onPress={onPress}>
+          <View style={{flex: 0.15, alignItems: 'center'}}>
+            <Image
+              source={icon}
+              style={{height: 20, width: 20, resizeMode: 'contain'}}
+            />
+          </View>
+
+          <View style={{flex: 0.7}}>
+            <Text
+              style={{
+                fontSize: window.width * 0.038,
+                fontFamily: Fonts.Roboto.Medium,
+                color: COLORS.islandRank,
+              }}>
+              {title}
+            </Text>
+          </View>
+          <View style={{flex: 0.15}}>
+            {expandable && (
+              <TouchableOpacity
+                onPress={() => setVisible(!visible)}
+                style={{alignItems: 'center'}}>
+                <Octicons
+                  name={visible == true ? 'chevron-up' : 'chevron-down'}
+                  color={COLORS.black}
+                  size={20}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        </TouchableOpacity>
+        {visible && (
+          <View
             style={{
-              fontSize: 15,
-              fontFamily: Fonts.Roboto.Medium,
-              color: COLORS.islandRank,
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              paddingTop: 15,
             }}>
-            {title}
-          </Text>
-        </View>
-      </TouchableOpacity>
+            {subButtons?.map((button, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={button.onPress}
+                style={{
+                  borderWidth: 1,
+                  flex: 0.43,
+                  paddingVertical: 10,
+                  borderColor: COLORS.primary,
+                  borderRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: window.width * 0.031,
+                    color: COLORS.primary,
+                    fontFamily: Fonts.Roboto.Medium,
+                  }}>
+                  {button.title}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            {/* <View
+              style={{
+                borderWidth: 1,
+                flex: 0.4,
+                padding: 10,
+                borderColor: COLORS.primary,
+                borderRadius: 5,
+              }}>
+              <Text style={{textAlign: 'center'}}>Team Statistics</Text>
+            </View>
+            <View
+              style={{
+                borderWidth: 1,
+                flex: 0.4,
+                padding: 10,
+                borderColor: COLORS.primary,
+                borderRadius: 5,
+              }}>
+              <Text style={{textAlign: 'center'}}>Team Statistics</Text>
+            </View> */}
+          </View>
+        )}
+      </View>
     );
   };
 
@@ -147,9 +218,11 @@ export default function BottomModal({
             {ButtonList?.map((item, index) => (
               <PolicyItem
                 key={index}
-                title={item.title}
-                icon={item.icon}
-                onPress={item.onPress}
+                title={item?.title}
+                icon={item?.icon}
+                expandable={item?.expandable}
+                subButtons={item?.subButtons}
+                onPress={item?.onPress}
               />
             ))}
           </View>

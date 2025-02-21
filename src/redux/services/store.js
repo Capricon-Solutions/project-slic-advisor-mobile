@@ -11,7 +11,8 @@ import trainingListReducer from './trainingListSlice';
 import policyDetailsReducer from './policyDetailsSlice';
 import claimHistoryReducer from './claimHistorySlice';
 import premiumPaymentReducer from './premiumPaymentSlice';
-import policyRenewalsReducer from './policyRenewalsSlice';
+import userTypeReducer from './userTypeSlice';
+// import policyRenewalsReducer from './policyRenewalsSlice';
 // import ppwCancelationReducr from './ppwCancelationSlice';
 
 export const store = configureStore({
@@ -26,7 +27,8 @@ export const store = configureStore({
     policyDetails: policyDetailsReducer,
     claimHistory: claimHistoryReducer,
     premiumPayment: premiumPaymentReducer,
-    policyRenewals: policyRenewalsReducer,
+    userType: userTypeReducer,
+    // policyRenewals: policyRenewalsReducer,
     // ppwCancelation: ppwCancelationReducr,
   },
   //   middleware: getDefaultMiddleware =>

@@ -108,7 +108,7 @@ export const Styles = StyleSheet.create({
     height: 38,
     fontFamily: Fonts.Roboto.Bold,
     justifyContent: 'center',
-    marginVertical: 8,
+    marginVertical: 5,
     alignItems: 'center',
     paddingHorizontal: 7,
   },

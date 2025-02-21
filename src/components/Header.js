@@ -30,6 +30,8 @@ export default function Header({
   haveMenu,
   haveCall,
   haveWhatsapp,
+  whatsappNo,
+  callNo,
 }) {
   return (
     <View
@@ -103,7 +105,12 @@ export default function Header({
 
         {haveCall && (
           <View>
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(`tel:${callNo}`).catch(err =>
+                  console.error('Failed to make a call:', err),
+                )
+              }
               style={{
                 backgroundColor: COLORS.primary,
                 borderRadius: 10,
@@ -120,7 +127,7 @@ export default function Header({
                 color={COLORS.white}
                 size={18}
               />
-            </View>
+            </TouchableOpacity>
           </View>
         )}
 
@@ -129,7 +136,7 @@ export default function Header({
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL(
-                  'whatsapp://send?text=hello&phone=xxxxxxxxxxxxx',
+                  `whatsapp://send?text=Hello&phone=${whatsappNo}`,
                 )
               }
               style={{

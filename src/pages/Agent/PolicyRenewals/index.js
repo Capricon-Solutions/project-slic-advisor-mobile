@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,11 @@ import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
 import {useSelector} from 'react-redux';
+import {
+  useGetmotorRenewalsListQuery,
+  useGetnonMotorRenewalsListQuery,
+} from '../../../redux/services/policyRenewalsSlice';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {
@@ -31,9 +36,9 @@ export default function PolicyRenewals({navigation}) {
     'Customer Name',
     'Vehicle No',
     'Policy No',
-    'NCB Perc',
+    'Policy Type',
     'Sum Insured',
-    'Premium Amt',
+    'Total Amt',
     'Policy Status',
   ];
 
@@ -41,47 +46,73 @@ export default function PolicyRenewals({navigation}) {
     'Due Date',
     'Customer Name',
     'Policy No',
-    'NCB Perc',
+    'Policy Type',
     'Sum Insured',
-    'Premium Amt',
+    'Total Amt',
     'Policy Status',
   ];
 
-  const motorRenewalsResponse = useSelector(
-    state => state.policyRenewals.motorRenewalsResponse.data,
-  );
+  const {
+    data: motorRenewalsList,
+    error,
+    isLoading,
+  } = useGetmotorRenewalsListQuery({
+    id: 907719, // Dynamic ID
+    fromDate: '2007-01-11',
+    toDate: '2009-01-11',
+  });
 
-  const nonMotorRenewalsResponse = useSelector(
-    state => state.policyRenewals.nonMotorRenewalsResponse.data,
-  );
+  const {
+    data: nonmotorRenewalsList,
+    errorN,
+    isLoadingN,
+  } = useGetnonMotorRenewalsListQuery({
+    id: 907719, // Dynamic ID
+    fromDate: '2007-01-11',
+    toDate: '2009-01-11',
+  });
 
-  const tableData = motorRenewalsResponse?.tableData?.map(item => [
-    item?.date.toString() ?? '',
-    item?.name.toString() ?? '',
-    item?.vehicleNo.toString() ?? '',
-    item?.policyNo.toString() ?? '',
-    item?.ncb.toString() ?? '',
-    item?.sum.toString() ?? '',
-    item?.premiumAmount.toString() ?? '',
-    item?.status.toString() ?? '',
+  const nonMotorRenewalsResponse = nonmotorRenewalsList?.data;
+  const motorRenewalsResponse = motorRenewalsList?.data;
+
+  const tableData = motorRenewalsResponse?.map(item => [
+    item?.policyEndDate.toString() ?? '',
+    item?.customerName.toString() ?? '',
+    item?.vehicleNumber.toString() ?? '',
+    item?.policyNumber.toString() ?? '',
+    item?.policyType.toString() ?? '',
+    item?.sumInsured.toString() ?? '',
+    item?.totalAmount.toString() ?? '',
+    item?.isPaid.toString() ?? '',
   ]);
 
-  const tableData2 = nonMotorRenewalsResponse?.tableData?.map(item => [
-    item?.date.toString() ?? '',
-    item?.name.toString() ?? '',
-    item?.policyNo.toString() ?? '',
-    item?.ncb.toString() ?? '',
-    item?.sum.toString() ?? '',
-    item?.premiumAmount.toString() ?? '',
-    item?.status.toString() ?? '',
+  const tableData2 = nonMotorRenewalsResponse?.map(item => [
+    item?.policyEndDate.toString() ?? '',
+    item?.customerName.toString() ?? '',
+    item?.policyNumber.toString() ?? '',
+    item?.policyType.toString() ?? '',
+    item?.sumInsured.toString() ?? '',
+    item?.totalAmount.toString() ?? '',
+    item?.isPaid.toString() ?? '',
   ]);
 
-  const columnWidths = [110, 150, 100, 120, 90, 110, 110, 110];
+  const columnWidths = [110, 190, 100, 120, 90, 110, 110, 110];
 
-  const columnWidths2 = [110, 150, 120, 90, 110, 110, 110];
+  const columnWidths2 = [110, 190, 120, 90, 110, 110, 110];
+  const [selectedDate, setSelectedDate] = useState(null);
+  useEffect(() => {
+    console.log('selectedDate', selectedDate);
+  }, [selectedDate]);
+
+  const [isPickerVisible, setPickerVisible] = useState(false);
 
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+      />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
       <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
@@ -127,7 +158,9 @@ export default function PolicyRenewals({navigation}) {
 
         <View style={styles.searchWrap}>
           <TextInput style={styles.textInput} placeholder="11/2024" />
-          <TouchableOpacity style={styles.searchButton}>
+          <TouchableOpacity
+            onPress={() => setPickerVisible(true)}
+            style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
@@ -142,27 +175,31 @@ export default function PolicyRenewals({navigation}) {
           </Text>
         </View>
 
-        {/* {isLoading == true ? (
-        <LoadingScreen />
-      ) : ( */}
-
         {SelectedType == 1 ? (
           <View>
-            <TableComponent
-              tableHead={tableHead}
-              tableData={tableData}
-              columnWidths={columnWidths}
-              haveTotal={false}
-            />
+            {isLoading == true ? (
+              <LoadingScreen />
+            ) : (
+              <TableComponent
+                tableHead={tableHead}
+                tableData={tableData}
+                columnWidths={columnWidths}
+                haveTotal={false}
+              />
+            )}
           </View>
         ) : (
           <View>
-            <TableComponent
-              tableHead={tableHead2}
-              tableData={tableData2}
-              columnWidths={columnWidths2}
-              haveTotal={false}
-            />
+            {isLoadingN == true ? (
+              <LoadingScreen />
+            ) : (
+              <TableComponent
+                tableHead={tableHead2}
+                tableData={tableData2}
+                columnWidths={columnWidths2}
+                haveTotal={false}
+              />
+            )}
           </View>
         )}
 

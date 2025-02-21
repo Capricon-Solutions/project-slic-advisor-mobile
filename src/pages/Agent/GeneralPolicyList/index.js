@@ -131,7 +131,15 @@ export default function GeneralPolicyList({navigation}) {
           setModalVisible={setModalVisible}
         />
         {isLoading == true ? (
-          <LoadingScreen />
+          <View
+            style={{
+              flex: 1,
+              height: window.height * 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <LoadingScreen />
+          </View>
         ) : (
           <View>
             <FlatList

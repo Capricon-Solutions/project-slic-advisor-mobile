@@ -22,15 +22,26 @@ import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
 import {useSelector} from 'react-redux';
+import {useGetClaimHistoryQuery} from '../../../redux/services/policyDetailsSlice';
+import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function ClaimHistory({navigation}) {
-  const claimHistoryResponse = useSelector(
-    state => state.claimHistory.claimHistoryResponse.data,
-  );
-  console.log('claimHistoryResponse', claimHistoryResponse);
+  // const claimHistoryResponse = useSelector(
+  //   state => state.claimHistory.claimHistoryResponse.data,
+  // );
+  const {
+    data: ClaimHistory,
+    error,
+    isLoading,
+  } = useGetClaimHistoryQuery({
+    id: 'VM1115003410000506', // Dynamic ID
+  });
+  const claimHistoryResponse = ClaimHistory?.data;
+
+  console.log('claimHistoryResponse', ClaimHistory);
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -92,18 +103,19 @@ export default function ClaimHistory({navigation}) {
               marginBottom: 3,
               color: COLORS.primary,
             }}>
-            {item.policyNumber}
+            {item.claimNo}
           </Text>
         </View>
-        <DetailLine Title={'Intimated On'} detail={item.intimatedOn} />
+        <DetailLine Title={'Intimated On'} detail={item.intDate} />
         <DetailLine Title={'Voucher'} detail={item.voucher} />
         <DetailLineBold Title={'Date of Loss'} detail={item.dateOfLoss} />
-        <DetailLine Title={'Reg . Date'} detail={item.regDate} />
-        <DetailLine Title={'Payment Type'} detail={item.paymentType} />
-        <DetailLine Title={'Voucher Status'} detail={item.voucherStatus} />
-        <DetailLine Title={'Paid amount'} detail={'LKR ' + item.amount} />
-        <DetailLine Title={'Paid Date'} detail={item.paidDate} />
-        <DetailLine Title={'Voucher No'} detail={item.voucherNo} />
+        <DetailLine Title={'Reg . Date'} detail={item.intDate} />
+        <DetailLine Title={'Payment Type'} detail={item.payTyp} />
+        <DetailLine Title={'Voucher Status'} detail={item.vouSts} />
+        <DetailLine Title={'Paid amount'} detail={'LKR ' + item.padAmount} />
+        <DetailLine Title={'Paid Date'} detail={item.payDate} />
+        <DetailLine Title={'Voucher No'} detail={item.vouNo} />
+        <DetailLine Title={'Status'} detail={item.status} />
       </View>
     );
   };
@@ -116,35 +128,39 @@ export default function ClaimHistory({navigation}) {
         Title="Claim History"
         onPress={() => navigation.goBack()}
         haveFilters={false}
-        haveWhatsapp={true}
+        haveWhatsapp={false}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <ScrollView
-        fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
-        <View>
-          <Text
-            style={{
-              color: COLORS.textColor,
-              fontFamily: Fonts.Roboto.Bold,
-              fontSize: 16,
-              marginVertical: 10,
-            }}>
-            Claim History for - CBB 2033
-          </Text>
-        </View>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView
+          fadingEdgeLength={20}
+          contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
+          <View>
+            <Text
+              style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Bold,
+                fontSize: 16,
+                marginVertical: 10,
+              }}>
+              Claim History for - CBB 2033
+            </Text>
+          </View>
 
-        <View>
-          <FlatList
-            data={claimHistoryResponse}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingHorizontal: 7}}
-            renderItem={({item}) => <Card item={item} />}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View>
-      </ScrollView>
+          <View>
+            <FlatList
+              data={claimHistoryResponse}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingHorizontal: 7}}
+              renderItem={({item}) => <Card item={item} />}
+              // keyExtractor={item => item.id.toString()}
+            />
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 }

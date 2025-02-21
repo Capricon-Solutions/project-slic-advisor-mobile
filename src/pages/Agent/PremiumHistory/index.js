@@ -22,14 +22,25 @@ import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
 import {useSelector} from 'react-redux';
+import {useGetPremiumHistoryQuery} from '../../../redux/services/policyDetailsSlice';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function PremiumHistory({navigation}) {
-  const premiumPaymentResponse = useSelector(
-    state => state.premiumPayment.premiumPaymentResponse.data,
-  );
+  // const premiumPaymentResponse = useSelector(
+  //   state => state.premiumPayment.premiumPaymentResponse.data,
+  // );
+
+  const {
+    data: PremiumHistory,
+    error,
+    isLoading,
+  } = useGetPremiumHistoryQuery({
+    id: 'VM1115003410000506', // Dynamic ID
+  });
+
+  const premiumPaymentResponse = PremiumHistory?.data;
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -94,14 +105,14 @@ export default function PremiumHistory({navigation}) {
               textAlign: 'center',
               color: COLORS.textColor,
             }}>
-            From {item.startDate} To {item.endDate}
+            From {item.policyStartDate} To {item.policyEndDate}
           </Text>
         </View>
         <DetailLine
           Title={'Basic Premium'}
           detail={
             'LKR ' +
-            Number(item.premium).toLocaleString(undefined, {
+            Number(item.basicPremium)?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
@@ -111,7 +122,7 @@ export default function PremiumHistory({navigation}) {
           Title={'RCC'}
           detail={
             'LKR ' +
-            Number(item.rcc).toLocaleString(undefined, {
+            Number(item.rcc)?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
@@ -121,7 +132,7 @@ export default function PremiumHistory({navigation}) {
           Title={'TCC'}
           detail={
             'LKR ' +
-            Number(item.tcc).toLocaleString(undefined, {
+            Number(item.tc)?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
@@ -132,7 +143,7 @@ export default function PremiumHistory({navigation}) {
           Title={'Total Premium'}
           detail={
             'LKR ' +
-            Number(item.totalPremium).toLocaleString(undefined, {
+            Number(item.totalPremium)?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
@@ -144,14 +155,14 @@ export default function PremiumHistory({navigation}) {
           Title={'premium Paid'}
           detail={
             'LKR ' +
-            Number(item.paid).toLocaleString(undefined, {
+            Number(item.paidPremium)?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
           }
         />
-        <DetailLine Title={'No. of Claims'} detail={item.noOfClaims} />
-        <DetailLine Title={'Paid Date'} detail={item.paidDate} />
+        <DetailLine Title={'No. of Claims'} detail={item?.claimCount} />
+        <DetailLine Title={'Paid Date'} detail={item?.lastPayDate} />
       </View>
     );
   };
@@ -164,7 +175,7 @@ export default function PremiumHistory({navigation}) {
         Title="Premium Payment"
         onPress={() => navigation.goBack()}
         haveFilters={false}
-        haveWhatsapp={true}
+        haveWhatsapp={false}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
@@ -189,7 +200,7 @@ export default function PremiumHistory({navigation}) {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingHorizontal: 8}}
             renderItem={({item}) => <Card item={item} />}
-            keyExtractor={item => item.id.toString()}
+            // keyExtractor={item => item.id.toString()}
           />
         </View>
       </ScrollView>

@@ -1,6 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+  defaultImageUrl:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIEd2zxEc_4IQ1jHyniHLECu15zRjkHTBJzA&s',
   profileResponse: {
     data: {
       name: 'John Snow',
@@ -35,9 +37,12 @@ export const ProfileSlice = createSlice({
     GetprofileResponse: (state, action) => {
       state.profileResponse = action.payload;
     },
+    SetdefaultImageUrl: (state, action) => {
+      state.defaultImageUrl = action.payload;
+    },
   },
 });
 
-export const {GetprofileResponse} = ProfileSlice.actions;
+export const {GetprofileResponse, SetdefaultImageUrl} = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

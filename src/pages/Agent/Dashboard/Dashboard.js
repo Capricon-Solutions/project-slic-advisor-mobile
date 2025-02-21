@@ -47,7 +47,8 @@ export default function Dashboard({navigation}) {
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
-
+  const usertype = useSelector(state => state.userType.userType);
+  console.log('userType', usertype);
   // API Binds
   const name = profileResponse?.name;
   const regionName = profileResponse?.regionName;
@@ -71,6 +72,7 @@ export default function Dashboard({navigation}) {
     },
     {
       title: 'Policy Renewals',
+
       icon: policyRenewal,
       onPress: () => {
         navigation.navigate('PolicyRenewals');
@@ -100,27 +102,63 @@ export default function Dashboard({navigation}) {
     // },
   ];
 
-  const IndividualPerformanceType = [
-    {
-      title: 'Individual Statistics',
-      icon: individualPerforamance,
-      onPress: () => {
-        setsalesModalVisible(false);
-        setModalVisible(false);
-        navigation.navigate('IndividualStatistics');
-      },
-    },
-    // {
-    //   title: 'Individual performance Comparison',
-    //   icon: teamPerformance,
-    //   // onPress: () => setModalVisible(true),
-    // },
-    // {
-    //   title: 'Branch sales performance',
-    //   icon: teamPerformance,
-    //   // onPress: () => setModalVisible(true),
-    // },
-  ];
+  const IndividualPerformanceType =
+    usertype == 1
+      ? [
+          {
+            title: 'Individual Statistics',
+            icon: individualPerforamance,
+            onPress: () => {
+              setsalesModalVisible(false);
+              setModalVisible(false);
+              navigation.navigate('IndividualStatistics');
+            },
+          },
+        ]
+      : [
+          {
+            title: 'My Self',
+            icon: individualPerforamance,
+            onPress: () => {
+              setModalVisible(false);
+              navigation.navigate('MyselfPerformance');
+            },
+          },
+          {
+            title: 'Team',
+            expandable: true,
+            subButtons: [
+              {
+                title: 'Team Statistics',
+                onPress: () => {
+                  setModalVisible(false);
+                  navigation.navigate('TeamStatistics');
+                },
+              },
+              {
+                title: 'Current Performance',
+                onPress: () => {
+                  setModalVisible(false);
+                  console.log('test');
+                },
+              },
+            ],
+            icon: individualPerforamance,
+            onPress: () => {
+              // setModalVisible(false);
+              // navigation.navigate('IndividualStatistics');
+            },
+          },
+          {
+            title: 'Team Member',
+            icon: individualPerforamance,
+            onPress: () => {
+              // setModalVisible(false);
+              // navigation.navigate('IndividualStatistics');
+            },
+          },
+        ];
+  const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
   return (
     <View style={[Styles.container, {paddingHorizontal: 0}]}>
@@ -168,7 +206,7 @@ export default function Dashboard({navigation}) {
             <Avatar.Image
               size={window.width * 0.15}
               style={{backgroundColor: 'transparent'}}
-              source={{uri: imageUrl}}
+              source={{uri: defaultImageUrl}}
             />
           </TouchableOpacity>
           <TouchableOpacity

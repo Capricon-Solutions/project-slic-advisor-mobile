@@ -16,5 +16,6 @@ export const styles = StyleSheet.create({
     elevation: 5,
     padding: 15,
     marginTop: 5,
+    paddingBottom: 10,
   },
 });

@@ -20,6 +20,7 @@ import Button from './Button';
 import SmallButton from './SmallButton';
 
 // import { useSelector } from "react-redux";
+const window = Dimensions.get('window');
 
 export default function LandscapeHeader({
   Title,
@@ -42,13 +43,15 @@ export default function LandscapeHeader({
         height: 70,
         marginTop: 5,
       }}>
-      <View style={{justifyContent: 'center', flex: 0.1}}>
+      <View style={{justifyContent: 'center', flex: 0.07}}>
         <TouchableOpacity
           onPress={onPress}
           style={{
-            height: 38,
-            width: 38,
+            height: window.height * 0.1,
+            width: window.height * 0.1,
             borderRadius: 13,
+            borderWidth: 1,
+            borderColor: COLORS.warmGray,
             backgroundColor: COLORS.white,
             alignItems: 'center',
             justifyContent: 'center',
@@ -60,11 +63,11 @@ export default function LandscapeHeader({
           />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 0.25, alignItems: 'flex-start'}}>
+      <View style={{flex: 0.3, alignItems: 'flex-start'}}>
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
-            fontSize: 17,
+            fontSize: window.height * 0.045,
             color: COLORS.title,
           }}>
           {Title}
@@ -72,7 +75,7 @@ export default function LandscapeHeader({
       </View>
       <View
         style={{
-          flex: 0.65,
+          flex: 0.6,
           flexDirection: 'row',
           alignItems: 'center',
         }}>

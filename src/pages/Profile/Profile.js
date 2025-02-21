@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -23,17 +23,58 @@ import {Avatar} from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
 import {styles} from './styles';
 import {useDispatch, useSelector} from 'react-redux';
-import {GetprofileResponse} from '../../redux/services/ProfileSlice';
-
+import {
+  GetprofileResponse,
+  SetdefaultImageUrl,
+} from '../../redux/services/ProfileSlice';
+import {pick, types} from '@react-native-documents/picker';
+import {useGetImageQuery} from '../../redux/services/profilePicSlice';
 const window = Dimensions.get('window');
 
 const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
 
 export default function Profile({navigation}) {
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
+  const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
+  const [image, setImage] = useState();
+
+  useEffect(() => {
+    console.log('defaultImageUrl', defaultImageUrl);
+  }, [defaultImageUrl]);
+
+  const {
+    data: ProfilePic,
+    error,
+    isLoading,
+  } = useGetImageQuery({
+    id: 907719,
+  });
+  useEffect(() => {
+    console.log('isLoading', isLoading);
+    console.log('ProfilePic', ProfilePic);
+    console.log('error', error?.data?.Error);
+  }, [ProfilePic, isLoading]);
+
+  const attachmentPicker = async () => {
+    console.log('test');
+
+    try {
+      const [result] = await pick({
+        mode: 'open',
+        allowMultiSelection: false,
+        type: types.images,
+      });
+      setImage(result.uri);
+      console.log(result);
+
+      dispatch(SetdefaultImageUrl(result.uri));
+    } catch (err) {
+      // see error handling
+    }
+  };
 
   // API Binds
   const name = profileResponse?.name;
@@ -60,8 +101,10 @@ export default function Profile({navigation}) {
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
-            <Avatar.Image size={pictureSize} source={{uri: imageUrl}} />
-            <TouchableOpacity style={styles.editIcon}>
+            <Avatar.Image size={pictureSize} source={{uri: defaultImageUrl}} />
+            <TouchableOpacity
+              style={styles.editIcon}
+              onPress={() => attachmentPicker()}>
               <Feather name="edit-3" color={COLORS.black} size={20} />
             </TouchableOpacity>
           </View>
