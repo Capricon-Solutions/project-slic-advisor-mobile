@@ -50,7 +50,7 @@ const DropdownComponent = () => {
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        containerStyle={{width: window.width * 0.4, fontSize: 12}}
+        containerStyle={{width: window.width * 0.5, fontSize: 12}}
         data={data}
         search
         maxHeight={300}

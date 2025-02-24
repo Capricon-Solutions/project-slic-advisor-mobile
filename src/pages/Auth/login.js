@@ -78,7 +78,7 @@ const LoginScreen = ({navigation}) => {
       {/* Login Button */}
       <View style={{width: '100%', alignItems: 'center'}}>
         <Button
-          onPress={() => navigation.navigate('AgentNavigator')}
+          onPress={() => navigation.navigate('TypeTest')}
           Title={'SIGN IN'}></Button>
       </View>
 

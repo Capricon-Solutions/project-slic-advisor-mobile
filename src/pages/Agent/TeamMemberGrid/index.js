@@ -25,6 +25,11 @@ import Button from '../../../components/Button';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Orientation from 'react-native-orientation-locker';
+import Header from '../../../components/Header';
+import OutlinedTextBox from '../../../components/OutlinedTextBox';
 
 const window = Dimensions.get('window');
 const data = [
@@ -44,7 +49,7 @@ export default function TeamMemberGrid({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'NB', 'Refunds', 'Endorsements', 'Total'];
   const columnWidths = [150, 145, 130, 160, 135, 135];
-
+  const [isLandscape, setIsLandscape] = useState(false);
   // const tableData = [
   //   ['Region 1', 10, 5, 8, 3, 18, 8],
   //   ['Region 2', 7, 2, 6, 4, 13, 6],
@@ -52,6 +57,19 @@ export default function TeamMemberGrid({navigation}) {
   //   ['Region 4', 6, 3, 7, 5, 13, 8],
   //   ['Total', 32, 14, 26, 14, 58, 28],
   // ];
+
+  const agentsData = [
+    {
+      id: '1',
+      name: 'Agent 01',
+      renewal: '500,000',
+      nb: '500,000',
+      ppw: '500,000',
+      others: '0',
+      endorsement: '0',
+      total: '850,000',
+    },
+  ];
 
   const IndividualStatResponse = useSelector(
     state => state.individualStat.IndividualStatResponse.data,
@@ -84,76 +102,173 @@ export default function TeamMemberGrid({navigation}) {
     return null;
   };
 
+  const toggleOrientation = () => {
+    if (isLandscape) {
+      Orientation.lockToPortrait(); // Lock screen to portrait mode
+    } else {
+      Orientation.lockToLandscape(); // Lock screen to landscape mode
+    }
+    setIsLandscape(!isLandscape);
+  };
+
   return (
     <View style={Styles.container}>
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: 20}}>
-        <LandscapeHeader
-          haveSearch={false}
-          Title="Team Member"
-          onPress={() => navigation.goBack()}
-        />
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
+        {isLandscape == true ? (
+          <LandscapeHeader
+            haveSearch={false}
+            Title="Team Member"
+            onPress={() => navigation.goBack()}
+          />
+        ) : (
+          <Header
+            Title="Team Member"
+            onPress={() => navigation.goBack()}
+            haveFilters={false}
+            haveWhatsapp={false}
+            haveMenu={false}
+          />
+        )}
       </View>
-
-      <ScrollView
-        contentContainerStyle={{
+      <View
+        style={{
+          justifyContent: 'flex-end',
+          width: '100%',
+          flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        <View
-          style={{
-            justifyContent: 'flex-end',
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 5,
-          }}>
-          <TouchableOpacity style={{flexDirection: 'row', gap: 5}}>
-            <Text
-              style={{
-                color: COLORS.textColor,
-                fontFamily: Fonts.Roboto.Bold,
-              }}>
-              Grid view
-            </Text>
+          gap: 5,
+          paddingRight: 20,
+        }}>
+        <TouchableOpacity
+          onPress={toggleOrientation}
+          style={{flexDirection: 'row', gap: 5}}>
+          <Text
+            style={{
+              color: COLORS.textColor,
+              fontFamily: Fonts.Roboto.Bold,
+            }}>
+            {isLandscape ? 'List View' : 'Grid view'}
+          </Text>
+          {isLandscape ? (
+            <MaterialIcons color={COLORS.primary} name="list-alt" size={20} />
+          ) : (
             <MaterialCommunityIcons
               color={COLORS.primary}
               name="view-grid-outline"
               size={20}
             />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: '100%',
+          )}
+        </TouchableOpacity>
+      </View>
+      {isLandscape == true ? (
+        <ScrollView
+          contentContainerStyle={{
             alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginVertical: 5,
-          }}>
-          <View style={{flex: 0.18}}>
-            <DropdownComponent />
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+          }}
+          style={{}}>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              marginVertical: 5,
+            }}>
+            <View style={{flex: 0.18}}>
+              <DropdownComponent />
+            </View>
+            <View style={{flex: 0.25}}>
+              <DropdownComponent />
+            </View>
+            <View style={{flex: 0.2}}>
+              <DropdownComponent />
+            </View>
+            <View style={{flex: 0.13}}>
+              <Button Title={'Apply'} />
+            </View>
           </View>
-          <View style={{flex: 0.25}}>
-            <DropdownComponent />
-          </View>
-          <View style={{flex: 0.2}}>
-            <DropdownComponent />
-          </View>
-          <View style={{flex: 0.13}}>
-            <Button Title={'Apply'} />
-          </View>
-        </View>
-        <HorizontalTeamMemberTable
-          onPress={() => navigation.navigate('PolicyDetails')}
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableData}
-          columnWidths={columnWidths}
+          <HorizontalTeamMemberTable
+            onPress={() => navigation.navigate('PolicyDetails')}
+            haveTotal={false}
+            tableHead={tableHead}
+            tableData={tableData}
+            columnWidths={columnWidths}
+          />
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={agentsData}
+          initialNumToRender={2}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{padding: 10}}
+          renderItem={({item}) => (
+            <View
+              style={{
+                borderRadius: 15,
+                backgroundColor: COLORS.white,
+                elevation: 10,
+                margin: 10,
+                padding: 15,
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Fontisto color={COLORS.primaryGreen} name="person" size={23} />
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 14,
+                    color: COLORS.textColor,
+                  }}>
+                  {item.name}
+                </Text>
+              </View>
+
+              {/* First Row */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 5,
+                  gap: 10,
+                  width: '100%',
+                }}>
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox Title={'Renewal'} value={item.renewal} />
+                </View>
+
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox Title={'NB'} value={item.nb} />
+                </View>
+              </View>
+
+              {/* Second Row */}
+              <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox Title={'PPW'} value={item.ppw} />
+                </View>
+
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox Title={'Others'} value={item.others} />
+                </View>
+              </View>
+
+              {/* Third Row */}
+              <View>
+                <OutlinedTextBox
+                  Title={'Endorsement'}
+                  value={item.endorsement}
+                />
+              </View>
+
+              <View>
+                <OutlinedTextBox Title={'Total'} value={item.total} />
+              </View>
+            </View>
+          )}
         />
-      </ScrollView>
+      )}
     </View>
   );
 }

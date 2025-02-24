@@ -41,6 +41,7 @@ import MyselfPerformance from './src/pages/Agent/MyselfPerformance';
 import TeamStatistics from './src/pages/Agent/TeamStatistics';
 import TeamPerformance from './src/pages/Agent/TeamPerformance';
 import TeamMemberGrid from './src/pages/Agent/TeamMemberGrid';
+import TypeTest from './src/pages/Auth/TypeTest';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -78,7 +79,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -102,7 +103,8 @@ function App(): React.JSX.Element {
         <Stack.Screen  options={{orientation:'landscape'}} name="MyselfPerformance" component={MyselfPerformance} />
         <Stack.Screen  options={{orientation:'landscape'}} name="TeamStatistics" component={TeamStatistics} />
         <Stack.Screen  options={{orientation:'landscape'}} name="TeamPerformance" component={TeamPerformance} />
-        <Stack.Screen  options={{orientation:'landscape'}} name="TeamMemberGrid" component={TeamMemberGrid} />
+        <Stack.Screen   name="TeamMemberGrid" component={TeamMemberGrid} />
+        <Stack.Screen   name="TypeTest" component={TypeTest} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
