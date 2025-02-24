@@ -139,6 +139,7 @@ export default function Dashboard({navigation}) {
                 title: 'Current Performance',
                 onPress: () => {
                   setModalVisible(false);
+                  navigation.navigate('TeamPerformance');
                   console.log('test');
                 },
               },
@@ -153,8 +154,8 @@ export default function Dashboard({navigation}) {
             title: 'Team Member',
             icon: individualPerforamance,
             onPress: () => {
-              // setModalVisible(false);
-              // navigation.navigate('IndividualStatistics');
+              setModalVisible(false);
+              navigation.navigate('TeamMemberGrid');
             },
           },
         ];

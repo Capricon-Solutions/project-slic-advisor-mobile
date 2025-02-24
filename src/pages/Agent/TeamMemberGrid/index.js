@@ -1,0 +1,159 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
+import {Styles} from '../../../theme/Styles';
+import {FlatList} from 'react-native';
+import ContactListItem from '../../../components/contactListItem';
+import DepartmentItem from '../../../components/DepartmentItem';
+import {styles} from './styles';
+import {Dropdown} from 'react-native-element-dropdown';
+import LandscapeHeader from '../../../components/LandscapeHeader';
+import {useSelector} from 'react-redux';
+import HorizontalMargedTableComponent from '../../../components/HorizontalMargedTableComponent';
+import HorizontalTeamMemberTable from '../../../components/HorizontalTeamMemberTable';
+import DropdownComponent from '../../../components/DropdownComponent';
+import SmallButton from '../../../components/SmallButton';
+import Button from '../../../components/Button';
+import COLORS from '../../../theme/colors';
+import Fonts from '../../../theme/Fonts';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const window = Dimensions.get('window');
+const data = [
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
+];
+
+export default function TeamMemberGrid({navigation}) {
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const [SelectedType, setSelectedType] = useState(1);
+  const tableHead = ['', 'Renewals', 'NB', 'Refunds', 'Endorsements', 'Total'];
+  const columnWidths = [150, 145, 130, 160, 135, 135];
+
+  // const tableData = [
+  //   ['Region 1', 10, 5, 8, 3, 18, 8],
+  //   ['Region 2', 7, 2, 6, 4, 13, 6],
+  //   ['Region 3', 9, 4, 5, 2, 14, 6],
+  //   ['Region 4', 6, 3, 7, 5, 13, 8],
+  //   ['Total', 32, 14, 26, 14, 58, 28],
+  // ];
+
+  const IndividualStatResponse = useSelector(
+    state => state.individualStat.IndividualStatResponse.data,
+  );
+
+  const tableData = IndividualStatResponse?.tableData?.map(item => [
+    item?.first.toString() ?? '',
+    item?.Renewals.toString() ?? '',
+    item?.New.toString() ?? '',
+    item?.Refunds.toString() ?? '',
+    item?.Endorsements.toString() ?? '',
+    item?.Total.toString() ?? '',
+  ]);
+  const renderItem = ({item}) => <ContactListItem item={item} />;
+
+  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
+
+  const handleLoad = (from, to) => {
+    console.log('Selected From:', from);
+    console.log('Selected To:', to);
+  };
+  const renderLabel = () => {
+    if (value || isFocus) {
+      return (
+        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
+          Dropdown label
+        </Text>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <View style={Styles.container}>
+      {/* <HeaderBackground /> */}
+      <View style={{paddingHorizontal: 20}}>
+        <LandscapeHeader
+          haveSearch={false}
+          Title="Team Member"
+          onPress={() => navigation.goBack()}
+        />
+      </View>
+
+      <ScrollView
+        contentContainerStyle={{
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+        }}
+        style={{}}>
+        <View
+          style={{
+            justifyContent: 'flex-end',
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 5,
+          }}>
+          <TouchableOpacity style={{flexDirection: 'row', gap: 5}}>
+            <Text
+              style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Bold,
+              }}>
+              Grid view
+            </Text>
+            <MaterialCommunityIcons
+              color={COLORS.primary}
+              name="view-grid-outline"
+              size={20}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            marginVertical: 5,
+          }}>
+          <View style={{flex: 0.18}}>
+            <DropdownComponent />
+          </View>
+          <View style={{flex: 0.25}}>
+            <DropdownComponent />
+          </View>
+          <View style={{flex: 0.2}}>
+            <DropdownComponent />
+          </View>
+          <View style={{flex: 0.13}}>
+            <Button Title={'Apply'} />
+          </View>
+        </View>
+        <HorizontalTeamMemberTable
+          onPress={() => navigation.navigate('PolicyDetails')}
+          haveTotal={false}
+          tableHead={tableHead}
+          tableData={tableData}
+          columnWidths={columnWidths}
+        />
+      </ScrollView>
+    </View>
+  );
+}

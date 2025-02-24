@@ -1,5 +1,6 @@
 const COLORS = {
   primary: '#00ADBB',
+  lightPrimary: '#24c4d1',
   title: '#33384B',
   subtitle: '#757575',
   placeholder: '#757575',
@@ -36,6 +37,7 @@ const COLORS = {
   trainingCard: '#d0f2f5',
   calenderInput: '#F4F6FA',
   grayBackground: '#FAFAFC',
+  tableSubHeader: '#CCEFF1',
 };
 
 export default COLORS;

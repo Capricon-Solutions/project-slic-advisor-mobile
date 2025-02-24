@@ -39,6 +39,8 @@ import PDFViewer from './src/pages/PDFViewer/PDFViewer';
 import ProductDetails from './src/pages/Agent/ProductDetails';
 import MyselfPerformance from './src/pages/Agent/MyselfPerformance';
 import TeamStatistics from './src/pages/Agent/TeamStatistics';
+import TeamPerformance from './src/pages/Agent/TeamPerformance';
+import TeamMemberGrid from './src/pages/Agent/TeamMemberGrid';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -99,6 +101,8 @@ function App(): React.JSX.Element {
         <Stack.Screen  name="ProductDetails" component={ProductDetails} />
         <Stack.Screen  options={{orientation:'landscape'}} name="MyselfPerformance" component={MyselfPerformance} />
         <Stack.Screen  options={{orientation:'landscape'}} name="TeamStatistics" component={TeamStatistics} />
+        <Stack.Screen  options={{orientation:'landscape'}} name="TeamPerformance" component={TeamPerformance} />
+        <Stack.Screen  options={{orientation:'landscape'}} name="TeamMemberGrid" component={TeamMemberGrid} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

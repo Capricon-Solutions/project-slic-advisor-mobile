@@ -47,8 +47,8 @@ export default function LandscapeHeader({
         <TouchableOpacity
           onPress={onPress}
           style={{
-            height: window.height * 0.1,
-            width: window.height * 0.1,
+            height: 40,
+            width: 40,
             borderRadius: 13,
             borderWidth: 1,
             borderColor: COLORS.warmGray,
@@ -67,7 +67,7 @@ export default function LandscapeHeader({
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
-            fontSize: window.height * 0.045,
+            fontSize: 18,
             color: COLORS.title,
           }}>
           {Title}
