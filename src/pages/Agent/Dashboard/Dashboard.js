@@ -144,15 +144,12 @@ export default function Dashboard({navigation}) {
                 },
               },
             ],
-            icon: individualPerforamance,
-            onPress: () => {
-              // setModalVisible(false);
-              // navigation.navigate('IndividualStatistics');
-            },
+            icon: policyRenewal,
+            onPress: 'expand',
           },
           {
             title: 'Team Member',
-            icon: individualPerforamance,
+            icon: policyRenewal,
             onPress: () => {
               setModalVisible(false);
               navigation.navigate('TeamMemberGrid');
@@ -194,11 +191,24 @@ export default function Dashboard({navigation}) {
       /> */}
 
       <HeaderBackground />
-      <Header Title="Advisor Dashboard" onPress={() => navigation.goBack()} />
+      {/* <Header
+        Title={
+          usertype == 1
+            ? 'Dashboard'
+            : usertype == 2
+            ? 'Dashboard'
+            : 'Dashboard'
+        }
+        onPress={() => navigation.goBack()}
+      /> */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}>
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          paddingBottom: 10,
+          paddingTop: 30,
+        }}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
@@ -215,7 +225,16 @@ export default function Dashboard({navigation}) {
             style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>region name - {regionName}</Text>
-            <Text style={styles.position}>( {designation})</Text>
+            {/* <Text style={styles.position}>( {designation})</Text> */}
+            <Text style={styles.position}>
+              (
+              {usertype == 1
+                ? 'Advisor'
+                : usertype == 2
+                ? 'Team Leader'
+                : 'Regional Manager'}
+              )
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -236,7 +255,11 @@ export default function Dashboard({navigation}) {
               color: COLORS.black,
               fontSize: window.width * 0.043,
             }}>
-            Advisor Summary
+            {usertype == 1
+              ? 'Advisor Summary'
+              : usertype == 2
+              ? 'Team Leader Summary'
+              : 'Central 1 Region Summary'}
           </Text>
         </View>
 
@@ -321,11 +344,11 @@ export default function Dashboard({navigation}) {
                   // title={'Progress'}
                   valueSuffix={'/' + totalNumberofRegions}
                   progressValueStyle={{
-                    fontSize: window.height * 0.025,
+                    fontSize: window.height * 0.023,
                     fontFamily: Fonts.Roboto.Bold,
                   }}
                   valueSuffixStyle={{
-                    fontSize: window.height * 0.02,
+                    fontSize: window.height * 0.018,
                     color: COLORS.regionalRank,
                   }}
                   // titleColor={'red'}
@@ -366,11 +389,11 @@ export default function Dashboard({navigation}) {
                   // title={'Progress'}
                   valueSuffix={'/' + totalNumberofBranches}
                   progressValueStyle={{
-                    fontSize: window.height * 0.025,
+                    fontSize: window.height * 0.023,
                     fontFamily: Fonts.Roboto.Bold,
                   }}
                   valueSuffixStyle={{
-                    fontSize: window.height * 0.02,
+                    fontSize: window.height * 0.018,
                     color: COLORS.branchRank,
                   }}
                   // titleColor={'red'}

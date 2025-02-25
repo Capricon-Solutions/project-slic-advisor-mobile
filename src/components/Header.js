@@ -47,8 +47,8 @@ export default function Header({
         <TouchableOpacity
           onPress={onPress}
           style={{
-            height: window.width * 0.1,
-            width: window.width * 0.1,
+            height: window.width * 0.095,
+            width: window.width * 0.095,
             borderRadius: 13,
             backgroundColor: COLORS.white,
             alignItems: 'center',

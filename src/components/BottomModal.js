@@ -81,7 +81,15 @@ export default function BottomModal({
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
-          onPress={onPress}>
+          onPress={() => {
+            console.log(onPress.Value);
+            if (onPress === 'expand') {
+              console.log(onPress);
+              setVisible(!visible);
+            } else if (typeof onPress === 'function') {
+              onPress();
+            }
+          }}>
           <View style={{flex: 0.15, alignItems: 'center'}}>
             <Image
               source={icon}

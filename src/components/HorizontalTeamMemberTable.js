@@ -99,18 +99,68 @@ const HorizontalTeamMemberTable = ({
                   <TouchableOpacity
                     key={cellIndex}
                     onPress={() => handleCellPress(cellData)}>
-                    <Text
-                      style={[
-                        styles.text,
-                        cellIndex === 0
-                          ? styles.leftAlignedText
-                          : styles.centerAlignedText, // Align first column left
-                        haveTotal &&
-                          index === tableData.length - 1 &&
-                          styles.boldText,
-                      ]}>
-                      {cellData}
-                    </Text>
+                    {cellIndex !== 3 && (
+                      <View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
+                    {cellIndex == 3 && (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View
+                          style={{
+                            flex: 0.5,
+                          }}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData?.ppw}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 0.5,
+                          }}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData?.other}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
                   </TouchableOpacity>
                 ))}
                 widthArr={columnWidths}
@@ -150,7 +200,7 @@ const styles = StyleSheet.create({
   headTextSub: {
     margin: 3,
     fontFamily: Fonts.Roboto.Regular,
-    fontSize: 12,
+    fontSize: 11,
     color: COLORS.white,
     textAlign: 'center',
   },
@@ -165,7 +215,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 11,
   },
   row: {height: 50},
   rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row

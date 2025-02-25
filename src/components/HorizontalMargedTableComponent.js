@@ -35,7 +35,7 @@ const HorizontalMargedTableComponent = ({
 
             <Row
               data={tableHead.map((item, index) => (
-                <View style={{}}>
+                <View>
                   <View
                     style={[
                       styles.mainHeader,
@@ -99,18 +99,67 @@ const HorizontalMargedTableComponent = ({
                   <TouchableOpacity
                     key={cellIndex}
                     onPress={() => handleCellPress(cellData)}>
-                    <Text
-                      style={[
-                        styles.text,
-                        cellIndex === 0
-                          ? styles.leftAlignedText
-                          : styles.centerAlignedText, // Align first column left
-                        haveTotal &&
-                          index === tableData.length - 1 &&
-                          styles.boldText,
-                      ]}>
-                      {cellData}
-                    </Text>
+                    {cellIndex == 0 && (
+                      <View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                    {cellIndex > 0 && (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View
+                          style={{
+                            flex: 0.5,
+                          }}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData?.cash}
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 0.5,
+                          }}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText, // Align first column left
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData?.debit}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
                   </TouchableOpacity>
                 ))}
                 widthArr={columnWidths}
@@ -144,12 +193,14 @@ const styles = StyleSheet.create({
     margin: 6,
     fontWeight: 'bold',
     color: '#fff',
+    fontSize: 12,
     textAlign: 'center',
   },
   headTextSub: {
     margin: 6,
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.textColor,
+    fontSize: 12,
     textAlign: 'center',
   },
   firstCell: {
@@ -163,7 +214,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 10,
   },
   row: {height: 50},
   rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row

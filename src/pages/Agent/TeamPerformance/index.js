@@ -30,8 +30,8 @@ const window = Dimensions.get('window');
 
 export default function TeamPerformance({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
-  const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
-  const columnWidths = [200, 160, 160, 160, 160, 160];
+  const tableHead = ['', 'New', 'Renewals', 'Total'];
+  const columnWidths = [200, 160, 160, 160];
 
   // const tableData = [
   //   ['Region 1', 10, 5, 8, 3, 18, 8],
@@ -42,16 +42,14 @@ export default function TeamPerformance({navigation}) {
   // ];
 
   const IndividualStatResponse = useSelector(
-    state => state.individualStat.IndividualStatResponse.data,
+    state => state.teamStat.teamStatResponse.data,
   );
 
   const tableData = IndividualStatResponse?.tableData?.map(item => [
     item?.first.toString() ?? '',
-    item?.Renewals.toString() ?? '',
-    item?.New.toString() ?? '',
-    item?.Refunds.toString() ?? '',
-    item?.Endorsements.toString() ?? '',
-    item?.Total.toString() ?? '',
+    item?.New,
+    item?.Renewals,
+    item?.Total,
   ]);
   const renderItem = ({item}) => <ContactListItem item={item} />;
 
@@ -83,6 +81,7 @@ export default function TeamPerformance({navigation}) {
             justifyContent: 'center',
             alignItems: 'center',
             paddingVertical: 6,
+            paddingHorizontal: 5,
           }}>
           <Text
             style={{
@@ -101,6 +100,7 @@ export default function TeamPerformance({navigation}) {
             justifyContent: 'center',
             alignItems: 'center',
             paddingVertical: 6,
+            paddingHorizontal: 5,
           }}>
           <Text
             style={{

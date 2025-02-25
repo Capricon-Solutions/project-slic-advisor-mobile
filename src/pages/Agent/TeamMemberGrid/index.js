@@ -72,15 +72,16 @@ export default function TeamMemberGrid({navigation}) {
   ];
 
   const IndividualStatResponse = useSelector(
-    state => state.individualStat.IndividualStatResponse.data,
+    state => state.teamStat.teamMemberResponse.data,
   );
 
   const tableData = IndividualStatResponse?.tableData?.map(item => [
     item?.first.toString() ?? '',
-    item?.Renewals.toString() ?? '',
-    item?.New.toString() ?? '',
-    item?.Refunds.toString() ?? '',
-    item?.Endorsements.toString() ?? '',
+
+    item?.Renewal.toString() ?? '',
+    item?.NB.toString() ?? '',
+    item?.Refund,
+    item?.Endorsement.toString() ?? '',
     item?.Total.toString() ?? '',
   ]);
   const renderItem = ({item}) => <ContactListItem item={item} />;
@@ -200,7 +201,7 @@ export default function TeamMemberGrid({navigation}) {
         </ScrollView>
       ) : (
         <FlatList
-          data={agentsData}
+          data={IndividualStatResponse?.tableData}
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{padding: 10}}
@@ -222,7 +223,7 @@ export default function TeamMemberGrid({navigation}) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item.name}
+                  {item.first}
                 </Text>
               </View>
 
@@ -235,22 +236,22 @@ export default function TeamMemberGrid({navigation}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox Title={'Renewal'} value={item.renewal} />
+                  <OutlinedTextBox Title={'Renewal'} value={item.Renewal} />
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox Title={'NB'} value={item.nb} />
+                  <OutlinedTextBox Title={'NB'} value={item.NB} />
                 </View>
               </View>
 
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox Title={'PPW'} value={item.ppw} />
+                  <OutlinedTextBox Title={'PPW'} value={item.Refund.ppw} />
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox Title={'Others'} value={item.others} />
+                  <OutlinedTextBox Title={'Others'} value={item.Refund.other} />
                 </View>
               </View>
 
@@ -258,12 +259,12 @@ export default function TeamMemberGrid({navigation}) {
               <View>
                 <OutlinedTextBox
                   Title={'Endorsement'}
-                  value={item.endorsement}
+                  value={item.Endorsement}
                 />
               </View>
 
               <View>
-                <OutlinedTextBox Title={'Total'} value={item.total} />
+                <OutlinedTextBox Title={'Total'} value={item.Total} />
               </View>
             </View>
           )}

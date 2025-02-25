@@ -12,6 +12,7 @@ import policyDetailsReducer from './policyDetailsSlice';
 import claimHistoryReducer from './claimHistorySlice';
 import premiumPaymentReducer from './premiumPaymentSlice';
 import userTypeReducer from './userTypeSlice';
+import teamStatReducer from './teamStatSlice';
 // import policyRenewalsReducer from './policyRenewalsSlice';
 // import ppwCancelationReducr from './ppwCancelationSlice';
 
@@ -28,6 +29,7 @@ export const store = configureStore({
     claimHistory: claimHistoryReducer,
     premiumPayment: premiumPaymentReducer,
     userType: userTypeReducer,
+    teamStat: teamStatReducer,
     // policyRenewals: policyRenewalsReducer,
     // ppwCancelation: ppwCancelationReducr,
   },
