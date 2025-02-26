@@ -226,7 +226,7 @@ export default function PolicyFilter({
             <View style={{flex: 0.25}}>
               <AlertButtonWhite Title={'Clear'} />
             </View>
-            <View style={{flex: 0.25}}>
+            <View style={{flex: 0.3}}>
               <AlertButton Title={'Search'} />
             </View>
           </View>

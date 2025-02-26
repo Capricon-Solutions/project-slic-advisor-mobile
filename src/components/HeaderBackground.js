@@ -21,13 +21,24 @@ export default function HeaderBackground({Title}) {
       <Path
         fill={COLORS.TopBackColor}
         d={`
-					M0,0 
-					H${window.width} 
-					V230
-					Q${window.width / 2},290 0,230 
-					Z
-				`}
+    			M0,0
+    			H${window.width}
+    			V230
+    			Q${window.width / 2},290 0,230
+    			Z
+    		`}
       />
     </Svg>
+    // <View
+    //   style={[
+    //     Styles.topBackground,
+    //     {
+    //       backgroundColor: COLORS.TopBackColor,
+    //       height: 200,
+    //       width: '100%',
+    //       borderBottomEndRadius: 20,
+    //       borderBottomStartRadius: 20,
+    //     },
+    //   ]}></View>
   );
 }

@@ -132,7 +132,7 @@ export const Styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: window.width * 0.04,
+    fontSize: window.width * 0.0358,
     fontFamily: Fonts.Roboto.SemiBold,
   },
   smallbuttonText: {
@@ -236,10 +236,30 @@ export const Styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     // borderWidth: 1,
     // borderColor: COLORS.lightBorder,
+    elevation: 3,
+  },
+
+  leadSearchListWrap: {
+    backgroundColor: COLORS.background,
+    marginVertical: 5,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    justifyContent: 'space-between',
+    marginHorizontal: 5,
+    borderRadius: 10,
+    shadowColor: '#000',
+    height: 111,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     elevation: 3,
   },
   noticeContainer: {

@@ -42,6 +42,11 @@ import TeamStatistics from './src/pages/Agent/TeamStatistics';
 import TeamPerformance from './src/pages/Agent/TeamPerformance';
 import TeamMemberGrid from './src/pages/Agent/TeamMemberGrid';
 import TypeTest from './src/pages/Auth/TypeTest';
+import BPlanner from './src/pages/Agent/BPlanner';
+import LeadSearch from './src/pages/Agent/BPlanner/LeadSearch';
+import LeadCreation from './src/pages/Agent/BPlanner/LeadCreation';
+import MonthlyPlan from './src/pages/Agent/BPlanner/MonthlyPlan';
+import ActivityDetails from './src/pages/Agent/ActivityDetails';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -105,6 +110,11 @@ function App(): React.JSX.Element {
         <Stack.Screen  options={{orientation:'landscape'}} name="TeamPerformance" component={TeamPerformance} />
         <Stack.Screen   name="TeamMemberGrid" component={TeamMemberGrid} />
         <Stack.Screen   name="TypeTest" component={TypeTest} />
+        <Stack.Screen   name="BPlanner" component={BPlanner} />
+        <Stack.Screen   name="LeadSearch" component={LeadSearch} />
+        <Stack.Screen   name="LeadCreation" component={LeadCreation} />
+        <Stack.Screen   name="MonthlyPlan" component={MonthlyPlan} />
+        <Stack.Screen   name="ActivityDetails" component={ActivityDetails} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

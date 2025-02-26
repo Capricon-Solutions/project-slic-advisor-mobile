@@ -15,6 +15,7 @@ import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import Button from './Button';
 import SmallButton from './SmallButton';
+import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
 
 // import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
@@ -28,11 +29,16 @@ export default function Header({
   onButton,
   haveFilters,
   haveMenu,
+  menuItems,
   haveCall,
   haveWhatsapp,
   whatsappNo,
   callNo,
 }) {
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
   return (
     <View
       style={{
@@ -159,11 +165,33 @@ export default function Header({
           </View>
         )}
         {haveMenu && (
-          <View style={{marginLeft: 5}}>
-            <View style={{}}>
-              <MaterialIcons name="more-vert" color={COLORS.black} size={27} />
-            </View>
-          </View>
+          <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={
+              <TouchableOpacity onPress={openMenu} style={{marginLeft: 5}}>
+                <View style={{}}>
+                  <MaterialIcons
+                    name="more-vert"
+                    color={COLORS.black}
+                    size={27}
+                  />
+                </View>
+              </TouchableOpacity>
+            }>
+            {menuItems?.map((item, index) => (
+              <React.Fragment key={index}>
+                <Menu.Item
+                  onPress={() => {
+                    item.onPress();
+                    closeMenu();
+                  }}
+                  title={item.title}
+                />
+                {index !== menuItems.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </Menu>
         )}
       </View>
     </View>

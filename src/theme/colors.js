@@ -1,5 +1,8 @@
 const COLORS = {
   primary: '#00ADBB',
+  primaryOrange: '#EB5017',
+  primaryRed: '#BB0000',
+  primaryGreen: '#00796B',
   lightPrimary: '#24c4d1',
   title: '#33384B',
   subtitle: '#757575',
@@ -8,8 +11,6 @@ const COLORS = {
   white: '#ffffff',
   backcard: '#EF9A4B36',
   black: 'black',
-  primaryRed: '#BB0000',
-  primaryGreen: '#00796B',
   subtext: '#7D8A95',
   textInputColor: '#6A5A74',
   textColor: '#332B3A',

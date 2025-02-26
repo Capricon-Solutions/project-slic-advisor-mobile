@@ -178,16 +178,45 @@ export default function TeamMemberGrid({navigation}) {
               justifyContent: 'flex-end',
               marginVertical: 5,
             }}>
-            <View style={{flex: 0.18}}>
-              <DropdownComponent />
+            <View style={{flex: 0.18, marginHorizontal: 2}}>
+              <DropdownComponent
+                label={'View Details'}
+                mode={'modal'}
+                dropdownData={[
+                  {label: 'Item 1', value: '1'},
+                  {label: 'Item 2', value: '2'},
+                ]}
+              />
             </View>
-            <View style={{flex: 0.25}}>
-              <DropdownComponent />
+            <View style={{flex: 0.25, marginHorizontal: 2}}>
+              <DropdownComponent
+                label={'General Monthly'}
+                mode={'modal'}
+                dropdownData={[
+                  {label: 'Item 1', value: '1'},
+                  {label: 'Item 2', value: '2'},
+                  {label: 'Item 3', value: '3'},
+                  {label: 'Item 4', value: '4'},
+                ]}
+              />
             </View>
-            <View style={{flex: 0.2}}>
-              <DropdownComponent />
+            <View style={{flex: 0.2, marginHorizontal: 2}}>
+              <DropdownComponent
+                label={'Month'}
+                mode={'modal'}
+                dropdownData={[
+                  {label: 'Item 1', value: '1'},
+                  {label: 'Item 2', value: '2'},
+                  {label: 'Item 3', value: '3'},
+                  {label: 'Item 4', value: '4'},
+                  {label: 'Item 5', value: '5'},
+                  {label: 'Item 6', value: '6'},
+                  {label: 'Item 7', value: '7'},
+                  {label: 'Item 8', value: '8'},
+                ]}
+              />
             </View>
-            <View style={{flex: 0.13}}>
+            <View style={{flex: 0.13, marginHorizontal: 2}}>
               <Button Title={'Apply'} />
             </View>
           </View>

@@ -457,7 +457,8 @@ export default function Dashboard({navigation}) {
             marginVertical: 10,
           }}>
           <TouchableOpacity
-            // onPress={() => setFlagVisible(true)}
+            onPress={() => navigation.navigate('BPlanner')}
+            // BPlanner
             style={Styles.iconGrid}>
             <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
             <Text style={Styles.gridText}>B-PLANNER</Text>

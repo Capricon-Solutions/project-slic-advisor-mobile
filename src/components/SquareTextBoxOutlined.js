@@ -15,6 +15,7 @@ export default function SquareTextBoxOutlined({
   Title,
   Secure,
   value,
+  mediumFont,
   keyboardType,
   setValue,
   errorBorder,
@@ -30,8 +31,9 @@ export default function SquareTextBoxOutlined({
         <Text
           style={{
             marginBottom: 5,
-            fontFamily: Fonts.Roboto.Bold,
-            color: COLORS.textColor,
+            fontSize: 12.5,
+            fontFamily: mediumFont ? Fonts.Roboto.Medium : Fonts.Roboto.Bold,
+            color: COLORS.ashBlue,
           }}>
           {Label}
         </Text>

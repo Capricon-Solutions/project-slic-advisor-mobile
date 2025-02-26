@@ -12,22 +12,12 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponent = ({dropdownData, mode, label}) => {
+const DropdownComponentNoLabel = ({dropdownData, mode, label}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
-      );
-    }
-    return null;
-  };
-
   return (
     <View style={styles.container}>
-      {renderLabel()}
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
@@ -82,11 +72,11 @@ const DropdownComponent = ({dropdownData, mode, label}) => {
   );
 };
 
-export default DropdownComponent;
+export default DropdownComponentNoLabel;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 15,
+    // paddingVertical: 15,
   },
   dropdown: {
     height: 43,
