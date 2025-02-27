@@ -12,7 +12,7 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponentNoLabel = ({
+const DropdownComponentNoLabelDashboard = ({
   dropdownData,
   mode,
   label,
@@ -35,11 +35,11 @@ const DropdownComponentNoLabel = ({
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         selectedStyle={{color: 'red'}}
-        itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
+        itemTextStyle={{color: COLORS.textColor, fontSize: 10}}
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        containerStyle={{width: window.width * 0.5, fontSize: 12}}
+        containerStyle={{width: window.width * 0.5, fontSize: 10}}
         data={dropdownData}
         search
         maxHeight={300}
@@ -86,18 +86,17 @@ const DropdownComponentNoLabel = ({
   );
 };
 
-export default DropdownComponentNoLabel;
+export default DropdownComponentNoLabelDashboard;
 
 const styles = StyleSheet.create({
   container: {
     // paddingVertical: 15,
   },
   dropdown: {
-    height: 43,
+    height: 25,
     // borderColor: 'gray',
     borderWidth: 0.8,
     borderRadius: 8,
-    paddingHorizontal: 8,
   },
   icon: {
     marginRight: 5,
@@ -109,13 +108,13 @@ const styles = StyleSheet.create({
     top: 8,
     zIndex: 999,
     paddingHorizontal: 8,
-    fontSize: 12,
+    fontSize: 10,
   },
   placeholderStyle: {
-    fontSize: 12,
+    fontSize: 10,
   },
   selectedTextStyle: {
-    fontSize: 15,
+    fontSize: 10,
     color: COLORS.textColor,
   },
   iconStyle: {
@@ -124,6 +123,6 @@ const styles = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: 10,
   },
 });

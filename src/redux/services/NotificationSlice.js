@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {baseApi} from './api';
 
 const initialState = {
   notificationsResponse: {
@@ -50,3 +51,32 @@ export const NotificationSlice = createSlice({
 export const {GetnotificationsResponse} = NotificationSlice.actions;
 
 export default NotificationSlice.reducer;
+
+export const notificationsApi = baseApi.injectEndpoints({
+  endpoints: builder => ({
+    getNotifications: builder.query({
+      query: ({id}) => {
+        const url = `notification/getNotifications/${id}`;
+        console.log('Fetching Notifications from:', url);
+        return url;
+      },
+      providesTags: ['Notifications'], // ✅ Marks this query with a tag
+    }),
+
+    readNotification: builder.mutation({
+      query: ({notificationId}) => {
+        console.log('POST request payload:', notificationId);
+        return {
+          url: 'notification/updateAsRead',
+          method: 'POST',
+          body: notificationId,
+        };
+      },
+      invalidatesTags: ['Notifications'], // ✅ Triggers refetching of getNotifications
+    }),
+  }),
+});
+
+// Export hooks
+export const {useGetNotificationsQuery, useReadNotificationMutation} =
+  notificationsApi;

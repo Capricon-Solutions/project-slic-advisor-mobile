@@ -1,0 +1,178 @@
+import * as React from 'react';
+import {
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  View,
+  Image,
+  Linking,
+} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import COLORS from '../theme/colors';
+import {Styles} from '../theme/Styles';
+import Fonts from '../theme/Fonts';
+import CircularProgress from 'react-native-circular-progress-indicator';
+
+import Button from './Button';
+import SmallButton from './SmallButton';
+import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
+import RegionSummery from '../icons/RegionSummery.png'; // Replace with the actual logo path
+import KpiSummery from '../icons/KpiSummery.png'; // Replace with the actual logo path
+import DuesSummery from '../icons/DuesSummery.png'; // Replace with the actual logo path
+import ClassSummery from '../icons/ClassSummery.png'; // Replace with the actual logo path
+import Competition from '../icons/Competition.png'; // Replace with the actual logo path
+// import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
+// import { useSelector } from "react-redux";
+const window = Dimensions.get('window');
+
+export default function AgentProgressCard({
+  onPress,
+  islandRank,
+  totalIslandRank,
+  totalNumberofRegions,
+  totalNumberofBranches,
+  branchRank,
+  regionalRank,
+  onSalesClick,
+  onGeneralClick,
+  onClubClick,
+  onBplannerClick,
+  onEConnerClick,
+  onProductPortfolioClick,
+}) {
+  return (
+    <TouchableOpacity onPress={onPress} style={Styles.rankWrap}>
+      <View
+        style={{
+          flex: 0.65,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CircularProgress
+          value={islandRank}
+          radius={window.height * 0.1}
+          duration={2000}
+          progressValueColor={COLORS.textColor}
+          maxValue={totalIslandRank}
+          activeStrokeWidth={20}
+          inActiveStrokeWidth={20}
+          activeStrokeColor={COLORS.primary}
+          inActiveStrokeColor={COLORS.lightBorder}
+          valueSuffix={'/' + totalIslandRank}
+          titleStyle={{fontWeight: 'bold'}}
+          progressValueStyle={{
+            fontSize: 25,
+            fontFamily: Fonts.Roboto.Bold,
+          }}
+          valueSuffixStyle={{fontSize: 22, color: COLORS.textColor}}
+        />
+        <Text
+          style={{
+            fontSize: window.width * 0.045,
+            marginTop: 5,
+            fontFamily: Fonts.Roboto.Medium,
+            color: COLORS.textColor,
+          }}>
+          Island Rank
+        </Text>
+      </View>
+      <View
+        style={{
+          flex: 0.35,
+        }}>
+        <View
+          style={{
+            flex: 0.5,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <CircularProgress
+              value={regionalRank}
+              radius={window.height * 0.045}
+              duration={2000}
+              progressValueColor={COLORS.regionalRank}
+              maxValue={totalNumberofRegions}
+              activeStrokeWidth={12}
+              inActiveStrokeWidth={12}
+              activeStrokeColor={COLORS.regionalRank}
+              inActiveStrokeColor={COLORS.lightBorder}
+              // title={'Progress'}
+              valueSuffix={'/' + totalNumberofRegions}
+              progressValueStyle={{
+                fontSize: window.height * 0.023,
+                fontFamily: Fonts.Roboto.Bold,
+              }}
+              valueSuffixStyle={{
+                fontSize: window.height * 0.018,
+                color: COLORS.regionalRank,
+              }}
+              // titleColor={'red'}
+              titleStyle={{fontWeight: 'bold'}}
+            />
+            <Text
+              style={{
+                marginTop: 2,
+                fontSize: window.width * 0.03,
+                fontFamily: Fonts.Roboto.Medium,
+                color: COLORS.textColor,
+              }}>
+              Regional Rank
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 0.5,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <CircularProgress
+              value={branchRank}
+              radius={window.height * 0.045}
+              duration={2000}
+              progressValueColor={COLORS.branchRank}
+              maxValue={totalNumberofBranches}
+              activeStrokeWidth={12}
+              inActiveStrokeWidth={12}
+              activeStrokeColor={COLORS.branchRank}
+              inActiveStrokeColor={COLORS.lightBorder}
+              // title={'Progress'}
+              valueSuffix={'/' + totalNumberofBranches}
+              progressValueStyle={{
+                fontSize: window.height * 0.023,
+                fontFamily: Fonts.Roboto.Bold,
+              }}
+              valueSuffixStyle={{
+                fontSize: window.height * 0.018,
+                color: COLORS.branchRank,
+              }}
+              // titleColor={'red'}
+              titleStyle={{fontWeight: 'bold'}}
+            />
+            <Text
+              style={{
+                marginTop: 2,
+                fontSize: window.width * 0.03,
+                fontFamily: Fonts.Roboto.Medium,
+                color: COLORS.textColor,
+              }}>
+              Branch Rank
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}

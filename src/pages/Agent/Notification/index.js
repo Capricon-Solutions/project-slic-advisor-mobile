@@ -22,6 +22,7 @@ import TableComponent from '../../../components/TableComponent';
 import ContactListItem from '../../../components/contactListItem';
 import NotificationItem from '../../../components/NotificationItem';
 import {useSelector} from 'react-redux';
+import {useGetNotificationsQuery} from '../../../redux/services/NotificationSlice';
 const window = Dimensions.get('window');
 
 export default function Notification({navigation}) {
@@ -29,6 +30,14 @@ export default function Notification({navigation}) {
     state => state.Notifications.notificationsResponse,
   );
 
+  const {
+    data: Notifications,
+    error,
+    isLoading,
+  } = useGetNotificationsQuery({
+    id: 123456,
+  });
+  console.log('Notifications', Notifications);
   const notifications = [
     {
       id: 1,
@@ -71,15 +80,16 @@ export default function Notification({navigation}) {
       <HeaderBackground />
       <Header Title="Notification" onPress={() => navigation.goBack()} />
 
-      <View style={styles.searchWrap}>
+      {/* <View style={styles.searchWrap}>
         <TextInput style={styles.textInput} placeholder="11/2024" />
         <TouchableOpacity style={styles.searchButton}>
           <Feather name="calendar" color={COLORS.white} size={20} />
         </TouchableOpacity>
-      </View>
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+      </View> */}
+      <ScrollView
+        contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}>
         <FlatList
-          data={notificationResponse?.data}
+          data={Notifications?.data}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             fadeDuration: 1000,

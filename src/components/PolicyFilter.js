@@ -31,6 +31,10 @@ export default function PolicyFilter({
   const [BusinessType, setSelectedBType] = React.useState(
     initialValues.SelectedBType || '',
   );
+  const [isValid, setIsValid] = React.useState(!!BusinessType);
+  React.useEffect(() => {
+    setIsValid(!!BusinessType);
+  }, [BusinessType]);
   const [status, setStatus] = React.useState(initialValues.Status || '');
   const [PolicyNumber, setPNumber] = React.useState(
     initialValues.PNumber || '',
@@ -57,6 +61,13 @@ export default function PolicyFilter({
     setBRegNo('');
   };
 
+  const handleSearch = () => {
+    if (!BusinessType) {
+      alert('Please select a Business Type.');
+      return;
+    }
+    onPressSearch();
+  };
   React.useEffect(() => {
     console.log('VehicleNumber', VehicleNumber);
 
@@ -174,6 +185,7 @@ export default function PolicyFilter({
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
+            initialValue={BusinessType}
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
             dropdownData={[
@@ -268,7 +280,7 @@ export default function PolicyFilter({
               }}
               Title="Clear"
             />
-            <AlertButton onPress={onPressSearch} Title="Search" />
+            <AlertButton onPress={handleSearch} Title="Search" />
           </View>
         </ScrollView>
       </Animated.View>

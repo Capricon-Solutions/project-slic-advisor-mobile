@@ -36,6 +36,9 @@ import teamPerformance from '../../../icons/teamPerformance.png'; // Replace wit
 import Flag from '../../../components/Flag';
 import {useSelector} from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
+import RMGrid from '../../../components/RMGrid';
+import AgentProgressCard from '../../../components/AgentProgressCard';
+import RMProgressCard from '../../../components/RMProgressCard';
 
 const window = Dimensions.get('window');
 
@@ -266,7 +269,7 @@ export default function Dashboard({navigation}) {
           </Text>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('SalesMeter')}
           style={Styles.rankWrap}>
           <View
@@ -285,16 +288,13 @@ export default function Dashboard({navigation}) {
               inActiveStrokeWidth={20}
               activeStrokeColor={COLORS.primary}
               inActiveStrokeColor={COLORS.lightBorder}
-              // title={'Progress'}
               valueSuffix={'/' + totalIslandRank}
-              // titleColor={'red'}
               titleStyle={{fontWeight: 'bold'}}
               progressValueStyle={{
                 fontSize: 25,
                 fontFamily: Fonts.Roboto.Bold,
               }}
               valueSuffixStyle={{fontSize: 22, color: COLORS.textColor}}
-              // titleColor={'red'}
             />
             <Text
               style={{
@@ -401,18 +401,42 @@ export default function Dashboard({navigation}) {
               </View>
             </View>
           </View>
-          {/* <AnimatedGaugeProgress
-                    size={200}
-                    width={15}
-                    fill={100}
-                    rotation={90}
-                    cropDegree={90}
-                    tintColor="#4682b4"
-                    delay={0}
-                    backgroundColor="#b0c4de"
-                    stroke={[2, 2]} //For a equaly dashed line
-                    strokeCap="circle" /> */}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        {usertype == 1 && (
+          <AgentProgressCard
+            totalIslandRank={totalIslandRank}
+            totalNumberofRegions={totalNumberofRegions}
+            totalNumberofBranches={totalNumberofBranches}
+            regionalRank={regionalRank}
+            branchRank={branchRank}
+            islandRank={islandRank}
+            onPress={() => navigation.navigate('SalesMeter')}
+          />
+        )}
+
+        {usertype == 2 && (
+          <AgentProgressCard
+            totalIslandRank={totalIslandRank}
+            totalNumberofRegions={totalNumberofRegions}
+            totalNumberofBranches={totalNumberofBranches}
+            regionalRank={regionalRank}
+            branchRank={branchRank}
+            islandRank={islandRank}
+            onPress={() => navigation.navigate('SalesMeter')}
+          />
+        )}
+
+        {usertype == 3 && (
+          <RMProgressCard
+            totalIslandRank={totalIslandRank}
+            totalNumberofRegions={totalNumberofRegions}
+            totalNumberofBranches={totalNumberofBranches}
+            regionalRank={regionalRank}
+            branchRank={branchRank}
+            islandRank={islandRank}
+            onPress={() => navigation.navigate('SalesMeter')}
+          />
+        )}
         {usertype == 3 && (
           <Text
             style={{
@@ -424,61 +448,44 @@ export default function Dashboard({navigation}) {
             Insurance Categories
           </Text>
         )}
+        {usertype == 1 && (
+          <AgentGrid
+            onSalesClick={() => setModalVisible(true)}
+            onGeneralClick={() => setgeneraModalVisible(true)}
+            onClubClick={() => navigation.navigate('ClubInformation')}
+            onBplannerClick={() => navigation.navigate('BPlanner')}
+            onEConnerClick={() => console.log('E-Coner click')}
+            onProductPortfolioClick={() =>
+              navigation.navigate('ProductPortfolio')
+            }
+          />
+        )}
 
-        {/* <AgentGrid /> */}
+        {usertype == 2 && (
+          <AgentGrid
+            onSalesClick={() => setModalVisible(true)}
+            onGeneralClick={() => setgeneraModalVisible(true)}
+            onClubClick={() => navigation.navigate('ClubInformation')}
+            onBplannerClick={() => navigation.navigate('BPlanner')}
+            onEConnerClick={() => console.log('E-Coner click')}
+            onProductPortfolioClick={() =>
+              navigation.navigate('ProductPortfolio')
+            }
+          />
+        )}
 
-        <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: window.height * 0.01,
-            }}>
-            <TouchableOpacity
-              onPress={() => setModalVisible(true)}
-              style={Styles.iconGrid}>
-              <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
-              <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setgeneraModalVisible(true)}
-              style={Styles.iconGrid}>
-              <Image style={Styles.gridIcon} source={GENERAL}></Image>
-              <Text style={Styles.gridText}>GENERAL</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ClubInformation')}
-              style={Styles.iconGrid}>
-              <Image style={Styles.gridIcon} source={CLUB}></Image>
-              <Text style={Styles.gridText}>CLUB</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('BPlanner')}
-              // BPlanner
-              style={Styles.iconGrid}>
-              <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
-              <Text style={Styles.gridText}>B-PLANNER</Text>
-            </TouchableOpacity>
-            <View style={Styles.iconGrid}>
-              <Image style={Styles.gridIcon} source={E_CORNER}></Image>
-              <Text style={Styles.gridText}>E-CORNER</Text>
-            </View>
-            <TouchableOpacity
-              style={Styles.iconGrid}
-              onPress={() => navigation.navigate('ProductPortfolio')}>
-              <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
-              <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        {usertype == 3 && (
+          <RMGrid
+            onSalesClick={() => setModalVisible(true)}
+            onGeneralClick={() => setgeneraModalVisible(true)}
+            onClubClick={() => navigation.navigate('ClubInformation')}
+            onBplannerClick={() => navigation.navigate('BPlanner')}
+            onEConnerClick={() => console.log('E-Coner click')}
+            onProductPortfolioClick={() =>
+              navigation.navigate('ProductPortfolio')
+            }
+          />
+        )}
       </ScrollView>
     </View>
   );

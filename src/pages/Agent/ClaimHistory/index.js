@@ -28,16 +28,17 @@ import LoadingScreen from '../../../components/LoadingScreen';
 
 const window = Dimensions.get('window');
 
-export default function ClaimHistory({navigation}) {
+export default function ClaimHistory({navigation, route}) {
   // const claimHistoryResponse = useSelector(
   //   state => state.claimHistory.claimHistoryResponse.data,
   // );
+  const {policyNo} = route.params;
   const {
     data: ClaimHistory,
     error,
     isLoading,
   } = useGetClaimHistoryQuery({
-    id: 'VM1115003410000506', // Dynamic ID
+    id: policyNo, // Dynamic ID
   });
   const claimHistoryResponse = ClaimHistory?.data;
 
@@ -132,9 +133,7 @@ export default function ClaimHistory({navigation}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      {isLoading ? (
-        <LoadingScreen />
-      ) : (
+      {claimHistoryResponse ? (
         <ScrollView
           fadingEdgeLength={20}
           contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
@@ -146,20 +145,42 @@ export default function ClaimHistory({navigation}) {
                 fontSize: 16,
                 marginVertical: 10,
               }}>
-              Claim History for - CBB 2033
+              Claim History for - {policyNo}
             </Text>
           </View>
 
-          <View>
-            <FlatList
-              data={claimHistoryResponse}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingHorizontal: 7}}
-              renderItem={({item}) => <Card item={item} />}
-              // keyExtractor={item => item.id.toString()}
-            />
-          </View>
+          {isLoading ? (
+            <View style={{height: window.height * 0.8}}>
+              <LoadingScreen />
+            </View>
+          ) : (
+            <View>
+              <FlatList
+                data={claimHistoryResponse}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingHorizontal: 7}}
+                renderItem={({item}) => <Card item={item} />}
+                // keyExtractor={item => item.id.toString()}
+              />
+            </View>
+          )}
         </ScrollView>
+      ) : (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: window.height * 0.8,
+          }}>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Bold,
+              fontSize: 16,
+              color: COLORS.warmGray,
+            }}>
+            No Claims
+          </Text>
+        </View>
       )}
     </View>
   );

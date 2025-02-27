@@ -47,6 +47,7 @@ import LeadSearch from './src/pages/Agent/BPlanner/LeadSearch';
 import LeadCreation from './src/pages/Agent/BPlanner/LeadCreation';
 import MonthlyPlan from './src/pages/Agent/BPlanner/MonthlyPlan';
 import ActivityDetails from './src/pages/Agent/ActivityDetails';
+import Report from './src/pages/Agent/Report';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -84,7 +85,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="TypeTest" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -115,6 +116,7 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="LeadCreation" component={LeadCreation} />
         <Stack.Screen   name="MonthlyPlan" component={MonthlyPlan} />
         <Stack.Screen   name="ActivityDetails" component={ActivityDetails} />
+        <Stack.Screen   name="Report" component={Report} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

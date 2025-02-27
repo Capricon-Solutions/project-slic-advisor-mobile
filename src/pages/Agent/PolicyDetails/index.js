@@ -147,23 +147,31 @@ export default function PolicyDetails({navigation, route}) {
           <View
             style={{marginHorizontal: window.width * 0.07, marginVertical: 10}}>
             <SmallButton
-              onPress={() => navigation.navigate('ClaimHistory')}
+              onPress={() =>
+                navigation.navigate('ClaimHistory', {policyNo: policyNo})
+              }
               disabledButton={false}
               Title={'View Claim History'}
             />
             <SmallButton
-              onPress={() => navigation.navigate('PremiumHistory')}
+              onPress={() =>
+                navigation.navigate('PremiumHistory', {policyNo: policyNo})
+              }
               disabledButton={false}
               Title={'View Premium(NB/Renewal) History'}
             />
             <SmallButton
-              onPress={() => navigation.navigate('DebitSettlement')}
+              onPress={() =>
+                navigation.navigate('DebitSettlement', {policyNo: policyNo})
+              }
               disabledButton={false}
               Title={'Debit Renewal'}
             />
             <SmallButton
               Title={'Debit Settlement/ Payment'}
-              onPress={() => navigation.navigate('DebitSettlement')}
+              onPress={() =>
+                navigation.navigate('DebitSettlement', {policyNo: policyNo})
+              }
               disabledButton={false}
             />
           </View>

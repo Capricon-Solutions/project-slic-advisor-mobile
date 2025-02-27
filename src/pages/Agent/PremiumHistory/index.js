@@ -23,11 +23,13 @@ import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
 import {useSelector} from 'react-redux';
 import {useGetPremiumHistoryQuery} from '../../../redux/services/policyDetailsSlice';
+import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function PremiumHistory({navigation}) {
+export default function PremiumHistory({navigation, route}) {
+  const {policyNo} = route.params;
   // const premiumPaymentResponse = useSelector(
   //   state => state.premiumPayment.premiumPaymentResponse.data,
   // );
@@ -37,7 +39,7 @@ export default function PremiumHistory({navigation}) {
     error,
     isLoading,
   } = useGetPremiumHistoryQuery({
-    id: 'VM1115003410000506', // Dynamic ID
+    id: policyNo, // Dynamic ID
   });
 
   const premiumPaymentResponse = PremiumHistory?.data;
@@ -179,31 +181,54 @@ export default function PremiumHistory({navigation}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <ScrollView
-        fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 17, paddingBottom: 10}}>
-        <View>
+      {premiumPaymentResponse ? (
+        <ScrollView
+          fadingEdgeLength={20}
+          contentContainerStyle={{paddingHorizontal: 17, paddingBottom: 10}}>
+          <View>
+            <Text
+              style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Bold,
+                fontSize: 16,
+                marginVertical: 10,
+              }}>
+              Premium Payment History for - {policyNo}
+            </Text>
+          </View>
+          {isLoading ? (
+            <View style={{height: window.height * 0.8}}>
+              <LoadingScreen />
+            </View>
+          ) : (
+            <View>
+              <FlatList
+                data={premiumPaymentResponse}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingHorizontal: 8}}
+                renderItem={({item}) => <Card item={item} />}
+                // keyExtractor={item => item.id.toString()}
+              />
+            </View>
+          )}
+        </ScrollView>
+      ) : (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: window.height * 0.8,
+          }}>
           <Text
             style={{
-              color: COLORS.textColor,
               fontFamily: Fonts.Roboto.Bold,
               fontSize: 16,
-              marginVertical: 10,
+              color: COLORS.warmGray,
             }}>
-            Premium Payment History for - CBB 2033
+            No Premium Payments
           </Text>
         </View>
-
-        <View>
-          <FlatList
-            data={premiumPaymentResponse}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingHorizontal: 8}}
-            renderItem={({item}) => <Card item={item} />}
-            // keyExtractor={item => item.id.toString()}
-          />
-        </View>
-      </ScrollView>
+      )}
     </View>
   );
 }

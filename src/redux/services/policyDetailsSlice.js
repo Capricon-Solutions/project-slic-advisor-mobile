@@ -48,7 +48,7 @@ export const policyDetailsApi = baseApi.injectEndpoints({
       query: ({id}) => `agent/getPolicyDetails/${id}`,
     }),
     getClaimHistory: builder.query({
-      query: ({id}) => `agent/getClaimHistory/${id}`,
+      query: ({id}) => `agent/getClaimHistory?policyNumber=${id}`,
     }),
     getPremiumHistory: builder.query({
       query: ({id}) => `agent/getPremiumHistory/${id}`,

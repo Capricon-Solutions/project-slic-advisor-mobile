@@ -16,16 +16,16 @@ import Fonts from '../theme/Fonts';
 import Button from './Button';
 import SmallButton from './SmallButton';
 import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
-import SALES_PERFORMANCE from '../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
-import GENERAL from '../icons/GENERAL.png'; // Replace with the actual logo path
-import PRODUCT_PORTFOLIO from '../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
-import E_CORNER from '../icons/E-CORNER.png'; // Replace with the actual logo path
-import CLUB from '../icons/CLUB.png'; // Replace with the actual logo path
-import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
+import RegionSummery from '../icons/RegionSummery.png'; // Replace with the actual logo path
+import KpiSummery from '../icons/KpiSummery.png'; // Replace with the actual logo path
+import DuesSummery from '../icons/DuesSummery.png'; // Replace with the actual logo path
+import ClassSummery from '../icons/ClassSummery.png'; // Replace with the actual logo path
+import Competition from '../icons/Competition.png'; // Replace with the actual logo path
+// import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
 // import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
 
-export default function AgentGrid({
+export default function RMGrid({
   onSalesClick,
   onGeneralClick,
   onClubClick,
@@ -42,16 +42,16 @@ export default function AgentGrid({
           marginVertical: window.height * 0.01,
         }}>
         <TouchableOpacity onPress={onSalesClick} style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
-          <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
+          <Image style={Styles.gridIcon} source={RegionSummery}></Image>
+          <Text style={Styles.gridText}>Region{'\n'}Summary</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onGeneralClick} style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={GENERAL}></Image>
-          <Text style={Styles.gridText}>GENERAL</Text>
+          <Image style={Styles.gridIcon} source={KpiSummery}></Image>
+          <Text style={Styles.gridText}>KPI{'\n'}Summary</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onClubClick} style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={CLUB}></Image>
-          <Text style={Styles.gridText}>CLUB</Text>
+          <Image style={Styles.gridIcon} source={DuesSummery}></Image>
+          <Text style={Styles.gridText}>DUES{'\n'}Summary</Text>
         </TouchableOpacity>
       </View>
 
@@ -65,19 +65,20 @@ export default function AgentGrid({
           onPress={onBplannerClick}
           // BPlanner
           style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
-          <Text style={Styles.gridText}>B-PLANNER</Text>
+          <Image style={Styles.gridIcon} source={ClassSummery}></Image>
+          <Text style={Styles.gridText}>Class{'\n'}Summary</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onEConnerClick} style={Styles.iconGrid}>
-          <Image style={Styles.gridIcon} source={E_CORNER}></Image>
-          <Text style={Styles.gridText}>E-CORNER</Text>
+          <Image style={Styles.gridIcon} source={Competition}></Image>
+          <Text style={Styles.gridText}>Competition</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={Styles.iconGrid}
           onPress={onProductPortfolioClick}>
           <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
           <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <View style={[Styles.iconGrid, {elevation: 0}]}></View>
       </View>
     </View>
   );

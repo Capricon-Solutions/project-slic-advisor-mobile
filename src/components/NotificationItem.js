@@ -13,16 +13,34 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
+import moment from 'moment';
+import {useReadNotificationMutation} from '../redux/services/NotificationSlice';
 
 export default function NotificationItem({item}) {
+  const [readNotification] = useReadNotificationMutation();
+
+  const handleReadNotification = async () => {
+    await readNotification({notificationId: [item?.notificationId]}); // API call
+  };
   return (
-    <View style={style.cardWrap}>
-      <View style={style.leftBorder}></View>
-      <View style={{flex: 0.9}}>
+    <TouchableOpacity
+      onPress={() => handleReadNotification()}
+      style={style.cardWrap}>
+      <View
+        style={[
+          style.leftBorder,
+          {
+            backgroundColor:
+              item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
+          },
+        ]}></View>
+      <View style={{flex: 0.95}}>
         <View style={{padding: 10}}>
           <View style={style.topline}>
-            <Text style={style.topic}>{item.Title}</Text>
-            <Text style={style.date}>{item.date}</Text>
+            <Text style={style.topic}>{item.title}</Text>
+            <Text style={style.date}>
+              {moment(item.eventDate).format('DD MMM YYYY, hh:mm A')}
+            </Text>
           </View>
 
           <Text style={style.name}>{item.name}</Text>
@@ -31,18 +49,19 @@ export default function NotificationItem({item}) {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <Text style={style.name}>{item.plicyNo}</Text>
+            <Text style={style.name}>{item.policyNo}</Text>
             <Text style={style.name}>{item.type}</Text>
           </View>
 
           <Text style={style.name}>
-            Claim Intimated on {item.intimated_date}
+            Claim Intimated on{' '}
+            {moment(item.intimatedDate).format('DD MMM YYYY')}
           </Text>
 
           <Text style={style.name}>{item.phone}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -57,7 +76,7 @@ const style = StyleSheet.create({
     marginHorizontal: 5,
   },
   leftBorder: {
-    flex: 0.1,
+    flex: 0.05,
     backgroundColor: COLORS.primaryGreen,
   },
   topic: {

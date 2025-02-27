@@ -13,6 +13,8 @@ import Badvisor from '../Badvisor/Badvisor';
 import COLORS from '../../../theme/colors';
 import {Styles} from './Styles';
 import TrainingCalender from '../TrainingCalender/TrainingCalender';
+import {useSelector} from 'react-redux';
+import Report from '../Report';
 
 function AgengNavigator({state, descriptors, navigation}) {
   const {colors} = useTheme();
@@ -93,60 +95,181 @@ function AgengNavigator({state, descriptors, navigation}) {
 const Tab = createBottomTabNavigator();
 
 export default function MyTabs() {
-  return (
-    <Tab.Navigator
-      tabBar={props => <AgengNavigator {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-          tabBarLabel: 'Dashboard',
-          tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="view-dashboard-outline"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Training Calender"
-        component={TrainingCalender}
-        options={{
-          tabBarLabel: 'Training Calender',
-          tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="calendar-clock"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Contacts"
-        component={Contacts}
-        options={{
-          tabBarLabel: 'Contacts',
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome name="address-book-o" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="B-Advisor"
-        component={Badvisor}
-        options={{
-          tabBarLabel: 'B-Advisor',
-          tabBarIcon: ({color, size}) => (
-            <AntDesign name="earth" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
+  const usertype = useSelector(state => state.userType.userType);
+  if (usertype == 1) {
+    return (
+      <Tab.Navigator
+        tabBar={props => <AgengNavigator {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Training Calender"
+          component={TrainingCalender}
+          options={{
+            tabBarLabel: 'Training Calender',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Contacts"
+          component={Contacts}
+          options={{
+            tabBarLabel: 'Contacts',
+            tabBarIcon: ({color, size}) => (
+              <FontAwesome name="address-book-o" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="B-Advisor"
+          component={Badvisor}
+          options={{
+            tabBarLabel: 'B-Advisor',
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="earth" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  } else if (usertype == 2) {
+    return (
+      <Tab.Navigator
+        tabBar={props => <AgengNavigator {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Training Calender"
+          component={TrainingCalender}
+          options={{
+            tabBarLabel: 'Training Calender',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Contacts"
+          component={Contacts}
+          options={{
+            tabBarLabel: 'Contacts',
+            tabBarIcon: ({color, size}) => (
+              <FontAwesome name="address-book-o" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="B-Advisor"
+          component={Badvisor}
+          options={{
+            tabBarLabel: 'B-Advisor',
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="earth" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  } else if (usertype == 3) {
+    return (
+      <Tab.Navigator
+        tabBar={props => <AgengNavigator {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Training Calender"
+          component={TrainingCalender}
+          options={{
+            tabBarLabel: 'Training Calender',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Report"
+          component={Report}
+          options={{
+            tabBarLabel: 'Report',
+            tabBarIcon: ({color, size}) => (
+              <MaterialCommunityIcons
+                name="file-document-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="B-Advisor"
+          component={Badvisor}
+          options={{
+            tabBarLabel: 'B-Advisor',
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="earth" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
 }
