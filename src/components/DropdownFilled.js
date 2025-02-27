@@ -12,7 +12,14 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownFilled = ({dropdownData, mode, label, placeholder}) => {
+const DropdownFilled = ({
+  dropdownData,
+  mode,
+  label,
+  placeholder,
+  Color,
+  onSelect,
+}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -20,7 +27,11 @@ const DropdownFilled = ({dropdownData, mode, label, placeholder}) => {
     <View style={styles.container}>
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={[
+          styles.dropdown,
+          isFocus && {borderColor: 'blue'},
+          {backgroundColor: Color ? Color : COLORS.lightBorder},
+        ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         selectedStyle={{color: 'red'}}
@@ -42,6 +53,9 @@ const DropdownFilled = ({dropdownData, mode, label, placeholder}) => {
         onChange={item => {
           setValue(item.value);
           setIsFocus(false);
+          if (onSelect) {
+            onSelect(item.value);
+          }
         }}
         renderLeftIcon={() => (
           <MaterialCommunityIcons

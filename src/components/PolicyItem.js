@@ -214,7 +214,9 @@ export default function PolicyItem({item, navigation}) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              onPress={() => navigation.navigate('PolicyDetails')}>
+              onPress={() =>
+                navigation.navigate('PolicyDetails', {policyNo: item.policyNo})
+              }>
               <Text style={Styles.buttonText}>Go to Policy</Text>
             </TouchableOpacity>
           </View>

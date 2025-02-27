@@ -28,13 +28,15 @@ import LoadingScreen from '../../../components/LoadingScreen';
 
 const window = Dimensions.get('window');
 
-export default function PolicyDetails({navigation}) {
+export default function PolicyDetails({navigation, route}) {
+  const {policyNo} = route.params; // Extract item from params
+  console.log('policyNo', policyNo);
   const {
     data: PolicyDetails,
     error,
     isLoading,
   } = useGetPolicyDetailsQuery({
-    id: 'VM1115003410000506', // Dynamic ID
+    id: policyNo, // Dynamic ID
   });
 
   const policyDetailsResponse = PolicyDetails?.data;

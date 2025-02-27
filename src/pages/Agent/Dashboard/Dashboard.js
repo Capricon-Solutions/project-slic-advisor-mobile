@@ -35,6 +35,7 @@ import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
 import {useSelector} from 'react-redux';
+import AgentGrid from '../../../components/AgentGrid';
 
 const window = Dimensions.get('window');
 
@@ -232,7 +233,9 @@ export default function Dashboard({navigation}) {
                 ? 'Advisor'
                 : usertype == 2
                 ? 'Team Leader'
-                : 'Regional Manager'}
+                : usertype == 3
+                ? 'Regional Manager'
+                : 'Unknown'}
               )
             </Text>
           </TouchableOpacity>
@@ -272,19 +275,6 @@ export default function Dashboard({navigation}) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            {/* <View style={styles.IslandRank}>
-            <Text
-              style={{
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 24,
-                color: COLORS.black,
-              }}>
-              550
-            </Text>
-            <Text style={{fontSize: 17, fontFamily: Fonts.Roboto.Regular}}>
-              Island Rank
-            </Text>
-          </View> */}
             <CircularProgress
               value={islandRank}
               radius={window.height * 0.1}
@@ -423,56 +413,71 @@ export default function Dashboard({navigation}) {
                     stroke={[2, 2]} //For a equaly dashed line
                     strokeCap="circle" /> */}
         </TouchableOpacity>
+        {usertype == 3 && (
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.textColor,
+              fontSize: 15,
+              marginVertical: 2,
+            }}>
+            Insurance Categories
+          </Text>
+        )}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginVertical: window.height * 0.01,
-          }}>
-          <TouchableOpacity
-            onPress={() => setModalVisible(true)}
-            style={Styles.iconGrid}>
-            <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
-            <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setgeneraModalVisible(true)}
-            style={Styles.iconGrid}>
-            <Image style={Styles.gridIcon} source={GENERAL}></Image>
-            <Text style={Styles.gridText}>GENERAL</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ClubInformation')}
-            style={Styles.iconGrid}>
-            <Image style={Styles.gridIcon} source={CLUB}></Image>
-            <Text style={Styles.gridText}>CLUB</Text>
-          </TouchableOpacity>
-        </View>
+        {/* <AgentGrid /> */}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginVertical: 10,
-          }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('BPlanner')}
-            // BPlanner
-            style={Styles.iconGrid}>
-            <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
-            <Text style={Styles.gridText}>B-PLANNER</Text>
-          </TouchableOpacity>
-          <View style={Styles.iconGrid}>
-            <Image style={Styles.gridIcon} source={E_CORNER}></Image>
-            <Text style={Styles.gridText}>E-CORNER</Text>
+        <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: window.height * 0.01,
+            }}>
+            <TouchableOpacity
+              onPress={() => setModalVisible(true)}
+              style={Styles.iconGrid}>
+              <Image style={Styles.gridIcon} source={SALES_PERFORMANCE}></Image>
+              <Text style={Styles.gridText}>SALES PERFORMANCE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setgeneraModalVisible(true)}
+              style={Styles.iconGrid}>
+              <Image style={Styles.gridIcon} source={GENERAL}></Image>
+              <Text style={Styles.gridText}>GENERAL</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ClubInformation')}
+              style={Styles.iconGrid}>
+              <Image style={Styles.gridIcon} source={CLUB}></Image>
+              <Text style={Styles.gridText}>CLUB</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={Styles.iconGrid}
-            onPress={() => navigation.navigate('ProductPortfolio')}>
-            <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
-            <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-          </TouchableOpacity>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginVertical: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('BPlanner')}
+              // BPlanner
+              style={Styles.iconGrid}>
+              <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
+              <Text style={Styles.gridText}>B-PLANNER</Text>
+            </TouchableOpacity>
+            <View style={Styles.iconGrid}>
+              <Image style={Styles.gridIcon} source={E_CORNER}></Image>
+              <Text style={Styles.gridText}>E-CORNER</Text>
+            </View>
+            <TouchableOpacity
+              style={Styles.iconGrid}
+              onPress={() => navigation.navigate('ProductPortfolio')}>
+              <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
+              <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </View>

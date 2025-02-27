@@ -10,6 +10,7 @@ import {
 import Fonts from '../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
+import moment from 'moment';
 
 const months = [
   'January',
@@ -29,7 +30,34 @@ const months = [
 const MonthYearPicker = ({visible, onClose, onSelect}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const handleMonthSelection = monthIndex => {
+    const selectedDate = moment(
+      `${selectedYear}-${monthIndex + 1}-01`,
+      'YYYY-MM-DD',
+    );
+    if (!startDate || (startDate && endDate)) {
+      setStartDate(selectedDate);
+      setEndDate(null);
+    } else if (startDate && !endDate) {
+      if (selectedDate.isBefore(startDate)) {
+        setStartDate(selectedDate);
+      } else {
+        setEndDate(selectedDate);
+      }
+    }
+  };
+
+  const handleDone = () => {
+    if (startDate && endDate) {
+      onSelect(
+        `${startDate.format('YYYY-MM-DD')} to ${endDate.format('YYYY-MM-DD')}`,
+      );
+      onClose();
+    }
+  };
 
   return (
     <Modal transparent visible={visible} animationType="fade">
@@ -37,10 +65,7 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
         <View style={styles.container}>
           {/* Year Navigation */}
           <View style={styles.header}>
-            <TouchableOpacity
-              style={styles.navigateButton}
-              onPress={() => setSelectedYear(prev => prev - 1)}>
-              {/* <Text style={styles.navButton}>{'←'}</Text> */}
+            <TouchableOpacity onPress={() => setSelectedYear(prev => prev - 1)}>
               <MaterialCommunityIcons
                 name="chevron-left"
                 color={COLORS.black}
@@ -48,9 +73,7 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
               />
             </TouchableOpacity>
             <Text style={styles.yearText}>{selectedYear}</Text>
-            <TouchableOpacity
-              style={styles.navigateButton}
-              onPress={() => setSelectedYear(prev => prev + 1)}>
+            <TouchableOpacity onPress={() => setSelectedYear(prev => prev + 1)}>
               <MaterialCommunityIcons
                 name="chevron-right"
                 color={COLORS.black}
@@ -59,45 +82,48 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
             </TouchableOpacity>
           </View>
 
-          {/* Month Grid using FlatList */}
-
+          {/* Month Selection */}
           <FlatList
             data={months}
             keyExtractor={(item, index) => index.toString()}
-            numColumns={4} // Display 3 months per row
+            numColumns={4}
             contentContainerStyle={styles.monthGrid}
-            renderItem={({item, index}) => (
-              <TouchableOpacity
-                style={[
-                  styles.monthButton,
-                  selectedMonth === index && styles.selectedMonth,
-                ]}
-                onPress={() => setSelectedMonth(index)}>
-                <Text
+            renderItem={({item, index}) => {
+              const selectedDate = moment(
+                `${selectedYear}-${index + 1}-01`,
+                'YYYY-MM-DD',
+              );
+              const isSelected =
+                startDate && selectedDate.isSame(startDate, 'month');
+              const isInRange =
+                startDate &&
+                endDate &&
+                selectedDate.isBetween(startDate, endDate, 'month', '[]');
+              return (
+                <TouchableOpacity
                   style={[
-                    styles.monthText,
-                    selectedMonth === index && styles.selectedMonthText,
-                  ]}>
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            )}
+                    styles.monthButton,
+                    isSelected || isInRange ? styles.selectedMonth : {},
+                  ]}
+                  onPress={() => handleMonthSelection(index)}>
+                  <Text
+                    style={[
+                      styles.monthText,
+                      isSelected || isInRange ? styles.selectedMonthText : {},
+                    ]}>
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
           />
 
-          {/* Action Buttons */}
+          {/* Footer Buttons */}
           <View style={styles.footer}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.doneButton}
-              onPress={() => {
-                if (selectedMonth !== null) {
-                  onSelect({month: selectedMonth + 1, year: selectedYear}); // Convert 0-based index to 1-based month
-
-                  onClose();
-                }
-              }}>
+            <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
               <Text style={styles.doneText}>Done</Text>
             </TouchableOpacity>
           </View>
@@ -129,41 +155,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '85%',
   },
-  navButton: {
-    fontSize: 20,
-  },
-  yearText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  monthGrid: {
-    marginVertical: 20,
-    paddingHorizontal: 5,
-  },
+  yearText: {fontSize: 20, fontWeight: 'bold'},
+  monthGrid: {marginVertical: 20, paddingHorizontal: 5},
   monthButton: {
     marginHorizontal: 5,
     width: 70,
     marginVertical: 5,
     paddingVertical: 13,
     alignItems: 'center',
-
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#ccc',
   },
-  selectedMonth: {
-    borderColor: '#00AEEF',
-    backgroundColor: '#E0F7FA',
-  },
+  selectedMonth: {borderColor: '#00AEEF', backgroundColor: '#E0F7FA'},
   monthText: {
     fontSize: 11,
     fontFamily: Fonts.Roboto.Medium,
     color: COLORS.textColor,
   },
-  selectedMonthText: {
-    color: '#00AEEF',
-    fontWeight: 'bold',
-  },
+  selectedMonthText: {color: '#00AEEF', fontWeight: 'bold'},
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -183,19 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: COLORS.primaryGreen,
   },
-  closeText: {
-    color: '#555',
-  },
-  doneText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  navigateButton: {
-    borderColor: COLORS.warmGray,
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 13,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  closeText: {color: '#555'},
+  doneText: {color: '#fff', fontWeight: 'bold'},
 });

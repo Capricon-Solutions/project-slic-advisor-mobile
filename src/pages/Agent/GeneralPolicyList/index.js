@@ -20,33 +20,92 @@ import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import PolicyFilter from '../../../components/PolicyFilter';
-import {useGetPolicyListQuery} from '../../../redux/services/policyListSlice';
+import {
+  useGetPolicyListQuery,
+  useSearchPoliciesMutation,
+} from '../../../redux/services/policyListSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {PaperProvider} from 'react-native-paper';
+import SearchParams from '../../../redux/SearchParams';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function GeneralPolicyList({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchType, setSearchType] = useState(' ');
+  const [searchType, setSearchType] = useState('A');
+  const [policyValues, setPolicyValues] = useState({
+    BusinessType: '',
+    status: '',
+    PolicyNumber: '',
+    VehicleNumber: '',
+    StartFromDt: '',
+    StartToDt: '',
+    MobileNumber: '',
+    NicNumber: '',
+    BusiRegNo: '',
+  });
+  const handlePolicyValuesChange = newValues => {
+    // console.log('newValues', newValues);
+    setPolicyValues(newValues);
+  };
 
-  const {
-    data: PolicyListResponse,
-    isLoading,
-    error,
-    refetch,
-    diperror,
-  } = useGetPolicyListQuery({id: 360115, filterText: searchType});
+  const [PolicyListResponse, {data: PolicyListData, isLoading, error}] =
+    useSearchPoliciesMutation();
+
+  const searchData = {
+    BusinessType: policyValues.BusinessType,
+    PremiumsPending: policyValues.status === 'P' ? true : false,
+    ClaimPending: policyValues.status === 'C' ? true : false,
+    Flagged: false,
+    BadClaims: false,
+    DebitOutstanding: policyValues.status === 'D' ? true : false,
+    PolicyNumber: policyValues.PolicyNumber,
+    VehicleNumber: policyValues.VehicleNumber,
+    StartFromDt: policyValues.StartFromDt,
+    StartToDt: policyValues.StartToDt,
+    TodayReminders: policyValues.status === 'F' ? true : false,
+    MobileNumber: policyValues.MobileNumber,
+    AgentCode: 905717,
+    NicNumber: policyValues.NicNumber,
+    BusiRegNo: policyValues.BusiRegNo,
+  };
 
   useEffect(() => {
-    refetch(); // Auto re-fetch when searchType changes
-    // console.log('searchType', searchType);
-    // console.log('PolicyListResponse', PolicyListResponse);
-    console.log('error', error);
+    PolicyListResponse(
+      searchType === 'A'
+        ? SearchParams.AllSearch
+        : searchType === 'M'
+        ? SearchParams.MotorSearch
+        : searchType === 'G'
+        ? SearchParams.NonMotorSearch
+        : searchType === 'P'
+        ? SearchParams.premiumPending
+        : searchType === 'D'
+        ? SearchParams.debitOutstanding
+        : searchType === 'C'
+        ? SearchParams.claimPending
+        : searchType === 'F'
+        ? SearchParams.remindersSet
+        : searchType === 'Filter'
+        ? searchData
+        : SearchParams.AllSearch,
+    )
+      .then(response => {
+        // console.log('Response:', response);
+      })
+      .catch(err => {
+        console.log('Error:', err);
+      });
   }, [searchType]);
 
-  const PolicyList = error ? [] : PolicyListResponse?.data;
+  useEffect(() => {
+    // console.log('policyValues', policyValues);
+    // console.log('PolicyList', PolicyList);
+    console.log('PolicyListResponse', PolicyListData);
+  }, [searchType]);
+
+  const PolicyList = error ? [] : PolicyListData?.data;
   const renderPolicyItem = ({item}) => (
     <PolicyItem item={item} navigation={navigation} />
   );
@@ -54,42 +113,37 @@ export default function GeneralPolicyList({navigation}) {
     {
       id: 1,
       title: 'All',
-      onPress: () => setSearchType(''),
+      onPress: () => setSearchType('A'),
     },
     {
       id: 2,
       title: 'Motor Policies',
-      onPress: () => setSearchType('Motor'),
+      onPress: () => setSearchType('M'),
     },
     {
       id: 3,
       title: 'Non-Motor Policies',
-      onPress: () => setSearchType('NonMotor'),
+      onPress: () => setSearchType('G'),
     },
     {
       id: 4,
       title: 'Premium Pending',
-      onPress: () => setSearchType('PremiumsPending'),
+      onPress: () => setSearchType('P'),
     },
     {
       id: 5,
       title: 'Debit Outstanding',
-      onPress: () => setSearchType('DebitOutstanding'),
+      onPress: () => setSearchType('D'),
     },
     {
       id: 6,
       title: 'Claim Pending',
-      onPress: () => setSearchType('ClaimsPending'),
+      onPress: () => setSearchType('C'),
     },
     {
       id: 7,
       title: 'Reminders Set Policies',
-      onPress: () => setSearchType('Flagged'),
-    },
-    {
-      id: 8,
-      title: 'Top',
-      onPress: () => setSearchType('Top'),
+      onPress: () => setSearchType('F'),
     },
   ];
 
@@ -109,9 +163,16 @@ export default function GeneralPolicyList({navigation}) {
           />
 
           <PolicyFilter
-            Name={'Policy Information Search Click'}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            onPressSearch={() => {
+              PolicyListResponse(searchData);
+              setModalVisible(false);
+            }}
+            onPressClear={() => console.log('clear ', policyValues)}
+            Name="Policy Filter"
+            handlePolicyValuesChange={handlePolicyValuesChange}
+            initialValues={policyValues}
           />
           {isLoading == true ? (
             <View
@@ -147,7 +208,7 @@ export default function GeneralPolicyList({navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text>{searchType} policies not available</Text>
+                  <Text>policies not available</Text>
                 </View>
               )}
             </View>
@@ -157,3 +218,12 @@ export default function GeneralPolicyList({navigation}) {
     </PaperProvider>
   );
 }
+
+//////////////
+// const {
+//   data: PolicyListResponse,
+//   isLoading,
+//   error,
+//   refetch,
+//   diperror,
+// } = useGetPolicyListQuery({id: 360115, filterText: searchType});

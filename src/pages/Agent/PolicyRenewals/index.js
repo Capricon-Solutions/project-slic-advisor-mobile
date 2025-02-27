@@ -9,6 +9,7 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
+  ActivityIndicator, // Added for the loading animation
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -26,17 +27,20 @@ import {
   useGetnonMotorRenewalsListQuery,
 } from '../../../redux/services/policyRenewalsSlice';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+import moment from 'moment';
+
 const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
+  // const [loading, setLoading] = useState(false); // Loading state
 
   const tableHead = [
     'Due Date',
     'Customer Name',
     'Vehicle No',
     'Policy No',
-    'Policy Type',
+    'NCB',
     'Sum Insured',
     'Total Amt',
     'Policy Status',
@@ -52,38 +56,54 @@ export default function PolicyRenewals({navigation}) {
     'Policy Status',
   ];
 
+  const columnWidths = [110, 190, 100, 120, 90, 110, 110, 110];
+  const columnWidths2 = [110, 190, 120, 90, 110, 110, 110];
+  const [selectedDate, setSelectedDate] = useState(null);
+  const lastMonthStart = moment()
+    .subtract(3, 'month')
+    .startOf('month')
+    .format('YYYY-MM-DD');
+  const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  const [fromDate, toDate] = selectedDate
+    ? selectedDate.split(' to ')
+    : [lastMonthStart, currentMonthEnd];
+
   const {
     data: motorRenewalsList,
     error,
-    isLoading,
+    isFetching,
+    refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 907719, // Dynamic ID
-    fromDate: '2007-01-11',
-    toDate: '2009-01-11',
+    id: 905717, // Dynamic ID
+    fromDate: fromDate,
+    toDate: toDate,
   });
 
   const {
     data: nonmotorRenewalsList,
     errorN,
-    isLoadingN,
+
+    isFetching: isFetchingN,
+    refetch: refetchN,
   } = useGetnonMotorRenewalsListQuery({
-    id: 907719, // Dynamic ID
-    fromDate: '2007-01-11',
-    toDate: '2009-01-11',
+    id: 905717, // Dynamic ID
+    fromDate: fromDate,
+    toDate: toDate,
   });
 
+  const [isPickerVisible, setPickerVisible] = useState(false);
   const nonMotorRenewalsResponse = nonmotorRenewalsList?.data;
   const motorRenewalsResponse = motorRenewalsList?.data;
 
   const tableData = motorRenewalsResponse?.map(item => [
-    item?.policyEndDate.toString() ?? '',
+    item?.dueDate.toString() ?? '',
     item?.customerName.toString() ?? '',
-    item?.vehicleNumber.toString() ?? '',
-    item?.policyNumber.toString() ?? '',
-    item?.policyType.toString() ?? '',
+    item?.vehicleNo.toString() ?? '',
+    item?.policyNo.toString() ?? '',
+    item?.ncbPerc.toString() ?? '',
     item?.sumInsured.toString() ?? '',
-    item?.totalAmount.toString() ?? '',
-    item?.isPaid.toString() ?? '',
+    item?.premiumAmount.toString() ?? '',
+    item?.policyStatus.toString() ?? '',
   ]);
 
   const tableData2 = nonMotorRenewalsResponse?.map(item => [
@@ -95,23 +115,13 @@ export default function PolicyRenewals({navigation}) {
     item?.totalAmount.toString() ?? '',
     item?.isPaid.toString() ?? '',
   ]);
-
-  const columnWidths = [110, 190, 100, 120, 90, 110, 110, 110];
-
-  const columnWidths2 = [110, 190, 120, 90, 110, 110, 110];
-  const [selectedDate, setSelectedDate] = useState(null);
-  useEffect(() => {
-    console.log('selectedDate', selectedDate);
-  }, [selectedDate]);
-
-  const [isPickerVisible, setPickerVisible] = useState(false);
-
   return (
     <View style={Styles.container}>
       <MonthYearPicker
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
       />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
@@ -157,7 +167,11 @@ export default function PolicyRenewals({navigation}) {
         </View>
 
         <View style={styles.searchWrap}>
-          <TextInput style={styles.textInput} placeholder="11/2024" />
+          <TextInput
+            value={fromDate + ' - ' + toDate}
+            readOnly
+            style={styles.textInput}
+          />
           <TouchableOpacity
             onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
@@ -177,7 +191,7 @@ export default function PolicyRenewals({navigation}) {
 
         {SelectedType == 1 ? (
           <View>
-            {isLoading == true ? (
+            {isFetching == true ? (
               <LoadingScreen />
             ) : (
               <TableComponent
@@ -190,7 +204,7 @@ export default function PolicyRenewals({navigation}) {
           </View>
         ) : (
           <View>
-            {isLoadingN == true ? (
+            {isFetchingN == true ? (
               <LoadingScreen />
             ) : (
               <TableComponent

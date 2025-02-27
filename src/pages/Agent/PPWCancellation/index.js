@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -26,30 +26,20 @@ import {
   useGetPPWCanceledListQuery,
   useGetPPWReminderListQuery,
 } from '../../../redux/services/ppwCancelationSlice';
+import MonthYearPicker from '../../../components/MonthYearPicker';
+import moment from 'moment';
+import DropdownComponent from '../../../components/DropdownComponent';
+import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
+import DropdownFilled from '../../../components/DropdownFilled';
+
 const window = Dimensions.get('window');
 
 export default function PPWCancellation({navigation}) {
   // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
+  const [selectedValue, setSelectedValue] = useState(null);
 
   const [SelectedType, setSelectedType] = useState(1);
-  const {
-    data: PPWCanceledList,
-    errorC,
-    isLoadingC,
-  } = useGetPPWCanceledListQuery({
-    id: 907719, // Dynamic ID
-    pType: selectedItem,
-  });
-
-  const {
-    data: PPWReminderList,
-    error,
-    isLoading,
-  } = useGetPPWReminderListQuery({
-    id: 907719, // Dynamic ID
-    pType: selectedItem,
-  });
 
   const tableHead = [
     'Policy No',
@@ -73,10 +63,49 @@ export default function PPWCancellation({navigation}) {
 
   const columnWidths = [120, 150, 110, 110, 130, 110];
   const columnWidths2 = [120, 150, 110, 110, 130, 110, 120, 110];
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
 
+  const lastMonthStart = moment()
+    .subtract(2, 'month')
+    .startOf('month')
+    .format('YYYY-MM-DD');
+  const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  const [fromDate, toDate] = selectedDate
+    ? selectedDate.split(' to ')
+    : [lastMonthStart, currentMonthEnd];
   // const ppwCancelationReminderResponse = useSelector(
   //   state => state.ppwCancelation.ppwCancelationReminderResponse.data,
   // );
+  const {
+    data: PPWCanceledList,
+    error: errorC,
+    isFetching: isFetchingC,
+  } = useGetPPWCanceledListQuery({
+    id: 907719, // Dynamic ID
+    pType: selectedValue,
+    fromDate: fromDate,
+    toDate: toDate,
+  });
+
+  const {
+    data: PPWReminderList,
+    error,
+    isFetching,
+  } = useGetPPWReminderListQuery({
+    id: 907719, // Dynamic ID
+    pType: selectedValue,
+    fromDate: fromDate,
+    toDate: toDate,
+  });
+  const handleSelect = value => {
+    setSelectedValue(value);
+  };
+
+  useEffect(() => {
+    console.log('error', error);
+    console.log('errorC', errorC);
+  }, [PPWCanceledList, PPWReminderList, error, errorC]);
 
   const tableData = PPWReminderList?.data?.map(item => [
     item?.policyNumber.toString() ?? '',
@@ -102,7 +131,11 @@ export default function PPWCancellation({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="PPW Cancellation" onPress={() => navigation.goBack()} />
-
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+      />
       <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
@@ -150,21 +183,40 @@ export default function PPWCancellation({navigation}) {
             alignItems: 'center',
           }}>
           <View style={[styles.searchWrap, {flex: 0.6}]}>
-            <TextInput style={styles.textInput} placeholder="11/2024" />
-            <TouchableOpacity style={styles.searchButton}>
+            <TextInput
+              value={fromDate + ' - ' + toDate}
+              readOnly
+              style={styles.textInput}
+            />
+            <TouchableOpacity
+              onPress={() => setPickerVisible(true)}
+              style={styles.searchButton}>
               <Feather name="calendar" color={COLORS.white} size={20} />
             </TouchableOpacity>
           </View>
           <View style={{flex: 0.4, padding: 2}}>
-            <AutocompleteDropdown
+            {/* <AutocompleteDropdown
               clearOnFocus={true}
               closeOnBlur={true}
               closeOnSubmit={false}
-              initialValue={{id: 'Motor'}} // or just '2'
-              onSelectItem={setSelectedItem}
+              initialValue="Motor" // Set only the 'id' value here
+              onSelectItem={item => {
+                if (item) {
+                  setSelectedItem(item.id); // Only set 'id' if item is not null or undefined
+                }
+              }}
               dataSet={[
                 {id: 'Motor', title: 'Motor'},
                 {id: 'Non-Motor', title: 'Non-Motor'},
+              ]}
+            /> */}
+            <DropdownFilled
+              Color={COLORS.white}
+              placeholder={'Select Type'}
+              onSelect={handleSelect} // Pass the handleSelect function as a prop
+              dropdownData={[
+                {label: 'Motor', value: 'Motor'},
+                {label: 'Non-Motor', value: 'Non-Motor'},
               ]}
             />
           </View>
@@ -182,7 +234,7 @@ export default function PPWCancellation({navigation}) {
         <View>
           {SelectedType == 1 ? (
             <View>
-              {isLoading == true ? (
+              {isFetching == true ? (
                 <LoadingScreen />
               ) : (
                 <TableComponent
@@ -196,7 +248,7 @@ export default function PPWCancellation({navigation}) {
             </View>
           ) : (
             <View>
-              {isLoadingC == true ? (
+              {isFetchingC == true ? (
                 <LoadingScreen />
               ) : (
                 <TableComponent

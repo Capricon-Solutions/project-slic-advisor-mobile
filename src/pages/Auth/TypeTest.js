@@ -51,7 +51,7 @@ const TypeTest = ({navigation}) => {
           style={{
             backgroundColor: COLORS.primary,
             height: 30,
-            width: 120,
+            width: 130,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 15,
@@ -68,13 +68,30 @@ const TypeTest = ({navigation}) => {
           style={{
             backgroundColor: COLORS.primaryGreen,
             height: 30,
-            width: 120,
+            width: 130,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 15,
           }}>
           <Text style={{color: COLORS.white, fontFamily: Fonts.Roboto.Bold}}>
             Team Leader
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(GetuserType(3));
+            navigation.navigate('AgentNavigator');
+          }}
+          style={{
+            backgroundColor: COLORS.primaryGreen,
+            height: 30,
+            width: 130,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 15,
+          }}>
+          <Text style={{color: COLORS.white, fontFamily: Fonts.Roboto.Bold}}>
+            Regional Manager
           </Text>
         </TouchableOpacity>
       </View>

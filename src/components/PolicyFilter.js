@@ -5,43 +5,94 @@ import {
   Dimensions,
   Text,
   View,
-  Image,
   Modal,
   StyleSheet,
   ScrollView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Foundation from 'react-native-vector-icons/Foundation';
-import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
-import Fonts from '../theme/Fonts';
-import SquareTextBox from './SquareTextBox';
+import DropdownComponentNoLabel from './DropdownComponentNoLabel';
 import SquareTextBoxOutlined from './SquareTextBoxOutlined';
-import SmallButton from './SmallButton';
-import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
+import AlertButton from './AlertButton';
+import Fonts from '../theme/Fonts';
+import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
 export default function PolicyFilter({
   modalVisible,
-  ButtonList,
   setModalVisible,
   Name,
+  handlePolicyValuesChange,
+  initialValues,
+  onPressSearch,
+  onPressClear,
 }) {
+  const [BusinessType, setSelectedBType] = React.useState(
+    initialValues.SelectedBType || '',
+  );
+  const [status, setStatus] = React.useState(initialValues.Status || '');
+  const [PolicyNumber, setPNumber] = React.useState(
+    initialValues.PNumber || '',
+  );
+  const [VehicleNumber, setVNumber] = React.useState(
+    initialValues.VNumber || '',
+  );
+  const [StartFromDt, setSDate] = React.useState(initialValues.SDate || '');
+  const [StartToDt, setEDate] = React.useState(initialValues.EDate || '');
+  const [MobileNumber, setMobile] = React.useState(initialValues.Mobile || '');
+  const [NicNumber, setNic] = React.useState(initialValues.Nic || '');
+  const [BusiRegNo, setBRegNo] = React.useState(initialValues.BRegNo || '');
+
+  // Reset function to clear fields
+  const clearFields = () => {
+    setSelectedBType('');
+    setStatus('');
+    setPNumber('');
+    setVNumber('');
+    setSDate('');
+    setEDate('');
+    setMobile('');
+    setNic('');
+    setBRegNo('');
+  };
+
+  React.useEffect(() => {
+    console.log('VehicleNumber', VehicleNumber);
+
+    handlePolicyValuesChange({
+      BusinessType,
+      status,
+      PolicyNumber,
+      VehicleNumber,
+      StartFromDt,
+      StartToDt,
+      MobileNumber,
+      NicNumber,
+      BusiRegNo,
+    });
+  }, [
+    BusinessType,
+    status,
+    PolicyNumber,
+    VehicleNumber,
+    StartFromDt,
+    StartToDt,
+    MobileNumber,
+    NicNumber,
+    BusiRegNo,
+  ]);
+
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
     if (modalVisible) {
-      // Animate to visible
       Animated.timing(backgroundOpacity, {
         toValue: 0.2,
         duration: 1000,
-        useNativeDriver: false, // Required for animating styles like backgroundColor
+        useNativeDriver: false,
       }).start();
     } else {
-      // Animate to hidden
       Animated.timing(backgroundOpacity, {
         toValue: 0,
         duration: 500,
@@ -52,17 +103,15 @@ export default function PolicyFilter({
 
   function hide() {
     if (modalVisible) {
-      // Animate to visible
       Animated.timing(backgroundOpacity, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: false, // Required for animating styles like backgroundColor
+        useNativeDriver: false,
       }).start();
       setTimeout(() => {
         setModalVisible(false);
       }, 300);
     } else {
-      // Animate to hidden
       Animated.timing(backgroundOpacity, {
         toValue: 0,
         duration: 500,
@@ -89,7 +138,7 @@ export default function PolicyFilter({
         ]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{padding: 20}}
+          contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
           style={styles.modalContainer}>
           <View
             style={{
@@ -98,9 +147,7 @@ export default function PolicyFilter({
               alignItems: 'center',
               marginBottom: 15,
             }}>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.modalTitle}>{Name}</Text>
-            </View>
+            <Text style={styles.modalTitle}>{Name}</Text>
             <TouchableOpacity
               onPress={() => hide()}
               style={{
@@ -110,125 +157,118 @@ export default function PolicyFilter({
                 width: 27,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: COLORS.lightBorder,
+                backgroundColor: '#ccc',
               }}>
-              <MaterialCommunityIcons
-                name="close"
-                color={COLORS.primaryGreen}
-                size={20}
-              />
+              <MaterialCommunityIcons name="close" color="#000" size={20} />
             </TouchableOpacity>
           </View>
-
-          <View
-            style={{borderTopWidth: 0.5, borderColor: COLORS.warmGray}}></View>
-
-          <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            Title={'All'}
-            Label={'Business Type'}
-          />
-          <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            Title={'Search by Type'}
-            Label={'Policy Status'}
-          />
-          <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            Title={''}
-            Label={'Policy Number'}
-          />
-
           <Text
             style={{
-              marginTop: 10,
-              fontFamily: Fonts.Roboto.Bold,
-              color: COLORS.textColor,
-              fontSize: window.width * 0.035,
+              marginBottom: 5,
+              marginTop: 5,
+              fontSize: 12.5,
+              fontFamily: Fonts.Roboto.Medium,
+              color: COLORS.ashBlue,
             }}>
-            Vehicle Number
+            Business Type
           </Text>
+          <DropdownComponentNoLabel
+            BorderColor={COLORS.textColor}
+            placeholder="Select Business Type"
+            onSelect={value => setSelectedBType(value)}
+            dropdownData={[
+              {label: 'All', value: 'A'},
+              {label: 'Motor', value: 'M'},
+              {label: 'Non-Motor', value: 'G'},
+            ]}
+          />
+          <Text
+            style={{
+              marginBottom: 5,
+              marginTop: 5,
+              fontSize: 12.5,
+              fontFamily: Fonts.Roboto.Medium,
+              color: COLORS.ashBlue,
+            }}>
+            Policy Status
+          </Text>
+          <DropdownComponentNoLabel
+            BorderColor={COLORS.textColor}
+            placeholder="Select Policy Status"
+            onSelect={value => setStatus(value)}
+            dropdownData={[
+              {label: 'Premium Pending', value: 'P'},
+              {label: 'Debit Outstanding', value: 'D'},
+              {label: 'Claim Pending', value: 'C'},
+              {label: 'Reminders Set Policies', value: 'F'},
+            ]}
+          />
+          <SquareTextBoxOutlined
+            Title={PolicyNumber}
+            Label="Policy Number"
+            setValue={text => setPNumber(text)}
+          />
+          <SquareTextBoxOutlined
+            Title={VehicleNumber}
+            Label="Vehicle Number"
+            setValue={text => setVNumber(text)}
+          />
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              gap: 10,
-            }}>
-            <View style={{flex: 1}}>
-              <SquareTextBoxOutlined
-                borderColor={COLORS.warmGray}
-                Title={'XXX'}
-              />
-            </View>
-            <View style={{flex: 1}}>
-              <SquareTextBoxOutlined
-                borderColor={COLORS.warmGray}
-                Title={'9999'}
-              />
-            </View>
-          </View>
-
-          <Text
-            style={{
-              marginTop: 10,
-              fontFamily: Fonts.Roboto.Bold,
-              color: COLORS.textColor,
-              fontSize: window.width * 0.035,
-            }}>
-            Start Date
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 10,
               alignItems: 'center',
             }}>
-            <View style={{flex: 1}}>
+            <View style={{flex: 0.45}}>
               <SquareTextBoxOutlined
-                borderColor={COLORS.warmGray}
-                Title={'2024/05/31'}
+                Title={StartFromDt}
+                Label="Start Date"
+                setValue={text => setSDate(text)}
               />
             </View>
-            <Text>TO</Text>
-            <View style={{flex: 1}}>
+
+            <Text style={{marginTop: 25}}>To</Text>
+            <View style={{flex: 0.45}}>
               <SquareTextBoxOutlined
-                borderColor={COLORS.warmGray}
-                Title={'2024/06/31'}
+                Title={StartToDt}
+                Label="End Date"
+                setValue={text => setEDate(text)}
               />
             </View>
           </View>
 
           <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            LabelColor={COLORS.ashBlue}
-            Title={''}
-            Label={'Mobile Number'}
+            Title={MobileNumber}
+            Label="Mobile Number"
+            setValue={text => setMobile(text)}
           />
           <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            Title={''}
-            Label={'NIC Number'}
+            Title={NicNumber}
+            Label="NIC Number"
+            setValue={text => setNic(text)}
           />
           <SquareTextBoxOutlined
-            borderColor={COLORS.warmGray}
-            Title={''}
-            Label={'Bus. Reg. No'}
+            Title={BusiRegNo}
+            Label="Business Reg. No"
+            setValue={text => setBRegNo(text)}
           />
 
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              gap: 10,
               marginTop: 5,
+              gap: 10,
             }}>
-            <View style={{flex: 0.25}}>
-              <AlertButtonWhite Title={'Clear'} />
-            </View>
-            <View style={{flex: 0.3}}>
-              <AlertButton Title={'Search'} />
-            </View>
+            <AlertButtonWhite
+              onPress={() => {
+                clearFields(); // Clear all fields
+                console.log('Fields cleared');
+                onPressClear();
+              }}
+              Title="Clear"
+            />
+            <AlertButton onPress={onPressSearch} Title="Search" />
           </View>
         </ScrollView>
       </Animated.View>
@@ -239,22 +279,19 @@ export default function PolicyFilter({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    paddingVertical: window.height * 0.02,
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContainer: {
     width: '95%',
-
-    backgroundColor: COLORS.white,
-    borderRadius: 10,
+    backgroundColor: '#fff',
+    borderRadius: 5,
     elevation: 25,
     borderWidth: 1,
-    borderColor: COLORS.lightBorder,
+    borderColor: '#ddd',
   },
   modalTitle: {
     fontSize: 17,
-    fontFamily: Fonts.Roboto.Medium,
-    color: COLORS.title,
+    color: '#000',
   },
 });

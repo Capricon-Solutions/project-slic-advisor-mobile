@@ -12,7 +12,14 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponentNoLabel = ({dropdownData, mode, label}) => {
+const DropdownComponentNoLabel = ({
+  dropdownData,
+  mode,
+  label,
+  placeholder,
+  onSelect,
+  BorderColor,
+}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -20,7 +27,10 @@ const DropdownComponentNoLabel = ({dropdownData, mode, label}) => {
     <View style={styles.container}>
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={[
+          styles.dropdown,
+          {borderColor: BorderColor ? BorderColor : 'gray'},
+        ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         selectedStyle={{color: 'red'}}
@@ -34,7 +44,7 @@ const DropdownComponentNoLabel = ({dropdownData, mode, label}) => {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
+        placeholder={!isFocus ? placeholder : '...'}
         searchPlaceholder="Search..."
         value={value}
         onFocus={() => setIsFocus(true)}
@@ -42,6 +52,9 @@ const DropdownComponentNoLabel = ({dropdownData, mode, label}) => {
         onChange={item => {
           setValue(item.value);
           setIsFocus(false);
+          if (onSelect) {
+            onSelect(item.value);
+          }
         }}
         renderLeftIcon={() => (
           <MaterialCommunityIcons
@@ -80,8 +93,8 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 43,
-    borderColor: 'gray',
-    borderWidth: 0.5,
+    // borderColor: 'gray',
+    borderWidth: 0.8,
     borderRadius: 8,
     paddingHorizontal: 8,
   },
