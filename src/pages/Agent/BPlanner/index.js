@@ -35,6 +35,8 @@ import {
   PaperProvider,
 } from 'react-native-paper';
 import ActivityCard from '../../../components/ActivityCard';
+import EventCreation from '../../../components/EventCreation';
+import ActivityCreation from '../../../components/ActivityCreation';
 
 const window = Dimensions.get('window');
 
@@ -87,7 +89,8 @@ export default function BPlanner({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [calenderVisible, setCalenderVisible] = useState(true);
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [eventModalVisible, setEventModalVisible] = useState(false);
+  const [activityModalVisible, setActivityModalVisible] = useState(false);
   const [selected, setSelected] = useState({
     '2025-02-01': {selected: true, marked: true, selectedColor: 'blue'},
     '2025-02-02': {marked: true},
@@ -154,6 +157,14 @@ export default function BPlanner({navigation}) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
+        <EventCreation
+          modalVisible={eventModalVisible}
+          setModalVisible={setEventModalVisible}
+        />
+        <ActivityCreation
+          modalVisible={activityModalVisible}
+          setModalVisible={setActivityModalVisible}
+        />
         <View style={[Styles.container, {overflow: 'scroll'}]}>
           <HeaderBackground />
           <Header
@@ -211,8 +222,7 @@ export default function BPlanner({navigation}) {
                 {/* <SmallButton Title={'View Training List'} /> */}
                 <TouchableOpacity
                   style={styles.smallButton}
-                  // onPress={() => navigation.navigate('TrainingList')}
-                >
+                  onPress={() => setEventModalVisible(true)}>
                   <MaterialCommunityIcons
                     name="plus"
                     color={COLORS.white}
@@ -225,8 +235,7 @@ export default function BPlanner({navigation}) {
                 {/* <SmallButton Title={'View Training List'} /> */}
                 <TouchableOpacity
                   style={styles.smallButton}
-                  // onPress={() => navigation.navigate('TrainingList')}
-                >
+                  onPress={() => setActivityModalVisible(true)}>
                   <MaterialCommunityIcons
                     name="plus"
                     color={COLORS.white}

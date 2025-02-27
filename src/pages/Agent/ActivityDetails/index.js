@@ -39,23 +39,8 @@ export default function ActivityDetails({navigation}) {
 
   const policyDetailsResponse = PolicyDetails?.data;
 
-  const id = policyDetailsResponse?.id;
-  const policyNumber = policyDetailsResponse?.policyNumber;
-  const insName = policyDetailsResponse?.insuredName;
-  const Address = policyDetailsResponse?.address;
   const phone = policyDetailsResponse?.mobileNumber;
-  const startDate = policyDetailsResponse?.startDate;
-  const endDate = policyDetailsResponse?.endDate;
-  const sumInsured = policyDetailsResponse?.sumInsured;
-  const refNo = policyDetailsResponse?.payRefNo;
-  const addCovers = policyDetailsResponse?.additionalCovers;
-  const vehicleNo = policyDetailsResponse?.vehicleNumber;
-  const makeYear = policyDetailsResponse?.makeYear;
-  const brand = policyDetailsResponse?.make;
-  const chasisNo = policyDetailsResponse?.chassisNo;
-  const engineNo = policyDetailsResponse?.engineNo;
-  const capacity = policyDetailsResponse?.engineCapacity;
-  console.log('addCovers', addCovers);
+
   const DetailLine = ({Title, detail}) => {
     return (
       <View

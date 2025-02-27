@@ -15,7 +15,7 @@ import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import moment from 'moment';
 import motor from '../icons/motor.png'; // Replace with the actual logo path
 import {TextInput} from 'react-native-paper';
 import Button from './Button';
@@ -120,7 +120,7 @@ export default function PolicyItem({item, navigation}) {
                 textColor={COLORS.ashBlue}
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
-                value={item.startDate}
+                value={moment(item.startDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
               />
             </View>
             <View style={{flex: 0.48}}>
@@ -132,7 +132,7 @@ export default function PolicyItem({item, navigation}) {
                 textColor={COLORS.ashBlue}
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
-                value={item.endDate}
+                value={moment(item.endDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
               />
             </View>
           </View>
@@ -143,7 +143,7 @@ export default function PolicyItem({item, navigation}) {
               marginVertical: 5,
               justifyContent: 'space-between',
             }}>
-            <View
+            <TouchableOpacity
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
@@ -159,9 +159,14 @@ export default function PolicyItem({item, navigation}) {
                 color={COLORS.primary}
                 size={24}
               />
-            </View>
+            </TouchableOpacity>
 
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  `whatsapp://send?text=Hello&phone=${item.telephone}`,
+                )
+              }
               style={{
                 borderWidth: 1,
                 borderColor: COLORS.lightBorder,
@@ -177,7 +182,7 @@ export default function PolicyItem({item, navigation}) {
                 color={COLORS.primary}
                 size={24}
               />
-            </View>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => handleCall(item.telephone)}
