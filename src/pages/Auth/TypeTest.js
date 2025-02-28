@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import {TextInput, Checkbox} from 'react-native-paper';
 import Svg, {Path} from 'react-native-svg';
@@ -32,6 +33,8 @@ const TypeTest = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+
       <View style={{alignItems: 'center'}}>
         <Text> Testing purpose</Text>
         <Text

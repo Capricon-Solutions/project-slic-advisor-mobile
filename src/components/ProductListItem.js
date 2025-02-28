@@ -18,7 +18,8 @@ import Fonts from '../theme/Fonts';
 
 export default function ProductListItem({item, onPress}) {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         backgroundColor: COLORS.background,
         marginVertical: 8,
@@ -96,6 +97,6 @@ export default function ProductListItem({item, onPress}) {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

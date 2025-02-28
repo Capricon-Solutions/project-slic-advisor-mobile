@@ -102,7 +102,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
           </TouchableOpacity>
 
           <Text style={styles.modalTitle}>
-            SET YOUR TARGET FOR 2025/DECEMBER
+            Set your target for 2025/December
           </Text>
 
           <TextInput

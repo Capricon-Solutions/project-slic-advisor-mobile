@@ -91,7 +91,7 @@ export default function ProductDetails({navigation, route}) {
               borderRadius: 17,
               objectFit: 'contain',
             }}
-            source={{uri: item.imageUrl}}></Image>
+            source={{uri: item?.imageUrl}}></Image>
         </View>
 
         <View

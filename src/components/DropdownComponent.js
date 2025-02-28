@@ -106,9 +106,11 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 12,
+    color: COLORS.textColor,
   },
   placeholderStyle: {
     fontSize: 12,
+    color: COLORS.textColor,
   },
   selectedTextStyle: {
     fontSize: 15,

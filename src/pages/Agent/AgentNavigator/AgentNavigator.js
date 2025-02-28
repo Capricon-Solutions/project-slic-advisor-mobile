@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Platform} from 'react-native';
+import {View, Platform, StatusBar} from 'react-native';
 import {useLinkBuilder, useTheme} from '@react-navigation/native';
 import {Text, PlatformPressable} from '@react-navigation/elements';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -28,6 +28,11 @@ function AgengNavigator({state, descriptors, navigation}) {
         borderTopWidth: 1,
         borderColor: colors.border,
       }}>
+      <StatusBar
+        backgroundColor={COLORS.TopBackColor}
+        barStyle="dark-content"
+      />
+
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =

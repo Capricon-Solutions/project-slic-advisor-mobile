@@ -48,7 +48,7 @@ export default function ProductPortfolio({navigation}) {
   const renderDepartmentItem = ({item}) => (
     <OtherListItem
       item={item}
-      onPress={() => navigation.navigate('ProductDetails', item)}
+      onPress={() => navigation.navigate('ProductDetails', {item})}
     />
   );
 

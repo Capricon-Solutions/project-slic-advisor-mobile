@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import {FlatList} from 'react-native';
@@ -114,6 +115,7 @@ export default function TeamMemberGrid({navigation}) {
 
   return (
     <View style={Styles.container}>
+      <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (

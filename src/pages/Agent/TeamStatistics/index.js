@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -56,6 +57,7 @@ export default function TeamStatistics({navigation}) {
 
   return (
     <View style={Styles.container}>
+      <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader

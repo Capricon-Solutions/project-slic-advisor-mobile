@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
     fontSize: 11,
+    color: COLORS.textColor,
   },
   row: {height: 50},
   rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row

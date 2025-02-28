@@ -15,6 +15,7 @@ import {
   Text,
   View,
   useColorScheme,
+  StatusBar
 } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
@@ -48,6 +49,7 @@ import LeadCreation from './src/pages/Agent/BPlanner/LeadCreation';
 import MonthlyPlan from './src/pages/Agent/BPlanner/MonthlyPlan';
 import ActivityDetails from './src/pages/Agent/ActivityDetails';
 import Report from './src/pages/Agent/Report';
+import COLORS from './src/theme/colors';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -84,8 +86,11 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
+      
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TypeTest" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+    <StatusBar backgroundColor={COLORS.TopBackColor} barStyle="dark-content" />
+      
+      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
