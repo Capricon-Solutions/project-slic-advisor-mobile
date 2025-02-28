@@ -434,7 +434,7 @@ export default function Dashboard({navigation}) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            onPress={() => navigation.navigate('SalesMeter')}
+            // onPress={() => navigation.navigate('SalesMeter')}
           />
         )}
         {usertype == 3 && (
@@ -476,14 +476,14 @@ export default function Dashboard({navigation}) {
 
         {usertype == 3 && (
           <RMGrid
-            onSalesClick={() => setModalVisible(true)}
-            onGeneralClick={() => setgeneraModalVisible(true)}
-            onClubClick={() => navigation.navigate('ClubInformation')}
-            onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => console.log('E-Coner click')}
-            onProductPortfolioClick={() =>
-              navigation.navigate('ProductPortfolio')
-            }
+          // onSalesClick={() => setModalVisible(true)}
+          // onGeneralClick={() => setgeneraModalVisible(true)}
+          // onClubClick={() => navigation.navigate('ClubInformation')}
+          // onBplannerClick={() => navigation.navigate('BPlanner')}
+          // onEConnerClick={() => console.log('E-Coner click')}
+          // onProductPortfolioClick={() =>
+          //   navigation.navigate('ProductPortfolio')
+          // }
           />
         )}
       </ScrollView>

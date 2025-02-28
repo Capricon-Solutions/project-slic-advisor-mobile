@@ -16,6 +16,7 @@ import AlertButtonWhite from './AlertButtonWhite';
 import AlertButton from './AlertButton';
 import Fonts from '../theme/Fonts';
 import COLORS from '../theme/colors';
+import SquareTextBoxOutlinedDate from './SquareTextBoxOutlinedDate';
 
 const window = Dimensions.get('window');
 
@@ -232,19 +233,21 @@ export default function PolicyFilter({
               alignItems: 'center',
             }}>
             <View style={{flex: 0.45}}>
-              <SquareTextBoxOutlined
+              <SquareTextBoxOutlinedDate
                 Title={StartFromDt}
                 Label="Start Date"
                 setValue={text => setSDate(text)}
+                keyboardType="numeric"
               />
             </View>
 
             <Text style={{marginTop: 25}}>To</Text>
             <View style={{flex: 0.45}}>
-              <SquareTextBoxOutlined
+              <SquareTextBoxOutlinedDate
                 Title={StartToDt}
                 Label="End Date"
                 setValue={text => setEDate(text)}
+                keyboardType="numeric"
               />
             </View>
           </View>
@@ -252,6 +255,7 @@ export default function PolicyFilter({
           <SquareTextBoxOutlined
             Title={MobileNumber}
             Label="Mobile Number"
+            keyboardType={'phone-pad'}
             setValue={text => setMobile(text)}
           />
           <SquareTextBoxOutlined

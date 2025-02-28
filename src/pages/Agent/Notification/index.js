@@ -34,6 +34,7 @@ export default function Notification({navigation}) {
     data: Notifications,
     error,
     isLoading,
+    isFetching,
   } = useGetNotificationsQuery({
     id: 123456,
   });
@@ -73,7 +74,9 @@ export default function Notification({navigation}) {
 
   const [SelectedType, setSelectedType] = useState(1);
 
-  const renderItem = ({item}) => <NotificationItem item={item} />;
+  const renderItem = ({item}) => (
+    <NotificationItem item={item} navigation={navigation} />
+  );
 
   return (
     <View style={[Styles.container, {backgroundColor: COLORS.grayBackground}]}>
@@ -88,18 +91,24 @@ export default function Notification({navigation}) {
       </View> */}
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}>
-        <FlatList
-          data={Notifications?.data}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            fadeDuration: 1000,
+        {isFetching == true ? (
+          <View style={{height: window.height * 0.8}}>
+            <LoadingScreen />
+          </View>
+        ) : (
+          <FlatList
+            data={Notifications?.data}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              fadeDuration: 1000,
 
-            backgroundColor: 'transparent',
-            paddingBottom: window.height * 0.25,
-          }}
-          renderItem={renderItem}
-          keyExtractor={item => item?.id?.toString()}
-        />
+              backgroundColor: 'transparent',
+              paddingBottom: window.height * 0.25,
+            }}
+            renderItem={renderItem}
+            keyExtractor={item => item?.id?.toString()}
+          />
+        )}
       </ScrollView>
     </View>
   );

@@ -16,11 +16,12 @@ import Fonts from '../theme/Fonts';
 import moment from 'moment';
 import {useReadNotificationMutation} from '../redux/services/NotificationSlice';
 
-export default function NotificationItem({item}) {
+export default function NotificationItem({item, navigation}) {
   const [readNotification] = useReadNotificationMutation();
 
   const handleReadNotification = async () => {
     await readNotification({notificationId: [item?.notificationId]}); // API call
+    navigation.navigate('PolicyDetails', {policyNo: item.policyNo});
   };
   return (
     <TouchableOpacity
