@@ -17,12 +17,12 @@ const DropdownComponent = ({dropdownData, mode, label}) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
-      );
-    }
-    return null;
+    // if (value || isFocus) {
+    return (
+      <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
+    );
+    // }
+    // return null;
   };
 
   return (

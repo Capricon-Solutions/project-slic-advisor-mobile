@@ -184,10 +184,7 @@ export default function TeamMemberGrid({navigation}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
-                dropdownData={[
-                  {label: 'Item 1', value: '1'},
-                  {label: 'Item 2', value: '2'},
-                ]}
+                dropdownData={[{label: 'NOP', value: '1'}]}
               />
             </View>
             <View style={{flex: 0.25, marginHorizontal: 2}}>
@@ -195,10 +192,8 @@ export default function TeamMemberGrid({navigation}) {
                 label={'General Monthly'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'Item 1', value: '1'},
-                  {label: 'Item 2', value: '2'},
-                  {label: 'Item 3', value: '3'},
-                  {label: 'Item 4', value: '4'},
+                  {label: 'General Cumulative', value: '1'},
+                  {label: 'Motor Monthly', value: '2'},
                 ]}
               />
             </View>
@@ -207,14 +202,18 @@ export default function TeamMemberGrid({navigation}) {
                 label={'Month'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'Item 1', value: '1'},
-                  {label: 'Item 2', value: '2'},
-                  {label: 'Item 3', value: '3'},
-                  {label: 'Item 4', value: '4'},
-                  {label: 'Item 5', value: '5'},
-                  {label: 'Item 6', value: '6'},
-                  {label: 'Item 7', value: '7'},
-                  {label: 'Item 8', value: '8'},
+                  {label: 'January', value: '01'},
+                  {label: 'February', value: '02'},
+                  {label: 'March', value: '03'},
+                  {label: 'April', value: '04'},
+                  {label: 'May', value: '05'},
+                  {label: 'June', value: '06'},
+                  {label: 'July', value: '07'},
+                  {label: 'August', value: '08'},
+                  {label: 'September', value: '09'},
+                  {label: 'October', value: '10'},
+                  {label: 'November', value: '11'},
+                  {label: 'December', value: '12'},
                 ]}
               />
             </View>
