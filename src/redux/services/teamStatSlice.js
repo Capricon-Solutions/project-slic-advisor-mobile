@@ -86,7 +86,7 @@ const initialState = {
     data: {
       tableData: [
         {
-          first: 'Agent  01',
+          first: 'Agent 01',
           Renewal: '3653.7',
           NB: '500,000',
           Refund: {
@@ -97,7 +97,35 @@ const initialState = {
           Total: '500,000',
         },
         {
-          first: 'Agent  02',
+          first: 'Agent 02',
+          Renewal: '3653.7',
+          NB: '500,000',
+          Refund: {
+            ppw: '3668.66',
+            other: '12737.19',
+          },
+          Endorsement: '500,000',
+          Total: '500,000',
+        },
+      ],
+    },
+  },
+  reportResponse: {
+    data: {
+      tableData: [
+        {
+          first: 'Kandy 01',
+          Renewal: '3653.7',
+          NB: '500,000',
+          Refund: {
+            ppw: '3668.66',
+            other: '12737.19',
+          },
+          Endorsement: '500,000',
+          Total: '500,000',
+        },
+        {
+          first: 'Colombo',
           Renewal: '3653.7',
           NB: '500,000',
           Refund: {
@@ -122,10 +150,13 @@ export const teamStatSlice = createSlice({
     GetteamMemberResponse: (state, action) => {
       state.teamMemberResponse = action.payload;
     },
+    GetreportResponse: (state, action) => {
+      state.reportResponse = action.payload;
+    },
   },
 });
 
-export const {GetteamStatResponse, GetteamMemberResponse} =
+export const {GetteamStatResponse, GetteamMemberResponse, GetreportResponse} =
   teamStatSlice.actions;
 
 export default teamStatSlice.reducer;

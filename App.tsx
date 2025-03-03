@@ -39,17 +39,19 @@ import Notification from './src/pages/Agent/Notification';
 import PDFViewer from './src/pages/PDFViewer/PDFViewer';
 import ProductDetails from './src/pages/Agent/ProductDetails';
 import MyselfPerformance from './src/pages/Agent/MyselfPerformance';
-import TeamStatistics from './src/pages/Agent/TeamStatistics';
-import TeamPerformance from './src/pages/Agent/TeamPerformance';
-import TeamMemberGrid from './src/pages/Agent/TeamMemberGrid';
 import TypeTest from './src/pages/Auth/TypeTest';
 import BPlanner from './src/pages/Agent/BPlanner';
 import LeadSearch from './src/pages/Agent/BPlanner/LeadSearch';
 import LeadCreation from './src/pages/Agent/BPlanner/LeadCreation';
 import MonthlyPlan from './src/pages/Agent/BPlanner/MonthlyPlan';
 import ActivityDetails from './src/pages/Agent/ActivityDetails';
-import Report from './src/pages/Agent/Report';
 import COLORS from './src/theme/colors';
+import TeamStatistics from './src/pages/TeamLeader/TeamStatistics';
+import TeamPerformance from './src/pages/TeamLeader/TeamPerformance';
+import TeamMemberGrid from './src/pages/TeamLeader/TeamMemberGrid';
+import ECorner from './src/pages/Agent/ECorner';
+import Report from './src/pages/RegionalManager/Report/Report';
+import KPISummary from './src/pages/RegionalManager/Report/KPISummary';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -122,6 +124,8 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="MonthlyPlan" component={MonthlyPlan} />
         <Stack.Screen   name="ActivityDetails" component={ActivityDetails} />
         <Stack.Screen   name="Report" component={Report} />
+        <Stack.Screen   name="ECorner" component={ECorner} />
+        <Stack.Screen   name="KPISummary" component={KPISummary} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

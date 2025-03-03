@@ -26,12 +26,11 @@ import Competition from '../icons/Competition.png'; // Replace with the actual l
 const window = Dimensions.get('window');
 
 export default function RMGrid({
-  onSalesClick,
-  onGeneralClick,
-  onClubClick,
-  onBplannerClick,
-  onEConnerClick,
-  onProductPortfolioClick,
+  onRegionSummaryClick,
+  onKPISummaryClick,
+  onDUESSummaryClick,
+  onClassSummaryClick,
+  onCompetitionClick,
 }) {
   return (
     <View>
@@ -41,15 +40,17 @@ export default function RMGrid({
           justifyContent: 'space-around',
           marginVertical: window.height * 0.01,
         }}>
-        <TouchableOpacity onPress={onSalesClick} style={Styles.iconGrid}>
+        <TouchableOpacity
+          onPress={onRegionSummaryClick}
+          style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={RegionSummery}></Image>
           <Text style={Styles.gridText}>Region{'\n'}Summary</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onGeneralClick} style={Styles.iconGrid}>
+        <TouchableOpacity onPress={onKPISummaryClick} style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={KpiSummery}></Image>
           <Text style={Styles.gridText}>KPI{'\n'}Summary</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onClubClick} style={Styles.iconGrid}>
+        <TouchableOpacity onPress={onDUESSummaryClick} style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={DuesSummery}></Image>
           <Text style={Styles.gridText}>DUES{'\n'}Summary</Text>
         </TouchableOpacity>
@@ -62,13 +63,13 @@ export default function RMGrid({
           marginVertical: 10,
         }}>
         <TouchableOpacity
-          onPress={onBplannerClick}
+          onPress={onClassSummaryClick}
           // BPlanner
           style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={ClassSummery}></Image>
           <Text style={Styles.gridText}>Class{'\n'}Summary</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onEConnerClick} style={Styles.iconGrid}>
+        <TouchableOpacity onPress={onCompetitionClick} style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={Competition}></Image>
           <Text style={Styles.gridText}>Competition</Text>
         </TouchableOpacity>

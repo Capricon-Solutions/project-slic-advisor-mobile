@@ -39,6 +39,7 @@ const COLORS = {
   calenderInput: '#F4F6FA',
   grayBackground: '#FAFAFC',
   tableSubHeader: '#CCEFF1',
+  grassGreen: '#319B00',
 };
 
 export default COLORS;

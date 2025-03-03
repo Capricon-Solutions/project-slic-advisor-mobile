@@ -35,6 +35,7 @@ const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use 
 
 export default function Profile({navigation}) {
   const dispatch = useDispatch();
+  const usertype = useSelector(state => state.userType.userType);
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
@@ -109,7 +110,15 @@ export default function Profile({navigation}) {
             </TouchableOpacity>
           </View>
           <Text style={styles.profileName}>{name}</Text>
-          <Text style={styles.profileRole}>{designation}</Text>
+          <Text style={styles.profileRole}>
+            {usertype == 1
+              ? 'Advisor'
+              : usertype == 2
+              ? 'Team Leader'
+              : usertype == 3
+              ? 'Regional Manager'
+              : 'Unknown'}
+          </Text>
         </View>
 
         {/* Profile Form */}

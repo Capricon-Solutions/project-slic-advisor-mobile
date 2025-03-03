@@ -14,7 +14,7 @@ import COLORS from '../../../theme/colors';
 import {Styles} from './Styles';
 import TrainingCalender from '../TrainingCalender/TrainingCalender';
 import {useSelector} from 'react-redux';
-import Report from '../Report';
+import Report from '../../RegionalManager/Report/Report';
 
 function AgengNavigator({state, descriptors, navigation}) {
   const {colors} = useTheme();

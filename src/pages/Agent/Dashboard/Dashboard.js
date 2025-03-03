@@ -454,7 +454,7 @@ export default function Dashboard({navigation}) {
             onGeneralClick={() => setgeneraModalVisible(true)}
             onClubClick={() => navigation.navigate('ClubInformation')}
             onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => console.log('E-Coner click')}
+            onEConnerClick={() => navigation.navigate('ECorner')}
             onProductPortfolioClick={() =>
               navigation.navigate('ProductPortfolio')
             }
@@ -467,7 +467,7 @@ export default function Dashboard({navigation}) {
             onGeneralClick={() => setgeneraModalVisible(true)}
             onClubClick={() => navigation.navigate('ClubInformation')}
             onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => console.log('E-Coner click')}
+            onEConnerClick={() => navigation.navigate('ECorner')}
             onProductPortfolioClick={() =>
               navigation.navigate('ProductPortfolio')
             }
@@ -476,14 +476,11 @@ export default function Dashboard({navigation}) {
 
         {usertype == 3 && (
           <RMGrid
-          // onSalesClick={() => setModalVisible(true)}
-          // onGeneralClick={() => setgeneraModalVisible(true)}
-          // onClubClick={() => navigation.navigate('ClubInformation')}
-          // onBplannerClick={() => navigation.navigate('BPlanner')}
-          // onEConnerClick={() => console.log('E-Coner click')}
-          // onProductPortfolioClick={() =>
-          //   navigation.navigate('ProductPortfolio')
-          // }
+            // onRegionSummaryClick={() => setModalVisible(true)}
+            onKPISummaryClick={() => navigation.navigate('KPISummary')}
+            // onDUESSummaryClick={() => navigation.navigate('ClubInformation')}
+            // onClassSummaryClick={() => navigation.navigate('BPlanner')}
+            // onCompetitionClick={() => console.log('E-Coner click')}
           />
         )}
       </ScrollView>
