@@ -52,6 +52,11 @@ import TeamMemberGrid from './src/pages/TeamLeader/TeamMemberGrid';
 import ECorner from './src/pages/Agent/ECorner';
 import Report from './src/pages/RegionalManager/Report/Report';
 import KPISummary from './src/pages/RegionalManager/Report/KPISummary';
+import DUESSummary from './src/pages/RegionalManager/Report/DUESSummary';
+import ClassSummary from './src/pages/RegionalManager/Report/ClassSummary';
+import RegionSummary from './src/pages/RegionalManager/Report/RegionSummary';
+import BranchSummary from './src/pages/RegionalManager/Report/BranchSummary';
+import Competition from './src/pages/RegionalManager/Report/Competition';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -126,6 +131,11 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="Report" component={Report} />
         <Stack.Screen   name="ECorner" component={ECorner} />
         <Stack.Screen   name="KPISummary" component={KPISummary} />
+        <Stack.Screen   name="DUESSummary" component={DUESSummary} />
+        <Stack.Screen   name="ClassSummary" component={ClassSummary} />
+        <Stack.Screen   name="RegionSummary" component={RegionSummary} />
+        <Stack.Screen   name="BranchSummary" component={BranchSummary} />
+        <Stack.Screen   name="Competition" component={Competition} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

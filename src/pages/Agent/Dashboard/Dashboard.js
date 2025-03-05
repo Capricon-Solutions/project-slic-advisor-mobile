@@ -476,11 +476,11 @@ export default function Dashboard({navigation}) {
 
         {usertype == 3 && (
           <RMGrid
-            // onRegionSummaryClick={() => setModalVisible(true)}
+            onRegionSummaryClick={() => navigation.navigate('RegionSummary')}
             onKPISummaryClick={() => navigation.navigate('KPISummary')}
-            // onDUESSummaryClick={() => navigation.navigate('ClubInformation')}
-            // onClassSummaryClick={() => navigation.navigate('BPlanner')}
-            // onCompetitionClick={() => console.log('E-Coner click')}
+            onDUESSummaryClick={() => navigation.navigate('DUESSummary')}
+            onClassSummaryClick={() => navigation.navigate('ClassSummary')}
+            onCompetitionClick={() => navigation.navigate('Competition')}
           />
         )}
       </ScrollView>

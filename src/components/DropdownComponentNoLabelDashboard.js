@@ -20,6 +20,7 @@ const DropdownComponentNoLabelDashboard = ({
   placeholder,
   onSelect,
   BorderColor,
+  backgroundColor,
 }) => {
   const [value, setValue] = useState(initialValue);
   const [isFocus, setIsFocus] = useState(false);
@@ -30,12 +31,15 @@ const DropdownComponentNoLabelDashboard = ({
         mode={mode == 'modal' ? 'modal' : 'auto'}
         style={[
           styles.dropdown,
-          {borderColor: BorderColor ? BorderColor : 'gray'},
+          {
+            borderColor: BorderColor ? BorderColor : 'gray',
+            backgroundColor: backgroundColor ? backgroundColor : 'transparent',
+          },
         ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         selectedStyle={{color: 'red'}}
-        itemTextStyle={{color: COLORS.textColor, fontSize: 10}}
+        itemTextStyle={{color: COLORS.textColor, fontSize: 12}}
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 15,
   },
   dropdown: {
-    height: 25,
+    height: 28,
     // borderColor: 'gray',
     borderWidth: 0.8,
     borderRadius: 8,

@@ -33,13 +33,13 @@ const COLORS = {
   darkText: '#2D3142',
   text: '#1E1E1E',
   lightGreen: '#E0F7F7',
-  lightBlue: '#00ADBB33',
+  lightBlue: '#F0F9F9',
   darkGreen: '#00796B',
   trainingCard: '#d0f2f5',
   calenderInput: '#F4F6FA',
   grayBackground: '#FAFAFC',
   tableSubHeader: '#CCEFF1',
-  grassGreen: '#319B00',
+  grassGreen: '#319B00'
 };
 
 export default COLORS;
