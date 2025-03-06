@@ -21,6 +21,13 @@ export const styles = StyleSheet.create({
     height: 30,
     borderRadius: 6,
   },
+  leadInfoCard: {
+    backgroundColor: COLORS.white,
+    elevation: 10,
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 15,
+  },
   orangeButton: {
     backgroundColor: COLORS.primaryOrange,
     height: 30,

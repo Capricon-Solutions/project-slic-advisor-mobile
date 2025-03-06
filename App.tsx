@@ -57,6 +57,7 @@ import ClassSummary from './src/pages/RegionalManager/Report/ClassSummary';
 import RegionSummary from './src/pages/RegionalManager/Report/RegionSummary';
 import BranchSummary from './src/pages/RegionalManager/Report/BranchSummary';
 import Competition from './src/pages/RegionalManager/Report/Competition';
+import LeadInformation from './src/pages/Agent/BPlanner/LeadInformation';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -97,7 +98,7 @@ function App(): React.JSX.Element {
     <NavigationContainer>
     <StatusBar backgroundColor={COLORS.TopBackColor} barStyle="dark-content" />
       
-      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="BPlanner" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -136,6 +137,7 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="RegionSummary" component={RegionSummary} />
         <Stack.Screen   name="BranchSummary" component={BranchSummary} />
         <Stack.Screen   name="Competition" component={Competition} />
+        <Stack.Screen   name="LeadInformation" component={LeadInformation} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

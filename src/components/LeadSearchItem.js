@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 
-export default function LeadSearchItem({item}) {
+export default function LeadSearchItem({ item, onPress }) {
   const handleCall = phoneNumber => {
     // Open the phone dialer with the contact number
     const phoneURL = `tel:${phoneNumber}`;
@@ -22,7 +22,9 @@ export default function LeadSearchItem({item}) {
   };
 
   return (
-    <View style={Styles.leadSearchListWrap}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={Styles.leadSearchListWrap}>
       <View
         style={{
           flexDirection: 'row',
@@ -61,7 +63,7 @@ export default function LeadSearchItem({item}) {
               flexDirection: 'row',
               gap: 15,
             }}>
-            <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
               <MaterialCommunityIcons
                 name="car"
                 style={{}}
@@ -78,7 +80,7 @@ export default function LeadSearchItem({item}) {
               </Text>
             </View>
 
-            <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
               <MaterialCommunityIcons
                 name="phone"
                 style={{}}
@@ -96,7 +98,7 @@ export default function LeadSearchItem({item}) {
             </View>
           </View>
         </View>
-        <View style={{flex: 0.1}}>
+        <View style={{ flex: 0.1 }}>
           <TouchableOpacity
             onPress={() => handleCall(item.contactNo1)}
             style={{
@@ -118,6 +120,6 @@ export default function LeadSearchItem({item}) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
