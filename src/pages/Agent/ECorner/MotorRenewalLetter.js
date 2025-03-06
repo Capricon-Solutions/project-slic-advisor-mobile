@@ -20,74 +20,84 @@ import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
 import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
+import Feather from 'react-native-vector-icons/Feather';
+
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
 import EconerItems from '../../../components/EconerItems';
+import EDocItems from '../../../components/EDocItems';
+import ELetterItems from '../../../components/ELetterItems';
 const window = Dimensions.get('window');
 
 const data = [
   {
     id: 1,
-    type: 'Motor Renewal',
-    page: 'MotorRenewal',
+    type: 'Claim Form',
     conunt: '827',
     download: false,
     Share: false,
   },
   {
     id: 2,
-    type: 'Motor Renewal Compact',
-    page: 'MotorRenewalCompact',
+    type: 'Drivers Statement',
     conunt: '827',
     download: false,
     Share: false,
   },
   {
     id: 3,
-    type: 'Non-motor Renewal Compact',
-    page: 'NonMotorRenewalCompact',
+    type: 'Drivers Statement',
     conunt: '827',
     download: false,
     Share: false,
   },
   {
     id: 4,
-    type: 'Motor renewal letter',
-    page: 'MotorRenewalLetter',
+    type: 'Drivers Statement',
     conunt: '827',
     download: true,
     Share: true,
   },
-  {
-    id: 5,
-    type: 'commission statement',
-    page: 'CommissionStatement',
-    conunt: '827',
-    download: true,
-    Share: false,
-  },
-  {
-    id: 6,
-    type: 'E - Documents',
-    page: 'EDocument',
-    conunt: '827',
-    download: true,
-    Share: false,
-  },
+
 ];
 
-export default function ECorner({ navigation }) {
-  const renderEconerItems = ({ item }) => (
-    <EconerItems item={item} navigation={navigation} />
+export default function MotorRenewalLetter({ navigation }) {
+  const renderLetterItems = ({ item }) => (
+    <ELetterItems item={item} navigation={navigation} />
   );
 
   return (
     <View style={Styles.container}>
       <HeaderBackground />
-      <Header Title="E-Corner" onPress={() => navigation.goBack()} />
+      <Header Title="Motor Renewal Letter" onPress={() => navigation.goBack()} />
       <View style={{ paddingHorizontal: 5 }}>
+        <View style={[styles.searchWrap, { marginHorizontal: 15, marginVertical: 3 }]}>
+          <TextInput
+            style={styles.textInput}
+            // onChangeText={v => setSearchText(v)}
+            placeholder="Quick search"
+          />
+          <TouchableOpacity
+            // onPress={() => handleSearch()}
+            style={styles.searchButton}>
+            <Feather name="search" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.searchWrap, { marginHorizontal: 15, marginBottom: 3 }]}>
+          <TextInput
+            style={styles.textInput}
+            // onChangeText={v => setSearchText(v)}
+            placeholder="11/2024"
+          />
+          <TouchableOpacity
+            // onPress={() => handleSearch()}
+            style={styles.searchButton}>
+            <Feather name="calendar" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+
         <View>
           <FlatList
             data={data}
@@ -98,7 +108,7 @@ export default function ECorner({ navigation }) {
               paddingBottom: window.height * 0.25,
               paddingHorizontal: 15,
             }}
-            renderItem={renderEconerItems}
+            renderItem={renderLetterItems}
           // keyExtractor={item => item.id.toString()}
           />
         </View>

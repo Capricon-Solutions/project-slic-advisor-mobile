@@ -11,11 +11,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import Button from './Button';
 import SmallButton from './SmallButton';
-import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
+import { Checkbox, Menu, Divider, PaperProvider } from 'react-native-paper';
 
 // import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
@@ -34,6 +34,7 @@ export default function Header({
   haveWhatsapp,
   whatsappNo,
   callNo,
+  titleFontSize
 }) {
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -49,7 +50,7 @@ export default function Header({
         marginTop: 5,
         marginHorizontal: 20,
       }}>
-      <View style={{justifyContent: 'center', flex: 0.25}}>
+      <View style={{ justifyContent: 'center', flex: 0.25 }}>
         <TouchableOpacity
           onPress={onPress}
           style={{
@@ -67,11 +68,11 @@ export default function Header({
           />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 0.5, alignItems: 'center'}}>
+      <View style={{ flex: 0.5, alignItems: 'center' }}>
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
-            fontSize: 17,
+            fontSize: titleFontSize ? titleFontSize : 16,
             color: COLORS.title,
           }}>
           {Title}
@@ -85,7 +86,7 @@ export default function Header({
           alignItems: 'center',
         }}>
         {haveButton && (
-          <View style={{width: '100%'}}>
+          <View style={{ width: '100%' }}>
             <SmallButton Title={ButtonTitle} onPress={onButton}></SmallButton>
           </View>
         )}
@@ -169,7 +170,7 @@ export default function Header({
             visible={visible}
             onDismiss={closeMenu}
             anchor={
-              <TouchableOpacity onPress={openMenu} style={{marginLeft: 5}}>
+              <TouchableOpacity onPress={openMenu} style={{ marginLeft: 5 }}>
                 <View style={{}}>
                   <MaterialIcons
                     name="more-vert"

@@ -12,12 +12,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function EconerItems({item, navigation}) {
+export default function EDocItems({ item, navigation }) {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(item.page)}
@@ -63,55 +63,28 @@ export default function EconerItems({item, navigation}) {
           </Text>
         </View>
 
-        {item?.download || item?.Share ? (
-          <View
+
+        <View
+          style={{
+            backgroundColor: COLORS.grassGreen,
+            paddingVertical: 3,
+            paddingHorizontal: 5,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            borderRadius: 6,
+          }}>
+          <Feather name="download" color={COLORS.white} size={13} />
+          <Text
             style={{
-              backgroundColor: COLORS.grassGreen,
-              paddingVertical: 3,
-              paddingHorizontal: 5,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              borderRadius: 6,
+              fontSize: 10,
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.white,
+              marginLeft: 8,
             }}>
-            <Feather name="download" color={COLORS.white} size={13} />
-            <Text
-              style={{
-                fontSize: 10,
-                fontFamily: Fonts.Roboto.Bold,
-                color: COLORS.white,
-                marginLeft: 8,
-              }}>
-              {item?.download && item?.Share
-                ? 'Download or Share'
-                : item?.download
-                ? 'Download'
-                : item?.Share
-                ? 'Share'
-                : ''}
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              backgroundColor: COLORS.grassGreen,
-              paddingVertical: 3,
-              paddingHorizontal: 5,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              borderRadius: 6,
-            }}>
-            <Image source={VisitsIcon} style={{height: 12, width: 12}}></Image>
-            <Text
-              style={{
-                fontSize: 10,
-                fontFamily: Fonts.Roboto.Bold,
-                color: COLORS.white,
-                marginLeft: 8,
-              }}>
-              827
-            </Text>
-          </View>
-        )}
+            Download as PDF
+          </Text>
+        </View>
+
       </View>
       <View
         style={{
@@ -129,7 +102,7 @@ export default function EconerItems({item, navigation}) {
             justifyContent: 'center',
           }}>
           <MaterialCommunityIcons
-            name="arrow-right"
+            name="download"
             color={COLORS.white}
             size={25}
           />

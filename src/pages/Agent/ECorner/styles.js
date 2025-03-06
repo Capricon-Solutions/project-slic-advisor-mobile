@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -11,7 +11,8 @@ export const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 16,
     backgroundColor: COLORS.white,
-    marginTop: 20,
+    marginTop: 5,
+    marginBottom: 10
   },
   searchWrap: {
     flexDirection: 'row',
@@ -19,9 +20,25 @@ export const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 20,
     backgroundColor: COLORS.white,
-    marginVertical: 20,
+    marginVertical: 7,
     paddingLeft: 10,
     height: 44,
+  },
+  motorRenewalCardItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 3
+  },
+  motorRenewalCardItemLeft: {
+
+    fontFamily: Fonts.Roboto.Bold,
+    color: COLORS.textColor,
+    fontSize: 12
+  },
+  motorRenewalCardItemRight: {
+    fontFamily: Fonts.Roboto.Regular,
+    color: COLORS.textColor,
+    fontSize: 12
   },
   textInput: {
     flex: 1,
