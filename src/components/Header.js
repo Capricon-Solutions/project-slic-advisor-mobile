@@ -72,6 +72,7 @@ export default function Header({
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
+            textAlign: 'center',
             fontSize: titleFontSize ? titleFontSize : 16,
             color: COLORS.title,
           }}>

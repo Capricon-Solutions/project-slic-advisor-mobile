@@ -62,6 +62,10 @@ import MotorRenewal from './src/pages/Agent/ECorner/MotorRenewal';
 import EDocument from './src/pages/Agent/ECorner/EDocument';
 import MotorRenewalLetter from './src/pages/Agent/ECorner/MotorRenewalLetter';
 import CommissionStatement from './src/pages/Agent/ECorner/CommissionStatement';
+import MotorRenewalCompact from './src/pages/Agent/ECorner/MotorRenewalCompact';
+import NonMotorRenewalCompact from './src/pages/Agent/ECorner/NonMotorRenewalCompact';
+import PendingClaims from './src/pages/Agent/PendingClaims';
+import ClaimDetails from './src/pages/Agent/ClaimHistory/ClaimDetails';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -102,7 +106,7 @@ function App(): React.JSX.Element {
     <NavigationContainer>
     <StatusBar backgroundColor={COLORS.TopBackColor} barStyle="dark-content" />
       
-      <Stack.Navigator initialRouteName="AgentNavigator" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
@@ -146,6 +150,10 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="EDocument" component={EDocument} />
         <Stack.Screen   name="MotorRenewalLetter" component={MotorRenewalLetter} />
         <Stack.Screen   name="CommissionStatement" component={CommissionStatement} />
+        <Stack.Screen   name="MotorRenewalCompact" component={MotorRenewalCompact} />
+        <Stack.Screen   name="NonMotorRenewalCompact" component={NonMotorRenewalCompact} />
+        <Stack.Screen   name="PendingClaims" component={PendingClaims} />
+        <Stack.Screen   name="ClaimDetails" component={ClaimDetails} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
