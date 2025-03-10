@@ -36,7 +36,7 @@ export default function ClaimHistory({ navigation, route }) {
   const {
     data: ClaimHistory,
     error,
-    isLoading,
+    isFetching,
   } = useGetClaimHistoryQuery({
     id: policyNo, // Dynamic ID
   });
@@ -133,28 +133,29 @@ export default function ClaimHistory({ navigation, route }) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      {claimHistoryResponse ? (
-        <ScrollView
-          fadingEdgeLength={20}
-          contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
-          <View>
-            <Text
-              style={{
-                color: COLORS.textColor,
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 16,
-                marginVertical: 10,
-              }}>
-              Claim History for - {policyNo}
-            </Text>
-          </View>
 
-          {isLoading ? (
-            <View style={{ height: window.height * 0.8 }}>
-              <LoadingScreen />
-            </View>
-          ) : (
-            <View>
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
+        <View>
+          <Text
+            style={{
+              color: COLORS.textColor,
+              fontFamily: Fonts.Roboto.Bold,
+              fontSize: 16,
+              marginVertical: 10,
+            }}>
+            Claim History for - {policyNo}
+          </Text>
+        </View>
+
+        {isFetching ? (
+          <View style={{ height: window.height * 0.7 }}>
+            <LoadingScreen />
+          </View>
+        ) : (
+          <View>
+            {claimHistoryResponse ? (
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
@@ -162,26 +163,27 @@ export default function ClaimHistory({ navigation, route }) {
                 renderItem={({ item }) => <Card item={item} />}
               // keyExtractor={item => item.id.toString()}
               />
-            </View>
-          )}
-        </ScrollView>
-      ) : (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: window.height * 0.8,
-          }}>
-          <Text
-            style={{
-              fontFamily: Fonts.Roboto.Bold,
-              fontSize: 16,
-              color: COLORS.warmGray,
-            }}>
-            No Claims
-          </Text>
-        </View>
-      )}
+            ) : (
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: window.height * 0.8,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 16,
+                    color: COLORS.warmGray,
+                  }}>
+                  No Claims
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+      </ScrollView>
+
     </View>
   );
 }

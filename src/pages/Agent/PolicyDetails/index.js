@@ -56,8 +56,12 @@ export default function PolicyDetails({ navigation, route }) {
   const brand = policyDetailsResponse?.make;
   const chasisNo = policyDetailsResponse?.chassisNo;
   const engineNo = policyDetailsResponse?.engineNo;
+  const isCancelled = policyDetailsResponse?.isCancelled;
   const capacity = policyDetailsResponse?.engineCapacity;
-  console.log('addCovers', addCovers);
+
+
+  console.log("PolicyDetails", PolicyDetails);
+
   const DetailLine = ({ Title, detail }) => {
     return (
       <View
@@ -103,6 +107,14 @@ export default function PolicyDetails({ navigation, route }) {
       ) : (
         <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
           <View style={styles.card}>
+            {
+              isCancelled &&
+              <Text style={{
+                color: COLORS.primaryRed, fontFamily: Fonts.Roboto.SemiBold, textAlign: 'right', position: 'absolute', right: 7, top: 5,
+                fontSize: 12
+              }}>(Cancelled)</Text>
+
+            }
             <DetailLine Title={'Policy Number'} detail={policyNumber} />
             <DetailLine Title={'Ins. Name'} detail={insName} />
             <DetailLine Title={'Address'} detail={Address} />
@@ -169,7 +181,7 @@ export default function PolicyDetails({ navigation, route }) {
             />
             <SmallButton
               onPress={() =>
-                navigation.navigate('DebitSettlement', { policyNo: policyNo })
+                navigation.navigate('DebitSettlementRenewal', { policyNo: policyNo })
               }
               disabledButton={false}
               Title={'Debit Renewal'}

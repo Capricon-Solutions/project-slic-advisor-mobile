@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import {Styles} from '../../theme/Styles';
+import { Styles } from '../../theme/Styles';
 import HeaderBackground from '../../components/HeaderBackground';
 import Header from '../../components/Header';
 import COLORS from '../../theme/colors';
@@ -19,21 +19,21 @@ import Fonts from '../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
-import {styles} from './styles';
-import {useDispatch, useSelector} from 'react-redux';
+import { styles } from './styles';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   GetprofileResponse,
   SetdefaultImageUrl,
 } from '../../redux/services/ProfileSlice';
-import {pick, types} from '@react-native-documents/picker';
-import {useGetImageQuery} from '../../redux/services/profilePicSlice';
+import { pick, types } from '@react-native-documents/picker';
+import { useGetImageQuery } from '../../redux/services/profilePicSlice';
 const window = Dimensions.get('window');
 
 const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
 
-export default function Profile({navigation}) {
+export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const usertype = useSelector(state => state.userType.userType);
   const profileResponse = useSelector(
@@ -98,11 +98,11 @@ export default function Profile({navigation}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 13}}>
+        contentContainerStyle={{ paddingHorizontal: 13 }}>
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
-            <Avatar.Image size={pictureSize} source={{uri: defaultImageUrl}} />
+            <Avatar.Image size={pictureSize} source={{ uri: defaultImageUrl }} />
             <TouchableOpacity
               style={styles.editIcon}
               onPress={() => attachmentPicker()}>
@@ -114,10 +114,13 @@ export default function Profile({navigation}) {
             {usertype == 1
               ? 'Advisor'
               : usertype == 2
-              ? 'Team Leader'
-              : usertype == 3
-              ? 'Regional Manager'
-              : 'Unknown'}
+                ? 'Team Leader'
+                : usertype == 3
+                  ? 'Regional Manager'
+                  : usertype == 4 ?
+                    'Branch Manager'
+                    : usertype == 5 ?
+                      'Marketing executive' : 'Unknown'}
           </Text>
         </View>
 

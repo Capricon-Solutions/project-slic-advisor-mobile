@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,20 +9,20 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import {
   Calendar,
   CalendarList,
@@ -32,6 +32,8 @@ import {
 import SmallButton from '../../../components/SmallButton';
 import NotAttending from '../../../components/NotAttending';
 import Button from '../../../components/Button';
+import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
+import DropdownFilled from '../../../components/DropdownFilled';
 
 const window = Dimensions.get('window');
 
@@ -79,13 +81,14 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-export default function TrainingCalender({navigation}) {
+export default function TrainingCalender({ navigation }) {
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [trainingType, setTrainingType] = useState();
   const [selected, setSelected] = useState({
-    '2025-02-01': {selected: true, marked: true, selectedColor: 'blue'},
-    '2025-02-02': {marked: true},
-    '2025-02-03': {selected: true, marked: true, selectedColor: 'blue'},
+    '2025-02-01': { selected: true, marked: true, selectedColor: 'blue' },
+    '2025-02-02': { marked: true },
+    '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
   });
 
   return (
@@ -94,15 +97,15 @@ export default function TrainingCalender({navigation}) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
-      <View style={[Styles.container, {overflow: 'scroll'}]}>
+      <View style={[Styles.container, { overflow: 'scroll' }]}>
         <HeaderBackground />
         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
           style={{}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 14,
@@ -111,18 +114,29 @@ export default function TrainingCalender({navigation}) {
               }}>
               Select User Type
             </Text>
-            <View style={{width: '60%', marginLeft: 10}}>
-              <AutocompleteDropdown
+            <View style={{ width: '60%', marginLeft: 20 }}>
+              {/* <AutocompleteDropdown
                 clearOnFocus={true}
                 closeOnBlur={true}
                 closeOnSubmit={false}
-                // initialValue={{id: '2'}} // or just '2'
                 onSelectItem={setSelectedItem}
                 dataSet={[
                   {id: '1', title: 'Myself'},
                   {id: '2', title: 'Marketing executive'},
                   {id: '2', title: 'Team Leader'},
                   {id: '2', title: 'All'},
+                ]}
+              /> */}
+              <DropdownFilled
+                Color={COLORS.white}
+                BorderColor={COLORS.textColor}
+                initialValue={trainingType}
+                placeholder="Select Training Type"
+                onSelect={value => setTrainingType(value)}
+                dropdownData={[
+                  { label: 'All', value: 'A' },
+                  { label: 'Motor', value: 'M' },
+                  { label: 'Non-Motor', value: 'G' },
                 ]}
               />
             </View>
@@ -240,8 +254,8 @@ export default function TrainingCalender({navigation}) {
               </TouchableOpacity>
             </View>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={{flex: 0.6}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{ flex: 0.6 }}>
                 <Text
                   style={{
                     color: COLORS.textColor,
@@ -296,7 +310,7 @@ export default function TrainingCalender({navigation}) {
                 </View>
               </View>
 
-              <View style={{flex: 0.4, alignItems: 'center', padding: 3}}>
+              <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
                 <View
                   style={{
                     width: '100%',
@@ -350,8 +364,8 @@ export default function TrainingCalender({navigation}) {
               </TouchableOpacity>
             </View>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={{flex: 0.6}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{ flex: 0.6 }}>
                 <Text
                   style={{
                     color: COLORS.textColor,
@@ -406,7 +420,7 @@ export default function TrainingCalender({navigation}) {
                 </View>
               </View>
 
-              <View style={{flex: 0.4, alignItems: 'center', padding: 3}}>
+              <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
                 <View
                   style={{
                     width: '100%',

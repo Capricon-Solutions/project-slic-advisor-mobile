@@ -10,11 +10,9 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-
 import COLORS from '../theme/colors';
 import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
 export default function ELetterItems({ item, navigation }) {

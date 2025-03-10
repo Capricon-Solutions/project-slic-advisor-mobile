@@ -17,10 +17,6 @@ import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
 import { styles } from './styles';
-import SetTargetModal from '../../../components/SetTargetModal';
-import PolicyItem from '../../../components/PolicyItem';
-import Button from '../../../components/Button';
-import SmallButton from '../../../components/SmallButton';
 import { useSelector } from 'react-redux';
 import { useGetClaimHistoryQuery } from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
@@ -56,7 +52,7 @@ export default function PendingClaims({ navigation, route }) {
   const {
     data: ClaimHistory,
     error,
-    isLoading,
+    isFetching,
   } = useGetClaimHistoryQuery({
     id: policyNo, // Dynamic ID
   });
@@ -174,18 +170,19 @@ export default function PendingClaims({ navigation, route }) {
           Claim Details of - {policyNo}
         </Text>
       </View>
-      {claimHistoryResponse ? (
-        <ScrollView
-          fadingEdgeLength={20}
-          contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
+
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
 
 
-          {isLoading ? (
-            <View style={{ height: window.height * 0.8 }}>
-              <LoadingScreen />
-            </View>
-          ) : (
-            <View>
+        {isFetching ? (
+          <View style={{ height: window.height * 0.7 }}>
+            <LoadingScreen />
+          </View>
+        ) : (
+          <View>
+            {claimHistoryResponse ? (
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
@@ -193,26 +190,27 @@ export default function PendingClaims({ navigation, route }) {
                 renderItem={({ item }) => <Card item={item} />}
               // keyExtractor={item => item.id.toString()}
               />
-            </View>
-          )}
-        </ScrollView>
-      ) : (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: window.height * 0.8,
-          }}>
-          <Text
-            style={{
-              fontFamily: Fonts.Roboto.Bold,
-              fontSize: 16,
-              color: COLORS.warmGray,
-            }}>
-            No Claims
-          </Text>
-        </View>
-      )}
+            ) : (
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: window.height * 0.8,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 16,
+                    color: COLORS.warmGray,
+                  }}>
+                  No Claims
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+      </ScrollView>
+
     </View>
   );
 }

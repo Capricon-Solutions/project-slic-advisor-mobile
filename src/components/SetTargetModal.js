@@ -15,18 +15,18 @@ import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import Button from './Button';
-import {useSetTargetMutation} from '../redux/services/setTargetSlice';
+import { useSetTargetMutation } from '../redux/services/setTargetSlice';
 
 const window = Dimensions.get('window');
 
-export default function SetTargetModal({modalVisible, setModalVisible}) {
+export default function SetTargetModal({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [inputValue, setInputValue] = React.useState('');
 
   // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
-  const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
+  const [setTarget, { data, isLoading, error }] = useSetTargetMutation();
   // const handlePostRequest = () => {
   //   setTarget({
   //     agentCode: 2147483647,
@@ -82,51 +82,55 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <Animated.View
-        style={[
-          styles.modalOverlay,
-          {
-            backgroundColor: backgroundOpacity.interpolate({
-              inputRange: [0, 0.2],
-              outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
-            }),
-          },
-        ]}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-            <MaterialCommunityIcons
-              name="close"
-              color={COLORS.primaryGreen}
-              size={24}
-            />
-          </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        hide();
+      }} activeOpacity={1} style={{ flex: 1 }}>
+        <Animated.View
+          style={[
+            styles.modalOverlay,
+            {
+              backgroundColor: backgroundOpacity.interpolate({
+                inputRange: [0, 0.2],
+                outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
+              }),
+            },
+          ]}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <MaterialCommunityIcons
+                name="close"
+                color={COLORS.primaryGreen}
+                size={24}
+              />
+            </TouchableOpacity>
 
-          <Text style={styles.modalTitle}>
-            Set your target for 2025/December
-          </Text>
+            <Text style={styles.modalTitle}>
+              Set your target for 2025/December
+            </Text>
 
-          <TextInput
-            mode="flat"
-            keyboardType="numeric"
-            value={inputValue} // Controlled component
-            onChangeText={text => setInputValue(text)} // Store input value
-            style={{
-              backgroundColor: 'transparent',
-              marginBottom: 15,
-              textAlign: 'center',
-              fontFamily: Fonts.Roboto.Bold,
-              fontWeight: '700',
-            }}></TextInput>
-          <View style={{paddingHorizontal: window.width * 0.2}}>
-            <Button
-              Title={'Set Target'}
-              onPress={() => {
-                setModalVisible(false);
-                handlePostRequest();
-              }}></Button>
+            <TextInput
+              mode="flat"
+              keyboardType="numeric"
+              value={inputValue} // Controlled component
+              onChangeText={text => setInputValue(text)} // Store input value
+              style={{
+                backgroundColor: 'transparent',
+                marginBottom: 15,
+                textAlign: 'center',
+                fontFamily: Fonts.Roboto.Bold,
+                fontWeight: '700',
+              }}></TextInput>
+            <View style={{ paddingHorizontal: window.width * 0.2 }}>
+              <Button
+                Title={'Set Target'}
+                onPress={() => {
+                  setModalVisible(false);
+                  handlePostRequest();
+                }}></Button>
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </TouchableOpacity>
     </Modal>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,23 +6,17 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
-import DropdownComponent from '../../../components/DropdownComponent';
-import Button from '../../../components/Button';
-import AlertButtonWhite from '../../../components/AlertButtonWhite';
-import AlertButton from '../../../components/AlertButton';
 import Fonts from '../../../theme/Fonts';
-import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
-import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 
-export default function LeadInformation({navigation}) {
+export default function LeadInformation({ navigation }) {
   const tableHead = ['Type', 'Premium', 'Income'];
 
   const table = [
@@ -88,7 +82,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 1 ? setExpanded(1) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 1 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -141,7 +135,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 2 ? setExpanded(2) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 2 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -199,7 +193,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 3 ? setExpanded(3) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 3 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -263,7 +257,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 4 ? setExpanded(4) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 4 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -328,7 +322,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 5 ? setExpanded(5) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 5 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -381,7 +375,7 @@ export default function LeadInformation({navigation}) {
             </Text>
             <TouchableOpacity
               onPress={() => (expanded !== 6 ? setExpanded(6) : setExpanded(0))}
-              style={{alignItems: 'center', padding: 3}}>
+              style={{ alignItems: 'center', padding: 3 }}>
               <Octicons
                 name={expanded == 6 ? 'chevron-up' : 'chevron-down'}
                 color={COLORS.black}
@@ -390,7 +384,7 @@ export default function LeadInformation({navigation}) {
             </TouchableOpacity>
           </View>
           {expanded == 6 && (
-            <View style={{marginVertical: 5}}>
+            <View style={{ marginVertical: 5 }}>
               <TableComponent
                 haveTotal={true}
                 tableHead={tableHead}

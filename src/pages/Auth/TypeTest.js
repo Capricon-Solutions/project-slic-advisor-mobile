@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,8 +8,8 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
-import {TextInput, Checkbox} from 'react-native-paper';
-import Svg, {Path} from 'react-native-svg';
+import { TextInput, Checkbox } from 'react-native-paper';
+import Svg, { Path } from 'react-native-svg';
 import Logo from '../../icons/Logo.png'; // Replace with the actual logo path
 import COLORS from '../../theme/colors';
 import SquareTextBox from '../../components/SquareTextBox';
@@ -17,14 +17,14 @@ import Button from '../../components/Button';
 import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
-import {styles} from './styles';
-import {useDispatch} from 'react-redux';
-import {GetuserType} from '../../redux/services/userTypeSlice';
+import { styles } from './styles';
+import { useDispatch } from 'react-redux';
+import { GetuserType } from '../../redux/services/userTypeSlice';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
-const TypeTest = ({navigation}) => {
+const TypeTest = ({ navigation }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +35,7 @@ const TypeTest = ({navigation}) => {
     <View style={styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
 
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text> Testing purpose</Text>
         <Text
           style={{
@@ -59,7 +59,7 @@ const TypeTest = ({navigation}) => {
             justifyContent: 'center',
             marginTop: 15,
           }}>
-          <Text style={{color: COLORS.white, fontFamily: Fonts.Roboto.Bold}}>
+          <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
             Agent
           </Text>
         </TouchableOpacity>
@@ -69,14 +69,14 @@ const TypeTest = ({navigation}) => {
             navigation.navigate('AgentNavigator');
           }}
           style={{
-            backgroundColor: COLORS.primaryGreen,
+            backgroundColor: COLORS.primaryRed,
             height: 30,
             width: 130,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 15,
           }}>
-          <Text style={{color: COLORS.white, fontFamily: Fonts.Roboto.Bold}}>
+          <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
             Team Leader
           </Text>
         </TouchableOpacity>
@@ -93,8 +93,42 @@ const TypeTest = ({navigation}) => {
             justifyContent: 'center',
             marginTop: 15,
           }}>
-          <Text style={{color: COLORS.white, fontFamily: Fonts.Roboto.Bold}}>
+          <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
             Regional Manager
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(GetuserType(4));
+            navigation.navigate('AgentNavigator');
+          }}
+          style={{
+            backgroundColor: COLORS.primaryOrange,
+            height: 30,
+            width: 130,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 15,
+          }}>
+          <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
+            Branch Manager
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(GetuserType(5));
+            navigation.navigate('AgentNavigator');
+          }}
+          style={{
+            backgroundColor: COLORS.tableOrange,
+            height: 30,
+            width: 140,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 15,
+          }}>
+          <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
+            Marketing executive
           </Text>
         </TouchableOpacity>
       </View>

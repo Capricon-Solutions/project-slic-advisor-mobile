@@ -150,7 +150,7 @@ export default function PolicyFilter({
         ]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
           style={styles.modalContainer}>
           <View
             style={{
@@ -190,9 +190,9 @@ export default function PolicyFilter({
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
             dropdownData={[
-              {label: 'All', value: 'A'},
-              {label: 'Motor', value: 'M'},
-              {label: 'Non-Motor', value: 'G'},
+              { label: 'All', value: 'A' },
+              { label: 'Motor', value: 'M' },
+              { label: 'Non-Motor', value: 'G' },
             ]}
           />
           <Text
@@ -210,10 +210,10 @@ export default function PolicyFilter({
             placeholder="Select Policy Status"
             onSelect={value => setStatus(value)}
             dropdownData={[
-              {label: 'Premium Pending', value: 'P'},
-              {label: 'Debit Outstanding', value: 'D'},
-              {label: 'Claim Pending', value: 'C'},
-              {label: 'Reminders Set Policies', value: 'F'},
+              { label: 'Premium Pending', value: 'P' },
+              { label: 'Debit Outstanding', value: 'D' },
+              { label: 'Claim Pending', value: 'C' },
+              { label: 'Reminders Set Policies', value: 'F' },
             ]}
           />
           <SquareTextBoxOutlined
@@ -232,7 +232,7 @@ export default function PolicyFilter({
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{flex: 0.45}}>
+            <View style={{ flex: 0.45 }}>
               <SquareTextBoxOutlinedDate
                 Title={StartFromDt}
                 Label="Start Date"
@@ -241,8 +241,8 @@ export default function PolicyFilter({
               />
             </View>
 
-            <Text style={{marginTop: 25}}>To</Text>
-            <View style={{flex: 0.45}}>
+            <Text style={{ marginTop: 25 }}>To</Text>
+            <View style={{ flex: 0.45 }}>
               <SquareTextBoxOutlinedDate
                 Title={StartToDt}
                 Label="End Date"

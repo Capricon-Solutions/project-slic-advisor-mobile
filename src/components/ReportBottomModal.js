@@ -17,11 +17,12 @@ import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 const window = Dimensions.get('window');
 
-export default function BottomModal({
+export default function ReportBottomModal({
   modalVisible,
   ButtonList,
   setModalVisible,
   Name,
+  navigation
 }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
@@ -178,15 +179,18 @@ export default function BottomModal({
 
   return (
     <Modal
-      animationType="slide"
+      animationType='fade'
       transparent={true}
+
       visible={modalVisible}
+
       onRequestClose={() => setModalVisible(false)}>
       <TouchableOpacity onPress={() => {
         setModalVisible(false);
-
+        navigation.goBack();
       }} activeOpacity={1} style={{ flex: 1 }}>
         <Animated.View
+          onPress={() => setModalVisible(false)}
           style={[
             styles.modalOverlay,
             {
@@ -196,7 +200,9 @@ export default function BottomModal({
               }),
             },
           ]}>
-          <View style={styles.modalContainer}>
+          <View
+
+            style={styles.modalContainer}>
             <View
               style={{
                 flexDirection: 'row',
@@ -208,7 +214,10 @@ export default function BottomModal({
                 <Text style={styles.modalTitle}>{Name}</Text>
               </View>
               <TouchableOpacity
-                onPress={() => hide()}
+                onPress={() => {
+                  setModalVisible(false);
+                  navigation.goBack();
+                }}
                 style={{
                   borderRadius: 100,
                   padding: 2,
@@ -248,15 +257,16 @@ export default function BottomModal({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 10
   },
   modalContainer: {
     width: '100%',
     padding: 25,
     backgroundColor: COLORS.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderRadius: 30,
+
     elevation: 25,
     borderWidth: 1,
     borderColor: COLORS.lightBorder,

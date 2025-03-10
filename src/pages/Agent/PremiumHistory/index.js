@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,23 +13,23 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import {useSelector} from 'react-redux';
-import {useGetPremiumHistoryQuery} from '../../../redux/services/policyDetailsSlice';
+import { useSelector } from 'react-redux';
+import { useGetPremiumHistoryQuery } from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function PremiumHistory({navigation, route}) {
-  const {policyNo} = route.params;
+export default function PremiumHistory({ navigation, route }) {
+  const { policyNo } = route.params;
   // const premiumPaymentResponse = useSelector(
   //   state => state.premiumPayment.premiumPaymentResponse.data,
   // );
@@ -37,14 +37,14 @@ export default function PremiumHistory({navigation, route}) {
   const {
     data: PremiumHistory,
     error,
-    isLoading,
+    isFetching,
   } = useGetPremiumHistoryQuery({
     id: policyNo, // Dynamic ID
   });
 
   const premiumPaymentResponse = PremiumHistory?.data;
 
-  const DetailLine = ({Title, detail}) => {
+  const DetailLine = ({ Title, detail }) => {
     return (
       <View
         style={{
@@ -63,13 +63,13 @@ export default function PremiumHistory({navigation, route}) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{flex: 0.45}}>
+        <View style={{ flex: 0.45 }}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
     );
   };
-  const DetailLineBold = ({Title, detail}) => {
+  const DetailLineBold = ({ Title, detail }) => {
     return (
       <View
         style={{
@@ -88,14 +88,14 @@ export default function PremiumHistory({navigation, route}) {
           <Text style={styles.detailTextBold}>:</Text>
         </View>
 
-        <View style={{flex: 0.45}}>
+        <View style={{ flex: 0.45 }}>
           <Text style={styles.detailTextBold}>{detail}</Text>
         </View>
       </View>
     );
   };
 
-  const Card = ({item}) => {
+  const Card = ({ item }) => {
     return (
       <View style={styles.card}>
         <View>
@@ -181,54 +181,57 @@ export default function PremiumHistory({navigation, route}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      {premiumPaymentResponse ? (
-        <ScrollView
-          fadingEdgeLength={20}
-          contentContainerStyle={{paddingHorizontal: 17, paddingBottom: 10}}>
-          <View>
-            <Text
-              style={{
-                color: COLORS.textColor,
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 16,
-                marginVertical: 10,
-              }}>
-              Premium Payment History for - {policyNo}
-            </Text>
+
+      <ScrollView
+        fadingEdgeLength={20}
+        contentContainerStyle={{ paddingHorizontal: 17, paddingBottom: 10 }}>
+        <View>
+          <Text
+            style={{
+              color: COLORS.textColor,
+              fontFamily: Fonts.Roboto.Bold,
+              fontSize: 16,
+              marginVertical: 10,
+            }}>
+            Premium Payment History for - {policyNo}
+          </Text>
+        </View>
+        {isFetching ? (
+          <View style={{ height: window.height * 0.7 }}>
+            <LoadingScreen />
           </View>
-          {isLoading ? (
-            <View style={{height: window.height * 0.8}}>
-              <LoadingScreen />
-            </View>
-          ) : (
-            <View>
+        ) : (
+          <View>
+            {premiumPaymentResponse ? (
               <FlatList
                 data={premiumPaymentResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal: 8}}
-                renderItem={({item}) => <Card item={item} />}
-                // keyExtractor={item => item.id.toString()}
+                contentContainerStyle={{ paddingHorizontal: 8 }}
+                renderItem={({ item }) => <Card item={item} />}
+              // keyExtractor={item => item.id.toString()}
               />
-            </View>
-          )}
-        </ScrollView>
-      ) : (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: window.height * 0.8,
-          }}>
-          <Text
-            style={{
-              fontFamily: Fonts.Roboto.Bold,
-              fontSize: 16,
-              color: COLORS.warmGray,
-            }}>
-            No Premium Payments
-          </Text>
-        </View>
-      )}
+            ) : (
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: window.height * 0.75,
+                }}>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 16,
+                    color: COLORS.warmGray,
+                  }}>
+                  No Premium Payments
+                </Text>
+              </View>
+            )}
+
+          </View>
+        )}
+      </ScrollView>
+
     </View>
   );
 }

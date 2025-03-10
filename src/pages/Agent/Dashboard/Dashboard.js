@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,17 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import avatar from '../../../images/avatar.png'; // Replace with the actual logo path
 import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
 import GENERAL from '../../../icons/GENERAL.png'; // Replace with the actual logo path
@@ -28,13 +29,14 @@ import B_PLANNER from '../../../icons/B-PLANNER.png'; // Replace with the actual
 import IndividualModal from '../../../components/IndividualModal';
 import individualPerforamance from '../../../icons/individualPerforamance.png'; // Replace with the actual logo path
 import policyRenewal from '../../../icons/policyRenewal.png'; // Replace with the actual logo path
+import ppwIcon from '../../../icons/PPW.png'; // Replace with the actual logo path
 
-import {styles} from './styles';
+import { styles } from './styles';
 // import GeneralModal from '../../../components/GeneralModal';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
 import RMGrid from '../../../components/RMGrid';
 import AgentProgressCard from '../../../components/AgentProgressCard';
@@ -42,7 +44,7 @@ import RMProgressCard from '../../../components/RMProgressCard';
 
 const window = Dimensions.get('window');
 
-export default function Dashboard({navigation}) {
+export default function Dashboard({ navigation }) {
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
@@ -85,7 +87,7 @@ export default function Dashboard({navigation}) {
     },
     {
       title: 'PPW Cancellation',
-      icon: policyRenewal,
+      icon: ppwIcon,
       onPress: () => {
         navigation.navigate('PPWCancellation');
         setgeneraModalVisible(false);
@@ -109,61 +111,64 @@ export default function Dashboard({navigation}) {
   const IndividualPerformanceType =
     usertype == 1
       ? [
-          {
-            title: 'Individual Statistics',
-            icon: individualPerforamance,
-            onPress: () => {
-              setsalesModalVisible(false);
-              setModalVisible(false);
-              navigation.navigate('IndividualStatistics');
-            },
+        {
+          title: 'Individual Statistics',
+          icon: individualPerforamance,
+          onPress: () => {
+            setsalesModalVisible(false);
+            setModalVisible(false);
+            navigation.navigate('IndividualStatistics');
           },
-        ]
+        },
+      ]
       : [
-          {
-            title: 'My Self',
-            icon: individualPerforamance,
-            onPress: () => {
-              setModalVisible(false);
-              navigation.navigate('MyselfPerformance');
-            },
+        {
+          title: 'My Self',
+          icon: individualPerforamance,
+          onPress: () => {
+            setModalVisible(false);
+            navigation.navigate('MyselfPerformance');
           },
-          {
-            title: 'Team',
-            expandable: true,
-            subButtons: [
-              {
-                title: 'Team Statistics',
-                onPress: () => {
-                  setModalVisible(false);
-                  navigation.navigate('TeamStatistics');
-                },
+        },
+        {
+          title: 'Team',
+          expandable: true,
+          subButtons: [
+            {
+              title: 'Team Statistics',
+              onPress: () => {
+                setModalVisible(false);
+                navigation.navigate('TeamStatistics');
               },
-              {
-                title: 'Current Performance',
-                onPress: () => {
-                  setModalVisible(false);
-                  navigation.navigate('TeamPerformance');
-                  console.log('test');
-                },
-              },
-            ],
-            icon: policyRenewal,
-            onPress: 'expand',
-          },
-          {
-            title: 'Team Member',
-            icon: policyRenewal,
-            onPress: () => {
-              setModalVisible(false);
-              navigation.navigate('TeamMemberGrid');
             },
+            {
+              title: 'Current Performance',
+              onPress: () => {
+                setModalVisible(false);
+                navigation.navigate('TeamPerformance');
+                console.log('test');
+              },
+            },
+          ],
+          icon: policyRenewal,
+          onPress: 'expand',
+        },
+        {
+          title: 'Team Member',
+          icon: policyRenewal,
+          onPress: () => {
+            setModalVisible(false);
+            navigation.navigate('TeamMemberGrid');
           },
-        ];
+        },
+      ];
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
+      {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
+
+
       <BottomModal
         Name={'Individual Performance'}
         ButtonList={SalesModal}
@@ -220,13 +225,13 @@ export default function Dashboard({navigation}) {
             style={styles.profilePicture}>
             <Avatar.Image
               size={window.width * 0.15}
-              style={{backgroundColor: 'transparent'}}
-              source={{uri: defaultImageUrl}}
+              style={{ backgroundColor: 'transparent' }}
+              source={{ uri: defaultImageUrl }}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
-            style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
+            style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>region name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
@@ -235,10 +240,11 @@ export default function Dashboard({navigation}) {
               {usertype == 1
                 ? 'Advisor'
                 : usertype == 2
-                ? 'Team Leader'
-                : usertype == 3
-                ? 'Regional Manager'
-                : 'Unknown'}
+                  ? 'Team Leader'
+                  : usertype == 3
+                    ? 'Regional Manager'
+                    : usertype == 4 ? 'Branch Manager'
+                      : usertype == 5 ? 'Marketing executive' : 'Unknown'}
               )
             </Text>
           </TouchableOpacity>
@@ -254,7 +260,7 @@ export default function Dashboard({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.ExtraBold,
@@ -264,144 +270,14 @@ export default function Dashboard({navigation}) {
             {usertype == 1
               ? 'Advisor Summary'
               : usertype == 2
-              ? 'Team Leader Summary'
-              : 'Central 1 Region Summary'}
+                ? 'Team Leader Summary'
+                : usertype == 3 ? 'Central 1 Region Summary'
+                  : usertype == 4 ? ' Western 1 Branch Summary'
+                    : usertype == 5 ? ' Marketing executive Summary' : 'user type unknown'}
           </Text>
         </View>
 
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('SalesMeter')}
-          style={Styles.rankWrap}>
-          <View
-            style={{
-              flex: 0.65,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <CircularProgress
-              value={islandRank}
-              radius={window.height * 0.1}
-              duration={2000}
-              progressValueColor={COLORS.textColor}
-              maxValue={totalIslandRank}
-              activeStrokeWidth={20}
-              inActiveStrokeWidth={20}
-              activeStrokeColor={COLORS.primary}
-              inActiveStrokeColor={COLORS.lightBorder}
-              valueSuffix={'/' + totalIslandRank}
-              titleStyle={{fontWeight: 'bold'}}
-              progressValueStyle={{
-                fontSize: 25,
-                fontFamily: Fonts.Roboto.Bold,
-              }}
-              valueSuffixStyle={{fontSize: 22, color: COLORS.textColor}}
-            />
-            <Text
-              style={{
-                fontSize: window.width * 0.045,
-                marginTop: 5,
-                fontFamily: Fonts.Roboto.Medium,
-                color: COLORS.textColor,
-              }}>
-              Island Rank
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 0.35,
-            }}>
-            <View
-              style={{
-                flex: 0.5,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <CircularProgress
-                  value={regionalRank}
-                  radius={window.height * 0.045}
-                  duration={2000}
-                  progressValueColor={COLORS.regionalRank}
-                  maxValue={totalNumberofRegions}
-                  activeStrokeWidth={12}
-                  inActiveStrokeWidth={12}
-                  activeStrokeColor={COLORS.regionalRank}
-                  inActiveStrokeColor={COLORS.lightBorder}
-                  // title={'Progress'}
-                  valueSuffix={'/' + totalNumberofRegions}
-                  progressValueStyle={{
-                    fontSize: window.height * 0.023,
-                    fontFamily: Fonts.Roboto.Bold,
-                  }}
-                  valueSuffixStyle={{
-                    fontSize: window.height * 0.018,
-                    color: COLORS.regionalRank,
-                  }}
-                  // titleColor={'red'}
-                  titleStyle={{fontWeight: 'bold'}}
-                />
-                <Text
-                  style={{
-                    marginTop: 2,
-                    fontSize: window.width * 0.03,
-                    fontFamily: Fonts.Roboto.Medium,
-                    color: COLORS.textColor,
-                  }}>
-                  Regional Rank
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 0.5,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <CircularProgress
-                  value={branchRank}
-                  radius={window.height * 0.045}
-                  duration={2000}
-                  progressValueColor={COLORS.branchRank}
-                  maxValue={totalNumberofBranches}
-                  activeStrokeWidth={12}
-                  inActiveStrokeWidth={12}
-                  activeStrokeColor={COLORS.branchRank}
-                  inActiveStrokeColor={COLORS.lightBorder}
-                  // title={'Progress'}
-                  valueSuffix={'/' + totalNumberofBranches}
-                  progressValueStyle={{
-                    fontSize: window.height * 0.023,
-                    fontFamily: Fonts.Roboto.Bold,
-                  }}
-                  valueSuffixStyle={{
-                    fontSize: window.height * 0.018,
-                    color: COLORS.branchRank,
-                  }}
-                  // titleColor={'red'}
-                  titleStyle={{fontWeight: 'bold'}}
-                />
-                <Text
-                  style={{
-                    marginTop: 2,
-                    fontSize: window.width * 0.03,
-                    fontFamily: Fonts.Roboto.Medium,
-                    color: COLORS.textColor,
-                  }}>
-                  Branch Rank
-                </Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity> */}
+
         {usertype == 1 && (
           <AgentProgressCard
             totalIslandRank={totalIslandRank}
@@ -434,9 +310,35 @@ export default function Dashboard({navigation}) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            // onPress={() => navigation.navigate('SalesMeter')}
+          // onPress={() => navigation.navigate('SalesMeter')}
           />
         )}
+
+        {usertype == 4 && (
+          <RMProgressCard
+            totalIslandRank={totalIslandRank}
+            totalNumberofRegions={totalNumberofRegions}
+            totalNumberofBranches={totalNumberofBranches}
+            regionalRank={regionalRank}
+            branchRank={branchRank}
+            islandRank={islandRank}
+          // onPress={() => navigation.navigate('SalesMeter')}
+          />
+        )}
+
+        {usertype == 5 && (
+          <AgentProgressCard
+            totalIslandRank={totalIslandRank}
+            totalNumberofRegions={totalNumberofRegions}
+            totalNumberofBranches={totalNumberofBranches}
+            regionalRank={regionalRank}
+            branchRank={branchRank}
+            islandRank={islandRank}
+            onPress={() => navigation.navigate('SalesMeter')}
+          />
+        )}
+
+
         {usertype == 3 && (
           <Text
             style={{
@@ -448,6 +350,21 @@ export default function Dashboard({navigation}) {
             Insurance Categories
           </Text>
         )}
+
+        {usertype == 4 && (
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Bold,
+              color: COLORS.textColor,
+              fontSize: 15,
+              marginVertical: 2,
+            }}>
+            Insurance Categories
+          </Text>
+        )}
+
+
+
         {usertype == 1 && (
           <AgentGrid
             onSalesClick={() => setModalVisible(true)}
@@ -483,6 +400,29 @@ export default function Dashboard({navigation}) {
             onCompetitionClick={() => navigation.navigate('Competition')}
           />
         )}
+        {usertype == 4 && (
+          <RMGrid
+            onRegionSummaryClick={() => navigation.navigate('RegionSummary')}
+            onKPISummaryClick={() => navigation.navigate('KPISummary')}
+            onDUESSummaryClick={() => navigation.navigate('DUESSummary')}
+            onClassSummaryClick={() => navigation.navigate('ClassSummary')}
+            onCompetitionClick={() => navigation.navigate('Competition')}
+          />
+        )}
+
+        {usertype == 5 && (
+          <AgentGrid
+            onSalesClick={() => setModalVisible(true)}
+            onGeneralClick={() => setgeneraModalVisible(true)}
+            onClubClick={() => navigation.navigate('ClubInformation')}
+            onBplannerClick={() => navigation.navigate('BPlanner')}
+            onEConnerClick={() => navigation.navigate('ECorner')}
+            onProductPortfolioClick={() =>
+              navigation.navigate('ProductPortfolio')
+            }
+          />
+        )}
+
       </ScrollView>
     </View>
   );

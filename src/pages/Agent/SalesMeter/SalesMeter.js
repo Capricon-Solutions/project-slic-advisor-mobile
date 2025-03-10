@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,12 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
 import HeaderBackground from '../../../components/HeaderBackground';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import trophy from '../../../icons/trophy.png'; // Replace with the actual logo path
 import Target from '../../../icons/Target.png'; // Replace with the actual logo path
 import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
@@ -32,15 +32,15 @@ import IndividualModal from '../../../components/IndividualModal';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AboutModal from '../../../components/AboutModal';
 import TableComponent from '../../../components/TableComponent';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
-import {useSelector} from 'react-redux';
-import {useGetDepartmentMutation} from '../../../redux/services/setTargetSlice';
+import { useSelector } from 'react-redux';
+import { useGetDepartmentMutation } from '../../../redux/services/setTargetSlice';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function SalesMeter({navigation}) {
+export default function SalesMeter({ navigation }) {
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [target, setTarget] = useState('');
@@ -69,7 +69,7 @@ export default function SalesMeter({navigation}) {
   const currentYear = salesMeterResponse.currentYear;
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
       <HeaderBackground />
       <SetTargetModal
         modalVisible={modalVisible}
@@ -87,7 +87,7 @@ export default function SalesMeter({navigation}) {
       </View>
       <ScrollView
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 10}}>
+        contentContainerStyle={{ paddingHorizontal: 10 }}>
         <View
           style={{
             // backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
@@ -108,7 +108,7 @@ export default function SalesMeter({navigation}) {
                   size={20}
                 />
               </View>
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <CircularProgress
                   value={monthlySalePercentage}
                   radius={63}
@@ -122,7 +122,7 @@ export default function SalesMeter({navigation}) {
                   // title={'Progress'}
                   valueSuffix={'%'}
                   // titleColor={'red'}
-                  titleStyle={{fontWeight: 'bold'}}
+                  titleStyle={{ fontWeight: 'bold' }}
                 />
               </View>
 
@@ -175,7 +175,7 @@ export default function SalesMeter({navigation}) {
                       <Text
                         style={[
                           styles.cardText,
-                          {fontFamily: Fonts.Roboto.SemiBold},
+                          { fontFamily: Fonts.Roboto.SemiBold },
                         ]}>
                         2025
                       </Text>
@@ -219,7 +219,7 @@ export default function SalesMeter({navigation}) {
                       <Text
                         style={[
                           styles.cardText,
-                          {fontFamily: Fonts.Roboto.SemiBold},
+                          { fontFamily: Fonts.Roboto.SemiBold },
                         ]}>
                         2025
                       </Text>
@@ -264,7 +264,7 @@ export default function SalesMeter({navigation}) {
                       <Text
                         style={[
                           styles.cardText,
-                          {fontFamily: Fonts.Roboto.SemiBold},
+                          { fontFamily: Fonts.Roboto.SemiBold },
                         ]}>
                         2025
                       </Text>
@@ -310,7 +310,7 @@ export default function SalesMeter({navigation}) {
                       <Text
                         style={[
                           styles.cardText,
-                          {fontFamily: Fonts.Roboto.SemiBold},
+                          { fontFamily: Fonts.Roboto.SemiBold },
                         ]}>
                         2025
                       </Text>
@@ -326,7 +326,7 @@ export default function SalesMeter({navigation}) {
         </View>
 
         {/* <Table headers={headers} data={data} /> */}
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center', flex: 1 }}>
           <TableComponent
             haveTotal={true}
             tableHead={tableHead}

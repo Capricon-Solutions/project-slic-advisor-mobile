@@ -41,40 +41,45 @@ export default function AboutModal({ modalVisible, setModalVisible }) {
 			transparent={true}
 			visible={modalVisible}
 			onRequestClose={() => setModalVisible(false)}>
-			<Animated.View
-				style={[
-					styles.modalOverlay,
-					{
-						backgroundColor: backgroundOpacity.interpolate({
-							inputRange: [0, 0.2],
-							outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
-						}),
-					},
-				]}
-			>
-				<View style={styles.modalContainer}>
-					<TouchableOpacity
-						onPress={() => hide()}
-						style={styles.closeButton}>
-						<MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={24} />
-					</TouchableOpacity>
-					<Image source={Contacts} style={styles.avatar} />
-					<Text style={styles.modalTitle}>Get Access To B-Connect</Text>
-					<Text style={styles.contactText}>Please Contact: Mr. Buddika Weerakoon</Text>
-					<View>
-						<View style={styles.contactItem}>
-							<MaterialCommunityIcons name="phone" size={20} color={COLORS.primaryGreen} />
-							<Text style={styles.contactDetails}>0112357814</Text>
-						</View>
-						<View style={styles.contactItem}>
-							<MaterialCommunityIcons name="email" size={20} color={COLORS.primaryGreen} />
-							<Text style={styles.contactDetails}>Buddikawe@srilankainsurance.com</Text>
-						</View>
-					</View>
+			<TouchableOpacity onPress={() => {
+				setModalVisible(false);
 
-					<Text style={styles.note}><Text style={{ color: COLORS.errorBorder }}>Note:</Text> Send the Request With Your Agency Code</Text>
-				</View>
-			</Animated.View>
+			}} activeOpacity={1} style={{ flex: 1 }}>
+				<Animated.View
+					style={[
+						styles.modalOverlay,
+						{
+							backgroundColor: backgroundOpacity.interpolate({
+								inputRange: [0, 0.2],
+								outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
+							}),
+						},
+					]}
+				>
+					<View style={styles.modalContainer}>
+						<TouchableOpacity
+							onPress={() => hide()}
+							style={styles.closeButton}>
+							<MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={24} />
+						</TouchableOpacity>
+						<Image source={Contacts} style={styles.avatar} />
+						<Text style={styles.modalTitle}>Get Access To B-Connect</Text>
+						<Text style={styles.contactText}>Please Contact: Mr. Buddika Weerakoon</Text>
+						<View>
+							<View style={styles.contactItem}>
+								<MaterialCommunityIcons name="phone" size={20} color={COLORS.primaryGreen} />
+								<Text style={styles.contactDetails}>0112357814</Text>
+							</View>
+							<View style={styles.contactItem}>
+								<MaterialCommunityIcons name="email" size={20} color={COLORS.primaryGreen} />
+								<Text style={styles.contactDetails}>Buddikawe@srilankainsurance.com</Text>
+							</View>
+						</View>
+
+						<Text style={styles.note}><Text style={{ color: COLORS.errorBorder }}>Note:</Text> Send the Request With Your Agency Code</Text>
+					</View>
+				</Animated.View>
+			</TouchableOpacity>
 		</Modal>
 	);
 }

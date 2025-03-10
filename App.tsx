@@ -66,6 +66,8 @@ import MotorRenewalCompact from './src/pages/Agent/ECorner/MotorRenewalCompact';
 import NonMotorRenewalCompact from './src/pages/Agent/ECorner/NonMotorRenewalCompact';
 import PendingClaims from './src/pages/Agent/PendingClaims';
 import ClaimDetails from './src/pages/Agent/ClaimHistory/ClaimDetails';
+import DebitSettlementRenewal from './src/pages/Agent/DebitSettlementRenewal';
+import ReportSwitch from './src/pages/RegionalManager/Report/ReportSwitch';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -154,6 +156,8 @@ function App(): React.JSX.Element {
         <Stack.Screen   name="NonMotorRenewalCompact" component={NonMotorRenewalCompact} />
         <Stack.Screen   name="PendingClaims" component={PendingClaims} />
         <Stack.Screen   name="ClaimDetails" component={ClaimDetails} />
+        <Stack.Screen   name="DebitSettlementRenewal" component={DebitSettlementRenewal} />
+        <Stack.Screen   name="ReportSwitch" component={ReportSwitch} />
         
         {/* <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} /> */}

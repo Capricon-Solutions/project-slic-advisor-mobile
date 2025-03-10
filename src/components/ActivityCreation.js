@@ -21,7 +21,7 @@ import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import DropdownFilled from './DropdownFilled';
 
-export default function ActivityCreation({modalVisible, setModalVisible}) {
+export default function ActivityCreation({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -55,104 +55,109 @@ export default function ActivityCreation({modalVisible, setModalVisible}) {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <Animated.View
-        style={[
-          styles.modalOverlay,
-          {
-            backgroundColor: backgroundOpacity.interpolate({
-              inputRange: [0, 0.2],
-              outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
-            }),
-          },
-        ]}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-            <MaterialCommunityIcons
-              name="close"
-              color={COLORS.primaryGreen}
-              size={24}
-            />
-          </TouchableOpacity>
-          <View style={{width: '100%', marginBottom: 15}}>
-            <Text style={styles.modalTitle}>Activity Creation</Text>
-          </View>
-          <View style={{width: '100%'}}>
-            <Text
-              style={{
-                marginBottom: 5,
-                marginTop: 5,
-                fontSize: 12.5,
-                fontFamily: Fonts.Roboto.Medium,
-                color: COLORS.ashBlue,
-              }}>
-              Lead
-            </Text>
-            <DropdownFilled
-              placeholder={'Select Lead'}
-              dropdownData={[
-                {label: 'Appointment', value: '1'},
-                {label: 'Pending', value: '2'},
-                {label: 'Complete', value: '3'},
-              ]}
-            />
-          </View>
-          <View style={{width: '100%'}}>
-            <Text
-              style={{
-                marginBottom: 5,
-                marginTop: 5,
-                fontSize: 12.5,
-                fontFamily: Fonts.Roboto.Medium,
-                color: COLORS.ashBlue,
-              }}>
-              Activity Type
-            </Text>
-            <DropdownFilled
-              placeholder={'Select Activity Type'}
-              dropdownData={[
-                {label: 'Appointment', value: '1'},
-                {label: 'Pending', value: '2'},
-                {label: 'Complete', value: '3'},
-              ]}
-            />
-          </View>
-          <SquareTextBox
-            LabelColor={COLORS.ashBlue}
-            Label={'Event Description *'}
-            Title={'Description'}
-          />
-          <SquareTextBox
-            LabelColor={COLORS.ashBlue}
-            Label={'Meeting with *'}
-            Title={'DD/MM/YYYY'}
-          />
-          <SquareTextBox
-            LabelColor={COLORS.ashBlue}
-            Label={'Date *'}
-            Title={'DD/MM/YYYY'}
-          />
-          <SquareTextBox
-            LabelColor={COLORS.ashBlue}
-            Label={'Time *'}
-            Title={'12 : 00 Am'}
-          />
+      <TouchableOpacity onPress={() => {
+        hide();
 
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              marginTop: 15,
-              justifyContent: 'space-evenly',
-            }}>
-            <View style={{flex: 0.35}}>
-              <AlertButton
-                onPress={() => setModalVisible(false)}
-                Title={'Submit'}
+      }} activeOpacity={1} style={{ flex: 1 }}>
+        <Animated.View
+          style={[
+            styles.modalOverlay,
+            {
+              backgroundColor: backgroundOpacity.interpolate({
+                inputRange: [0, 0.2],
+                outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
+              }),
+            },
+          ]}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <MaterialCommunityIcons
+                name="close"
+                color={COLORS.primaryGreen}
+                size={24}
+              />
+            </TouchableOpacity>
+            <View style={{ width: '100%', marginBottom: 15 }}>
+              <Text style={styles.modalTitle}>Activity Creation</Text>
+            </View>
+            <View style={{ width: '100%' }}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  marginTop: 5,
+                  fontSize: 12.5,
+                  fontFamily: Fonts.Roboto.Medium,
+                  color: COLORS.ashBlue,
+                }}>
+                Lead
+              </Text>
+              <DropdownFilled
+                placeholder={'Select Lead'}
+                dropdownData={[
+                  { label: 'Appointment', value: '1' },
+                  { label: 'Pending', value: '2' },
+                  { label: 'Complete', value: '3' },
+                ]}
               />
             </View>
+            <View style={{ width: '100%' }}>
+              <Text
+                style={{
+                  marginBottom: 5,
+                  marginTop: 5,
+                  fontSize: 12.5,
+                  fontFamily: Fonts.Roboto.Medium,
+                  color: COLORS.ashBlue,
+                }}>
+                Activity Type
+              </Text>
+              <DropdownFilled
+                placeholder={'Select Activity Type'}
+                dropdownData={[
+                  { label: 'Appointment', value: '1' },
+                  { label: 'Pending', value: '2' },
+                  { label: 'Complete', value: '3' },
+                ]}
+              />
+            </View>
+            <SquareTextBox
+              LabelColor={COLORS.ashBlue}
+              Label={'Event Description *'}
+              Title={'Description'}
+            />
+            <SquareTextBox
+              LabelColor={COLORS.ashBlue}
+              Label={'Meeting with *'}
+              Title={'DD/MM/YYYY'}
+            />
+            <SquareTextBox
+              LabelColor={COLORS.ashBlue}
+              Label={'Date *'}
+              Title={'DD/MM/YYYY'}
+            />
+            <SquareTextBox
+              LabelColor={COLORS.ashBlue}
+              Label={'Time *'}
+              Title={'12 : 00 Am'}
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                marginTop: 15,
+                justifyContent: 'space-evenly',
+              }}>
+              <View style={{ flex: 0.35 }}>
+                <AlertButton
+                  onPress={() => setModalVisible(false)}
+                  Title={'Submit'}
+                />
+              </View>
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </TouchableOpacity>
     </Modal>
   );
 }

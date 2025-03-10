@@ -20,7 +20,7 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 
-export default function SendPaymentLink({modalVisible, setModalVisible}) {
+export default function SendPaymentLink({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -54,46 +54,51 @@ export default function SendPaymentLink({modalVisible, setModalVisible}) {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <Animated.View
-        style={[
-          styles.modalOverlay,
-          {
-            backgroundColor: backgroundOpacity.interpolate({
-              inputRange: [0, 0.2],
-              outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
-            }),
-          },
-        ]}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-            <MaterialCommunityIcons
-              name="close"
-              color={COLORS.primaryGreen}
-              size={24}
-            />
-          </TouchableOpacity>
-          <View style={{width: '100%', marginBottom: 15}}>
-            <Text style={styles.modalTitle}>Send Payment Link</Text>
-          </View>
+      <TouchableOpacity onPress={() => {
+        setModalVisible(false);
 
-          <SquareTextBox Label={'Contact Number'} Title={'0702056214'} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              marginTop: 15,
-              justifyContent: 'space-evenly',
-            }}>
-            <View style={{flex: 0.35}}>
-              <AlertButtonWhite Title={'Update'} />
+      }} activeOpacity={1} style={{ flex: 1 }}>
+        <Animated.View
+          style={[
+            styles.modalOverlay,
+            {
+              backgroundColor: backgroundOpacity.interpolate({
+                inputRange: [0, 0.2],
+                outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
+              }),
+            },
+          ]}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <MaterialCommunityIcons
+                name="close"
+                color={COLORS.primaryGreen}
+                size={24}
+              />
+            </TouchableOpacity>
+            <View style={{ width: '100%', marginBottom: 15 }}>
+              <Text style={styles.modalTitle}>Send Payment Link</Text>
             </View>
-            <View style={{flex: 0.35}}>
-              <AlertButton Title={'Confirm'} />
+
+            <SquareTextBox Label={'Contact Number'} Title={'0702056214'} />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                marginTop: 15,
+                justifyContent: 'space-evenly',
+              }}>
+              <View style={{ flex: 0.35 }}>
+                <AlertButtonWhite Title={'Update'} />
+              </View>
+              <View style={{ flex: 0.35 }}>
+                <AlertButton Title={'Confirm'} />
+              </View>
             </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </TouchableOpacity>
     </Modal>
   );
 }

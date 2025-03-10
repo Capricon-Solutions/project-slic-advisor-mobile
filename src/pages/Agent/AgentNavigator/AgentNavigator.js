@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Platform, StatusBar} from 'react-native';
-import {useLinkBuilder, useTheme} from '@react-navigation/native';
-import {Text, PlatformPressable} from '@react-navigation/elements';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { View, Platform, StatusBar } from 'react-native';
+import { useLinkBuilder, useTheme } from '@react-navigation/native';
+import { Text, PlatformPressable } from '@react-navigation/elements';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -11,14 +11,15 @@ import Contacts from '../Contacts/Contacts';
 import TrainingList from '../TrainingList/TrainingList';
 import Badvisor from '../Badvisor/Badvisor';
 import COLORS from '../../../theme/colors';
-import {Styles} from './Styles';
+import { Styles } from './Styles';
 import TrainingCalender from '../TrainingCalender/TrainingCalender';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Report from '../../RegionalManager/Report/Report';
+import ReportSwitch from '../../RegionalManager/Report/ReportSwitch';
 
-function AgengNavigator({state, descriptors, navigation}) {
-  const {colors} = useTheme();
-  const {buildHref} = useLinkBuilder();
+function AgengNavigator({ state, descriptors, navigation }) {
+  const { colors } = useTheme();
+  const { buildHref } = useLinkBuilder();
 
   return (
     <View
@@ -34,13 +35,13 @@ function AgengNavigator({state, descriptors, navigation}) {
       />
 
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
         const Icon = options.tabBarIcon; // Fetch the icon
@@ -68,10 +69,10 @@ function AgengNavigator({state, descriptors, navigation}) {
           <PlatformPressable
             key={route.key}
             href={buildHref(route.name, route.params)}
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
-            android_ripple={{color: 'transparent'}} // Removes ripple effect on Android
+            android_ripple={{ color: 'transparent' }} // Removes ripple effect on Android
             onPress={onPress}
             onLongPress={onLongPress}
             style={Styles.platformStyle}>
@@ -113,7 +114,7 @@ export default function MyTabs() {
           component={Dashboard}
           options={{
             tabBarLabel: 'Dashboard',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="view-dashboard-outline"
                 color={color}
@@ -127,7 +128,7 @@ export default function MyTabs() {
           component={TrainingCalender}
           options={{
             tabBarLabel: 'Training Calender',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="calendar-clock"
                 color={color}
@@ -141,7 +142,7 @@ export default function MyTabs() {
           component={Contacts}
           options={{
             tabBarLabel: 'Contacts',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <FontAwesome name="address-book-o" color={color} size={size} />
             ),
           }}
@@ -151,7 +152,7 @@ export default function MyTabs() {
           component={Badvisor}
           options={{
             tabBarLabel: 'B-Advisor',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <AntDesign name="earth" color={color} size={size} />
             ),
           }}
@@ -170,7 +171,7 @@ export default function MyTabs() {
           component={Dashboard}
           options={{
             tabBarLabel: 'Dashboard',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="view-dashboard-outline"
                 color={color}
@@ -184,7 +185,7 @@ export default function MyTabs() {
           component={TrainingCalender}
           options={{
             tabBarLabel: 'Training Calender',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="calendar-clock"
                 color={color}
@@ -198,7 +199,7 @@ export default function MyTabs() {
           component={Contacts}
           options={{
             tabBarLabel: 'Contacts',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <FontAwesome name="address-book-o" color={color} size={size} />
             ),
           }}
@@ -208,7 +209,7 @@ export default function MyTabs() {
           component={Badvisor}
           options={{
             tabBarLabel: 'B-Advisor',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <AntDesign name="earth" color={color} size={size} />
             ),
           }}
@@ -227,7 +228,7 @@ export default function MyTabs() {
           component={Dashboard}
           options={{
             tabBarLabel: 'Dashboard',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="view-dashboard-outline"
                 color={color}
@@ -241,7 +242,7 @@ export default function MyTabs() {
           component={TrainingCalender}
           options={{
             tabBarLabel: 'Training Calender',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="calendar-clock"
                 color={color}
@@ -255,7 +256,7 @@ export default function MyTabs() {
           component={Report}
           options={{
             tabBarLabel: 'Report',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="file-document-outline"
                 color={color}
@@ -269,7 +270,128 @@ export default function MyTabs() {
           component={Badvisor}
           options={{
             tabBarLabel: 'B-Advisor',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="earth" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
+  else if (usertype == 4) {
+    return (
+      <Tab.Navigator
+        tabBar={props => <AgengNavigator {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Training Calender"
+          component={TrainingCalender}
+          options={{
+            tabBarLabel: 'Training Calender',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="ReportSwitch"
+          component={ReportSwitch}
+          options={{
+
+            tabBarLabel: 'Report',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="file-document-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="B-Advisor"
+          component={Badvisor}
+          options={{
+            tabBarLabel: 'B-Advisor',
+            tabBarIcon: ({ color, size }) => (
+              <AntDesign name="earth" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
+  else if (usertype == 5) {
+    return (
+      <Tab.Navigator
+        tabBar={props => <AgengNavigator {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="view-dashboard-outline"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Training Calender"
+          component={TrainingCalender}
+          options={{
+            tabBarLabel: 'Training Calender',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="calendar-clock"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Contacts"
+          component={Contacts}
+          options={{
+            tabBarLabel: 'Contacts',
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome name="address-book-o" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="B-Advisor"
+          component={Badvisor}
+          options={{
+            tabBarLabel: 'B-Advisor',
+            tabBarIcon: ({ color, size }) => (
               <AntDesign name="earth" color={color} size={size} />
             ),
           }}

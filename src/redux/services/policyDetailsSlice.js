@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {baseApi} from './api';
+import { createSlice } from '@reduxjs/toolkit';
+import { baseApi } from './api';
 
 const initialState = {
   policyDetailsResponse: {
@@ -38,20 +38,20 @@ export const policyDetailsSlice = createSlice({
   },
 });
 
-export const {setPolicyDetailsResponse} = policyDetailsSlice.actions;
+export const { setPolicyDetailsResponse } = policyDetailsSlice.actions;
 export default policyDetailsSlice.reducer;
 
 // Define API endpoints separately
 export const policyDetailsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getPolicyDetails: builder.query({
-      query: ({id}) => `agent/getPolicyDetails/${id}`,
+      query: ({ id }) => `agent/getPolicyDetails?PolicyNo=${id}`,
     }),
     getClaimHistory: builder.query({
-      query: ({id}) => `agent/getClaimHistory?policyNumber=${id}`,
+      query: ({ id }) => `agent/getClaimHistory?policyNumber=${id}`,
     }),
     getPremiumHistory: builder.query({
-      query: ({id}) => `agent/getPremiumHistory/${id}`,
+      query: ({ id }) => `agent/getPremiumHistory?PolicyNo=${id}`,
     }),
   }),
 });

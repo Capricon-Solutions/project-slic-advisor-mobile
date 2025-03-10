@@ -14,20 +14,6 @@ import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
-import ContactListItem from '../../../components/contactListItem';
-import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
-import LoadingScreen from '../../../components/LoadingScreen';
-import Feather from 'react-native-vector-icons/Feather';
-
-import {
-  useGetBranchesQuery,
-  useGetDepartmentQuery,
-} from '../../../redux/services/contactSlice';
-import EconerItems from '../../../components/EconerItems';
-import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
 import DropdownFilled from '../../../components/DropdownFilled';
 import Button from '../../../components/Button';

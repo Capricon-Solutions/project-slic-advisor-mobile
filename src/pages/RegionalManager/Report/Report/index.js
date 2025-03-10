@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Styles} from '../../../../theme/Styles';
-import {FlatList} from 'react-native';
-import {styles} from './styles';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useSelector} from 'react-redux';
+import { Styles } from '../../../../theme/Styles';
+import { FlatList } from 'react-native';
+import { styles } from './styles';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useSelector } from 'react-redux';
 import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
@@ -34,17 +34,19 @@ import HorizontalReportTable from '../../../../components/HorizontalReportTable'
 
 const window = Dimensions.get('window');
 const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
 ];
 
-export default function Report({navigation}) {
+export default function Report({ navigation, route }) {
+  const { Title = "" } = route.params || {};
+
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState(1);
@@ -80,7 +82,7 @@ export default function Report({navigation}) {
   const renderLabel = () => {
     if (value || isFocus) {
       return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
+        <Text style={[styles.label, isFocus && { color: 'blue' }]}>
           Dropdown label
         </Text>
       );
@@ -101,16 +103,16 @@ export default function Report({navigation}) {
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
+      <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
-            Title="Report"
+            Title={Title + " Report"}
             onPress={() => navigation.goBack()}
           />
         ) : (
           <Header
-            Title="Report"
+            Title={Title + " Report"}
             onPress={() => navigation.goBack()}
             haveFilters={false}
             haveWhatsapp={false}
@@ -129,7 +131,7 @@ export default function Report({navigation}) {
         }}>
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5}}>
+          style={{ flexDirection: 'row', gap: 5 }}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -164,55 +166,55 @@ export default function Report({navigation}) {
               justifyContent: 'flex-end',
               marginVertical: 5,
             }}>
-            <View style={{flex: 0.18, marginHorizontal: 2}}>
+            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
-                dropdownData={[{label: 'NOP', value: '1'}]}
+                dropdownData={[{ label: 'NOP', value: '1' }]}
               />
             </View>
-            <View style={{flex: 0.2, marginHorizontal: 2}}>
+            <View style={{ flex: 0.2, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'General Cumulative', value: '1'},
-                  {label: 'Motor Monthly', value: '2'},
+                  { label: 'General Cumulative', value: '1' },
+                  { label: 'Motor Monthly', value: '2' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.18, marginHorizontal: 2}}>
+            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
+                  { label: 'Cumulative', value: '00' },
+                  { label: 'January', value: '01' },
+                  { label: 'February', value: '02' },
+                  { label: 'March', value: '03' },
+                  { label: 'April', value: '04' },
+                  { label: 'May', value: '05' },
+                  { label: 'June', value: '06' },
+                  { label: 'July', value: '07' },
+                  { label: 'August', value: '08' },
+                  { label: 'September', value: '09' },
+                  { label: 'October', value: '10' },
+                  { label: 'November', value: '11' },
+                  { label: 'December', value: '12' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.12, marginHorizontal: 2}}>
+            <View style={{ flex: 0.12, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Branch'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'Branch', value: '1'},
-                  {label: 'All', value: '2'},
+                  { label: 'Branch', value: '1' },
+                  { label: 'All', value: '2' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.13, marginHorizontal: 2}}>
+            <View style={{ flex: 0.13, marginHorizontal: 2 }}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -229,8 +231,8 @@ export default function Report({navigation}) {
           data={IndividualStatResponse?.tableData}
           initialNumToRender={2}
           keyExtractor={item => item.id}
-          contentContainerStyle={{padding: 10}}
-          renderItem={({item}) => (
+          contentContainerStyle={{ padding: 10 }}
+          renderItem={({ item }) => (
             <View
               style={{
                 borderRadius: 15,
@@ -239,10 +241,10 @@ export default function Report({navigation}) {
                 margin: 10,
                 padding: 15,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
-                  style={{height: 17, width: 17}}
+                  style={{ height: 17, width: 17 }}
                   source={Building}></Image>
                 <Text
                   style={{
@@ -263,22 +265,22 @@ export default function Report({navigation}) {
                   gap: 10,
                   width: '100%',
                 }}>
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'Renewal'} value={item.Renewal} />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'NB'} value={item.NB} />
                 </View>
               </View>
 
               {/* Second Row */}
-              <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'PPW'} value={item.Refund.ppw} />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'Others'} value={item.Refund.other} />
                 </View>
               </View>
