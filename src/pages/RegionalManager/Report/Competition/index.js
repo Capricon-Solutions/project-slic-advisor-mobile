@@ -194,7 +194,8 @@ export default function Competition({ navigation }) {
                 alignItems: 'center',
                 borderRadius: 6,
               }}
-              onPress={() => onLoad(fromDate, toDate)}>
+            // onPress={() => onLoad(fromDate, toDate)}
+            >
               <Text
                 style={{
                   color: '#fff',
@@ -280,7 +281,8 @@ export default function Competition({ navigation }) {
                   borderRadius: 6,
                   paddingHorizontal: 12
                 }}
-                onPress={() => onLoad(fromDate, toDate)}>
+              // onPress={() => onLoad(fromDate, toDate)}
+              >
                 <Text
                   style={{
                     color: '#fff',

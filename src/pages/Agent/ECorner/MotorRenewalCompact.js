@@ -92,6 +92,8 @@ export default function MotorRenewalCompact({ navigation }) {
           haveTotal={false}
           tableHead={tableHead}
           tableData={tableData}
+          navigation={navigation}
+          clickableColumns={[3]}
           columnWidths={columnWidths}
         />
 

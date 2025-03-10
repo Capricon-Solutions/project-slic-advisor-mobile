@@ -8,8 +8,9 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  StatusBar,
 } from 'react-native';
-import {Styles} from '../../theme/Styles';
+import { Styles } from '../../theme/Styles';
 import HeaderBackground from '../../components/HeaderBackground';
 import Header from '../../components/Header';
 import COLORS from '../../theme/colors';
@@ -19,21 +20,22 @@ import Fonts from '../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
-import {styles} from './styles';
+import { styles } from './styles';
 import Button from '../../components/Button';
 const window = Dimensions.get('window');
-export default function Settings({navigation}) {
+export default function Settings({ navigation }) {
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
+      <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       <View style={Styles.container}>
         {/* <HeaderBackground /> */}
         <Header Title="Change Password" onPress={() => navigation.goBack()} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{paddingHorizontal: 20}}>
+          contentContainerStyle={{ paddingHorizontal: 20 }}>
           <View>
             <Text style={styles.topics}>Set a new password</Text>
           </View>
@@ -67,7 +69,7 @@ export default function Settings({navigation}) {
             Title={'Enter your new password'}
             Secure={true}></SquareTextBox>
 
-          <View style={{marginTop: window.height * 0.02}}>
+          <View style={{ marginTop: window.height * 0.02 }}>
             <View style={styles.conditionsWrap}>
               <View style={styles.condIconWrap}>
                 <MaterialCommunityIcons

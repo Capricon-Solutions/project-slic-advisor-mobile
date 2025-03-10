@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,18 +10,18 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
-import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
-import {useSelector} from 'react-redux';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import { useGetBranchesQuery } from '../../../redux/services/contactSlice';
+import { useSelector } from 'react-redux';
 import {
   useGetPPWCanceledListQuery,
   useGetPPWReminderListQuery,
@@ -34,7 +34,7 @@ import DropdownFilled from '../../../components/DropdownFilled';
 
 const window = Dimensions.get('window');
 
-export default function PPWCancellation({navigation}) {
+export default function PPWCancellation({ navigation }) {
   // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
   const [selectedValue, setSelectedValue] = useState(null);
@@ -136,7 +136,7 @@ export default function PPWCancellation({navigation}) {
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
       />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -182,7 +182,7 @@ export default function PPWCancellation({navigation}) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={[styles.searchWrap, {flex: 0.6}]}>
+          <View style={[styles.searchWrap, { flex: 0.6 }]}>
             <TextInput
               value={fromDate + ' - ' + toDate}
               readOnly
@@ -194,7 +194,7 @@ export default function PPWCancellation({navigation}) {
               <Feather name="calendar" color={COLORS.white} size={20} />
             </TouchableOpacity>
           </View>
-          <View style={{flex: 0.4, padding: 2}}>
+          <View style={{ flex: 0.4, padding: 2 }}>
             {/* <AutocompleteDropdown
               clearOnFocus={true}
               closeOnBlur={true}
@@ -215,8 +215,8 @@ export default function PPWCancellation({navigation}) {
               placeholder={'Select Type'}
               onSelect={handleSelect} // Pass the handleSelect function as a prop
               dropdownData={[
-                {label: 'Motor', value: 'Motor'},
-                {label: 'Non-Motor', value: 'Non-Motor'},
+                { label: 'Motor', value: 'Motor' },
+                { label: 'Non-Motor', value: 'Non-Motor' },
               ]}
             />
           </View>
@@ -241,6 +241,8 @@ export default function PPWCancellation({navigation}) {
                   Error={error?.data?.Error}
                   tableHead={tableHead}
                   tableData={tableData}
+                  navigation={navigation}
+                  clickableColumns={[0]}
                   columnWidths={columnWidths}
                   haveTotal={false}
                 />
@@ -255,6 +257,8 @@ export default function PPWCancellation({navigation}) {
                   Error={errorC?.data?.Error}
                   tableHead={tableHead2}
                   tableData={tableData2}
+                  navigation={navigation}
+                  clickableColumns={[0]}
                   columnWidths={columnWidths2}
                   haveTotal={false}
                 />

@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors'; // Update with your color theme file
@@ -81,10 +82,13 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
       animationType="fade"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity onPress={() => {
-        hide();
-      }} activeOpacity={1} style={{ flex: 1 }}>
+      onRequestClose={() => setModalVisible(false)}
+    >
+      <TouchableOpacity
+        onPress={() => hide()}
+        activeOpacity={1}
+        style={{ flex: 1 }}
+      >
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -94,41 +98,53 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
               }),
             },
-          ]}>
-          <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-              <MaterialCommunityIcons
-                name="close"
-                color={COLORS.primaryGreen}
-                size={24}
+          ]}
+        >
+          {/* Prevent touches inside the modal from triggering the background click */}
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>
+                Set your target for 2025/December
+              </Text>
+              <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+                <MaterialCommunityIcons
+                  name="close"
+                  color={COLORS.primaryGreen}
+                  size={24}
+                />
+              </TouchableOpacity>
+
+              <Text style={{ marginTop: 20, marginBottom: 5, fontSize: 15, fontFamily: Fonts.Roboto.Regular }}>
+                Enter your target
+              </Text>
+
+              <TextInput
+                mode="outlined"
+                keyboardType="numeric"
+                activeOutlineColor={COLORS.primary}
+                outlineColor="transparent"
+                value={inputValue} // Controlled component
+                onChangeText={text => setInputValue(text)} // Store input value
+                style={{
+                  backgroundColor: COLORS.lightBorder,
+                  marginBottom: 15,
+                  textAlign: 'center',
+                  fontFamily: Fonts.Roboto.Bold,
+                  fontWeight: '700',
+                }}
               />
-            </TouchableOpacity>
 
-            <Text style={styles.modalTitle}>
-              Set your target for 2025/December
-            </Text>
-
-            <TextInput
-              mode="flat"
-              keyboardType="numeric"
-              value={inputValue} // Controlled component
-              onChangeText={text => setInputValue(text)} // Store input value
-              style={{
-                backgroundColor: 'transparent',
-                marginBottom: 15,
-                textAlign: 'center',
-                fontFamily: Fonts.Roboto.Bold,
-                fontWeight: '700',
-              }}></TextInput>
-            <View style={{ paddingHorizontal: window.width * 0.2 }}>
-              <Button
-                Title={'Set Target'}
-                onPress={() => {
-                  setModalVisible(false);
-                  handlePostRequest();
-                }}></Button>
+              <View style={{ paddingHorizontal: window.width * 0.05 }}>
+                <Button
+                  Title={'Set Target'}
+                  onPress={() => {
+                    setModalVisible(false);
+                    handlePostRequest();
+                  }}
+                />
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Animated.View>
       </TouchableOpacity>
     </Modal>
@@ -150,7 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: COLORS.lightBorder,
-    paddingVertical: 40,
+    paddingVertical: 20,
   },
   closeButton: {
     position: 'absolute',
@@ -161,10 +177,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightBorder,
   },
   modalTitle: {
-    fontSize: 15,
-    textAlign: 'center',
-    marginTop: 15,
-    fontFamily: Fonts.Roboto.Medium,
+    fontSize: 17,
+    textAlign: 'left',
+    // marginTop: 15,
+    fontFamily: Fonts.Roboto.Bold,
     color: COLORS.textColor,
   },
 });

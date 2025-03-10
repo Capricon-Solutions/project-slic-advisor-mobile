@@ -21,8 +21,10 @@ const TableComponentEC = ({
   Error,
   navigation,
   touchable,
+  clickableColumns = [],
 }) => {
   const handleCellPress = cellData => {
+    navigation.navigate('PolicyDetails', { policyNo: cellData })
     console.log('Clicked Cell:', cellData);
   };
   return (
@@ -54,6 +56,8 @@ const TableComponentEC = ({
                           {item}
                         </Text>
                       </View>
+
+
                     </View>
                   ))}
                   widthArr={columnWidths}
@@ -64,73 +68,59 @@ const TableComponentEC = ({
                 {tableData?.map((rowData, index) => (
                   <Row
                     key={index}
-                    data={rowData.map((cellData, cellIndex) => (
-                      <View
-                        style={{ flex: 1, justifyContent: 'center' }}
-                        key={cellIndex}
-                        onPress={() => handleCellPress(cellData)}>
-                        {cellIndex == 0 && (
-                          <TouchableOpacity
-                            disabled={!touchable}
-                            onPress={() =>
-                              navigation.navigate('BranchSummary', {
-                                title: cellData,
-                              })
-                            }
-                            style={{ flex: 1 }}
+                    data={rowData.map((cellData, cellIndex) =>
+                      clickableColumns.includes(cellIndex) ? (
+                        <TouchableOpacity
+                          key={cellIndex}
+                          onPress={() => handleCellPress(cellData)}
+                          style={{ flex: 1, justifyContent: 'center' }}
+                        >
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0 ? styles.leftAlignedText : styles.centerAlignedText,
+                              haveTotal && index === tableData.length - 1 && styles.boldText,
+                            ]}
                           >
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                              <Text
-                                style={[
-                                  styles.text,
-                                  cellIndex === 0
-                                    ? styles.leftAlignedText
-                                    : styles.centerAlignedText, // Align first column left
-                                  haveTotal &&
-                                  index === tableData.length - 1 &&
-                                  styles.boldText,
-                                ]}>
-                                {cellData}
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        )}
-                        {cellIndex > 0 && (
-
-                          <View style={{
+                            {cellData}
+                          </Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <View
+                          key={cellIndex}
+                          style={{
                             flex: 1,
                             justifyContent: 'center',
-                            backgroundColor: cellIndex === rowData.length - 1
-                              ? (cellData === 'Renewed' ? COLORS.tableSubHeader
-                                : cellData === 'Due' ? COLORS.tableOrange
-                                  : cellData === 'Expired' ? COLORS.tableRed
-                                    : 'transparent')
-                              : 'transparent'
-                          }}>
-                            <Text
-                              style={[
-                                styles.text,
-                                haveTotal && cellIndex === rowData.length - 1 && styles.boldText,
-                              ]}>
-                              {cellData}
-                            </Text>
-                          </View>
-
-                        )}
-                      </View>
-                    ))}
+                            backgroundColor:
+                              cellIndex === rowData.length - 1
+                                ? cellData === 'Renewed'
+                                  ? COLORS.tableSubHeader
+                                  : cellData === 'Due'
+                                    ? COLORS.tableOrange
+                                    : cellData === 'Expired'
+                                      ? COLORS.tableRed
+                                      : 'transparent'
+                                : 'transparent',
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.text,
+                              haveTotal && cellIndex === rowData.length - 1 && styles.boldText,
+                            ]}
+                          >
+                            {cellData}
+                          </Text>
+                        </View>
+                      )
+                    )}
                     widthArr={columnWidths}
                     style={[
                       styles.row,
                       index % 2 === 0 ? styles.rowGray : styles.rowWhite,
                     ]}
-                    textStyle={[
-                      styles.text,
-                      haveTotal &&
-                      index === tableData.length - 1 &&
-                      styles.boldText, // Apply boldText only if hasTotal is true
-                    ]}
                   />
+
                 ))}
               </Table>
             </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,25 +10,25 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 const window = Dimensions.get('window');
 
-export default function IndividualStatistics({navigation}) {
+export default function IndividualStatistics({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
   // const tableData = [
@@ -87,9 +87,9 @@ export default function IndividualStatistics({navigation}) {
     item?.Endorsements.toString() ?? '',
     item?.Total.toString() ?? '',
   ]);
-  const renderItem = ({item}) => <ContactListItem item={item} />;
+  const renderItem = ({ item }) => <ContactListItem item={item} />;
 
-  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
+  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
 
   const handleLoad = (from, to) => {
     console.log('Selected From:', from);
@@ -100,7 +100,7 @@ export default function IndividualStatistics({navigation}) {
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <LandscapeHeader
           haveSearch={true}
           Title="IndividualStatistics"
@@ -125,7 +125,8 @@ export default function IndividualStatistics({navigation}) {
         }}
         style={{}}>
         <HorizontalTableComponent
-          onPress={() => navigation.navigate('PolicyDetails')}
+          onPress={() => console.log('test')}
+          clickable={false}
           haveTotal={false}
           tableHead={tableHead}
           tableData={tableData}

@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors'; // Update with your color theme file
@@ -67,36 +68,38 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
               }),
             },
           ]}>
-          <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-              <MaterialCommunityIcons
-                name="close"
-                color={COLORS.primaryGreen}
-                size={24}
-              />
-            </TouchableOpacity>
-            <View style={{ width: '100%', marginBottom: 15 }}>
-              <Text style={styles.modalTitle}>Event Creation</Text>
-            </View>
-
-            <SquareTextBox Label={'Date *'} Title={'DD/MM/YYYY'} />
-            <SquareTextBox Label={'Event Description *'} Title={'Description'} />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '100%',
-                marginTop: 15,
-                justifyContent: 'space-evenly',
-              }}>
-              <View style={{ flex: 0.35 }}>
-                <AlertButton
-                  onPress={() => setModalVisible(false)}
-                  Title={'Submit'}
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+                <MaterialCommunityIcons
+                  name="close"
+                  color={COLORS.primaryGreen}
+                  size={24}
                 />
+              </TouchableOpacity>
+              <View style={{ width: '100%', marginBottom: 15 }}>
+                <Text style={styles.modalTitle}>Event Creation</Text>
+              </View>
+
+              <SquareTextBox Label={'Date *'} Title={'DD/MM/YYYY'} />
+              <SquareTextBox Label={'Event Description *'} Title={'Description'} />
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  marginTop: 15,
+                  justifyContent: 'space-evenly',
+                }}>
+                <View style={{ flex: 0.35 }}>
+                  <AlertButton
+                    onPress={() => setModalVisible(false)}
+                    Title={'Submit'}
+                  />
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Animated.View>
       </TouchableOpacity>
     </Modal>

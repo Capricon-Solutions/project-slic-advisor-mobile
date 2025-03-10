@@ -91,6 +91,8 @@ export default function NonMotorRenewalCompact({ navigation }) {
         <TableComponentEC
           haveTotal={false}
           tableHead={tableHead}
+          navigation={navigation}
+          clickableColumns={[2]}
           tableData={tableData}
           columnWidths={columnWidths}
         />

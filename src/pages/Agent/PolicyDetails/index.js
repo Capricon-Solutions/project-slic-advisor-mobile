@@ -115,7 +115,7 @@ export default function PolicyDetails({ navigation, route }) {
               }}>(Cancelled)</Text>
 
             }
-            <DetailLine Title={'Policy Number'} detail={policyNumber} />
+            <DetailLine Title={'Policy Number'} detail={policyNo} />
             <DetailLine Title={'Ins. Name'} detail={insName} />
             <DetailLine Title={'Address'} detail={Address} />
             <DetailLine Title={'Mobile No.'} detail={phone} />

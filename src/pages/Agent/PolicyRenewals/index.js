@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   ScrollView,
   ActivityIndicator, // Added for the loading animation
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
-import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
-import {useSelector} from 'react-redux';
+import { useGetBranchesQuery } from '../../../redux/services/contactSlice';
+import { useSelector } from 'react-redux';
 import {
   useGetmotorRenewalsListQuery,
   useGetnonMotorRenewalsListQuery,
@@ -31,7 +31,7 @@ import moment from 'moment';
 
 const window = Dimensions.get('window');
 
-export default function PolicyRenewals({navigation}) {
+export default function PolicyRenewals({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
   // const [loading, setLoading] = useState(false); // Loading state
 
@@ -125,7 +125,7 @@ export default function PolicyRenewals({navigation}) {
       />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -197,6 +197,8 @@ export default function PolicyRenewals({navigation}) {
               <TableComponent
                 tableHead={tableHead}
                 tableData={tableData}
+                navigation={navigation}
+                clickableColumns={[3]}
                 columnWidths={columnWidths}
                 haveTotal={false}
               />
@@ -210,6 +212,8 @@ export default function PolicyRenewals({navigation}) {
               <TableComponent
                 tableHead={tableHead2}
                 tableData={tableData2}
+                navigation={navigation}
+                clickableColumns={[3]}
                 columnWidths={columnWidths2}
                 haveTotal={false}
               />

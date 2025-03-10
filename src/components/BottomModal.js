@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -196,49 +197,51 @@ export default function BottomModal({
               }),
             },
           ]}>
-          <View style={styles.modalContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 15,
-              }}>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={styles.modalTitle}>{Name}</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => hide()}
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContainer}>
+              <View
                 style={{
-                  borderRadius: 100,
-                  padding: 2,
-                  height: 27,
-                  width: 27,
-                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  backgroundColor: COLORS.lightBorder,
+                  marginBottom: 15,
                 }}>
-                <MaterialCommunityIcons
-                  name="close"
-                  color={COLORS.primaryGreen}
-                  size={20}
-                />
-              </TouchableOpacity>
-            </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={styles.modalTitle}>{Name}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => hide()}
+                  style={{
+                    borderRadius: 100,
+                    padding: 2,
+                    height: 27,
+                    width: 27,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: COLORS.lightBorder,
+                  }}>
+                  <MaterialCommunityIcons
+                    name="close"
+                    color={COLORS.primaryGreen}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
 
-            <View>
-              {ButtonList?.map((item, index) => (
-                <PolicyItem
-                  key={index}
-                  title={item?.title}
-                  icon={item?.icon}
-                  expandable={item?.expandable}
-                  subButtons={item?.subButtons}
-                  onPress={item?.onPress}
-                />
-              ))}
+              <View>
+                {ButtonList?.map((item, index) => (
+                  <PolicyItem
+                    key={index}
+                    title={item?.title}
+                    icon={item?.icon}
+                    expandable={item?.expandable}
+                    subButtons={item?.subButtons}
+                    onPress={item?.onPress}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Animated.View>
       </TouchableOpacity>
     </Modal>

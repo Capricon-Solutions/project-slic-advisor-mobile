@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import { Table, Row, Rows } from 'react-native-table-component';
 import COLORS from '../theme/colors';
 
 const HorizontalTableComponent = ({
@@ -15,6 +15,7 @@ const HorizontalTableComponent = ({
   columnWidths,
   haveTotal,
   onPress,
+  clickable
 }) => {
   const handleCellPress = cellData => {
     onPress();
@@ -53,14 +54,16 @@ const HorizontalTableComponent = ({
                 key={index}
                 data={rowData.map((cellData, cellIndex) => (
                   <TouchableOpacity
+                    disabled={clickable == true ? false : true}
+
                     key={cellIndex}
                     onPress={() => handleCellPress(cellData)}>
                     <Text
                       style={[
                         styles.text,
                         haveTotal &&
-                          rowIndex === tableData.length - 1 &&
-                          styles.boldText,
+                        rowIndex === tableData.length - 1 &&
+                        styles.boldText,
                       ]}>
                       {cellData}
                     </Text>
@@ -74,8 +77,8 @@ const HorizontalTableComponent = ({
                 textStyle={[
                   styles.text,
                   haveTotal &&
-                    index === tableData.length - 1 &&
-                    styles.boldText, // Apply boldText only if hasTotal is true
+                  index === tableData.length - 1 &&
+                  styles.boldText, // Apply boldText only if hasTotal is true
                 ]}
               />
             ))}
@@ -87,12 +90,12 @@ const HorizontalTableComponent = ({
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
+  container: { padding: 0 },
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  head: {height: 50, backgroundColor: '#00A8B5'},
+  head: { height: 50, backgroundColor: '#00A8B5' },
   headText: {
     margin: 6,
     fontWeight: 'bold',
@@ -113,9 +116,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.textColor,
   },
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
-  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
+  row: { height: 50 },
+  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
+  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

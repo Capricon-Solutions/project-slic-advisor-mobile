@@ -60,7 +60,7 @@ const TypeTest = ({ navigation }) => {
             marginTop: 15,
           }}>
           <Text style={{ color: COLORS.white, fontFamily: Fonts.Roboto.Bold }}>
-            Agent
+            Advisor
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
