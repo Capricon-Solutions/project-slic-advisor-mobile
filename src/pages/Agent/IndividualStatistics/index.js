@@ -26,11 +26,15 @@ import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
 import { useSelector } from 'react-redux';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 export default function IndividualStatistics({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
+
   // const tableData = [
   //   [
   //     'Premium for November',
@@ -99,10 +103,17 @@ export default function IndividualStatistics({ navigation }) {
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
       {/* <HeaderBackground /> */}
       <View style={{ paddingHorizontal: 20 }}>
         <LandscapeHeader
           haveSearch={true}
+          calenderClick={() => setPickerVisible(true)}
           Title="IndividualStatistics"
           onPress={() => navigation.goBack()}
         />

@@ -38,12 +38,15 @@ import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLab
 import SmallButton from '../../../components/SmallButton';
 import BPMotorRenewal from '../../../components/ECMotorRenewal';
 import ECMotorRenewal from '../../../components/ECMotorRenewal';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 export default function MotorRenewal({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
   const currentYear = new Date().getFullYear();
 
   const dropdownData = Array.from({ length: currentYear - 2019 }, (_, i) => ({
@@ -61,6 +64,12 @@ export default function MotorRenewal({ navigation }) {
 
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
       <HeaderBackground />
       <Header Title="Motor Renewal" onPress={() => navigation.goBack()} />
       <View style={{ paddingHorizontal: 15 }}>
@@ -71,7 +80,7 @@ export default function MotorRenewal({ navigation }) {
             placeholder="11/2024"
           />
           <TouchableOpacity
-            // onPress={() => handleSearch()}
+            onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>

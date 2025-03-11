@@ -68,29 +68,33 @@ export default function BottomModal({
   const PolicyItem = ({ title, icon, subButtons, onPress, expandable }) => {
     const [visible, setVisible] = React.useState(false);
     return (
-      <View
+      <TouchableOpacity
         style={{
           borderWidth: 1.5,
           borderRadius: 10,
           borderColor: COLORS.modalBorder,
           paddingVertical: 18,
 
+
           marginVertical: 10,
+        }}
+        onPress={() => {
+          console.log(onPress.Value);
+          if (onPress === 'expand') {
+            console.log(onPress);
+            setVisible(!visible);
+          } else if (typeof onPress === 'function') {
+            onPress();
+          }
         }}>
-        <TouchableOpacity
+        <View
           style={{
+
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
-          onPress={() => {
-            console.log(onPress.Value);
-            if (onPress === 'expand') {
-              console.log(onPress);
-              setVisible(!visible);
-            } else if (typeof onPress === 'function') {
-              onPress();
-            }
-          }}>
+
+        >
           <View style={{ flex: 0.15, alignItems: 'center' }}>
             <Image
               source={icon}
@@ -121,7 +125,7 @@ export default function BottomModal({
               </TouchableOpacity>
             )}
           </View>
-        </TouchableOpacity>
+        </View>
         {visible && (
           <View
             style={{
@@ -173,7 +177,7 @@ export default function BottomModal({
             </View> */}
           </View>
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -184,8 +188,8 @@ export default function BottomModal({
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <TouchableOpacity onPress={() => {
-        setModalVisible(false);
-
+        // setModalVisible(false);
+        hide();
       }} activeOpacity={1} style={{ flex: 1 }}>
         <Animated.View
           style={[

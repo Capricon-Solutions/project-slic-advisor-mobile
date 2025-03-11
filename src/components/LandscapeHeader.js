@@ -14,7 +14,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
 import Feather from 'react-native-vector-icons/Feather';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import Button from './Button';
 import SmallButton from './SmallButton';
@@ -33,6 +33,7 @@ export default function LandscapeHeader({
   haveMenu,
   haveCall,
   haveWhatsapp,
+  calenderClick
 }) {
   return (
     <View
@@ -43,7 +44,7 @@ export default function LandscapeHeader({
         height: 70,
         marginTop: 5,
       }}>
-      <View style={{justifyContent: 'center', flex: 0.07}}>
+      <View style={{ justifyContent: 'center', flex: 0.07 }}>
         <TouchableOpacity
           onPress={onPress}
           style={{
@@ -63,7 +64,7 @@ export default function LandscapeHeader({
           />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 0.3, alignItems: 'flex-start'}}>
+      <View style={{ flex: 0.3, alignItems: 'flex-start' }}>
         <Text
           style={{
             fontFamily: Fonts.Roboto.Bold,
@@ -106,7 +107,7 @@ export default function LandscapeHeader({
         {haveSearch && (
           <View style={styles.searchWrap}>
             <TextInput style={styles.textInput} placeholder="11/2024" />
-            <TouchableOpacity style={styles.searchButton}>
+            <TouchableOpacity onPress={calenderClick} style={styles.searchButton}>
               <Feather name="calendar" color={COLORS.primaryGreen} size={20} />
             </TouchableOpacity>
           </View>
@@ -163,7 +164,7 @@ export default function LandscapeHeader({
           </View>
         )}
         {haveMenu && (
-          <View style={{marginLeft: 5}}>
+          <View style={{ marginLeft: 5 }}>
             <View style={{}}>
               <MaterialIcons name="more-vert" color={COLORS.black} size={27} />
             </View>

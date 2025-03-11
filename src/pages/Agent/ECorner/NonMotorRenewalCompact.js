@@ -31,6 +31,7 @@ import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 
@@ -62,8 +63,16 @@ export default function NonMotorRenewalCompact({ navigation }) {
 
   ]);
   const columnWidths = [100, 140, 145, 70, 100, 100, 100];
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
       <HeaderBackground />
       <Header titleFontSize={16} Title="Non-Motor Renewal Compact" onPress={() => navigation.goBack()} />
       <View style={{ paddingHorizontal: 20 }}>
@@ -75,7 +84,7 @@ export default function NonMotorRenewalCompact({ navigation }) {
             placeholder="11/2024"
           />
           <TouchableOpacity
-            // onPress={() => handleSearch()}
+            onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>

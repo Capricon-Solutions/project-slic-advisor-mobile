@@ -83,7 +83,7 @@ export default function DebitSettlementRenewal({ navigation }) {
             clearOnFocus={true}
             closeOnBlur={true}
             closeOnSubmit={false}
-            // initialValue={{id: '2'}} // or just '2'
+            initialValue={{ id: '1' }} // or just '2'
             onSelectItem={setSelectedItem}
             dataSet={[
               { id: '1', title: 'Debit Settlement' },

@@ -20,7 +20,7 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 
-export default function NotAttending({modalVisible, setModalVisible}) {
+export default function NotAttending({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -72,12 +72,12 @@ export default function NotAttending({modalVisible, setModalVisible}) {
               size={24}
             />
           </TouchableOpacity>
-          <View style={{width: '100%', marginBottom: 15}}>
+          <View style={{ width: '100%', marginBottom: 15 }}>
             <Text style={styles.modalTitle}>Reason for Not Attending?</Text>
           </View>
 
-          <SquareTextBox Label={'Reasons *'} Title={'what is the reasons'} />
-          <SquareTextBox Label={'Additional Comments '} Title={'Explant Why'} />
+          <SquareTextBox Label={'Reasons *'} Title={'What is the reasons'} />
+          <SquareTextBox Label={'Additional Comments '} Title={'Explain Why'} />
 
           <View
             style={{
@@ -86,7 +86,7 @@ export default function NotAttending({modalVisible, setModalVisible}) {
               marginTop: 15,
               justifyContent: 'space-evenly',
             }}>
-            <View style={{flex: 0.35}}>
+            <View style={{ flex: 0.35 }}>
               <AlertButton Title={'Confirm'} />
             </View>
           </View>

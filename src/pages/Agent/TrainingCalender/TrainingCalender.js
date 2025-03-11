@@ -84,6 +84,8 @@ LocaleConfig.defaultLocale = 'fr';
 export default function TrainingCalender({ navigation }) {
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [itemOne, setItemOne] = useState(true);
+  const [itemTwo, setItemTwo] = useState(true);
   const [trainingType, setTrainingType] = useState();
   const [selected, setSelected] = useState({
     '2025-02-01': { selected: true, marked: true, selectedColor: 'blue' },
@@ -206,7 +208,7 @@ export default function TrainingCalender({ navigation }) {
                 color: COLORS.grayText,
                 textAlign: 'center',
               }}>
-              NO EVENTS FOR THE SELECTED DATE
+              Np events for the selected date
             </Text>
           </View>
 
@@ -222,103 +224,116 @@ export default function TrainingCalender({ navigation }) {
             </Text>
           </View>
 
-          <View style={styles.cardWrap}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: COLORS.primary,
-                  fontFamily: Fonts.Roboto.Bold,
-                  fontSize: 14,
-                }}>
-                Motor Claims Training
-              </Text>
+          {itemOne &&
 
-              <TouchableOpacity
-                onPress={() => console.log('clicked')}
+            <View style={styles.cardWrap}>
+              <View
                 style={{
-                  right: 13,
-                  borderRadius: 15,
-                  padding: 2,
-                  backgroundColor: COLORS.lightBorder,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}>
-                <MaterialCommunityIcons
-                  name="close"
-                  color={COLORS.primaryGreen}
-                  size={20}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ flex: 0.6 }}>
                 <Text
                   style={{
-                    color: COLORS.textColor,
+                    color: COLORS.primary,
                     fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 16,
+                    fontSize: 14,
                   }}>
-                  Mr. John Smith
-                </Text>
-                <Text
-                  style={{
-                    color: COLORS.grayText,
-                    fontFamily: Fonts.Roboto.Medium,
-                    fontSize: 13,
-                  }}>
-                  Session Type: Online.
+                  Motor Claims Training
                 </Text>
 
-                <View
+                <TouchableOpacity
+                  onPress={() => setItemOne(false)}
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 3,
+                    right: 13,
+                    borderRadius: 15,
+                    padding: 2,
+                    backgroundColor: COLORS.lightBorder,
                   }}>
-                  <Feather name="calendar" color={COLORS.grayText} size={16} />
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                      marginLeft: 5,
-                    }}>
-                    January 17, 2025
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 3,
-                  }}>
-                  <Feather name="clock" color={COLORS.grayText} size={16} />
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                      marginLeft: 5,
-                    }}>
-                    10:00 AM - 12:00 PM.
-                  </Text>
-                </View>
+                  <MaterialCommunityIcons
+                    name="close"
+                    color={COLORS.primaryGreen}
+                    size={20}
+                  />
+                </TouchableOpacity>
               </View>
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flex: 0.6 }}>
+                  <Text
+                    style={{
+                      color: COLORS.textColor,
+                      fontFamily: Fonts.Roboto.Bold,
+                      fontSize: 16,
+                    }}>
+                    Mr. John Smith
+                  </Text>
 
-              <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
-                <View
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: 10,
-                  }}>
-                  <SmallButton Title={'View Details'} />
+                  <Text
+                    style={{
+                      color: COLORS.grayText,
+                      fontFamily: Fonts.Roboto.Medium,
+                      fontSize: 13,
+                    }}>
+                    Session Method : Online
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: COLORS.grayText,
+                      fontFamily: Fonts.Roboto.Medium,
+                      fontSize: 13,
+                    }}>
+                    Session Type : General
+                  </Text>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 3,
+                    }}>
+                    <Feather name="calendar" color={COLORS.grayText} size={16} />
+                    <Text
+                      style={{
+                        color: COLORS.textColor,
+                        fontFamily: Fonts.Roboto.Medium,
+                        fontSize: 13,
+                        marginLeft: 5,
+                      }}>
+                      January 17, 2025
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 3,
+                    }}>
+                    <Feather name="clock" color={COLORS.grayText} size={16} />
+                    <Text
+                      style={{
+                        color: COLORS.textColor,
+                        fontFamily: Fonts.Roboto.Medium,
+                        fontSize: 13,
+                        marginLeft: 5,
+                      }}>
+                      10:00 AM - 12:00 PM.
+                    </Text>
+                  </View>
                 </View>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
+
+                <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
+                  <View
+                    style={{
+                      width: '90%',
+                      paddingHorizontal: 10,
+                      marginVertical: 10
+                    }}>
+                    <SmallButton Title={'Done'}
+                      onPress={() => setItemOne(false)} />
+                  </View>
                   <Text
                     style={{
                       color: COLORS.primary,
@@ -327,118 +342,148 @@ export default function TrainingCalender({ navigation }) {
                     }}>
                     Can't Attend?
                   </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.cardWrap}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: COLORS.primary,
-                  fontFamily: Fonts.Roboto.Bold,
-                  fontSize: 14,
-                }}>
-                Motor Claims Training
-              </Text>
-
-              <TouchableOpacity
-                onPress={() => console.log('clicked')}
-                style={{
-                  right: 13,
-                  borderRadius: 15,
-                  padding: 2,
-                  backgroundColor: COLORS.lightBorder,
-                }}>
-                <MaterialCommunityIcons
-                  name="close"
-                  color={COLORS.primaryGreen}
-                  size={20}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ flex: 0.6 }}>
-                <Text
-                  style={{
-                    color: COLORS.textColor,
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 16,
-                  }}>
-                  Mr. John Smith
-                </Text>
-                <Text
-                  style={{
-                    color: COLORS.grayText,
-                    fontFamily: Fonts.Roboto.Medium,
-                    fontSize: 13,
-                  }}>
-                  Session Type: Online.
-                </Text>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 3,
-                  }}>
-                  <Feather name="calendar" color={COLORS.grayText} size={16} />
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                      marginLeft: 5,
-                    }}>
-                    January 17, 2025
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginVertical: 3,
-                  }}>
-                  <Feather name="clock" color={COLORS.grayText} size={16} />
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                      marginLeft: 5,
-                    }}>
-                    10:00 AM - 12:00 PM.
-                  </Text>
                 </View>
               </View>
+            </View>
+          }
+          {itemTwo &&
 
-              <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
-                <View
-                  style={{
-                    width: '100%',
-                    paddingHorizontal: 10,
-                  }}>
-                  <SmallButton Title={'View Details'} />
-                </View>
+
+            <View style={styles.cardWrap}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
                 <Text
                   style={{
                     color: COLORS.primary,
+                    fontFamily: Fonts.Roboto.Bold,
                     fontSize: 14,
-                    fontFamily: Fonts.Roboto.SemiBold,
                   }}>
-                  Can't Attend?
+                  Motor Claims Training
                 </Text>
+
+                <TouchableOpacity
+                  onPress={() => setItemTwo(false)}
+                  style={{
+                    right: 13,
+                    borderRadius: 15,
+                    padding: 2,
+                    backgroundColor: COLORS.lightBorder,
+                  }}>
+                  <MaterialCommunityIcons
+                    name="close"
+                    color={COLORS.primaryGreen}
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flex: 0.6 }}>
+                  <Text
+                    style={{
+                      color: COLORS.textColor,
+                      fontFamily: Fonts.Roboto.Bold,
+                      fontSize: 16,
+                    }}>
+                    Mr. John Smith
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: COLORS.grayText,
+                      fontFamily: Fonts.Roboto.Medium,
+                      fontSize: 13,
+                    }}>
+                    Session Method : Online
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: COLORS.grayText,
+                      fontFamily: Fonts.Roboto.Medium,
+                      fontSize: 13,
+                    }}>
+                    Session Type : General
+                  </Text>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 3,
+                    }}>
+                    <Feather name="calendar" color={COLORS.grayText} size={16} />
+                    <Text
+                      style={{
+                        color: COLORS.textColor,
+                        fontFamily: Fonts.Roboto.Medium,
+                        fontSize: 13,
+                        marginLeft: 5,
+                      }}>
+                      January 17, 2025
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 3,
+                    }}>
+                    <Feather name="clock" color={COLORS.grayText} size={16} />
+                    <Text
+                      style={{
+                        color: COLORS.textColor,
+                        fontFamily: Fonts.Roboto.Medium,
+                        fontSize: 13,
+                        marginLeft: 5,
+                      }}>
+                      10:00 AM - 12:00 PM.
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
+                  <View
+                    style={{
+                      width: '90%',
+                      paddingHorizontal: 10,
+                      marginVertical: 10
+                    }}>
+                    <SmallButton
+                      onPress={() => setItemTwo(false)} Title={'Done'} />
+                  </View>
+                  <Text
+                    style={{
+                      color: COLORS.primary,
+                      fontSize: 14,
+                      fontFamily: Fonts.Roboto.SemiBold,
+                    }}>
+                    Can't Attend?
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
+          }
+
+          {(itemOne == false && itemTwo == false) && (
+            <View>
+              <Text
+                style={{
+                  fontFamily: Fonts.Roboto.Medium,
+                  fontSize: 14,
+                  marginVertical: 25,
+                  color: COLORS.grayText,
+                  textAlign: 'center',
+                }}>
+                No Training sessions for the selected date
+              </Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>

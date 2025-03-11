@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,24 +13,24 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function DebitSettlement({navigation}) {
+export default function DebitSettlement({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -51,7 +51,7 @@ export default function DebitSettlement({navigation}) {
   //   due_date: '2025/02/24',
   //   contact: '0145245875',
   // };
-
+  console.log("selectedItem", selectedItem?.id)
   return (
     <View style={Styles.container}>
       <HeaderBackground />
@@ -69,7 +69,7 @@ export default function DebitSettlement({navigation}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         <View style={styles.card}>
           <Text
             style={{
@@ -82,18 +82,19 @@ export default function DebitSettlement({navigation}) {
           <AutocompleteDropdown
             clearOnFocus={true}
             closeOnBlur={true}
+            showClear={false}
             closeOnSubmit={false}
-            // initialValue={{id: '2'}} // or just '2'
+            initialValue={{ id: '1' }} // or just '2'
             onSelectItem={setSelectedItem}
             dataSet={[
-              {id: '1', title: 'Debit Settlement'},
-              {id: '2', title: 'Payment'},
+              { id: '1', title: 'Debit Settlement' },
+              { id: '2', title: 'Payment' },
             ]}
           />
-
-          <SquareTextBox Title={'LKR 360000.00'} Label={'Outstanding Due'} />
-          <SquareTextBox Title={'2025/01/25'} Label={'Due Date'} />
-          <View style={{marginTop: 15}}>
+          {/* <Text>{selectedItem}</Text> */}
+          <SquareTextBox Title={'LKR 360000.00'} Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'} />
+          <SquareTextBox Title={'2025/01/25'} Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'} />
+          <View style={{ marginTop: 15 }}>
             <Button
               onPress={() => setModalVisible(true)}
               Title={'Send Payment Link'}

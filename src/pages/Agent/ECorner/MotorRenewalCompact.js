@@ -31,11 +31,14 @@ import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 
 
 export default function MotorRenewalCompact({ navigation }) {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
 
   const tableHead = ['Due Date', 'Customer Name', 'Vehicle No', 'Policy No', 'NCB Perc', 'Sum Insured', 'Premium Amt', 'Policy Status'];
   const Data = [
@@ -64,6 +67,12 @@ export default function MotorRenewalCompact({ navigation }) {
   const columnWidths = [100, 140, 100, 140, 70, 100, 100, 100];
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
       <HeaderBackground />
       <Header Title="Motor Renewal Compact" onPress={() => navigation.goBack()} />
       <View style={{ paddingHorizontal: 20 }}>
@@ -75,7 +84,7 @@ export default function MotorRenewalCompact({ navigation }) {
             placeholder="11/2024"
           />
           <TouchableOpacity
-            // onPress={() => handleSearch()}
+            onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>

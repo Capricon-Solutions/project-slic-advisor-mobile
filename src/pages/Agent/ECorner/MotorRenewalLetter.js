@@ -29,6 +29,7 @@ import {
 import EconerItems from '../../../components/EconerItems';
 import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 const data = [
@@ -67,9 +68,17 @@ export default function MotorRenewalLetter({ navigation }) {
   const renderLetterItems = ({ item }) => (
     <ELetterItems item={item} navigation={navigation} />
   );
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isPickerVisible, setPickerVisible] = useState(false);
 
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
       <HeaderBackground />
       <Header Title="Motor Renewal Letter" onPress={() => navigation.goBack()} />
       <View style={{ paddingHorizontal: 5 }}>
@@ -92,7 +101,7 @@ export default function MotorRenewalLetter({ navigation }) {
             placeholder="11/2024"
           />
           <TouchableOpacity
-            // onPress={() => handleSearch()}
+            onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>

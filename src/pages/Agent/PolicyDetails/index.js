@@ -180,9 +180,9 @@ export default function PolicyDetails({ navigation, route }) {
               Title={'View Premium(NB/Renewal) History'}
             />
             <SmallButton
-              onPress={() =>
-                navigation.navigate('DebitSettlementRenewal', { policyNo: policyNo })
-              }
+              // onPress={() =>
+              //   navigation.navigate('DebitSettlementRenewal', { policyNo: policyNo })
+              // }
               disabledButton={false}
               Title={'Debit Renewal'}
             />

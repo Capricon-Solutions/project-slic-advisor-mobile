@@ -109,7 +109,7 @@ export default function Dashboard({ navigation }) {
   ];
 
   const IndividualPerformanceType =
-    usertype == 1
+    usertype === 1 || usertype === 5
       ? [
         {
           title: 'Individual Statistics',
