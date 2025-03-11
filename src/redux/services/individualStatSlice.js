@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   IndividualStatResponse: {
@@ -6,7 +6,7 @@ const initialState = {
       tableData: [
         {
           first: 'Premium for November',
-          Renewals: 'Gen. Collec. - Cash',
+          Renewals: '1,119,431',
           New: '182,205.78',
           Refunds: '15,368.00',
           Endorsements: '15,368.00',
@@ -14,7 +14,7 @@ const initialState = {
         },
         {
           first: 'Premium for 2024',
-          Renewals: 'Gen. Collec. - Cash',
+          Renewals: '19,142,091',
           New: '182,205.78',
           Refunds: '15,368.00',
           Endorsements: '15,368.00',
@@ -22,7 +22,7 @@ const initialState = {
         },
         {
           first: 'No. of Policies for November',
-          Renewals: 'Gen. Collec. - Cash',
+          Renewals: '23',
           New: '182,205.78',
           Refunds: '15,368.00',
           Endorsements: '15,368.00',
@@ -30,20 +30,13 @@ const initialState = {
         },
         {
           first: 'No. of Policies for 2024',
-          Renewals: 'Gen. Collec. - Cash',
+          Renewals: '482',
           New: '182,205.78',
           Refunds: '15,368.00',
           Endorsements: '15,368.00',
           Total: '15,368.00',
         },
-        {
-          first: 'Premium for 2024',
-          Renewals: 'Gen. Collec. - Cash',
-          New: '182,205.78',
-          Refunds: '15,368.00',
-          Endorsements: '15,368.00',
-          Total: '15,368.00',
-        },
+
       ],
     },
   },
@@ -59,6 +52,6 @@ export const individualStatSlice = createSlice({
   },
 });
 
-export const {GetindividualStatResponse} = individualStatSlice.actions;
+export const { GetindividualStatResponse } = individualStatSlice.actions;
 
 export default individualStatSlice.reducer;

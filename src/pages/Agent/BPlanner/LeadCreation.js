@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -18,15 +18,22 @@ import Fonts from '../../../theme/Fonts';
 import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
+import { styles } from './styles';
+import Feather from 'react-native-vector-icons/Feather';
+import MonthYearPicker from '../../../components/MonthYearPicker';
 
-export default function LeadCreation({navigation}) {
+export default function LeadCreation({ navigation }) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isPickerVisible, setPickerVisible] = useState(false);
+  const [isPickerVisible2, setPickerVisible2] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate2, setSelectedDate2] = useState(null);
 
   const StepperItems = [
-    {id: 1, Title: 'Policy Info'},
-    {id: 2, Title: 'Vehicle Info'},
-    {id: 3, Title: 'Customer Basic Info'},
-    {id: 4, Title: 'Customer Contact Info'},
+    { id: 1, Title: 'Policy Info' },
+    { id: 2, Title: 'Vehicle Info' },
+    { id: 3, Title: 'Customer Basic Info' },
+    { id: 4, Title: 'Customer Contact Info' },
   ];
 
   const handleNext = () => {
@@ -60,9 +67,9 @@ export default function LeadCreation({navigation}) {
             </Text>
             <DropdownComponentNoLabel
               dropdownData={[
-                {label: 'Appointment', value: '1'},
-                {label: 'Pending', value: '2'},
-                {label: 'Complete', value: '3'},
+                { label: 'Appointment', value: '1' },
+                { label: 'Pending', value: '2' },
+                { label: 'Complete', value: '3' },
               ]}
             />
             <SquareTextBoxOutlined
@@ -80,11 +87,24 @@ export default function LeadCreation({navigation}) {
               Label={'premium'}
               borderColor={COLORS.warmGray}
             />
-            <SquareTextBoxOutlined
-              mediumFont={true}
-              Label={'Renewal Date'}
-              borderColor={COLORS.warmGray}
-            />
+            <View style={{ flexDirection: 'row', position: 'relative' }}>
+              <SquareTextBoxOutlined
+                mediumFont={true}
+                readOnly={true}
+                value={selectedDate}
+                Label={'Renewal Date'}
+                borderColor={COLORS.warmGray}
+              />
+              <TouchableOpacity
+                onPress={() => setPickerVisible(true)}
+                style={{
+                  position: 'absolute',
+                  bottom: 9,
+                  right: 12
+                }}>
+                <Feather name="calendar" color={COLORS.primary} size={20} />
+              </TouchableOpacity>
+            </View>
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Ref. No. (If any)'}
@@ -130,11 +150,24 @@ export default function LeadCreation({navigation}) {
               Label={'NIC Number'}
               borderColor={COLORS.warmGray}
             />
-            <SquareTextBoxOutlined
-              mediumFont={true}
-              Label={'Date Of Birth'}
-              borderColor={COLORS.warmGray}
-            />
+            <View style={{ flexDirection: 'row', position: 'relative' }}>
+              <SquareTextBoxOutlined
+                mediumFont={true}
+                Label={'Date Of Birth'}
+                readOnly={true}
+                value={selectedDate2}
+                borderColor={COLORS.warmGray}
+              />
+              <TouchableOpacity
+                onPress={() => setPickerVisible2(true)}
+                style={{
+                  position: 'absolute',
+                  bottom: 9,
+                  right: 12
+                }}>
+                <Feather name="calendar" color={COLORS.primary} size={20} />
+              </TouchableOpacity>
+            </View>
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Occupation'}
@@ -179,9 +212,21 @@ export default function LeadCreation({navigation}) {
 
   return (
     <View style={Styles.container}>
+      <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      />
+      <MonthYearPicker
+        visible={isPickerVisible2}
+        onClose={() => setPickerVisible2(false)}
+        onSelect={v => setSelectedDate2(v)}
+        onSelectText={v => setSelectedDate2(v)}
+      />
       <HeaderBackground />
       <Header Title="Lead Creation" onPress={() => navigation.goBack()} />
-      <View style={{paddingHorizontal: 15, flex: 1}}>
+      <View style={{ paddingHorizontal: 15, flex: 1 }}>
         {/* Select Event card */}
         <View
           style={{
@@ -198,25 +243,25 @@ export default function LeadCreation({navigation}) {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{flex: 0.63}}>
+            <View style={{ flex: 0.63 }}>
               <DropdownComponentNoLabel
                 label={'Select Event'}
                 dropdownData={[
-                  {label: 'Appointment', value: '1'},
-                  {label: 'Pending', value: '2'},
-                  {label: 'Complete', value: '3'},
+                  { label: 'Appointment', value: '1' },
+                  { label: 'Pending', value: '2' },
+                  { label: 'Complete', value: '3' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.35}}>
+            <View style={{ flex: 0.35 }}>
               <SmallButton Title={'Set as Default'} />
             </View>
           </View>
         </View>
 
         {/* Stepper */}
-        <View style={{flexDirection: 'row', marginTop: 20}}>
-          <View style={{flex: 0.45}}>
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <View style={{ flex: 0.45 }}>
             <Text
               style={{
                 fontSize: 12,
@@ -260,9 +305,9 @@ export default function LeadCreation({navigation}) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{paddingHorizontal: 0, marginTop: 3}}>
+          contentContainerStyle={{ paddingHorizontal: 0, marginTop: 3 }}>
           {/* <TextInput autoFocus placeholder="svsv" /> */}
-          <View style={{marginBottom: 20}}>{renderStepContent()}</View>
+          <View style={{ marginBottom: 20 }}>{renderStepContent()}</View>
         </ScrollView>
         {/* Navigation Buttons */}
         <View

@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#00796B',
     flexDirection: 'row',
     paddingVertical: 5,
-    paddingHorizontal: 5,
-    paddingRight: 10,
+    paddingHorizontal: 17,
+
     alignItems: 'center',
     gap: 3,
     height: 30,
@@ -30,6 +30,17 @@ export const styles = StyleSheet.create({
   },
   orangeButton: {
     backgroundColor: COLORS.primaryOrange,
+    height: 30,
+    width: 30,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 3,
+    borderRadius: 6,
+  },
+  grayButton: {
+    backgroundColor: COLORS.warmGray,
     height: 30,
     width: 30,
     paddingVertical: 5,

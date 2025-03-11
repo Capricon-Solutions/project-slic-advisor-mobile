@@ -28,6 +28,7 @@ import {
 } from '../../../redux/services/policyRenewalsSlice';
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import moment from 'moment';
+import TableComponentPR from '../../../components/TableComponentPR';
 
 const window = Dimensions.get('window');
 
@@ -56,8 +57,8 @@ export default function PolicyRenewals({ navigation }) {
     'Policy Status',
   ];
 
-  const columnWidths = [110, 190, 100, 120, 90, 110, 110, 110];
-  const columnWidths2 = [110, 190, 120, 90, 110, 110, 110];
+  const columnWidths = [110, 190, 100, 180, 90, 110, 110, 110];
+  const columnWidths2 = [110, 190, 180, 90, 110, 110, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonthStart = moment()
     .subtract(3, 'month')
@@ -161,7 +162,7 @@ export default function PolicyRenewals({ navigation }) {
                 color: SelectedType == 2 ? COLORS.white : COLORS.black,
                 fontFamily: Fonts.Roboto.SemiBold,
               }}>
-              non-motor renewals
+              Non-Motor Renewals
             </Text>
           </TouchableOpacity>
         </View>
@@ -184,6 +185,7 @@ export default function PolicyRenewals({ navigation }) {
               fontFamily: Fonts.Roboto.Regular,
               fontSize: 14,
               marginBottom: 10,
+              color: COLORS.borderColor
             }}>
             (Click on policy Number to view details)
           </Text>
@@ -194,7 +196,7 @@ export default function PolicyRenewals({ navigation }) {
             {isFetching == true ? (
               <LoadingScreen />
             ) : (
-              <TableComponent
+              <TableComponentPR
                 tableHead={tableHead}
                 tableData={tableData}
                 navigation={navigation}
@@ -209,7 +211,7 @@ export default function PolicyRenewals({ navigation }) {
             {isFetchingN == true ? (
               <LoadingScreen />
             ) : (
-              <TableComponent
+              <TableComponentPR
                 tableHead={tableHead2}
                 tableData={tableData2}
                 navigation={navigation}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableOpacity,
   Animated,
@@ -14,16 +14,19 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
+import Feather from 'react-native-vector-icons/Feather';
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import SquareTextBox from './SquareTextBox';
 import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
+import MonthYearPicker from './MonthYearPicker';
 
 export default function EventCreation({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
-
+  const [isPickerVisible, setPickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   React.useEffect(() => {
     if (modalVisible) {
       Animated.timing(backgroundOpacity, {
@@ -68,6 +71,12 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
               }),
             },
           ]}>
+          <MonthYearPicker
+            visible={isPickerVisible}
+            onClose={() => setPickerVisible(false)}
+            onSelect={v => setSelectedDate(v)}
+            onSelectText={v => setSelectedDate(v)}
+          />
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
@@ -80,8 +89,20 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
               <View style={{ width: '100%', marginBottom: 15 }}>
                 <Text style={styles.modalTitle}>Event Creation</Text>
               </View>
+              <View style={{ flexDirection: 'row', position: 'relative' }}>
 
-              <SquareTextBox Label={'Date *'} Title={'DD/MM/YYYY'} />
+                <SquareTextBox Label={'Date *'} readOnly={true}
+                  value={selectedDate} Title={'DD/MM/YYYY'} />
+                <TouchableOpacity
+                  onPress={() => setPickerVisible(true)}
+                  style={[styles.searchButton, {
+                    position: 'absolute',
+                    bottom: 14,
+                    right: 15
+                  }]}>
+                  <Feather name="calendar" color={COLORS.primary} size={20} />
+                </TouchableOpacity>
+              </View>
               <SquareTextBox Label={'Event Description *'} Title={'Description'} />
 
               <View

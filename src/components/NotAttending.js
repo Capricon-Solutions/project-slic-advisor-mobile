@@ -54,44 +54,48 @@ export default function NotAttending({ modalVisible, setModalVisible }) {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <Animated.View
-        style={[
-          styles.modalOverlay,
-          {
-            backgroundColor: backgroundOpacity.interpolate({
-              inputRange: [0, 0.2],
-              outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
-            }),
-          },
-        ]}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
-            <MaterialCommunityIcons
-              name="close"
-              color={COLORS.primaryGreen}
-              size={24}
-            />
-          </TouchableOpacity>
-          <View style={{ width: '100%', marginBottom: 15 }}>
-            <Text style={styles.modalTitle}>Reason for Not Attending?</Text>
-          </View>
+      <TouchableOpacity onPress={() => {
+        hide();
+      }} activeOpacity={1} style={{ flex: 1 }}>
+        <Animated.View
+          style={[
+            styles.modalOverlay,
+            {
+              backgroundColor: backgroundOpacity.interpolate({
+                inputRange: [0, 0.2],
+                outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
+              }),
+            },
+          ]}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <MaterialCommunityIcons
+                name="close"
+                color={COLORS.primaryGreen}
+                size={24}
+              />
+            </TouchableOpacity>
+            <View style={{ width: '100%', marginBottom: 15 }}>
+              <Text style={styles.modalTitle}>Reason for Not Attending?</Text>
+            </View>
 
-          <SquareTextBox Label={'Reasons *'} Title={'What is the reasons'} />
-          <SquareTextBox Label={'Additional Comments '} Title={'Explain Why'} />
+            <SquareTextBox Label={'Reasons *'} Title={'What is the reasons'} />
+            <SquareTextBox Label={'Additional Comments '} Title={'Explain Why'} />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              marginTop: 15,
-              justifyContent: 'space-evenly',
-            }}>
-            <View style={{ flex: 0.35 }}>
-              <AlertButton Title={'Confirm'} />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                marginTop: 15,
+                justifyContent: 'space-evenly',
+              }}>
+              <View style={{ flex: 0.35 }}>
+                <AlertButton Title={'Confirm'} />
+              </View>
             </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </TouchableOpacity>
     </Modal>
   );
 }

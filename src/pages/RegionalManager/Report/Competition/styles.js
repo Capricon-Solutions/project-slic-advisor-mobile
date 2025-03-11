@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../../theme/colors';
 import Fonts from '../../../../theme/Fonts';
 
@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     marginTop: 20,
     marginBottom: 20,
+    marginHorizontal: 20,
   },
   searchWrap: {
     flexDirection: 'row',
@@ -25,6 +26,7 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
     paddingLeft: 10,
     height: 44,
+
   },
   textInput: {
     flex: 1,

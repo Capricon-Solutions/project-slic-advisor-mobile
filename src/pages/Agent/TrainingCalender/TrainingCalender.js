@@ -334,14 +334,17 @@ export default function TrainingCalender({ navigation }) {
                     <SmallButton Title={'Done'}
                       onPress={() => setItemOne(false)} />
                   </View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 14,
-                      fontFamily: Fonts.Roboto.SemiBold,
-                    }}>
-                    Can't Attend?
-                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(true)}>
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontSize: 14,
+                        fontFamily: Fonts.Roboto.SemiBold,
+                      }}>
+                      Can't Attend?
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -457,14 +460,17 @@ export default function TrainingCalender({ navigation }) {
                     <SmallButton
                       onPress={() => setItemTwo(false)} Title={'Done'} />
                   </View>
-                  <Text
-                    style={{
-                      color: COLORS.primary,
-                      fontSize: 14,
-                      fontFamily: Fonts.Roboto.SemiBold,
-                    }}>
-                    Can't Attend?
-                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setModalVisible(true)}>
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontSize: 14,
+                        fontFamily: Fonts.Roboto.SemiBold,
+                      }}>
+                      Can't Attend?
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

@@ -170,7 +170,7 @@ export default function PolicyDetails({ navigation, route }) {
                 navigation.navigate('PendingClaims', { policyNo: policyNo })
               }
               disabledButton={false}
-              Title={'pending Claims'}
+              Title={'Pending Claims'}
             />
             <SmallButton
               onPress={() =>

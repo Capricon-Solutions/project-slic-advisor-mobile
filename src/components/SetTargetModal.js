@@ -114,7 +114,11 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 />
               </TouchableOpacity>
 
-              <Text style={{ marginTop: 20, marginBottom: 5, fontSize: 15, fontFamily: Fonts.Roboto.Regular }}>
+              <Text style={{
+                marginTop: 20,
+                marginBottom: 5, fontSize: 15, fontFamily: Fonts.Roboto.Regular,
+                color: COLORS.textColor
+              }}>
                 Enter your target
               </Text>
 

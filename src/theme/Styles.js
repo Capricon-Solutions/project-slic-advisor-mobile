@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from './colors';
 import Fonts from './Fonts';
 
@@ -12,7 +12,16 @@ export const Styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   // Login
-
+  customTheme: {
+    colors: {
+      primary: COLORS.ashBlue,  // Text color for the input
+      background: 'white', // Background color in light mode
+      surface: 'white', // Surface color
+      text: COLORS.ashBlue, // Text color in input
+      placeholder: COLORS.ashBlue, // Placeholder text color
+      outline: COLORS.lightBorder, // Outline color
+    },
+  },
   imageBackground: {
     flex: 1,
     padding: window.width * 0.055,
@@ -33,7 +42,7 @@ export const Styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 0,
     fontWeight: 'bold',
-    color: COLORS.grayText,
+    color: COLORS.textInputText,
     height: 48,
   },
   topBackground: {

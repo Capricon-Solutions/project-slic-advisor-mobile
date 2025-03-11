@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -9,10 +9,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     elevation: 5,
-    padding: 15,
-    paddingHorizontal: 20,
+    padding: 10,
+    paddingHorizontal: 15,
     marginBottom: 15,
-    marginVertical: 30,
+    marginVertical: 20,
+    flex: 1
   },
   noticeContainer: {
     backgroundColor: 'transparent',

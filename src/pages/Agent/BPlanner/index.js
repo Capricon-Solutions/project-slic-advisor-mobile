@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -17,7 +17,7 @@ import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
-import {styles} from './styles';
+import { styles } from './styles';
 
 import {
   Calendar,
@@ -84,7 +84,7 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-export default function BPlanner({navigation}) {
+export default function BPlanner({ navigation }) {
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [calenderVisible, setCalenderVisible] = useState(true);
@@ -92,9 +92,9 @@ export default function BPlanner({navigation}) {
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [activityModalVisible, setActivityModalVisible] = useState(false);
   const [selected, setSelected] = useState({
-    '2025-02-01': {selected: true, marked: true, selectedColor: 'blue'},
-    '2025-02-02': {marked: true},
-    '2025-02-03': {selected: true, marked: true, selectedColor: 'blue'},
+    '2025-02-01': { selected: true, marked: true, selectedColor: 'blue' },
+    '2025-02-02': { marked: true },
+    '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
   });
 
   const [activities, setActivities] = useState([
@@ -127,7 +127,7 @@ export default function BPlanner({navigation}) {
   const handleCheckboxToggle = index => {
     setActivities(prev =>
       prev.map((item, i) =>
-        i === index ? {...item, checked: !item.checked} : item,
+        i === index ? { ...item, checked: !item.checked } : item,
       ),
     );
   };
@@ -165,7 +165,7 @@ export default function BPlanner({navigation}) {
           modalVisible={activityModalVisible}
           setModalVisible={setActivityModalVisible}
         />
-        <View style={[Styles.container, {overflow: 'scroll'}]}>
+        <View style={[Styles.container, { overflow: 'scroll' }]}>
           <HeaderBackground />
           <Header
             haveFilters={true}
@@ -178,7 +178,7 @@ export default function BPlanner({navigation}) {
           <ScrollView
             showsVerticalScrollIndicator={false}
             fadingEdgeLength={20}
-            contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
             style={{}}>
             {calenderVisible && (
               <View
@@ -223,12 +223,12 @@ export default function BPlanner({navigation}) {
                 <TouchableOpacity
                   style={styles.smallButton}
                   onPress={() => setEventModalVisible(true)}>
-                  <MaterialCommunityIcons
+                  {/* <MaterialCommunityIcons
                     name="plus"
                     color={COLORS.white}
                     size={20}
-                  />
-                  <Text style={styles.smallButtonText}>Event Creationt</Text>
+                  /> */}
+                  <Text style={styles.smallButtonText}>Event Creation</Text>
                 </TouchableOpacity>
               </View>
               <View>
@@ -236,35 +236,36 @@ export default function BPlanner({navigation}) {
                 <TouchableOpacity
                   style={styles.smallButton}
                   onPress={() => setActivityModalVisible(true)}>
-                  <MaterialCommunityIcons
+                  {/* <MaterialCommunityIcons
                     name="plus"
                     color={COLORS.white}
                     size={20}
-                  />
+                  /> */}
                   <Text style={styles.smallButtonText}>Activity Creation</Text>
                 </TouchableOpacity>
               </View>
-              {isAnyItemSelected && (
-                <View>
-                  {/* <SmallButton Title={'View Training List'} /> */}
-                  <TouchableOpacity
-                    style={styles.orangeButton}
-                    // onPress={() => navigation.navigate('TrainingList')}
-                  >
-                    <MaterialCommunityIcons
-                      name="delete"
-                      color={COLORS.white}
-                      size={18}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
+              {/* {isAnyItemSelected && ( */}
+              <View>
+                {/* <SmallButton Title={'View Training List'} /> */}
+                <TouchableOpacity
+                  disabled={!isAnyItemSelected}
+                  style={isAnyItemSelected ? styles.orangeButton : styles.grayButton}
+                // onPress={() => navigation.navigate('TrainingList')}
+                >
+                  <MaterialCommunityIcons
+                    name="delete"
+                    color={COLORS.white}
+                    size={18}
+                  />
+                </TouchableOpacity>
+              </View>
+              {/* )} */}
 
               <View>
                 {/* <SmallButton Title={'View Training List'} /> */}
                 <TouchableOpacity
                   style={styles.orangeButton}
-                  // onPress={() => navigation.navigate('TrainingList')}
+                // onPress={() => navigation.navigate('TrainingList')}
                 >
                   <MaterialCommunityIcons
                     name="arrow-up"

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '85%',
   },
-  yearText: { fontSize: 20, fontWeight: 'bold' },
+  yearText: { fontSize: 20, fontWeight: 'bold', color: COLORS.textColor },
   monthGrid: {
     marginVertical: 20, paddingHorizontal: 5, justifyContent: 'space-evenly',
     // width: '80%',

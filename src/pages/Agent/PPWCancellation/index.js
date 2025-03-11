@@ -61,8 +61,8 @@ export default function PPWCancellation({ navigation }) {
     'Due Date',
   ];
 
-  const columnWidths = [120, 150, 110, 110, 130, 110];
-  const columnWidths2 = [120, 150, 110, 110, 130, 110, 120, 110];
+  const columnWidths = [180, 150, 110, 110, 130, 110];
+  const columnWidths2 = [180, 150, 110, 110, 130, 110, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
 
@@ -227,6 +227,7 @@ export default function PPWCancellation({ navigation }) {
               fontFamily: Fonts.Roboto.Regular,
               fontSize: 14,
               marginBottom: 10,
+              color: COLORS.borderColor
             }}>
             (Click on policy Number to view details)
           </Text>
