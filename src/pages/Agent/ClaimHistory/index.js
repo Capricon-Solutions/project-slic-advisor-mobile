@@ -108,7 +108,7 @@ export default function ClaimHistory({ navigation, route }) {
           </Text>
         </View>
         <DetailLine Title={'Intimated On'} detail={item.intDate} />
-        <DetailLine Title={'Voucher'} detail={item.voucher} />
+        {/* <DetailLine Title={'Voucher'} detail={item.voucher} /> */}
         <DetailLineBold Title={'Date of Loss'} detail={item.dateOfLoss} />
         <DetailLine Title={'Reg . Date'} detail={item.intDate} />
         <DetailLine Title={'Payment Type'} detail={item.payTyp} />

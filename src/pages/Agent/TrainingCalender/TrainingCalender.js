@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -34,6 +34,9 @@ import NotAttending from '../../../components/NotAttending';
 import Button from '../../../components/Button';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import DropdownFilled from '../../../components/DropdownFilled';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
+import { useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 
@@ -92,6 +95,14 @@ export default function TrainingCalender({ navigation }) {
     '2025-02-02': { marked: true },
     '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
   });
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(Getpath(0));
+
+    }, [])
+  );
 
   return (
     <View style={Styles.container}>

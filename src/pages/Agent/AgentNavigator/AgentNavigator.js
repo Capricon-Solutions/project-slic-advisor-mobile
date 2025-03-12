@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Platform, StatusBar } from 'react-native';
-import { useLinkBuilder, useTheme } from '@react-navigation/native';
+import { useFocusEffect, useLinkBuilder, useTheme } from '@react-navigation/native';
 import { Text, PlatformPressable } from '@react-navigation/elements';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,13 +13,16 @@ import Badvisor from '../Badvisor/Badvisor';
 import COLORS from '../../../theme/colors';
 import { Styles } from './Styles';
 import TrainingCalender from '../TrainingCalender/TrainingCalender';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Report from '../../RegionalManager/Report/Report';
 import ReportSwitch from '../../RegionalManager/Report/ReportSwitch';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
 
 function AgengNavigator({ state, descriptors, navigation }) {
   const { colors } = useTheme();
   const { buildHref } = useLinkBuilder();
+
+
 
   return (
     <View

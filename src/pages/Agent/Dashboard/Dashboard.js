@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-
+import { useFocusEffect } from '@react-navigation/native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import { Styles } from '../../../theme/Styles';
@@ -36,15 +36,17 @@ import { styles } from './styles';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
 import RMGrid from '../../../components/RMGrid';
 import AgentProgressCard from '../../../components/AgentProgressCard';
 import RMProgressCard from '../../../components/RMProgressCard';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
 
 const window = Dimensions.get('window');
 
 export default function Dashboard({ navigation }) {
+  const dispatch = useDispatch();
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
@@ -53,8 +55,26 @@ export default function Dashboard({ navigation }) {
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
+  const path = useSelector(
+    state => state.NavController.path,
+  );
   const usertype = useSelector(state => state.userType.userType);
   console.log('userType', usertype);
+  console.log('path', path);
+
+
+
+  useFocusEffect(
+    useCallback(() => {
+      if (path == 1) {
+        setgeneraModalVisible(true);
+      } else {
+        setgeneraModalVisible(false);
+      }
+      console.log('path', path);
+
+    }, [path])
+  );
   // API Binds
   const name = profileResponse?.name;
   const regionName = profileResponse?.regionName;
@@ -72,7 +92,9 @@ export default function Dashboard({ navigation }) {
       title: 'Policy Details',
       icon: individualPerforamance,
       onPress: () => {
+        dispatch(Getpath(1));
         navigation.navigate('GeneralPolicyList');
+
         setgeneraModalVisible(false);
       },
     },
@@ -81,6 +103,7 @@ export default function Dashboard({ navigation }) {
 
       icon: policyRenewal,
       onPress: () => {
+        dispatch(Getpath(1));
         navigation.navigate('PolicyRenewals');
         setgeneraModalVisible(false);
       },
@@ -89,6 +112,7 @@ export default function Dashboard({ navigation }) {
       title: 'PPW Cancellation',
       icon: ppwIcon,
       onPress: () => {
+        dispatch(Getpath(1));
         navigation.navigate('PPWCancellation');
         setgeneraModalVisible(false);
       },
@@ -174,6 +198,7 @@ export default function Dashboard({ navigation }) {
         ButtonList={SalesModal}
         modalVisible={salesModalVisible}
         setModalVisible={setsalesModalVisible}
+        closeAction={true}
       />
 
       <BottomModal
@@ -230,7 +255,10 @@ export default function Dashboard({ navigation }) {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => {
+              navigation.navigate('Profile');
+              dispatch(Getpath(0));
+            }}
             style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>region name - {regionName}</Text>
@@ -250,7 +278,10 @@ export default function Dashboard({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('Notification')}
+            onPress={() => {
+              navigation.navigate('Notification');
+              dispatch(Getpath(0));
+            }}
             style={styles.notiIcon}>
             <MaterialCommunityIcons
               name="bell-outline"
@@ -286,7 +317,10 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            onPress={() => navigation.navigate('SalesMeter')}
+            onPress={() => {
+              navigation.navigate('SalesMeter');
+              dispatch(Getpath(0));
+            }}
           />
         )}
 
@@ -298,7 +332,10 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            onPress={() => navigation.navigate('SalesMeter')}
+            onPress={() => {
+              navigation.navigate('SalesMeter');
+              dispatch(Getpath(0));
+            }}
           />
         )}
 
@@ -310,7 +347,7 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-          // onPress={() => navigation.navigate('SalesMeter')}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -322,7 +359,7 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-          // onPress={() => navigation.navigate('SalesMeter')}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -334,7 +371,10 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            onPress={() => navigation.navigate('SalesMeter')}
+            onPress={() => {
+              navigation.navigate('SalesMeter');
+              dispatch(Getpath(0));
+            }}
           />
         )}
 
@@ -367,13 +407,30 @@ export default function Dashboard({ navigation }) {
 
         {usertype == 1 && (
           <AgentGrid
-            onSalesClick={() => setModalVisible(true)}
-            onGeneralClick={() => setgeneraModalVisible(true)}
-            onClubClick={() => navigation.navigate('ClubInformation')}
-            onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => navigation.navigate('ECorner')}
-            onProductPortfolioClick={() =>
-              navigation.navigate('ProductPortfolio')
+            onSalesClick={() => {
+              setModalVisible(true);
+              dispatch(Getpath(0));
+            }}
+            onGeneralClick={() => {
+              setgeneraModalVisible(true);
+              // dispatch(Getpath(1));
+            }}
+            onClubClick={() => {
+              navigation.navigate('ClubInformation');
+              dispatch(Getpath(0));
+            }}
+            onBplannerClick={() => {
+              navigation.navigate('BPlanner');
+              dispatch(Getpath(0));
+            }}
+            onEConnerClick={() => {
+              navigation.navigate('ECorner');
+              dispatch(Getpath(0));
+            }}
+            onProductPortfolioClick={() => {
+              navigation.navigate('ProductPortfolio');
+              dispatch(Getpath(0));
+            }
             }
           />
         )}

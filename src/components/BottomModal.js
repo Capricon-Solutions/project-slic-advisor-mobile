@@ -23,6 +23,7 @@ export default function BottomModal({
   ButtonList,
   setModalVisible,
   Name,
+
 }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
