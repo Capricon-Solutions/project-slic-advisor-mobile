@@ -1,80 +1,104 @@
 import * as React from 'react';
 import {
   TouchableOpacity,
-  Dimensions,
   Text,
   View,
-  Image,
   StyleSheet,
+  Animated,
 } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler'; // Import Swipeable
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
-import Fonts from '../theme/Fonts';
+import { useReadNotificationMutation } from '../redux/services/NotificationSlice';
 import moment from 'moment';
-import {useReadNotificationMutation} from '../redux/services/NotificationSlice';
+import Fonts from '../theme/Fonts';
 
-export default function NotificationItem({item, navigation}) {
+export default function NotificationItem({ item, navigation, onDelete }) {
   const [readNotification] = useReadNotificationMutation();
 
   const handleReadNotification = async () => {
-    await readNotification({notificationId: [item?.notificationId]}); // API call
-    navigation.navigate('PolicyDetails', {policyNo: item.policyNo});
+    await readNotification({ notificationId: [item?.notificationId] }); // API call
+    navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
+
+  const renderRightActions = (progress, dragX) => {
+    const translateX = dragX.interpolate({
+      inputRange: [0, 100],  // You can adjust this range
+      outputRange: [0, 100],  // Define how far the button moves
+      extrapolate: 'clamp', // Prevents going out of bounds
+    });
+    // return (
+    //   <View style={style.deleteButton}>
+    //     <TouchableOpacity
+    //       onPress={() => onDelete(item.notificationId)} // Trigger delete action
+    //       style={style.deleteButtonContent}>
+    //       <MaterialCommunityIcons name="trash-can" size={25} color={COLORS.white} />
+    //     </TouchableOpacity>
+    //   </View>
+    // );
+    return (
+      <Animated.View style={[style.deleteButton, { transform: [{ translateX }] }]}>
+        <TouchableOpacity
+          // onPress={() => onDelete(item.notificationId)} // Trigger delete action
+          style={style.deleteButtonContent}>
+          <MaterialCommunityIcons name="trash-can" size={25} color={COLORS.white} />
+        </TouchableOpacity>
+      </Animated.View>
+    );
+
+  };
+
   return (
-    <TouchableOpacity
-      onPress={() => handleReadNotification()}
-      style={style.cardWrap}>
-      <View
-        style={[
-          style.leftBorder,
-          {
-            backgroundColor:
-              item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
-          },
-        ]}></View>
-      <View style={{flex: 0.95}}>
-        <View style={{padding: 10}}>
-          <View style={style.topline}>
-            <Text style={style.topic}>{item.title}</Text>
-            <Text style={style.date}>
-              {moment(item.eventDate).format('DD MMM YYYY, hh:mm A')}
+    <Swipeable renderRightActions={renderRightActions}>
+      <TouchableOpacity onPress={() => handleReadNotification()} style={style.cardWrap}>
+        <View
+          style={[
+            style.leftBorder,
+            {
+              backgroundColor: item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
+            },
+          ]}></View>
+        <View style={{ flex: 0.95 }}>
+          <View style={{ padding: 10 }}>
+            <View style={style.topline}>
+              <Text style={style.topic}>{item.title}</Text>
+              <Text style={style.date}>
+                {moment(item.eventDate).format('DD MMM YYYY, hh:mm A')}
+              </Text>
+            </View>
+
+            <Text style={style.name}>{item.name}</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={style.name}>{item.policyNo}</Text>
+              <Text style={style.name}>{item.type}</Text>
+            </View>
+
+            <Text style={style.name}>
+              Claim Intimated on{' '}
+              {moment(item.intimatedDate).format('DD MMM YYYY')}
             </Text>
+
+            <Text style={style.name}>{item.phone}</Text>
           </View>
-
-          <Text style={style.name}>{item.name}</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={style.name}>{item.policyNo}</Text>
-            <Text style={style.name}>{item.type}</Text>
-          </View>
-
-          <Text style={style.name}>
-            Claim Intimated on{' '}
-            {moment(item.intimatedDate).format('DD MMM YYYY')}
-          </Text>
-
-          <Text style={style.name}>{item.phone}</Text>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Swipeable>
   );
 }
 
 const style = StyleSheet.create({
   cardWrap: {
     flexDirection: 'row',
-    marginVertical: 7,
+    // marginVertical: 7,
     borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: COLORS.white,
-    elevation: 5,
-    marginHorizontal: 5,
+
+    // marginHorizontal: 5,
   },
   leftBorder: {
     flex: 0.05,
@@ -100,5 +124,20 @@ const style = StyleSheet.create({
     color: COLORS.textColor,
     fontFamily: Fonts.Roboto.Medium,
     marginVertical: 3,
+  },
+  deleteButton: {
+    backgroundColor: COLORS.primaryRed,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    borderRadius: 20,
+
+  },
+  deleteButtonContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+
+    padding: 20,
   },
 });

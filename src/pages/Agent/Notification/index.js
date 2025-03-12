@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,22 +10,24 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
 import ContactListItem from '../../../components/contactListItem';
 import NotificationItem from '../../../components/NotificationItem';
-import {useSelector} from 'react-redux';
-import {useGetNotificationsQuery} from '../../../redux/services/NotificationSlice';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
+
+import { useSelector } from 'react-redux';
+import { useGetNotificationsQuery } from '../../../redux/services/NotificationSlice';
 const window = Dimensions.get('window');
 
-export default function Notification({navigation}) {
+export default function Notification({ navigation }) {
   const notificationResponse = useSelector(
     state => state.Notifications.notificationsResponse,
   );
@@ -74,12 +76,18 @@ export default function Notification({navigation}) {
 
   const [SelectedType, setSelectedType] = useState(1);
 
-  const renderItem = ({item}) => (
-    <NotificationItem item={item} navigation={navigation} />
+  const renderItem = ({ item }) => (
+    <GestureHandlerRootView style={{
+      flex: 1, marginVertical: 10, marginHorizontal: 5, borderRadius: 20,
+      overflow: 'hidden'
+    }}>
+      <NotificationItem item={item} navigation={navigation} />
+    </GestureHandlerRootView>
   );
 
+
   return (
-    <View style={[Styles.container, {backgroundColor: COLORS.grayBackground}]}>
+    <View style={[Styles.container, { backgroundColor: COLORS.grayBackground }]}>
       <HeaderBackground />
       <Header Title="Notification" onPress={() => navigation.goBack()} />
 
@@ -89,10 +97,11 @@ export default function Notification({navigation}) {
           <Feather name="calendar" color={COLORS.white} size={20} />
         </TouchableOpacity>
       </View> */}
+
       <ScrollView
-        contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}>
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}>
         {isFetching == true ? (
-          <View style={{height: window.height * 0.8}}>
+          <View style={{ height: window.height * 0.8 }}>
             <LoadingScreen />
           </View>
         ) : (
