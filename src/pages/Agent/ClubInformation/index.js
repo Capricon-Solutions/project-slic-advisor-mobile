@@ -27,8 +27,9 @@ import SendPaymentLink from '../../../components/SendPaymentLink';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
-import clubInfo from '../../../icons/clubInfo.png';
+import clubInfoImg from '../../../icons/clubInfo.png';
 import { useSelector } from 'react-redux';
+import { useGetClubQuery } from '../../../redux/services/clubSlice';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -36,10 +37,11 @@ const window = Dimensions.get('window');
 export default function ClubInformation({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
-  const clubInfoResponse = useSelector(
-    state => state.clubInfo.clubInfoResponse.data,
-  );
+  const { data: clubInfo, isLoading, error } = useGetClubQuery();
+  const clubInfoResponse = clubInfo?.data;
+  // const clubInfoResponse = useSelector(
+  //   state => state.clubInfo.clubInfoResponse.data,
+  // );
 
   const tableHead = ['Total', 'Endorsement'];
 
@@ -49,18 +51,20 @@ export default function ClubInformation({ navigation }) {
     item?.total.toString() ?? '',
     item?.endorsement.toString() ?? '',
   ]);
+  // console.log("clubInfoResponse", clubInfoResponse);
 
   // API Binds
 
-  const currentClub = clubInfoResponse.currentClub;
-  const currentClublimit = clubInfoResponse.currentClublimit;
-  const generalAppointmentDate = clubInfoResponse.generalAppointmentDate;
-  const generalPersistency = clubInfoResponse.generalPersistency;
-  const last5YearAverage = clubInfoResponse.last5YearAverage;
-  const nextClub = clubInfoResponse.nextClub;
-  const platinumClub = clubInfoResponse.platinumClub;
-  const lastUpdatedDate = clubInfoResponse.lastUpdatedDate;
-  const annualIncomeUpTo = clubInfoResponse.annualIncomeUpTo;
+  const currentClub = clubInfoResponse?.currentClub;
+  const clubYear = clubInfoResponse?.clubYear;
+  const currentClublimit = clubInfoResponse?.currentLimit;
+  const generalAppointmentDate = clubInfoResponse?.genAppointDate;
+  const generalPersistency = clubInfoResponse?.genPersistancy;
+  const last5YearAverage = clubInfoResponse?.last5YearAvg;
+  const nextClub = clubInfoResponse?.nextClub;
+  const platinumClub = clubInfoResponse?.platinumClub;
+  const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
+  const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
 
   return (
     <View style={[Styles.container, { paddingHorizontal: 10 }]}>
@@ -93,14 +97,14 @@ export default function ClubInformation({ navigation }) {
                 gap: 5,
                 marginBottom: 5,
               }}>
-              <Image style={{ height: 26, width: 26 }} source={clubInfo}></Image>
+              <Image style={{ height: 26, width: 26 }} source={clubInfoImg}></Image>
               <Text
                 style={{
                   fontFamily: Fonts.Roboto.Bold,
                   fontSize: 15,
                   color: COLORS.textColor,
                 }}>
-                Club Year 2025/2026
+                Club Year {clubYear?.toString() ?? ''}
               </Text>
             </View>
             <View style={{ marginBottom: 20 }}>
@@ -181,14 +185,25 @@ export default function ClubInformation({ navigation }) {
                 value={annualIncomeUpTo?.amount?.toString() ?? ''}
               />
             </View>
-            <View style={{ flex: 1 }}>
-              <TableComponent
-                haveTotal={false}
-                tableHead={tableHead}
-                tableData={tableData}
-                columnWidths={columnWidths}
-              />
-            </View>
+            {tableData ? (
+              <View style={{ flex: 1 }}>
+                <TableComponent
+                  haveTotal={false}
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  columnWidths={columnWidths}
+                />
+              </View>
+            ) :
+              (
+                <Text style={{
+                  color: COLORS.borderColor, fontFamily: Fonts.Roboto.Medium, fontSize: 16,
+                  marginVertical: 20
+                }}>No table data available</Text>
+              )
+
+            }
+
             {/* Important Notice */}
             <View style={styles.noticeContainer}>
               <Text style={styles.noticeTitle}>* Note</Text>

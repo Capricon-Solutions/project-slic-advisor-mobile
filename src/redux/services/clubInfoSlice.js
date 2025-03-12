@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   clubInfoResponse: {
@@ -16,11 +16,11 @@ const initialState = {
         amount: '3,750,000.00',
       },
       tableData: [
-        {total: '2024', endorsement: '1,135,750'},
-        {total: '2023', endorsement: '1,135,750'},
-        {total: '2022', endorsement: '1,135,750'},
-        {total: '2021', endorsement: '1,135,750'},
-        {total: '2020', endorsement: '1,135,750'},
+        { total: '2024', endorsement: '1,135,750' },
+        { total: '2023', endorsement: '1,135,750' },
+        { total: '2022', endorsement: '1,135,750' },
+        { total: '2021', endorsement: '1,135,750' },
+        { total: '2020', endorsement: '1,135,750' },
       ],
     },
   },
@@ -36,6 +36,8 @@ export const clubInfoSlice = createSlice({
   },
 });
 
-export const {GetclubInfoResponse} = clubInfoSlice.actions;
+
+
+export const { GetclubInfoResponse } = clubInfoSlice.actions;
 
 export default clubInfoSlice.reducer;

@@ -7,7 +7,7 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 
-export default function AboutModal({ modalVisible, setModalVisible }) {
+export default function AboutModal({ modalVisible, setModalVisible, data }) {
 	const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
 	React.useEffect(() => {
@@ -64,15 +64,15 @@ export default function AboutModal({ modalVisible, setModalVisible }) {
 						</TouchableOpacity>
 						<Image source={Contacts} style={styles.avatar} />
 						<Text style={styles.modalTitle}>Get Access To B-Connect</Text>
-						<Text style={styles.contactText}>Please Contact: Mr. Buddika Weerakoon</Text>
-						<View>
+						<Text style={styles.contactText}>Please Contact: {data?.name}</Text>
+						<View style={{ width: '70%', alignItems: 'center' }}>
 							<View style={styles.contactItem}>
 								<MaterialCommunityIcons name="phone" size={20} color={COLORS.primaryGreen} />
-								<Text style={styles.contactDetails}>0112357814</Text>
+								<Text style={styles.contactDetails}>Phone - {data?.telephone}</Text>
 							</View>
 							<View style={styles.contactItem}>
 								<MaterialCommunityIcons name="email" size={20} color={COLORS.primaryGreen} />
-								<Text style={styles.contactDetails}>Buddikawe@srilankainsurance.com</Text>
+								<Text style={styles.contactDetails}>Email - {data?.email}</Text>
 							</View>
 						</View>
 

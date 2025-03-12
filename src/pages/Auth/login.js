@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,8 +7,8 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import {TextInput, Checkbox} from 'react-native-paper';
-import Svg, {Path} from 'react-native-svg';
+import { TextInput, Checkbox } from 'react-native-paper';
+import Svg, { Path } from 'react-native-svg';
 import Logo from '../../icons/Logo.png'; // Replace with the actual logo path
 import COLORS from '../../theme/colors';
 import SquareTextBox from '../../components/SquareTextBox';
@@ -16,19 +16,21 @@ import Button from '../../components/Button';
 import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
-import {styles} from './styles';
+import { styles } from './styles';
+import { useGetHelpQuery } from '../../redux/services/loginSlice';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const { data: help, isLoading, error } = useGetHelpQuery();
+  // console.log('help:', help);
   const handleLogin = () => {
-    console.log('Email:', email);
+    console.log('help:', help);
     console.log('Password:', password);
   };
 
@@ -39,6 +41,7 @@ const LoginScreen = ({navigation}) => {
       <AboutModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        data={help?.data}
       />
 
       <HeaderBackground />
@@ -51,11 +54,11 @@ const LoginScreen = ({navigation}) => {
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
 
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         <SquareTextBox Title={'Username'}></SquareTextBox>
       </View>
 
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         <SquareTextBox Title={'Enter Password '} Secure={true}></SquareTextBox>
       </View>
 
@@ -76,7 +79,7 @@ const LoginScreen = ({navigation}) => {
       </View>
 
       {/* Login Button */}
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{ width: '100%', alignItems: 'center' }}>
         <Button
           onPress={() => navigation.navigate('TypeTest')}
           Title={'SIGN IN'}></Button>
