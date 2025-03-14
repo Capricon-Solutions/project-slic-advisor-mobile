@@ -61,11 +61,16 @@ export default function ClubInformation({ navigation }) {
   const currentClublimit = clubInfoResponse?.currentLimit;
   const generalAppointmentDate = clubInfoResponse?.genAppointDate;
   const generalPersistency = clubInfoResponse?.genPersistancy;
-  const last5YearAverage = clubInfoResponse?.last5YearAvg;
+  const last5YearAverage = clubInfoResponse?.last5YearAvg ? Number(clubInfoResponse.last5YearAvg).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+    : "0.00";
   const nextClub = clubInfoResponse?.nextClub;
   const platinumClub = clubInfoResponse?.platinumClub;
   const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
   const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
+  const nextLimit = clubInfoResponse?.nextLimit;
 
   return (
     <View style={[Styles.container, { paddingHorizontal: 10 }]}>
@@ -149,7 +154,7 @@ export default function ClubInformation({ navigation }) {
 
                     <View style={{ flex: 1 }}>
                       <OutlinedTextBox
-                        Title={'gen. persistency'}
+                        Title={'Gen. Persistency'}
                         value={generalPersistency?.toString() ?? ''}
                       />
                     </View>
@@ -168,15 +173,15 @@ export default function ClubInformation({ navigation }) {
                     }}>
                     <View style={{ flex: 1 }}>
                       <OutlinedTextBox
-                        Title={'Next club'}
+                        Title={'Next Club'}
                         value={nextClub?.toString() ?? ''}
                       />
                     </View>
 
                     <View style={{ flex: 1 }}>
                       <OutlinedTextBox
-                        Title={'Platinum Club'}
-                        value={platinumClub?.toString() ?? ''}
+                        Title={"Next Club's Limit"}
+                        value={nextLimit?.toString() ?? ''}
                       />
                     </View>
                   </View>

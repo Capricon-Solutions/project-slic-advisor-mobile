@@ -261,7 +261,7 @@ export default function Dashboard({ navigation }) {
             }}
             style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
             <Text style={styles.UserName}>{name}</Text>
-            <Text style={styles.regionName}>region name - {regionName}</Text>
+            <Text style={styles.regionName}>Region Name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
             <Text style={styles.position}>
               (
