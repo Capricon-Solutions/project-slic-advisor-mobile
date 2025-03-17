@@ -24,11 +24,10 @@ import AlertButtonWhite from './AlertButtonWhite';
 import DropdownFilled from './DropdownFilled';
 import MonthYearPicker from './MonthYearPicker';
 
-export default function ActivityCreation({ modalVisible, setModalVisible }) {
+export default function ActivityCreation({ modalVisible, setModalVisible, leadsData }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-
   React.useEffect(() => {
     if (modalVisible) {
       Animated.timing(backgroundOpacity, {
@@ -104,13 +103,21 @@ export default function ActivityCreation({ modalVisible, setModalVisible }) {
                   }}>
                   Lead
                 </Text>
-                <DropdownFilled
+                {/* <DropdownFilled
                   placeholder={'Select Lead'}
                   dropdownData={[
                     { label: 'Appointment', value: '1' },
                     { label: 'Pending', value: '2' },
                     { label: 'Complete', value: '3' },
                   ]}
+                /> */}
+                <DropdownFilled
+                  // mode={"modal"}
+                  placeholder={'Select Lead'}
+                  dropdownData={leadsData?.map(item => ({
+                    label: item.customerName,
+                    value: item.leadId,
+                  }))}
                 />
               </View>
               <View style={{ width: '100%' }}>
@@ -127,8 +134,8 @@ export default function ActivityCreation({ modalVisible, setModalVisible }) {
                 <DropdownFilled
                   placeholder={'Select Activity Type'}
                   dropdownData={[
-                    { label: 'Appointment', value: '1' },
-                    { label: 'Pending', value: '2' },
+                    { label: 'Appointment', value: 'M' },
+                    { label: 'Pending', value: 'P' },
                     { label: 'Complete', value: '3' },
                   ]}
                 />

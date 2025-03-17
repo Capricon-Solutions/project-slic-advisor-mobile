@@ -37,7 +37,7 @@ import {
 import ActivityCard from '../../../components/ActivityCard';
 import EventCreation from '../../../components/EventCreation';
 import ActivityCreation from '../../../components/ActivityCreation';
-import { useGetEventsAndActivitiessQuery } from '../../../redux/services/plannerSlice';
+import { useGetEventsAndActivitiessQuery, useGetLeadsQuery } from '../../../redux/services/plannerSlice';
 
 const window = Dimensions.get('window');
 
@@ -99,11 +99,22 @@ export default function BPlanner({ navigation }) {
   });
   const date = "2025-03-17";
   const { data: PlannerActivities, isFetching, error } = useGetEventsAndActivitiessQuery({ date });
+  // const { data: Leads, error: leadError } = useGetLeadsQuery();
+  const { data: Leads } = useGetLeadsQuery({ date }, { refetchOnMountOrArgChange: false });
+
+  const [LeadList, setLeadList] = useState([]);
   const updatedActivities = PlannerActivities?.data?.plannerActivities?.map(activity => ({ ...activity, checked: false }));
   const [activities, setActivities] = useState(updatedActivities);
   useEffect(() => {
     setActivities(updatedActivities);
+
   }, [isFetching])
+  useEffect(() => {
+    console.log("Leads", Leads);
+
+    setLeadList(Leads?.data);
+    console.log("LeadList", LeadList);
+  }, [Leads])
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -115,6 +126,8 @@ export default function BPlanner({ navigation }) {
       ),
     );
   };
+
+
   const menuItems = [
     {
       id: 1,
@@ -148,6 +161,7 @@ export default function BPlanner({ navigation }) {
         <ActivityCreation
           modalVisible={activityModalVisible}
           setModalVisible={setActivityModalVisible}
+          leadsData={LeadList}
         />
         <View style={[Styles.container, { overflow: 'scroll' }]}>
           <HeaderBackground />
