@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -37,6 +37,7 @@ import {
 import ActivityCard from '../../../components/ActivityCard';
 import EventCreation from '../../../components/EventCreation';
 import ActivityCreation from '../../../components/ActivityCreation';
+import { useGetEventsAndActivitiessQuery } from '../../../redux/services/plannerSlice';
 
 const window = Dimensions.get('window');
 
@@ -96,30 +97,13 @@ export default function BPlanner({ navigation }) {
     '2025-02-02': { marked: true },
     '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
   });
-
-  const [activities, setActivities] = useState([
-    {
-      id: 11483,
-      status: 'Appointment',
-      date: 'January 17, 2025',
-      time: '10:00 AM - 12:00 PM',
-      checked: false,
-    },
-    {
-      id: 11484,
-      status: 'Pending',
-      date: 'January 18, 2025',
-      time: '2:00 PM - 4:00 PM',
-      checked: false,
-    },
-    {
-      id: 11485,
-      status: 'Completed',
-      date: 'January 19, 2025',
-      time: '1:00 PM - 3:00 PM',
-      checked: false,
-    },
-  ]);
+  const date = "2025-03-17";
+  const { data: PlannerActivities, isFetching, error } = useGetEventsAndActivitiessQuery({ date });
+  const updatedActivities = PlannerActivities?.data?.plannerActivities?.map(activity => ({ ...activity, checked: false }));
+  const [activities, setActivities] = useState(updatedActivities);
+  useEffect(() => {
+    setActivities(updatedActivities);
+  }, [isFetching])
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
@@ -148,7 +132,7 @@ export default function BPlanner({ navigation }) {
       onPress: () => setCalenderVisible(!calenderVisible),
     },
   ];
-  const isAnyItemSelected = activities.some(activity => activity.checked);
+  const isAnyItemSelected = activities?.some(activity => activity.checked);
 
   return (
     <PaperProvider>
@@ -288,7 +272,7 @@ export default function BPlanner({ navigation }) {
               </Text>
             </View>
 
-            {activities.map((activity, index) => (
+            {activities?.map((activity, index) => (
               <ActivityCard
                 key={activity.id}
                 activity={activity}

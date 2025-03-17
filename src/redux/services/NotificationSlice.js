@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {baseApi} from './api';
+import { createSlice } from '@reduxjs/toolkit';
+import { baseApi } from './api';
 
 const initialState = {
   notificationsResponse: {
@@ -48,14 +48,14 @@ export const NotificationSlice = createSlice({
   },
 });
 
-export const {GetnotificationsResponse} = NotificationSlice.actions;
+export const { GetnotificationsResponse } = NotificationSlice.actions;
 
 export default NotificationSlice.reducer;
 
 export const notificationsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getNotifications: builder.query({
-      query: ({id}) => {
+      query: ({ id }) => {
         const url = `notification/getNotifications/${id}`;
         console.log('Fetching Notifications from:', url);
         return url;
@@ -64,10 +64,21 @@ export const notificationsApi = baseApi.injectEndpoints({
     }),
 
     readNotification: builder.mutation({
-      query: ({notificationId}) => {
+      query: ({ notificationId }) => {
         console.log('POST request payload:', notificationId);
         return {
           url: 'notification/updateAsRead',
+          method: 'POST',
+          body: notificationId,
+        };
+      },
+      invalidatesTags: ['Notifications'], // ✅ Triggers refetching of getNotifications
+    }),
+    deleteNotification: builder.mutation({
+      query: ({ notificationId }) => {
+        console.log('POST request payload:', notificationId);
+        return {
+          url: 'notification/updateAsDeleted',
           method: 'POST',
           body: notificationId,
         };
@@ -78,5 +89,5 @@ export const notificationsApi = baseApi.injectEndpoints({
 });
 
 // Export hooks
-export const {useGetNotificationsQuery, useReadNotificationMutation} =
+export const { useGetNotificationsQuery, useReadNotificationMutation, useDeleteNotificationMutation } =
   notificationsApi;

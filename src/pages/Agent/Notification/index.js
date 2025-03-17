@@ -15,14 +15,9 @@ import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import Feather from 'react-native-vector-icons/Feather';
-import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
-import TableComponent from '../../../components/TableComponent';
-import ContactListItem from '../../../components/contactListItem';
 import NotificationItem from '../../../components/NotificationItem';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
-
 import { useSelector } from 'react-redux';
 import { useGetNotificationsQuery } from '../../../redux/services/NotificationSlice';
 const window = Dimensions.get('window');
@@ -40,41 +35,8 @@ export default function Notification({ navigation }) {
   } = useGetNotificationsQuery({
     id: 123456,
   });
-  console.log('Notifications', Notifications);
-  const notifications = [
-    {
-      id: 1,
-      Title: 'Claim Intimated',
-      name: 'Dr A N HEWAGE',
-      date: '12/04/2024 5:53:04 PM',
-      plicyNo: 'VMI119001710000672',
-      type: 'COMPREHENSIVE',
-      intimated_date: '12/04/2024 5:53:04 PM',
-      phone: '0772616625',
-    },
-    {
-      id: 2,
-      Title: 'Claim Intimated',
-      name: 'Dr A N HEWAGE',
-      date: '12/04/2024 5:53:04 PM',
-      plicyNo: 'VMI119001710000672',
-      type: 'COMPREHENSIVE',
-      intimated_date: '12/04/2024 5:53:04 PM',
-      phone: '0772616625',
-    },
-    {
-      id: 3,
-      Title: 'Claim Intimated',
-      name: 'Dr A N HEWAGE',
-      date: '12/04/2024 5:53:04 PM',
-      plicyNo: 'VMI119001710000672',
-      type: 'COMPREHENSIVE',
-      intimated_date: '12/04/2024 5:53:04 PM',
-      phone: '0772616625',
-    },
-  ];
 
-  const [SelectedType, setSelectedType] = useState(1);
+
 
   const renderItem = ({ item }) => (
     <GestureHandlerRootView style={{
@@ -91,15 +53,8 @@ export default function Notification({ navigation }) {
       <HeaderBackground />
       <Header Title="Notification" onPress={() => navigation.goBack()} />
 
-      {/* <View style={styles.searchWrap}>
-        <TextInput style={styles.textInput} placeholder="11/2024" />
-        <TouchableOpacity style={styles.searchButton}>
-          <Feather name="calendar" color={COLORS.white} size={20} />
-        </TouchableOpacity>
-      </View> */}
-
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}>
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10, flex: 1 }}>
         {isFetching == true ? (
           <View style={{ height: window.height * 0.8 }}>
             <LoadingScreen />
@@ -118,7 +73,21 @@ export default function Notification({ navigation }) {
             keyExtractor={item => item?.id?.toString()}
           />
         )}
+
       </ScrollView>
+      <View style={{
+        alignItems: 'center',
+        position: 'absolute',
+        width: '100%',
+        bottom: 10,
+      }}>
+        <Text style={{
+          textAlign: 'center',
+          fontFamily: Fonts.Roboto.Regular,
+          fontSize: window.width * 0.043,
+          color: COLORS.borderColor
+        }}>Swipe items to delete</Text>
+      </View>
     </View>
   );
 }

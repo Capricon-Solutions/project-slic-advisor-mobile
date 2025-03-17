@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   teamStatResponse: {
@@ -8,7 +8,7 @@ const initialState = {
           first: '905717 E.W.M.V.Jeewantha Boyagoda',
           New: {
             cash: '1014.96',
-            debit: '181387.5',
+            debit: '181387.50',
           },
           Renewals: {
             cash: '3653.7',
@@ -23,7 +23,7 @@ const initialState = {
           first: 'Premium No. of Policies',
           New: {
             cash: '1014.96',
-            debit: '181387.5',
+            debit: '181387.50',
           },
           Renewals: {
             cash: '363353.7',
@@ -38,7 +38,7 @@ const initialState = {
           first: '905717 E.W.M.V.Jeewantha Boyagoda',
           New: {
             cash: '1014.96',
-            debit: '181387.5',
+            debit: '181387.50',
           },
           Renewals: {
             cash: '363353.7',
@@ -87,7 +87,7 @@ const initialState = {
       tableData: [
         {
           first: 'Agent 01',
-          Renewal: '3653.7',
+          Renewal: '3653.70',
           NB: '500,000',
           Refund: {
             ppw: '3668.66',
@@ -98,7 +98,7 @@ const initialState = {
         },
         {
           first: 'Agent 02',
-          Renewal: '3653.7',
+          Renewal: '3653.70',
           NB: '500,000',
           Refund: {
             ppw: '3668.66',
@@ -115,7 +115,7 @@ const initialState = {
       tableData: [
         {
           first: 'Kandy 01',
-          Renewal: '3653.7',
+          Renewal: '3653.70',
           NB: '500,000',
           Refund: {
             ppw: '3668.66',
@@ -126,7 +126,7 @@ const initialState = {
         },
         {
           first: 'Colombo',
-          Renewal: '3653.7',
+          Renewal: '3653.70',
           NB: '500,000',
           Refund: {
             ppw: '3668.66',
@@ -156,7 +156,7 @@ export const teamStatSlice = createSlice({
   },
 });
 
-export const {GetteamStatResponse, GetteamMemberResponse, GetreportResponse} =
+export const { GetteamStatResponse, GetteamMemberResponse, GetreportResponse } =
   teamStatSlice.actions;
 
 export default teamStatSlice.reducer;

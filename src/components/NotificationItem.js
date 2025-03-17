@@ -9,16 +9,23 @@ import {
 import { Swipeable } from 'react-native-gesture-handler'; // Import Swipeable
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
-import { useReadNotificationMutation } from '../redux/services/NotificationSlice';
+import { useDeleteNotificationMutation, useReadNotificationMutation } from '../redux/services/NotificationSlice';
 import moment from 'moment';
 import Fonts from '../theme/Fonts';
 
 export default function NotificationItem({ item, navigation, onDelete }) {
   const [readNotification] = useReadNotificationMutation();
+  const [deleteNotification] = useDeleteNotificationMutation();
 
   const handleReadNotification = async () => {
     await readNotification({ notificationId: [item?.notificationId] }); // API call
     navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
+  };
+
+  const handleDeleteNotification = async () => {
+    console.log('test', item.policyNo)
+    await deleteNotification({ notificationId: [item?.notificationId] }); // API call
+    // navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
 
   const renderRightActions = (progress, dragX) => {
@@ -39,7 +46,7 @@ export default function NotificationItem({ item, navigation, onDelete }) {
     return (
       <Animated.View style={[style.deleteButton, { transform: [{ translateX }] }]}>
         <TouchableOpacity
-          // onPress={() => onDelete(item.notificationId)} // Trigger delete action
+          onPress={() => handleDeleteNotification()} // Trigger delete action
           style={style.deleteButtonContent}>
           <MaterialCommunityIcons name="trash-can" size={25} color={COLORS.white} />
         </TouchableOpacity>

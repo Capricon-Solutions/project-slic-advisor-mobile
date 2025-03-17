@@ -436,14 +436,41 @@ export default function Dashboard({ navigation }) {
         )}
 
         {usertype == 2 && (
+          // <AgentGrid
+          //   onSalesClick={() => setModalVisible(true)}
+          //   onGeneralClick={() => setgeneraModalVisible(true)}
+          //   onClubClick={() => navigation.navigate('ClubInformation')}
+          //   onBplannerClick={() => navigation.navigate('BPlanner')}
+          //   onEConnerClick={() => navigation.navigate('ECorner')}
+          //   onProductPortfolioClick={() =>
+          //     navigation.navigate('ProductPortfolio')
+          //   }
+          // />
           <AgentGrid
-            onSalesClick={() => setModalVisible(true)}
-            onGeneralClick={() => setgeneraModalVisible(true)}
-            onClubClick={() => navigation.navigate('ClubInformation')}
-            onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => navigation.navigate('ECorner')}
-            onProductPortfolioClick={() =>
-              navigation.navigate('ProductPortfolio')
+            onSalesClick={() => {
+              setModalVisible(true);
+              dispatch(Getpath(0));
+            }}
+            onGeneralClick={() => {
+              setgeneraModalVisible(true);
+              // dispatch(Getpath(1));
+            }}
+            onClubClick={() => {
+              navigation.navigate('ClubInformation');
+              dispatch(Getpath(0));
+            }}
+            onBplannerClick={() => {
+              navigation.navigate('BPlanner');
+              dispatch(Getpath(0));
+            }}
+            onEConnerClick={() => {
+              navigation.navigate('ECorner');
+              dispatch(Getpath(0));
+            }}
+            onProductPortfolioClick={() => {
+              navigation.navigate('ProductPortfolio');
+              dispatch(Getpath(0));
+            }
             }
           />
         )}
@@ -468,14 +495,41 @@ export default function Dashboard({ navigation }) {
         )}
 
         {usertype == 5 && (
+          // <AgentGrid
+          //   onSalesClick={() => setModalVisible(true)}
+          //   onGeneralClick={() => setgeneraModalVisible(true)}
+          //   onClubClick={() => navigation.navigate('ClubInformation')}
+          //   onBplannerClick={() => navigation.navigate('BPlanner')}
+          //   onEConnerClick={() => navigation.navigate('ECorner')}
+          //   onProductPortfolioClick={() =>
+          //     navigation.navigate('ProductPortfolio')
+          //   }
+          // />
           <AgentGrid
-            onSalesClick={() => setModalVisible(true)}
-            onGeneralClick={() => setgeneraModalVisible(true)}
-            onClubClick={() => navigation.navigate('ClubInformation')}
-            onBplannerClick={() => navigation.navigate('BPlanner')}
-            onEConnerClick={() => navigation.navigate('ECorner')}
-            onProductPortfolioClick={() =>
-              navigation.navigate('ProductPortfolio')
+            onSalesClick={() => {
+              setModalVisible(true);
+              dispatch(Getpath(0));
+            }}
+            onGeneralClick={() => {
+              setgeneraModalVisible(true);
+              // dispatch(Getpath(1));
+            }}
+            onClubClick={() => {
+              navigation.navigate('ClubInformation');
+              dispatch(Getpath(0));
+            }}
+            onBplannerClick={() => {
+              navigation.navigate('BPlanner');
+              dispatch(Getpath(0));
+            }}
+            onEConnerClick={() => {
+              navigation.navigate('ECorner');
+              dispatch(Getpath(0));
+            }}
+            onProductPortfolioClick={() => {
+              navigation.navigate('ProductPortfolio');
+              dispatch(Getpath(0));
+            }
             }
           />
         )}

@@ -29,7 +29,7 @@ import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
 import clubInfoImg from '../../../icons/clubInfo.png';
 import { useSelector } from 'react-redux';
-import { useGetClubQuery } from '../../../redux/services/clubSlice';
+import { useGetClubQuery, useGetNextClubQuery } from '../../../redux/services/clubSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -39,18 +39,21 @@ export default function ClubInformation({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const { data: clubInfo, isFetching, error } = useGetClubQuery();
+  const { data: nextClubInfo, isFetching: isNextFetching, error: nextError } = useGetNextClubQuery();
+
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
   // );
+  const nextClubTable = nextClubInfo?.data[0]?.last5Years;
 
   const tableHead = ['Total', 'Endorsement'];
 
   const columnWidths = [window.width * 0.41, window.width * 0.41];
-
-  const tableData = clubInfoResponse?.tableData?.map(item => [
-    item?.total.toString() ?? '',
-    item?.endorsement.toString() ?? '',
+  console.log("nextClubTable", nextClubInfo?.data[0]?.last5Years);
+  const tableData = nextClubTable?.map(item => [
+    item?.amount?.toString() ?? '',
+    item?.year?.toString() ?? '',
   ]);
   // console.log("clubInfoResponse", clubInfoResponse);
 
@@ -71,7 +74,6 @@ export default function ClubInformation({ navigation }) {
   const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
   const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
   const nextLimit = clubInfoResponse?.nextLimit;
-
   return (
     <View style={[Styles.container, { paddingHorizontal: 10 }]}>
       <HeaderBackground />
