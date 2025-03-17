@@ -16,7 +16,7 @@ import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-
+import LoaderKit from 'react-native-loader-kit'
 import { styles } from './styles';
 
 import {
@@ -271,16 +271,35 @@ export default function BPlanner({ navigation }) {
                 Monday, 22/January/2025
               </Text>
             </View>
+            {isFetching ? (
+              <View style={{
+                alignItems: 'center', flex: 1, height: window.height * 0.3,
+                justifyContent: 'center'
+              }}>
+                <LoaderKit
+                  style={{ width: 50, height: 50 }}
+                  name={'BallPulse'} // Optional: see list of animations below
+                  color={COLORS.primary} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+                />
+              </View>
+            ) :
+              (
+                <View>
 
-            {activities?.map((activity, index) => (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                onPress={() => navigation.navigate('ActivityDetails')}
-                index={index}
-                handleCheckboxToggle={handleCheckboxToggle}
-              />
-            ))}
+
+                  {activities?.map((activity, index) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      onPress={() => navigation.navigate('ActivityDetails')}
+                      index={index}
+                      handleCheckboxToggle={handleCheckboxToggle}
+                    />
+                  ))}
+                </View>
+              )}
+
+
           </ScrollView>
         </View>
       </View>
