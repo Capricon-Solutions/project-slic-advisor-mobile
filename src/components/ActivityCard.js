@@ -68,8 +68,9 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
               marginLeft: 5,
             }}>
             {/* {activity?.activityDate} */}
-            {moment(activity.activityDate).format('YYYY-MM-DD') ||
-              moment(activity.eventDate).format('YYYY-MM-DD')}
+            {activity?.type == 'Event'
+              ? moment(activity.eventDate).format('YYYY-MM-DD')
+              : moment(activity.activityDate).format('YYYY-MM-DD')}
           </Text>
         </View>
 
@@ -82,7 +83,9 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
               fontSize: 13,
               marginLeft: 5,
             }}>
-            {moment(activity.time).format('hh:mm A')}
+            {activity?.type == 'Event'
+              ? moment(activity.eventDate).format('hh:mm A')
+              : moment(activity.activityDate).format('hh:mm A')}
           </Text>
         </View>
       </View>
