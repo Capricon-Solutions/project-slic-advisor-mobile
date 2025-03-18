@@ -2,6 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const baseApi = createApi({
   reducerPath: 'api',
+
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://122.255.4.181:2001/api/', // API base URL
     prepareHeaders: (headers, {getState}) => {
@@ -17,5 +18,6 @@ export const baseApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Events'],
   endpoints: () => ({}), // Empty endpoints, will be extended
 });

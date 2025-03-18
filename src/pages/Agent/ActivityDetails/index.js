@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -24,22 +24,51 @@ import SmallButton from '../../../components/SmallButton';
 import {useSelector} from 'react-redux';
 import {useGetPolicyDetailsQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
+import {useGetLeadByIdQuery} from '../../../redux/services/plannerSlice';
+import LoaderKit from 'react-native-loader-kit';
+import moment from 'moment';
+
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function ActivityDetails({navigation}) {
+export default function ActivityDetails({navigation, route}) {
+  const activityTypeMap = {
+    A: 'Appointment',
+    M: 'Meeting',
+    P: 'Presentation',
+    Q: 'Quotation',
+    S: 'Proposal',
+    C: 'Closed',
+    R: 'Reject',
+  };
+  const {item} = route.params;
   const {
-    data: PolicyDetails,
-    error,
+    data: leadData,
     isLoading,
-  } = useGetPolicyDetailsQuery({
-    id: 'VM1115003410000506', // Dynamic ID
+    error,
+  } = useGetLeadByIdQuery(item?.leadId, {
+    skip: !item?.leadId, // Prevent query if leadId is not available
   });
 
-  const policyDetailsResponse = PolicyDetails?.data;
+  console.log('ActivityDetails item', item);
 
-  const phone = policyDetailsResponse?.mobileNumber;
+  useEffect(() => {
+    if (item?.leadId) {
+      console.log('leadData', leadData);
+    }
+  }, [item?.leadId]);
+
+  const leadInfo = leadData?.data;
+  // const fetchLeadById = async leadId => {
+  //   try {
+  //     console.log('item?.leadId', item?.leadId);
+  //     await LeadById(item?.leadId);
+  //     console.log('leadData', leadData);
+  //   } catch (error) {
+  //     console.error('Error fetching lead details:', error);
+  //   }
+  // };
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -71,66 +100,133 @@ export default function ActivityDetails({navigation}) {
       <HeaderBackground />
 
       <Header
-        Title="Activity Details"
+        Title={item?.type + ' Details'}
         onPress={() => navigation.goBack()}
         haveFilters={false}
         // haveWhatsapp={true}
-        whatsappNo={phone}
+        // whatsappNo={phone}
         // haveCall={true}
-        callNo={phone}
+        // callNo={phone}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      {isLoading ? (
-        <LoadingScreen />
-      ) : (
-        <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-          <View style={styles.card}>
-            <Text
-              style={{
-                color: COLORS.primary,
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 14,
-                marginBottom: 5,
-              }}>
-              Activity Information
-            </Text>
-            <DetailLine Title={'Activity ID'} detail={'11483'} />
-            <DetailLine Title={'Activity Type'} detail={'Appointment'} />
-            <DetailLine Title={'Description'} detail={'Appointment'} />
-            <DetailLine Title={'Meeting with'} detail={'cust2'} />
-            <DetailLine Title={'Activity Date'} detail={'2023-07-07'} />
-            <DetailLine Title={'Activity Time'} detail={'10:49:00 PM'} />
-            <DetailLine Title={'Event'} detail={'LKR 45,000.00'} />
-            <DetailLine Title={'Event Date'} detail={'2023-07-07'} />
-          </View>
 
-          <View style={styles.card}>
-            <Text
-              style={{
-                color: COLORS.primary,
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 14,
-                marginBottom: 5,
-              }}>
-              Lead Information
-            </Text>
-            <DetailLine Title={'Lead Type'} detail={'Motor'} />
-            <DetailLine Title={'Name'} detail={'Mrs.Liyoni Dehigolla'} />
-            <DetailLine Title={'contact'} detail={'0778249043'} />
-            <DetailLine Title={'Email'} detail={'kumudu3055@gmail.com'} />
-          </View>
-
+      <ScrollView
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
+        <View style={styles.card}>
+          <Text
+            style={{
+              color: COLORS.primary,
+              fontFamily: Fonts.Roboto.Bold,
+              fontSize: 14,
+              marginBottom: 5,
+            }}>
+            Activity Information
+          </Text>
+          {item?.type == 'Activity' && (
+            <View>
+              <DetailLine Title={'Activity ID'} detail={item?.activityId} />
+              <DetailLine
+                Title={'Activity Type'}
+                detail={activityTypeMap[item?.activityType] || 'Unknown'}
+              />
+              <DetailLine Title={'Description'} detail={item?.description} />
+              <DetailLine Title={'Meeting With'} detail={item?.meetingWith} />
+            </View>
+          )}
+          {item?.type == 'Event' ? (
+            <View>
+              <DetailLine Title={'Event ID'} detail={item?.eventId} />
+              <DetailLine Title={'Description'} detail={item?.eventDesc} />
+              <DetailLine
+                Title={'Event'}
+                detail={'LKR 45,000.00 no data in api'}
+              />
+              <DetailLine
+                Title={'Event Date'}
+                detail={
+                  item?.eventDate
+                    ? moment(item.eventDate).format('YYYY/MM/DD')
+                    : ''
+                }
+              />
+            </View>
+          ) : (
+            <View>
+              <DetailLine
+                Title="Activity Date"
+                detail={
+                  item?.activityDate
+                    ? moment(item.activityDate).format('YYYY/MM/DD')
+                    : ''
+                }
+              />
+              <DetailLine
+                Title={'Activity Time'}
+                detail={
+                  item?.activityDate
+                    ? moment(item.activityDate).format('hh:mm A')
+                    : ''
+                }
+              />
+            </View>
+          )}
+        </View>
+        {isLoading ? (
           <View
-            style={{marginHorizontal: window.width * 0.07, marginVertical: 15}}>
-            <SmallButton
-              onPress={() => navigation.goBack()}
-              disabledButton={false}
-              Title={'Close'}
+            style={{
+              alignItems: 'center',
+              flex: 1,
+              height: window.height * 0.2,
+              justifyContent: 'center',
+            }}>
+            <LoaderKit
+              style={{width: 35, height: 35}}
+              name={'BallPulse'} // Optional: see list of animations below
+              color={COLORS.primary} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
             />
           </View>
-        </ScrollView>
-      )}
+        ) : (
+          <View>
+            {leadInfo && (
+              <View style={styles.card}>
+                <Text
+                  style={{
+                    color: COLORS.primary,
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 14,
+                    marginBottom: 5,
+                  }}>
+                  Lead Information
+                </Text>
+                <DetailLine
+                  Title={'Lead Type'}
+                  detail={activityTypeMap[leadInfo?.leadType] || 'Unknown'}
+                />
+                <DetailLine Title={'Name'} detail={leadInfo?.customerName} />
+                <DetailLine Title={'Contact'} detail={leadInfo?.mobileNumber} />
+                <DetailLine Title={'Email'} detail={leadInfo?.email} />
+              </View>
+            )}
+          </View>
+        )}
+      </ScrollView>
+
+      <View
+        style={{
+          marginHorizontal: window.width * 0.07,
+          marginVertical: 15,
+          position: 'absolute',
+          width: '70%',
+          alignSelf: 'center',
+          bottom: 20,
+        }}>
+        <SmallButton
+          onPress={() => navigation.goBack()}
+          disabledButton={false}
+          Title={'Close'}
+        />
+      </View>
     </View>
   );
 }

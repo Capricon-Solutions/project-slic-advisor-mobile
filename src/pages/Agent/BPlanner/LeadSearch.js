@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,39 +9,43 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
 import LeadSearchItem from '../../../components/LeadSearchItem';
+import {useGetLeadsQuery} from '../../../redux/services/plannerSlice';
 const window = Dimensions.get('window');
 
-export default function LeadSearch({ navigation }) {
-  const { data: branches, isLoading, error } = useGetBranchesQuery();
-  const { data: departments, isDipLoading, diperror } = useGetDepartmentQuery();
-
+export default function LeadSearch({navigation}) {
+  const {data: branches, isLoading, error} = useGetBranchesQuery();
+  const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
+  const {data: Leads} = useGetLeadsQuery({refetchOnMountOrArgChange: false});
   const [SelectedType, setSelectedType] = useState(1);
 
-  const renderDepartmentItem = ({ item }) => <LeadSearchItem
-    item={item}
-    onPress={() => navigation.navigate("LeadInformation")} />;
+  const renderDepartmentItem = ({item}) => (
+    <LeadSearchItem
+      item={item}
+      onPress={() => navigation.navigate('LeadInformation', {item: item})}
+    />
+  );
 
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Lead Search" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -92,7 +96,7 @@ export default function LeadSearch({ navigation }) {
           <LoadingScreen />
         ) : (
           <FlatList
-            data={departments?.data}
+            data={Leads?.data}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               fadeDuration: 1000,
@@ -100,7 +104,7 @@ export default function LeadSearch({ navigation }) {
               paddingBottom: window.height * 0.25,
             }}
             renderItem={renderDepartmentItem}
-          // keyExtractor={item => item.id.toString()}
+            // keyExtractor={item => item.id.toString()}
           />
         )}
       </ScrollView>

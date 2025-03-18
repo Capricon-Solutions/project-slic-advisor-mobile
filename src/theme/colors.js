@@ -41,9 +41,9 @@ const COLORS = {
   tableSubHeader: '#CCEFF1',
   grassGreen: '#319B00',
   tableOrange: '#FF8C00',
-  tableRed: '#FFBABA',
-  pendingColor: '#FFF1DA'
-
+  tableRed: '#fc9090',
+  tableBlue: '#81e6df',
+  pendingColor: '#fcad4c',
 };
 
 export default COLORS;

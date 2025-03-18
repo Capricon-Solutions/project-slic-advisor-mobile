@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   Animated,
@@ -15,6 +15,7 @@ import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import Feather from 'react-native-vector-icons/Feather';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import SquareTextBox from './SquareTextBox';
@@ -23,11 +24,101 @@ import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import DropdownFilled from './DropdownFilled';
 import MonthYearPicker from './MonthYearPicker';
+import moment from 'moment';
+import {useActivityCreationMutation} from '../redux/services/plannerSlice';
 
-export default function ActivityCreation({ modalVisible, setModalVisible, leadsData }) {
+export default function ActivityCreation({
+  modalVisible,
+  setModalVisible,
+  leadsData,
+}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
+
+  const [ActivityCreate, {data: newActivity, isLoading, error}] =
+    useActivityCreationMutation();
+
   const [isPickerVisible, setPickerVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+  const [selectedLead, setSelectedLead] = useState(0);
+  const [selectedType, setSelectedType] = useState('');
+  const [description, setDescription] = useState('');
+  const [meetWith, setMeetWith] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const body = {
+    leadId: selectedLead,
+    activityType: selectedType,
+    meetingWith: meetWith,
+    closedPolicyNo: '',
+    activityDate: selectedDate,
+    quotationNo: '',
+    proposalNo: '',
+    description: description,
+  };
+  useEffect(() => {
+    console.log('test', {
+      selectedLead,
+      selectedType,
+      description,
+      meetWith,
+      selectedDate,
+      selectedTime,
+    });
+  }, [selectedTime]);
+
+  const validateForm = () => {
+    if (
+      !selectedLead ||
+      !selectedType ||
+      !description ||
+      !meetWith ||
+      !selectedDate ||
+      !selectedTime
+    ) {
+      alert('All fields are required!');
+      return false;
+    }
+    return true;
+  };
+
+  const handleActivityCreate = async () => {
+    if (!validateForm()) return; // Stop if validation fails
+
+    try {
+      const response = await ActivityCreate(body);
+      setModalVisible(false);
+      console.log('Activity Created:', response);
+    } catch (err) {
+      console.error('Error creating activity:', err);
+    }
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    console.warn('A date has been picked: ', moment(date).format('DD-MM-YYYY'));
+    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    hideDatePicker();
+  };
+
+  const handleTimeConfirm = date => {
+    setSelectedTime(moment(date).format('HH:mm A'));
+    hideTimePicker();
+  };
+
   React.useEffect(() => {
     if (modalVisible) {
       Animated.timing(backgroundOpacity, {
@@ -59,11 +150,12 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity onPress={() => {
-        hide();
-
-      }} activeOpacity={1} style={{ flex: 1 }}>
-
+      <TouchableOpacity
+        onPress={() => {
+          hide();
+        }}
+        activeOpacity={1}
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -74,25 +166,41 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
               }),
             },
           ]}>
-          <MonthYearPicker
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            style={{backgroundColor: 'red'}}
+            datePickerModeAndorid={'spinner'}
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          <DateTimePickerModal
+            isVisible={isTimePickerVisible}
+            mode="time"
+            onConfirm={handleTimeConfirm}
+            onCancel={hideTimePicker}
+          />
+          {/* <MonthYearPicker
             visible={isPickerVisible}
             onClose={() => setPickerVisible(false)}
             onSelect={v => setSelectedDate(v)}
             onSelectText={v => setSelectedDate(v)}
-          />
+          /> */}
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
-              <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={() => hide()}
+                style={styles.closeButton}>
                 <MaterialCommunityIcons
                   name="close"
                   color={COLORS.primaryGreen}
                   size={24}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', marginBottom: 15 }}>
+              <View style={{width: '100%', marginBottom: 15}}>
                 <Text style={styles.modalTitle}>Activity Creation</Text>
               </View>
-              <View style={{ width: '100%' }}>
+              <View style={{width: '100%'}}>
                 <Text
                   style={{
                     marginBottom: 5,
@@ -118,9 +226,10 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
                     label: item.customerName,
                     value: item.leadId,
                   }))}
+                  onSelect={v => setSelectedLead(v)}
                 />
               </View>
-              <View style={{ width: '100%' }}>
+              <View style={{width: '100%'}}>
                 <Text
                   style={{
                     marginBottom: 5,
@@ -134,24 +243,30 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
                 <DropdownFilled
                   placeholder={'Select Activity Type'}
                   dropdownData={[
-                    { label: 'Appointment', value: 'M' },
-                    { label: 'Pending', value: 'P' },
-                    { label: 'Complete', value: '3' },
+                    {label: 'Appointment', value: 'A'},
+                    {label: 'Meeting', value: 'M'},
+                    {label: 'Presentation', value: 'P'},
+                    {label: 'Quatation', value: 'Q'},
+                    {label: 'Proposal', value: 'S'},
+                    {label: 'Closed', value: 'C'},
+                    {label: 'Reject', value: 'R'},
                   ]}
+                  onSelect={v => setSelectedType(v)}
                 />
               </View>
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
                 Label={'Event Description *'}
                 Title={'Description'}
+                setValue={text => setDescription(text)}
               />
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
                 Label={'Meeting With *'}
                 Title={'Meeting With'}
+                setValue={text => setMeetWith(text)}
               />
-              <View style={{ flexDirection: 'row', position: 'relative' }}>
-
+              <View style={{flexDirection: 'row', position: 'relative'}}>
                 <SquareTextBox
                   LabelColor={COLORS.ashBlue}
                   Label={'Date *'}
@@ -160,25 +275,45 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
                   Title={'DD/MM/YYYY'}
                 />
 
-
-
                 <TouchableOpacity
-                  onPress={() => setPickerVisible(true)}
-                  style={[styles.searchButton, {
-                    position: 'absolute',
-                    bottom: 15,
-                    right: 15
-                  }]}>
+                  onPress={() =>
+                    // setPickerVisible(true)
+                    showDatePicker()
+                  }
+                  style={[
+                    styles.searchButton,
+                    {
+                      position: 'absolute',
+                      bottom: 15,
+                      right: 15,
+                    },
+                  ]}>
                   <Feather name="calendar" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
-
               </View>
-
-              <SquareTextBox
-                LabelColor={COLORS.ashBlue}
-                Label={'Time *'}
-                Title={'12 : 00 Am'}
-              />
+              <View style={{flexDirection: 'row', position: 'relative'}}>
+                <SquareTextBox
+                  LabelColor={COLORS.ashBlue}
+                  Label={'Time *'}
+                  Title={'12 : 00 Am'}
+                  value={selectedTime}
+                />
+                <TouchableOpacity
+                  onPress={() =>
+                    // setPickerVisible(true)
+                    showTimePicker()
+                  }
+                  style={[
+                    styles.searchButton,
+                    {
+                      position: 'absolute',
+                      bottom: 15,
+                      right: 15,
+                    },
+                  ]}>
+                  <Feather name="clock" color={COLORS.primary} size={20} />
+                </TouchableOpacity>
+              </View>
 
               <View
                 style={{
@@ -187,9 +322,12 @@ export default function ActivityCreation({ modalVisible, setModalVisible, leadsD
                   marginTop: 15,
                   justifyContent: 'space-evenly',
                 }}>
-                <View style={{ flex: 0.35 }}>
+                <View style={{flex: 0.35}}>
                   <AlertButton
-                    onPress={() => setModalVisible(false)}
+                    onPress={() => {
+                      handleActivityCreate();
+                    }}
+                    isLoading={isLoading}
                     Title={'Submit'}
                   />
                 </View>

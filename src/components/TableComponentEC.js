@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 import TableComponent from './TableComponent';
@@ -24,7 +24,7 @@ const TableComponentEC = ({
   clickableColumns = [],
 }) => {
   const handleCellPress = cellData => {
-    navigation.navigate('PolicyDetails', { policyNo: cellData })
+    navigation.navigate('PolicyDetails', {policyNo: cellData});
     console.log('Clicked Cell:', cellData);
   };
   return (
@@ -56,8 +56,6 @@ const TableComponentEC = ({
                           {item}
                         </Text>
                       </View>
-
-
                     </View>
                   ))}
                   widthArr={columnWidths}
@@ -73,15 +71,17 @@ const TableComponentEC = ({
                         <TouchableOpacity
                           key={cellIndex}
                           onPress={() => handleCellPress(cellData)}
-                          style={{ flex: 1, justifyContent: 'center' }}
-                        >
+                          style={{flex: 1, justifyContent: 'center'}}>
                           <Text
                             style={[
                               styles.text,
-                              cellIndex === 0 ? styles.leftAlignedText : styles.centerAlignedText,
-                              haveTotal && index === tableData.length - 1 && styles.boldText,
-                            ]}
-                          >
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText,
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
                             {cellData}
                           </Text>
                         </TouchableOpacity>
@@ -94,25 +94,25 @@ const TableComponentEC = ({
                             backgroundColor:
                               cellIndex === rowData.length - 1
                                 ? cellData === 'Renewed'
-                                  ? COLORS.tableSubHeader
+                                  ? COLORS.tableBlue
                                   : cellData === 'Due'
-                                    ? COLORS.tableOrange
-                                    : cellData === 'Expired'
-                                      ? COLORS.tableRed
-                                      : 'transparent'
+                                  ? COLORS.tableOrange
+                                  : cellData === 'Expired'
+                                  ? COLORS.tableRed
+                                  : 'transparent'
                                 : 'transparent',
-                          }}
-                        >
+                          }}>
                           <Text
                             style={[
                               styles.text,
-                              haveTotal && cellIndex === rowData.length - 1 && styles.boldText,
-                            ]}
-                          >
+                              haveTotal &&
+                                cellIndex === rowData.length - 1 &&
+                                styles.boldText,
+                            ]}>
                             {cellData}
                           </Text>
                         </View>
-                      )
+                      ),
                     )}
                     widthArr={columnWidths}
                     style={[
@@ -120,7 +120,6 @@ const TableComponentEC = ({
                       index % 2 === 0 ? styles.rowGray : styles.rowWhite,
                     ]}
                   />
-
                 ))}
               </Table>
             </View>
@@ -170,7 +169,7 @@ const TableComponentEC = ({
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -205,9 +204,9 @@ const styles = StyleSheet.create({
     color: COLORS.ashBlue,
     fontSize: 13,
   },
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
-  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
+  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Checkbox } from 'react-native-paper';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {Checkbox} from 'react-native-paper';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import { styles } from '../pages/Agent/BPlanner/styles';
+import {styles} from '../pages/Agent/BPlanner/styles';
 import SmallButton from './SmallButton';
-import moment from "moment";
+import moment from 'moment';
 
-const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
+const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <TouchableOpacity
@@ -27,7 +27,7 @@ const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
               fontFamily: Fonts.Roboto.Bold,
               fontSize: 14,
             }}>
-            Activity {activity?.leadId}
+            {activity?.type} {activity?.activityId || activity?.eventId}
           </Text>
           <Text
             style={{
@@ -36,12 +36,12 @@ const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
               fontSize: 16,
               marginTop: 3,
             }}>
-            Status: {activity?.description}
+            Status: {activity?.description || activity?.eventDesc}
           </Text>
         </View>
-        <View style={{ alignItems: 'flex-end' }}>
+        <View style={{alignItems: 'flex-end'}}>
           <TouchableOpacity onPress={() => handleCheckboxToggle(index)}>
-            <View style={{ transform: [{ scale: 1.2 }] }}>
+            <View style={{transform: [{scale: 1.2}]}}>
               <Checkbox
                 uncheckedColor={COLORS.warmGray}
                 color={COLORS.primary}
@@ -58,7 +58,7 @@ const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
           marginTop: 7,
           justifyContent: 'space-between',
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Feather name="calendar" color={COLORS.grayText} size={16} />
           <Text
             style={{
@@ -68,11 +68,12 @@ const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
               marginLeft: 5,
             }}>
             {/* {activity?.activityDate} */}
-            {moment(activity.activityDate).format("YYYY-MM-DD")}
+            {moment(activity.activityDate).format('YYYY-MM-DD') ||
+              moment(activity.eventDate).format('YYYY-MM-DD')}
           </Text>
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Feather name="clock" color={COLORS.grayText} size={16} />
           <Text
             style={{
@@ -81,12 +82,12 @@ const ActivityCard = ({ activity, index, handleCheckboxToggle, onPress }) => {
               fontSize: 13,
               marginLeft: 5,
             }}>
-            {moment(activity.time).format("hh:mm A")}
+            {moment(activity.time).format('hh:mm A')}
           </Text>
         </View>
       </View>
       {expanded && (
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 10}}>
           <SmallButton Title={'View'} onPress={onPress} />
         </View>
       )}

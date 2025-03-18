@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   Animated,
@@ -15,6 +15,8 @@ import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import Feather from 'react-native-vector-icons/Feather';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import LoaderKit from 'react-native-loader-kit';
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import SquareTextBox from './SquareTextBox';
@@ -22,11 +24,58 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import MonthYearPicker from './MonthYearPicker';
+import {useEventCreationMutation} from '../redux/services/plannerSlice';
+import moment from 'moment';
 
-export default function EventCreation({ modalVisible, setModalVisible }) {
+export default function EventCreation({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [isPickerVisible, setPickerVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
   const [selectedDate, setSelectedDate] = useState(null);
+  const [description, setDescription] = useState('');
+
+  const body = {
+    eventDesc: description,
+    eventDate: selectedDate,
+    creationType: 'AGENT',
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    console.warn('A date has been picked: ', moment(date).format('DD-MM-YYYY'));
+    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    hideDatePicker();
+  };
+  const [EventCreate, {data: newEvent, isLoading, error}] =
+    useEventCreationMutation();
+
+  const validateForm = () => {
+    if (!description || !selectedDate) {
+      alert('All fields are required!');
+      return false;
+    }
+    return true;
+  };
+
+  const handleEventCreate = async () => {
+    if (!validateForm()) return; // Stop if validation fails
+
+    try {
+      const response = await EventCreate(body);
+      setModalVisible(false);
+      console.log('Activity Created:', response);
+    } catch (err) {
+      console.error('Error creating activity:', err);
+    }
+  };
+
   React.useEffect(() => {
     if (modalVisible) {
       Animated.timing(backgroundOpacity, {
@@ -58,9 +107,12 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity onPress={() => {
-        hide();
-      }} activeOpacity={1} style={{ flex: 1 }}>
+      <TouchableOpacity
+        onPress={() => {
+          hide();
+        }}
+        activeOpacity={1}
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -71,39 +123,59 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
               }),
             },
           ]}>
-          <MonthYearPicker
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            style={{backgroundColor: 'red'}}
+            datePickerModeAndorid={'spinner'}
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          {/* <MonthYearPicker
             visible={isPickerVisible}
             onClose={() => setPickerVisible(false)}
             onSelect={v => setSelectedDate(v)}
             onSelectText={v => setSelectedDate(v)}
-          />
+          /> */}
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
-              <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={() => hide()}
+                style={styles.closeButton}>
                 <MaterialCommunityIcons
                   name="close"
                   color={COLORS.primaryGreen}
                   size={24}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', marginBottom: 15 }}>
+              <View style={{width: '100%', marginBottom: 15}}>
                 <Text style={styles.modalTitle}>Event Creation</Text>
               </View>
-              <View style={{ flexDirection: 'row', position: 'relative' }}>
-
-                <SquareTextBox Label={'Date *'} readOnly={true}
-                  value={selectedDate} Title={'DD/MM/YYYY'} />
+              <View style={{flexDirection: 'row', position: 'relative'}}>
+                <SquareTextBox
+                  Label={'Date *'}
+                  readOnly={true}
+                  value={selectedDate}
+                  Title={'DD/MM/YYYY'}
+                />
                 <TouchableOpacity
-                  onPress={() => setPickerVisible(true)}
-                  style={[styles.searchButton, {
-                    position: 'absolute',
-                    bottom: 14,
-                    right: 15
-                  }]}>
+                  onPress={() => showDatePicker(true)}
+                  style={[
+                    styles.searchButton,
+                    {
+                      position: 'absolute',
+                      bottom: 14,
+                      right: 15,
+                    },
+                  ]}>
                   <Feather name="calendar" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
               </View>
-              <SquareTextBox Label={'Event Description *'} Title={'Description'} />
+              <SquareTextBox
+                Label={'Event Description *'}
+                Title={'Description'}
+                setValue={text => setDescription(text)}
+              />
 
               <View
                 style={{
@@ -112,9 +184,10 @@ export default function EventCreation({ modalVisible, setModalVisible }) {
                   marginTop: 15,
                   justifyContent: 'space-evenly',
                 }}>
-                <View style={{ flex: 0.35 }}>
+                <View style={{flex: 0.35}}>
                   <AlertButton
-                    onPress={() => setModalVisible(false)}
+                    onPress={() => handleEventCreate()}
+                    isLoading={isLoading}
                     Title={'Submit'}
                   />
                 </View>
