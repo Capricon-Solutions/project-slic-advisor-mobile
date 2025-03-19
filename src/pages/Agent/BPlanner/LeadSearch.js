@@ -33,6 +33,18 @@ export default function LeadSearch({navigation}) {
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
   const {data: Leads} = useGetLeadsQuery({refetchOnMountOrArgChange: false});
   const [SelectedType, setSelectedType] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const SELF = Leads?.data?.filter(lead => lead.leadSource === 'BCON') || [];
+  const SLIC = Leads?.data?.filter(lead => lead.leadSource === 'CAMP') || [];
+
+  // Filter both SELF and SLIC based on searchQuery
+  const filteredSELF = SELF.filter(lead =>
+    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+  const filteredSLIC = SLIC.filter(lead =>
+    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const renderDepartmentItem = ({item}) => (
     <LeadSearchItem
@@ -87,7 +99,12 @@ export default function LeadSearch({navigation}) {
         </View>
 
         <View style={styles.searchWrap}>
-          <TextInput style={styles.textInput} placeholder="Quick Search" />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Quick Search"
+            value={searchQuery}
+            onChangeText={text => setSearchQuery(text)}
+          />
           <TouchableOpacity style={styles.searchButton}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
@@ -95,17 +112,33 @@ export default function LeadSearch({navigation}) {
         {isLoading == true ? (
           <LoadingScreen />
         ) : (
-          <FlatList
-            data={Leads?.data}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-            }}
-            renderItem={renderDepartmentItem}
-            // keyExtractor={item => item.id.toString()}
-          />
+          <View>
+            {SelectedType == 1 ? (
+              <FlatList
+                data={filteredSLIC}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                }}
+                renderItem={renderDepartmentItem}
+                // keyExtractor={item => item.id.toString()}
+              />
+            ) : (
+              <FlatList
+                data={filteredSELF}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                }}
+                renderItem={renderDepartmentItem}
+                // keyExtractor={item => item.id.toString()}
+              />
+            )}
+          </View>
         )}
       </ScrollView>
     </View>

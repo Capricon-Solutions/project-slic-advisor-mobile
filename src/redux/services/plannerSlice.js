@@ -50,6 +50,20 @@ export const plannerSlice = baseApi.injectEndpoints({
       },
       invalidatesTags: ['Events'],
     }),
+    monthlyCreation: builder.mutation({
+      query: body => {
+        const finalUrl = `planner/addPlannerMonthly/905717`;
+        console.log('Final URL:', finalUrl);
+        console.log('Final body:', body);
+
+        return {
+          url: finalUrl,
+          method: 'POST',
+          body: body,
+        };
+      },
+      invalidatesTags: ['Events'],
+    }),
     eventCreation: builder.mutation({
       query: body => {
         const finalUrl = `planner/AddPlannerEvent/905717`;
@@ -76,4 +90,5 @@ export const {
   useEventCreationMutation,
   useEventDeleteMutation,
   useGetLeadByIdQuery,
+  useMonthlyCreationMutation,
 } = plannerSlice;

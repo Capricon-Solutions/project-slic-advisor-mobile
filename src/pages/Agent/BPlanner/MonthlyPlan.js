@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -18,9 +19,61 @@ import Fonts from '../../../theme/Fonts';
 import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
+import moment from 'moment';
+import {useMonthlyCreationMutation} from '../../../redux/services/plannerSlice';
 
 export default function MonthlyPlan({navigation}) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
+    useMonthlyCreationMutation();
+  const [meetings, setmeetings] = useState('');
+  const [presentations, setPresentations] = useState('');
+  const [quotations, setQuotations] = useState('');
+  const [proposals, setProposals] = useState('');
+  const [closed, setClosed] = useState('');
+  const [leads, setLeads] = useState('');
+
+  const body = {
+    numberOfMeetings: meetings,
+    numberOfPresents: presentations,
+    numberOfQuotations: quotations,
+    numberOfProposals: proposals,
+    numberOfClosed: closed,
+    numberOfLeads: leads,
+    monthDate: moment().format('YYYY/MM'),
+  };
+
+  const validateForm = () => {
+    if (
+      !meetings ||
+      !presentations ||
+      !quotations ||
+      !proposals ||
+      !closed ||
+      !leads
+    ) {
+      Alert.alert('All fields are required!');
+      return false;
+    }
+    return true;
+  };
+
+  const handleActivityCreate = async () => {
+    if (!validateForm()) return; // Stop if validation fails
+
+    try {
+      const response = await MonthlyCreate(body);
+      console.log('Activity Created:', response?.error?.status);
+      if (response?.error?.status == '500') {
+        console.log('something went wrong');
+        Alert.alert('something went wrong', 'Unsuccessfull');
+      } else {
+        // navigation.goBack();
+      }
+    } catch (err) {
+      console.error('Error creating activity:', err);
+    }
+  };
 
   const StepperItems = [
     {id: 1, Title: 'Policy Info'},
@@ -59,43 +112,74 @@ export default function MonthlyPlan({navigation}) {
             color: COLORS.textColor,
             fontSize: 15,
           }}>
-          Monthly Plan for 2025/02
+          {`Monthly Plan for ${moment().format('YYYY/MM')}`}
         </Text>
         <View>
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Meetings'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setmeetings(text)}
             borderColor={COLORS.warmGray}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Presentation'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setPresentations(text)}
             borderColor={COLORS.warmGray}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Quotations'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setQuotations(text)}
             borderColor={COLORS.warmGray}
           />
-          <SquareTextBoxOutlined
-            mediumFont={true}
-            Label={'Presentations'}
-            borderColor={COLORS.warmGray}
-          />
+
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Proposals'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setProposals(text)}
             borderColor={COLORS.warmGray}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Closed'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setClosed(text)}
             borderColor={COLORS.warmGray}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Leads'}
+            Title={'000000'}
+            keyboardType={'number-pad'}
+            setValue={text => setLeads(text)}
             borderColor={COLORS.warmGray}
+          />
+        </View>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 10,
+            justifyContent: 'flex-end',
+            marginVertical: 5,
+          }}>
+          <AlertButtonWhite Title={'Close'} />
+          <AlertButton
+            Title={'Submit'}
+            onPress={() => {
+              handleActivityCreate();
+            }}
+            isLoading={isLoading}
           />
         </View>
       </ScrollView>
