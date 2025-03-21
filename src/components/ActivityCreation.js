@@ -26,6 +26,7 @@ import DropdownFilled from './DropdownFilled';
 import MonthYearPicker from './MonthYearPicker';
 import moment from 'moment';
 import {useActivityCreationMutation} from '../redux/services/plannerSlice';
+import {showToast, ToastMessage} from './ToastMessage';
 
 export default function ActivityCreation({
   modalVisible,
@@ -77,7 +78,11 @@ export default function ActivityCreation({
       !selectedDate ||
       !selectedTime
     ) {
-      alert('All fields are required!');
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
       return false;
     }
     return true;
@@ -336,6 +341,7 @@ export default function ActivityCreation({
           </TouchableWithoutFeedback>
         </Animated.View>
       </TouchableOpacity>
+      <ToastMessage />
     </Modal>
   );
 }

@@ -53,7 +53,7 @@ export default function LeadSearchItem({item, onPress}) {
               color: COLORS.primary,
               fontSize: 13.5,
             }}>
-            Campaign
+            {item?.leadSource == 'CAMP' ? 'Campaign' : 'Agent'}
           </Text>
 
           <View

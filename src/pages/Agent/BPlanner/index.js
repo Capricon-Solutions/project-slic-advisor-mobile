@@ -44,6 +44,8 @@ import {
   useGetLeadsQuery,
 } from '../../../redux/services/plannerSlice';
 import moment from 'moment';
+import Toast from 'react-native-toast-message';
+import {showToast} from '../../../components/ToastMessage';
 
 const window = Dimensions.get('window');
 
@@ -210,20 +212,36 @@ export default function BPlanner({navigation}) {
     try {
       if (checkedActivities[0].type == 'Event') {
         const response = await DeleteEvent(checkedActivities[0].activityId);
+        showToast({
+          type: 'success',
+          text1: 'Deleted',
+          text2: 'Event deleted Successfully.',
+        });
         console.log('Event Deleted:', response);
       } else {
         const response = await DeleteActivity(checkedActivities[0].activityId);
+        showToast({
+          type: 'success',
+          text1: 'Deleted',
+          text2: 'Activity deleted Successfully.',
+        });
         console.log('Activity Deleted:', response);
       }
     } catch (err) {
       console.error('Error deleting activity:', err);
+      showToast({
+        type: 'error',
+        text1: 'Failed',
+        text2: 'Failed to delete item 🚨',
+      });
     }
   };
   const menuItems = [
     {
       id: 1,
       title: 'Lead Creation',
-      onPress: () => navigation.navigate('LeadCreation'),
+      onPress: () =>
+        navigation.navigate('LeadCreation', {eventDate: selectedDate}),
     },
     {
       id: 1,
@@ -245,6 +263,7 @@ export default function BPlanner({navigation}) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
+
         <EventCreation
           modalVisible={eventModalVisible}
           setModalVisible={setEventModalVisible}
@@ -365,10 +384,9 @@ export default function BPlanner({navigation}) {
                 {/* <SmallButton Title={'View Training List'} /> */}
                 <TouchableOpacity
                   style={styles.orangeButton}
-                  // onPress={() => navigation.navigate('TrainingList')}
-                >
+                  onPress={() => setCalenderVisible(!calenderVisible)}>
                   <MaterialCommunityIcons
-                    name="arrow-up"
+                    name={calenderVisible ? 'arrow-up' : 'arrow-down'}
                     color={COLORS.white}
                     size={18}
                   />

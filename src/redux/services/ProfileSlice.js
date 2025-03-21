@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+  agentCode: 905717,
   defaultImageUrl:
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIEd2zxEc_4IQ1jHyniHLECu15zRjkHTBJzA&s',
   profileResponse: {
@@ -37,12 +38,16 @@ export const ProfileSlice = createSlice({
     GetprofileResponse: (state, action) => {
       state.profileResponse = action.payload;
     },
+    GetAgentCode: (state, action) => {
+      state.agentCode = action.payload;
+    },
     SetdefaultImageUrl: (state, action) => {
       state.defaultImageUrl = action.payload;
     },
   },
 });
 
-export const {GetprofileResponse, SetdefaultImageUrl} = ProfileSlice.actions;
+export const {GetprofileResponse, SetdefaultImageUrl, GetAgentCode} =
+  ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

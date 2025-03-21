@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -21,16 +21,16 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Feather from 'react-native-vector-icons/Feather';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponent from '../../../components/DropdownComponent';
 import DropdownComponentNoLabelDashboard from '../../../components/DropdownComponentNoLabelDashboard';
@@ -41,7 +41,7 @@ import ECMotorRenewal from '../../../components/ECMotorRenewal';
 import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
-export default function MotorRenewal({ navigation }) {
+export default function MotorRenewal({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
@@ -49,17 +49,17 @@ export default function MotorRenewal({ navigation }) {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const currentYear = new Date().getFullYear();
 
-  const dropdownData = Array.from({ length: currentYear - 2019 }, (_, i) => ({
+  const dropdownData = Array.from({length: currentYear - 2019}, (_, i) => ({
     label: (2020 + i).toString(),
     value: (2020 + i).toString(),
   }));
 
   const renewalData = [
-    { id: '1', name: 'Renewal Item 1' },
-    { id: '2', name: 'Renewal Item 2' },
-    { id: '3', name: 'Renewal Item 3' },
-    { id: '4', name: 'Renewal Item 4' },
-    { id: '5', name: 'Renewal Item 5' },
+    {id: '1', name: 'Renewal Item 1'},
+    {id: '2', name: 'Renewal Item 2'},
+    {id: '3', name: 'Renewal Item 3'},
+    {id: '4', name: 'Renewal Item 4'},
+    {id: '5', name: 'Renewal Item 5'},
   ];
 
   return (
@@ -72,7 +72,7 @@ export default function MotorRenewal({ navigation }) {
       />
       <HeaderBackground />
       <Header Title="Motor Renewal" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{paddingHorizontal: 15}}>
         <View style={styles.searchWrap}>
           <TextInput
             style={styles.textInput}
@@ -162,7 +162,7 @@ export default function MotorRenewal({ navigation }) {
               004
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => setSelectedType(5)}
             style={{
               backgroundColor:
@@ -180,13 +180,13 @@ export default function MotorRenewal({ navigation }) {
               }}>
               005
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <FlatList
           data={renewalData}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <ECMotorRenewal item={item} />}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => <ECMotorRenewal item={item} />}
           contentContainerStyle={{
             paddingBottom: window.height * 0.25,
           }}

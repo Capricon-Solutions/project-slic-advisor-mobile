@@ -68,7 +68,7 @@ export default function MonthlyPlan({navigation}) {
         console.log('something went wrong');
         Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
-        // navigation.goBack();
+        navigation.goBack();
       }
     } catch (err) {
       console.error('Error creating activity:', err);
@@ -173,7 +173,10 @@ export default function MonthlyPlan({navigation}) {
             justifyContent: 'flex-end',
             marginVertical: 5,
           }}>
-          <AlertButtonWhite Title={'Close'} />
+          <AlertButtonWhite
+            onPress={() => navigation.goBack()}
+            Title={'Close'}
+          />
           <AlertButton
             Title={'Submit'}
             onPress={() => {

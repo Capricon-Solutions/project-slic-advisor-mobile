@@ -26,6 +26,8 @@ import AlertButtonWhite from './AlertButtonWhite';
 import MonthYearPicker from './MonthYearPicker';
 import {useEventCreationMutation} from '../redux/services/plannerSlice';
 import moment from 'moment';
+import Toast from 'react-native-toast-message';
+import {showToast, ToastMessage} from './ToastMessage';
 
 export default function EventCreation({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
@@ -58,7 +60,11 @@ export default function EventCreation({modalVisible, setModalVisible}) {
 
   const validateForm = () => {
     if (!description || !selectedDate) {
-      alert('All fields are required!');
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
       return false;
     }
     return true;
@@ -69,6 +75,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
 
     try {
       const response = await EventCreate(body);
+
       setModalVisible(false);
       console.log('Activity Created:', response);
     } catch (err) {
@@ -196,6 +203,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
           </TouchableWithoutFeedback>
         </Animated.View>
       </TouchableOpacity>
+      <ToastMessage />
     </Modal>
   );
 }

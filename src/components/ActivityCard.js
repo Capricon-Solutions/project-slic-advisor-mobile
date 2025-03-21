@@ -36,7 +36,8 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
               fontSize: 16,
               marginTop: 3,
             }}>
-            Status: {activity?.description || activity?.eventDesc}
+            {activity?.type == 'Activity' ? 'Type' : 'Status'} :{' '}
+            {activity?.description || activity?.eventDesc}
           </Text>
         </View>
         <View style={{alignItems: 'flex-end'}}>
@@ -73,21 +74,22 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
               : moment(activity.activityDate).format('YYYY-MM-DD')}
           </Text>
         </View>
-
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Feather name="clock" color={COLORS.grayText} size={16} />
-          <Text
-            style={{
-              color: COLORS.textColor,
-              fontFamily: Fonts.Roboto.Medium,
-              fontSize: 13,
-              marginLeft: 5,
-            }}>
-            {activity?.type == 'Event'
-              ? moment(activity.eventDate).format('hh:mm A')
-              : moment(activity.activityDate).format('hh:mm A')}
-          </Text>
-        </View>
+        {activity?.type == 'Activity' && (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Feather name="clock" color={COLORS.grayText} size={16} />
+            <Text
+              style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Medium,
+                fontSize: 13,
+                marginLeft: 5,
+              }}>
+              {activity?.type == 'Event'
+                ? moment(activity.eventDate).format('hh:mm A')
+                : moment(activity.activityDate).format('hh:mm A')}
+            </Text>
+          </View>
+        )}
       </View>
       {expanded && (
         <View style={{marginTop: 10}}>

@@ -121,7 +121,7 @@ export default function ActivityDetails({navigation, route}) {
               fontSize: 14,
               marginBottom: 5,
             }}>
-            Activity Information
+            {item?.type} Information
           </Text>
           {item?.type == 'Activity' && (
             <View>
@@ -138,10 +138,10 @@ export default function ActivityDetails({navigation, route}) {
             <View>
               <DetailLine Title={'Event ID'} detail={item?.eventId} />
               <DetailLine Title={'Description'} detail={item?.eventDesc} />
-              <DetailLine
+              {/* <DetailLine
                 Title={'Event'}
                 detail={'LKR 45,000.00 no data in api'}
-              />
+              /> */}
               <DetailLine
                 Title={'Event Date'}
                 detail={

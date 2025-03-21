@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -21,13 +21,73 @@ import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLab
 import { styles } from './styles';
 import Feather from 'react-native-vector-icons/Feather';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+import { useSelector } from 'react-redux';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
+import {
+  useGetEventsAndActivitiessQuery,
+  useLeadCreationMutation,
+} from '../../../redux/services/plannerSlice';
+import { showToast } from '../../../components/ToastMessage';
 
-export default function LeadCreation({ navigation }) {
+export default function LeadCreation({ navigation, route }) {
+  const { eventDate } = route.params;
+  const agentCode = useSelector(state => state.Profile.agentCode);
+  const date = eventDate;
+  const {
+    data: PlannerActivities,
+    isFetching,
+    refetch,
+    error,
+  } = useGetEventsAndActivitiessQuery({ date });
+  const [dropdownData, setDropdownData] = useState([]);
+  const dropdownArray = PlannerActivities?.data?.plannerEvents;
+
+  useEffect(() => {
+    if (dropdownArray?.length && dropdownData.length === 0) {
+      setDropdownData(
+        dropdownArray.map(({ eventDesc, eventId }) => ({
+          label: eventDesc,
+          value: eventId.toString(),
+        }))
+      );
+    }
+  }, [dropdownArray]); // Runs only when dropdownArray changes
+
+  const [leadCreate, { data: newActivity, isLoading, error: errorEvents }] =
+    useLeadCreationMutation();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isPickerVisible2, setPickerVisible2] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
+  console.log('eventDate', eventDate);
+  const [leadType, setLeadType] = useState(null);
+  const [policyNo, setPolicyNo] = useState(null);
+  const [insCom, setInsCom] = useState(null);
+  const [premium, setPremium] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [refNo, setRefNo] = useState(null);
+  const [vehicleNo, setVehicleNo] = useState(null);
+  const [vehicleType, setVehicleType] = useState(null);
+  const [vehicleValue, setVehicleValue] = useState(null);
+  const [yom, setYom] = useState(null);
+  const [customerName, setCustomerName] = useState(null);
+  const [nic, setNic] = useState(null);
   const [selectedDate2, setSelectedDate2] = useState(null);
+  const [occupation, setOccupation] = useState(null);
+  const [homeNumber, setHomeNumber] = useState(null);
+  const [mobileNumber, setMobileNumber] = useState(null);
+  const [workNumber, setWorkNumber] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [address1, setAddress1] = useState(null);
+  const [address2, setAddress2] = useState(null);
+  const [address3, setAddress3] = useState(null);
+
+  useEffect(() => {
+    refetch();
+  }, [date]);
 
   const StepperItems = [
     { id: 1, Title: 'Policy Info' },
@@ -37,10 +97,31 @@ export default function LeadCreation({ navigation }) {
   ];
 
   const handleNext = () => {
+    // return;
     if (currentStep < StepperItems.length) {
-      setCurrentStep(prevStep => prevStep + 1);
+      console.log(currentStep);
+
+      if (currentStep === 1) {
+        if (validateForm1()) {
+          setCurrentStep(2);
+        }
+      } else if (currentStep == 2) {
+        console.log(currentStep);
+        if (validateForm2()) {
+          console.log("trigger2")
+          setCurrentStep(3);
+        }
+      } else if (currentStep == 3) {
+        console.log("sssef", currentStep);
+        if (validateForm3()) {
+          console.log("trigger")
+          setCurrentStep(4);
+        }
+      }
+
+      // setCurrentStep(prevStep => prevStep + 1);
     } else {
-      navigation.navigate('BPlanner');
+      handleLeadCreate();
     }
   };
 
@@ -50,11 +131,156 @@ export default function LeadCreation({ navigation }) {
     }
   };
 
+  const handleConfirm = date => {
+    console.warn('A date has been picked: ', moment(date).format('DD-MM-YYYY'));
+    setSelectedDate(moment(date).format('YYYY-MM-DD'));
+    hideDatePicker();
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm2 = date => {
+    console.warn('A date has been picked: ', moment(date).format('DD-MM-YYYY'));
+    setSelectedDate2(moment(date).format('YYYY-MM-DD'));
+    hideDatePicker2();
+  };
+
+  const hideDatePicker2 = () => {
+    setDatePickerVisibility2(false);
+  };
+  // useEffect(() => {
+  //   showToast({
+  //     type: 'error',
+  //     text1: 'Validation Error',
+  //     text2: 'Please fill in all required fields. 🚨',
+  //   });
+  // }, [])
+
+  // API Intergration
+
+  const body = {
+    LeadId: 0,
+    EventId: -1,
+    LeadType: leadType,
+    CustomerName: customerName,
+    CustomerName2: null,
+    PolicyNumber: policyNo,
+    HomeNumber: homeNumber,
+    MobileNumber: mobileNumber,
+    WorkNumber: workNumber,
+    Email: email,
+    Address1: address1,
+    Address2: address2,
+    Address3: address3,
+    NicNumber: nic,
+    VehicleNumber: vehicleNo,
+    VehicleType: vehicleType,
+    VehicleValue: vehicleValue,
+    InsCompany: insCom,
+    Premium: premium,
+    RenewalDate: selectedDate,
+    DateOfBirth: selectedDate2,
+    Occupation: occupation,
+    Status: 'N',
+    ClosedDate: null,
+    ClosedPolNo: null,
+    IconImage: null,
+    LeadSource: null,
+    Address4: null,
+    RefNo: refNo,
+    AgentCode: agentCode,
+  };
+
+  const validateForm1 = () => {
+    if (
+      !leadType ||
+      !policyNo ||
+      !insCom ||
+      !premium ||
+      !selectedDate ||
+      !refNo
+    ) {
+      console.log("test errors")
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const validateForm2 = () => {
+    if (!vehicleNo || !vehicleType || !vehicleValue) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+    return true;
+  };
+  const validateForm3 = () => {
+    if (!customerName || !nic || !selectedDate2 || !occupation) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+    return true;
+  };
+  const validateForm4 = () => {
+    console.log("here", homeNumber, mobileNumber, workNumber, email, address1)
+    if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
+      console.log("work this")
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+    return true;
+  };
+  const handleLeadCreate = async () => {
+
+    if (validateForm4()) // Stop if validation fails
+      console.log("work")
+    showToast({
+      type: 'error',
+      text1: 'Validation Error',
+      text2: 'Please fill in all required fields. 🚨',
+    });
+    try {
+      const response = await leadCreate(body);
+      // setModalVisible(false);
+      console.log('Activity Created:', response);
+      navigation.navigate('BPlanner');
+    } catch (err) {
+      console.error('Error creating activity:', err);
+    }
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
         return (
           <View style={{}}>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              style={{ backgroundColor: 'red' }}
+              datePickerModeAndorid={'spinner'}
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+
             <Text
               style={{
                 marginBottom: 5,
@@ -66,26 +292,38 @@ export default function LeadCreation({ navigation }) {
               Lead Type
             </Text>
             <DropdownComponentNoLabel
+              onSelect={value => setLeadType(value)}
               dropdownData={[
-                { label: 'Appointment', value: '1' },
-                { label: 'Pending', value: '2' },
-                { label: 'Complete', value: '3' },
+                { label: 'Appointment', value: 'A' },
+                { label: 'Meeting', value: 'M' },
+                { label: 'Presentation', value: 'P' },
+                { label: 'Quatation', value: 'Q' },
+                { label: 'Proposal', value: 'S' },
+                { label: 'Closed', value: 'C' },
+                { label: 'Reject', value: 'R' },
               ]}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Policy Number'}
+              value={policyNo}
               borderColor={COLORS.warmGray}
+              setValue={text => setPolicyNo(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Insurance Company'}
+              value={insCom}
               borderColor={COLORS.warmGray}
+              setValue={text => setInsCom(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'premium'}
+              value={premium}
               borderColor={COLORS.warmGray}
+              keyboardType={'number-pad'}
+              setValue={text => setPremium(text)}
             />
             <View style={{ flexDirection: 'row', position: 'relative' }}>
               <SquareTextBoxOutlined
@@ -96,11 +334,11 @@ export default function LeadCreation({ navigation }) {
                 borderColor={COLORS.warmGray}
               />
               <TouchableOpacity
-                onPress={() => setPickerVisible(true)}
+                onPress={() => setDatePickerVisibility(!isDatePickerVisible)}
                 style={{
                   position: 'absolute',
                   bottom: 9,
-                  right: 12
+                  right: 12,
                 }}>
                 <Feather name="calendar" color={COLORS.primary} size={20} />
               </TouchableOpacity>
@@ -108,7 +346,9 @@ export default function LeadCreation({ navigation }) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Ref. No. (If any)'}
+              value={refNo}
               borderColor={COLORS.warmGray}
+              setValue={text => setRefNo(text)}
             />
           </View>
         );
@@ -119,36 +359,64 @@ export default function LeadCreation({ navigation }) {
               mediumFont={true}
               Label={'Vehicle Number'}
               borderColor={COLORS.warmGray}
+              value={vehicleNo}
+              setValue={text => setVehicleNo(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Type'}
+              value={vehicleType}
               borderColor={COLORS.warmGray}
+              setValue={text => setVehicleType(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value'}
+              value={vehicleValue}
               borderColor={COLORS.warmGray}
+              setValue={text => setVehicleValue(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Year of manufacture'}
+              value={yom}
               borderColor={COLORS.warmGray}
+              setValue={text => setYom(text)}
             />
           </View>
         );
       case 3:
         return (
           <View>
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible2}
+              mode="date"
+              style={{ backgroundColor: 'red' }}
+              datePickerModeAndorid={'spinner'}
+              onConfirm={handleConfirm2}
+              onCancel={hideDatePicker2}
+            />
+            {/* <DateTimePickerModal
+              isVisible={isDatePickerVisible2}
+              mode="date"
+              style={{ backgroundColor: 'red' }}
+              datePickerModeAndorid={'spinner'}
+              onConfirm={handleConfirm2}
+              onCancel={hideDatePicker2}
+            /> */}
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Customer Name'}
               borderColor={COLORS.warmGray}
+              value={customerName}
+              setValue={text => setCustomerName(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'NIC Number'}
               borderColor={COLORS.warmGray}
+              value={nic}
+              setValue={text => setNic(text)}
             />
             <View style={{ flexDirection: 'row', position: 'relative' }}>
               <SquareTextBoxOutlined
@@ -159,11 +427,11 @@ export default function LeadCreation({ navigation }) {
                 borderColor={COLORS.warmGray}
               />
               <TouchableOpacity
-                onPress={() => setPickerVisible2(true)}
+                onPress={() => setDatePickerVisibility2(!isDatePickerVisible2)}
                 style={{
                   position: 'absolute',
                   bottom: 9,
-                  right: 12
+                  right: 12,
                 }}>
                 <Feather name="calendar" color={COLORS.primary} size={20} />
               </TouchableOpacity>
@@ -172,6 +440,9 @@ export default function LeadCreation({ navigation }) {
               mediumFont={true}
               Label={'Occupation'}
               borderColor={COLORS.warmGray}
+              value={occupation}
+
+              setValue={text => setOccupation(text)}
             />
           </View>
         );
@@ -181,27 +452,51 @@ export default function LeadCreation({ navigation }) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Home Number'}
+              value={homeNumber}
               borderColor={COLORS.warmGray}
+              setValue={text => setHomeNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Mobile Number'}
+              value={mobileNumber}
               borderColor={COLORS.warmGray}
+              setValue={text => setMobileNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Work Number'}
+              value={workNumber}
               borderColor={COLORS.warmGray}
+              setValue={text => setWorkNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Email'}
+              value={email}
               borderColor={COLORS.warmGray}
+              setValue={text => setEmail(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Address'}
+              value={address1}
               borderColor={COLORS.warmGray}
+              setValue={text => setAddress1(text)}
+            />
+            <SquareTextBoxOutlined
+              mediumFont={true}
+              // Label={'Address'}
+              value={address2}
+              borderColor={COLORS.warmGray}
+              setValue={text => setAddress2(text)}
+            />
+            <SquareTextBoxOutlined
+              mediumFont={true}
+              // Label={'Address'}
+              value={address3}
+              borderColor={COLORS.warmGray}
+              setValue={text => setAddress3(text)}
             />
           </View>
         );
@@ -244,14 +539,8 @@ export default function LeadCreation({ navigation }) {
               alignItems: 'center',
             }}>
             <View style={{ flex: 0.63 }}>
-              <DropdownComponentNoLabel
-                label={'Select Event'}
-                dropdownData={[
-                  { label: 'Appointment', value: '1' },
-                  { label: 'Pending', value: '2' },
-                  { label: 'Complete', value: '3' },
-                ]}
-              />
+              <DropdownComponentNoLabel label="Select Event" dropdownData={dropdownData} />
+
             </View>
             <View style={{ flex: 0.35 }}>
               <SmallButton Title={'Set as Default'} />

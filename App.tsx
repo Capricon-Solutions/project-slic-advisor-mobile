@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen'
+import Toast from 'react-native-toast-message';
 
 import {
   StyleSheet,
@@ -68,6 +69,7 @@ import PendingClaims from './src/pages/Agent/PendingClaims';
 import ClaimDetails from './src/pages/Agent/ClaimHistory/ClaimDetails';
 import DebitSettlementRenewal from './src/pages/Agent/DebitSettlementRenewal';
 import ReportSwitch from './src/pages/RegionalManager/Report/ReportSwitch';
+import { ToastMessage } from './src/components/ToastMessage';
 
 // Sample Home Screen
 const HomeScreen = () => {
@@ -104,12 +106,14 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      
+         
     <NavigationContainer>
+   
     <StatusBar backgroundColor={COLORS.TopBackColor} barStyle="dark-content" />
-      
+   
       <Stack.Navigator initialRouteName="Login" screenOptions={{orientation:'portrait', headerShown: false, animation: "slide_from_right" }}>
         {/* Define your screens here */}
+   
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
         <Stack.Screen name="Profile" component={Profile} />
@@ -163,6 +167,8 @@ function App(): React.JSX.Element {
         <Stack.Screen name="Details" component={DetailsScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
+    <Toast />
+    <ToastMessage />
     </Provider>
   );
 }

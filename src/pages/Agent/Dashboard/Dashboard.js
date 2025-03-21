@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { Avatar } from 'react-native-paper';
+import {Avatar} from 'react-native-paper';
 import avatar from '../../../images/avatar.png'; // Replace with the actual logo path
 import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
 import GENERAL from '../../../icons/GENERAL.png'; // Replace with the actual logo path
@@ -31,21 +31,21 @@ import individualPerforamance from '../../../icons/individualPerforamance.png'; 
 import policyRenewal from '../../../icons/policyRenewal.png'; // Replace with the actual logo path
 import ppwIcon from '../../../icons/PPW.png'; // Replace with the actual logo path
 
-import { styles } from './styles';
+import {styles} from './styles';
 // import GeneralModal from '../../../components/GeneralModal';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
 import RMGrid from '../../../components/RMGrid';
 import AgentProgressCard from '../../../components/AgentProgressCard';
 import RMProgressCard from '../../../components/RMProgressCard';
-import { Getpath } from '../../../redux/services/NavControllerSlice';
+import {Getpath} from '../../../redux/services/NavControllerSlice';
 
 const window = Dimensions.get('window');
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard({navigation}) {
   const dispatch = useDispatch();
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
@@ -55,14 +55,10 @@ export default function Dashboard({ navigation }) {
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
-  const path = useSelector(
-    state => state.NavController.path,
-  );
+  const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
   console.log('userType', usertype);
   console.log('path', path);
-
-
 
   useFocusEffect(
     useCallback(() => {
@@ -72,8 +68,7 @@ export default function Dashboard({ navigation }) {
         setgeneraModalVisible(false);
       }
       console.log('path', path);
-
-    }, [path])
+    }, [path]),
   );
   // API Binds
   const name = profileResponse?.name;
@@ -135,63 +130,62 @@ export default function Dashboard({ navigation }) {
   const IndividualPerformanceType =
     usertype === 1 || usertype === 5
       ? [
-        {
-          title: 'Individual Statistics',
-          icon: individualPerforamance,
-          onPress: () => {
-            setsalesModalVisible(false);
-            setModalVisible(false);
-            navigation.navigate('IndividualStatistics');
+          {
+            title: 'Individual Statistics',
+            icon: individualPerforamance,
+            onPress: () => {
+              setsalesModalVisible(false);
+              setModalVisible(false);
+              navigation.navigate('IndividualStatistics');
+            },
           },
-        },
-      ]
+        ]
       : [
-        {
-          title: 'My Self',
-          icon: individualPerforamance,
-          onPress: () => {
-            setModalVisible(false);
-            navigation.navigate('MyselfPerformance');
-          },
-        },
-        {
-          title: 'Team',
-          expandable: true,
-          subButtons: [
-            {
-              title: 'Team Statistics',
-              onPress: () => {
-                setModalVisible(false);
-                navigation.navigate('TeamStatistics');
-              },
+          {
+            title: 'My Self',
+            icon: individualPerforamance,
+            onPress: () => {
+              setModalVisible(false);
+              navigation.navigate('MyselfPerformance');
             },
-            {
-              title: 'Current Performance',
-              onPress: () => {
-                setModalVisible(false);
-                navigation.navigate('TeamPerformance');
-                console.log('test');
-              },
-            },
-          ],
-          icon: policyRenewal,
-          onPress: 'expand',
-        },
-        {
-          title: 'Team Member',
-          icon: policyRenewal,
-          onPress: () => {
-            setModalVisible(false);
-            navigation.navigate('TeamMemberGrid');
           },
-        },
-      ];
+          {
+            title: 'Team',
+            expandable: true,
+            subButtons: [
+              {
+                title: 'Team Statistics',
+                onPress: () => {
+                  setModalVisible(false);
+                  navigation.navigate('TeamStatistics');
+                },
+              },
+              {
+                title: 'Current Performance',
+                onPress: () => {
+                  setModalVisible(false);
+                  navigation.navigate('TeamPerformance');
+                  console.log('test');
+                },
+              },
+            ],
+            icon: policyRenewal,
+            onPress: 'expand',
+          },
+          {
+            title: 'Team Member',
+            icon: policyRenewal,
+            onPress: () => {
+              setModalVisible(false);
+              navigation.navigate('TeamMemberGrid');
+            },
+          },
+        ];
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
   return (
-    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
+    <View style={[Styles.container, {paddingHorizontal: 0}]}>
       {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
-
 
       <BottomModal
         Name={'Individual Performance'}
@@ -250,8 +244,8 @@ export default function Dashboard({ navigation }) {
             style={styles.profilePicture}>
             <Avatar.Image
               size={window.width * 0.15}
-              style={{ backgroundColor: 'transparent' }}
-              source={{ uri: defaultImageUrl }}
+              style={{backgroundColor: 'transparent'}}
+              source={{uri: defaultImageUrl}}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -259,7 +253,7 @@ export default function Dashboard({ navigation }) {
               navigation.navigate('Profile');
               dispatch(Getpath(0));
             }}
-            style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
+            style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>Region Name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
@@ -268,11 +262,14 @@ export default function Dashboard({ navigation }) {
               {usertype == 1
                 ? 'Advisor'
                 : usertype == 2
-                  ? 'Team Leader'
-                  : usertype == 3
-                    ? 'Regional Manager'
-                    : usertype == 4 ? 'Branch Manager'
-                      : usertype == 5 ? 'Marketing executive' : 'Unknown'}
+                ? 'Team Leader'
+                : usertype == 3
+                ? 'Regional Manager'
+                : usertype == 4
+                ? 'Branch Manager'
+                : usertype == 5
+                ? 'Marketing executive'
+                : 'Unknown'}
               )
             </Text>
           </TouchableOpacity>
@@ -291,7 +288,7 @@ export default function Dashboard({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 10}}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.ExtraBold,
@@ -301,14 +298,17 @@ export default function Dashboard({ navigation }) {
             {usertype == 1
               ? 'Advisor Summary'
               : usertype == 2
-                ? 'Team Leader Summary'
-                : usertype == 3 ? 'Central 1 Region Summary'
-                  : usertype == 4 ? ' Western 1 Branch Summary'
-                    : usertype == 5 ? ' Marketing executive Summary' : 'user type unknown'}
+              ? 'Team Leader Summary'
+              : usertype == 3
+              ? 'Central 1 Region Summary'
+              : usertype == 4
+              ? ' Western 1 Branch Summary'
+              : usertype == 5
+              ? ' Marketing executive Summary'
+              : 'user type unknown'}
           </Text>
         </View>
 
-
         {usertype == 1 && (
           <AgentProgressCard
             totalIslandRank={totalIslandRank}
@@ -347,7 +347,7 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -359,7 +359,7 @@ export default function Dashboard({ navigation }) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -377,7 +377,6 @@ export default function Dashboard({ navigation }) {
             }}
           />
         )}
-
 
         {usertype == 3 && (
           <Text
@@ -402,8 +401,6 @@ export default function Dashboard({ navigation }) {
             Insurance Categories
           </Text>
         )}
-
-
 
         {usertype == 1 && (
           <AgentGrid
@@ -430,8 +427,7 @@ export default function Dashboard({ navigation }) {
             onProductPortfolioClick={() => {
               navigation.navigate('ProductPortfolio');
               dispatch(Getpath(0));
-            }
-            }
+            }}
           />
         )}
 
@@ -470,8 +466,7 @@ export default function Dashboard({ navigation }) {
             onProductPortfolioClick={() => {
               navigation.navigate('ProductPortfolio');
               dispatch(Getpath(0));
-            }
-            }
+            }}
           />
         )}
 
@@ -529,11 +524,9 @@ export default function Dashboard({ navigation }) {
             onProductPortfolioClick={() => {
               navigation.navigate('ProductPortfolio');
               dispatch(Getpath(0));
-            }
-            }
+            }}
           />
         )}
-
       </ScrollView>
     </View>
   );

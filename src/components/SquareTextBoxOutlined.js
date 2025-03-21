@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, Dimensions, Text, View, Image } from 'react-native';
 
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 
 const window = Dimensions.get('window');
 // import { useSelector } from "react-redux";
@@ -27,7 +27,7 @@ export default function SquareTextBoxOutlined({
     setShowPassword(!showPassword);
   };
   return (
-    <View style={{width: '100%', marginTop: window.height * 0.01}}>
+    <View style={{ width: '100%', marginTop: window.height * 0.01 }}>
       {Label && (
         <Text
           style={{
@@ -39,7 +39,7 @@ export default function SquareTextBoxOutlined({
           {Label}
         </Text>
       )}
-      <View style={{position: 'relative'}}>
+      <View style={{ position: 'relative' }}>
         <TextInput
           mode={'outlined'}
           readOnly={readOnly}
@@ -47,10 +47,10 @@ export default function SquareTextBoxOutlined({
             errorBorder
               ? COLORS.errorBorder
               : borderColor
-              ? borderColor
-              : COLORS.borderColor
+                ? borderColor
+                : COLORS.borderColor
           }
-          outlineStyle={{borderRadius: 5, borderWidth: 1}}
+          outlineStyle={{ borderRadius: 5, borderWidth: 1 }}
           style={[
             Styles.textInput,
             {
