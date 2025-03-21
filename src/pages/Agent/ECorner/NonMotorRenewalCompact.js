@@ -32,38 +32,54 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+import { useGetnonMotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import moment from 'moment';
+import TableComponentPR from '../../../components/TableComponentPR';
 const window = Dimensions.get('window');
 
 
 
 export default function NonMotorRenewalCompact({ navigation }) {
-
-  const tableHead = ['Due Date', 'Customer Name', 'Policy No', 'NCB Perc', 'Sum Insured', 'Premium Amt', 'Policy Status'];
-  const Data = [
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-
-  ];
-  const tableData = Data?.map(item => [
-    item?.dueDate.toString() ?? '',
-    item?.name.toString() ?? '',
-    // item?.vehicleNo.toString() ?? '',
-    item?.policyNo.toString() ?? '',
-    item?.NCB.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.premium.toString() ?? '',
-    item?.status.toString() ?? '',
-
-  ]);
-  const columnWidths = [100, 140, 145, 70, 100, 100, 100];
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const lastMonthStart = moment()
+    .subtract(3, 'month')
+    .startOf('month')
+    .format('YYYY-MM-DD');
+  const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  const [fromDate, toDate] = selectedDate
+    ? selectedDate.split(' to ')
+    : [lastMonthStart, currentMonthEnd];
+
+  const {
+    data: motorRenewalsList,
+    error,
+    isFetching,
+    refetch,
+  } = useGetnonMotorRenewalsListQuery({
+    id: 905717, // Dynamic ID
+    fromDate: fromDate,
+    toDate: toDate,
+  });
+  const motorRenewalsResponse = motorRenewalsList?.data;
+  console.log("motorRenewalsResponse", motorRenewalsResponse);
+  const tableHead = ['Due Date', 'Customer Name', 'Policy No',
+    // 'NCB Perc',
+    'Policy Type',
+    'Sum Insured', 'Premium Amt', 'Policy Status'];
+
+  const tableData = motorRenewalsResponse?.map(item => [
+    item?.policyEndDate?.toString() ?? '',
+    item?.customerName?.toString() ?? '',
+    // item?.vehicleNo.toString() ?? '',
+    item?.policyNumber?.toString() ?? '',
+    item?.policyType.toString() ?? '',
+    // item?.ncbPerc?.toString() ?? '',
+    item?.sumInsured?.toString() ?? '',
+    item?.totalAmount?.toString() ?? '',
+    item?.isPaid?.toString() ?? '',
+  ]);
+  const columnWidths = [100, 175, 155, 70, 100, 100, 100];
   const [isPickerVisible, setPickerVisible] = useState(false);
   return (
     <View style={Styles.container}>
@@ -75,39 +91,44 @@ export default function NonMotorRenewalCompact({ navigation }) {
       />
       <HeaderBackground />
       <Header titleFontSize={16} Title="Non-Motor Renewal Compact" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 20 }}>
 
-        <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
-          <TextInput
-            style={styles.textInput}
-            // onChangeText={v => setSearchText(v)}
-            placeholder="11/2024"
-          />
-          <TouchableOpacity
-            onPress={() => setPickerVisible(true)}
-            style={styles.searchButton}>
-            <Feather name="calendar" color={COLORS.white} size={20} />
-          </TouchableOpacity>
+      <ScrollView>
+        <View style={{ paddingHorizontal: 20 }}>
+
+          <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
+            <TextInput
+              style={styles.textInput}
+              value={fromDate + ' - ' + toDate}
+              // onChangeText={v => setSearchText(v)}
+              placeholder="11/2024"
+            />
+            <TouchableOpacity
+              onPress={() => setPickerVisible(true)}
+              style={styles.searchButton}>
+              <Feather name="calendar" color={COLORS.white} size={20} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={{
+            fontFamily: Fonts.Roboto.Regular,
+            fontSize: 14,
+            marginVertical: 20,
+            color: COLORS.borderColor
+          }}>(Click on policy Number to view details)</Text>
+          {isFetching == true ? (
+            <LoadingScreen />
+          ) : (
+            <TableComponentPR
+              haveTotal={false}
+              tableHead={tableHead}
+              navigation={navigation}
+              clickableColumns={[2]}
+              tableData={tableData}
+              columnWidths={columnWidths}
+            />
+          )}
         </View>
-
-        <Text style={{
-          fontFamily: Fonts.Roboto.Regular,
-          fontSize: 14,
-          marginVertical: 20,
-          color: COLORS.borderColor
-        }}>(Click on policy Number to view details)</Text>
-
-        <TableComponentEC
-          haveTotal={false}
-          tableHead={tableHead}
-          navigation={navigation}
-          clickableColumns={[2]}
-          tableData={tableData}
-          columnWidths={columnWidths}
-        />
-
-      </View>
-
+      </ScrollView>
 
     </View>
   );

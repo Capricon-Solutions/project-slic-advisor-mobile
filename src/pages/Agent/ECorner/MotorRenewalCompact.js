@@ -32,6 +32,8 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import moment from 'moment';
 const window = Dimensions.get('window');
 
 
@@ -39,6 +41,27 @@ const window = Dimensions.get('window');
 export default function MotorRenewalCompact({ navigation }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
+  const lastMonthStart = moment()
+    .subtract(3, 'month')
+    .startOf('month')
+    .format('YYYY-MM-DD');
+  const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  const [fromDate, toDate] = selectedDate
+    ? selectedDate.split(' to ')
+    : [lastMonthStart, currentMonthEnd];
+
+  const {
+    data: motorRenewalsList,
+    error,
+    isFetching,
+    refetch,
+  } = useGetmotorRenewalsListQuery({
+    id: 905717, // Dynamic ID
+    fromDate: fromDate,
+    toDate: toDate,
+  });
+  const motorRenewalsResponse = motorRenewalsList?.data;
+
 
   const tableHead = ['Due Date', 'Customer Name', 'Vehicle No', 'Policy No', 'NCB Perc', 'Sum Insured', 'Premium Amt', 'Policy Status'];
   const Data = [
@@ -53,18 +76,19 @@ export default function MotorRenewalCompact({ navigation }) {
     { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
 
   ];
-  const tableData = Data?.map(item => [
-    item?.dueDate.toString() ?? '',
-    item?.name.toString() ?? '',
-    item?.vehicleNo.toString() ?? '',
-    item?.policyNo.toString() ?? '',
-    item?.NCB.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.premium.toString() ?? '',
-    item?.status.toString() ?? '',
-
+  const tableData = motorRenewalsResponse?.map(item => [
+    item?.dueDate?.toString() ?? '',
+    item?.customerName?.toString() ?? '',
+    item?.vehicleNo?.toString() ?? '',
+    item?.policyNo?.toString() ?? '',
+    item?.ncbPerc?.toString() ?? '',
+    item?.sumInsured?.toString() ?? '',
+    item?.premiumAmount?.toString() ?? '',
+    item?.policyStatus?.toString() ?? '',
   ]);
   const columnWidths = [100, 140, 100, 140, 70, 100, 100, 100];
+
+
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -75,40 +99,47 @@ export default function MotorRenewalCompact({ navigation }) {
       />
       <HeaderBackground />
       <Header Title="Motor Renewal Compact" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 20 }}>
+      <ScrollView>
+        <View style={{ paddingHorizontal: 20 }}>
 
-        <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
-          <TextInput
-            style={styles.textInput}
-            // onChangeText={v => setSearchText(v)}
-            placeholder="11/2024"
-          />
-          <TouchableOpacity
-            onPress={() => setPickerVisible(true)}
-            style={styles.searchButton}>
-            <Feather name="calendar" color={COLORS.white} size={20} />
-          </TouchableOpacity>
+          <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
+            <TextInput
+              style={styles.textInput}
+              value={fromDate + ' - ' + toDate}
+              // onChangeText={v => setSearchText(v)}
+              placeholder="11/2024"
+            />
+            <TouchableOpacity
+              onPress={() => setPickerVisible(true)}
+              style={styles.searchButton}>
+              <Feather name="calendar" color={COLORS.white} size={20} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={{
+            fontFamily: Fonts.Roboto.Regular,
+            fontSize: 14,
+            marginVertical: 20,
+            color: COLORS.borderColor
+          }}>(Click on policy Number to view details)</Text>
+
+
+          {isFetching == true ? (
+            <LoadingScreen />
+          ) : (
+            <TableComponentEC
+              haveTotal={false}
+              tableHead={tableHead}
+              tableData={tableData}
+              navigation={navigation}
+              clickableColumns={[3]}
+              columnWidths={columnWidths}
+            />
+          )}
+
         </View>
 
-        <Text style={{
-          fontFamily: Fonts.Roboto.Regular,
-          fontSize: 14,
-          marginVertical: 20,
-          color: COLORS.borderColor
-        }}>(Click on policy Number to view details)</Text>
-
-        <TableComponentEC
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableData}
-          navigation={navigation}
-          clickableColumns={[3]}
-          columnWidths={columnWidths}
-        />
-
-      </View>
-
-
+      </ScrollView>
     </View>
   );
 }

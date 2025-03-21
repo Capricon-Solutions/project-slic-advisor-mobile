@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import {Table, Row} from 'react-native-table-component';
+import { Table, Row } from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -23,7 +23,7 @@ const TableComponentPR = ({
   clickableColumns = [], // Array of column indices that should be clickable
 }) => {
   const handleCellPress = cellData => {
-    navigation.navigate('PolicyDetails', {policyNo: cellData});
+    navigation.navigate('PolicyDetails', { policyNo: cellData });
     console.log('Clicked Cell:', cellData);
   };
 
@@ -33,7 +33,7 @@ const TableComponentPR = ({
         <ScrollView horizontal>
           <View style={styles.container}>
             <View style={styles.tableWrapper}>
-              <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
+              <Table borderStyle={{ borderWidth: 1, borderColor: COLORS.white }}>
                 {/* Table Header */}
                 <Row
                   data={tableHead}
@@ -62,15 +62,15 @@ const TableComponentPR = ({
                                 ? cellData === 'Renewed'
                                   ? COLORS.tableBlue
                                   : cellData === 'Expired'
-                                  ? COLORS.tableRed
-                                  : cellData === 'Not Paid'
-                                  ? COLORS.tableRed
-                                  : cellData === 'Due'
-                                  ? COLORS.pendingColor
-                                  : 'transparent'
+                                    ? COLORS.tableRed
+                                    : cellData === 'Not Paid'
+                                      ? COLORS.tableRed
+                                      : cellData === 'Due'
+                                        ? COLORS.pendingColor
+                                        : 'transparent'
                                 : 'transparent',
                           }}>
-                          <Text key={cellIndex} style={styles.text}>
+                          <Text key={cellIndex} numberOfLines={1} style={styles.text}>
                             {cellData}
                           </Text>
                         </View>
@@ -101,10 +101,10 @@ const TableComponentPR = ({
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
-  tableWrapper: {borderRadius: 10, overflow: 'hidden'},
-  head: {height: 50, backgroundColor: '#00A8B5'},
-  headText: {margin: 6, fontWeight: 'bold', color: '#fff', textAlign: 'center'},
+  container: { padding: 0 },
+  tableWrapper: { borderRadius: 10, overflow: 'hidden' },
+  head: { height: 50, backgroundColor: '#00A8B5' },
+  headText: { margin: 6, fontWeight: 'bold', color: '#fff', textAlign: 'center' },
   text: {
     marginVertical: 6,
     marginHorizontal: 10,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.textColor,
   },
-  clickableText: {color: COLORS.primary, textDecorationLine: 'underline'}, // Style for clickable columns
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'},
-  rowWhite: {backgroundColor: '#FFFFFF'},
+  clickableText: { color: COLORS.primary, textDecorationLine: 'underline' }, // Style for clickable columns
+  row: { height: 50 },
+  rowGray: { backgroundColor: '#F8F9FA' },
+  rowWhite: { backgroundColor: '#FFFFFF' },
   emptyContainer: {
     flex: 1,
     height: window.height * 0.5,

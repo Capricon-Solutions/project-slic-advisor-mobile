@@ -83,7 +83,6 @@ export default function PolicyRenewals({ navigation }) {
   const {
     data: nonmotorRenewalsList,
     errorN,
-
     isFetching: isFetchingN,
     refetch: refetchN,
   } = useGetnonMotorRenewalsListQuery({

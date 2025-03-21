@@ -12,12 +12,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function EconerItems({item, navigation}) {
+export default function EconerItems({ item, navigation, GogreenDetailsAll }) {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(item.page)}
@@ -84,10 +84,10 @@ export default function EconerItems({item, navigation}) {
               {item?.download && item?.Share
                 ? 'Download or Share'
                 : item?.download
-                ? 'Download'
-                : item?.Share
-                ? 'Share'
-                : ''}
+                  ? 'Download'
+                  : item?.Share
+                    ? 'Share'
+                    : ''}
             </Text>
           </View>
         ) : (
@@ -100,7 +100,7 @@ export default function EconerItems({item, navigation}) {
               justifyContent: 'center',
               borderRadius: 6,
             }}>
-            <Image source={VisitsIcon} style={{height: 12, width: 12}}></Image>
+            <Image source={VisitsIcon} style={{ height: 12, width: 12 }}></Image>
             <Text
               style={{
                 fontSize: 10,
@@ -108,7 +108,7 @@ export default function EconerItems({item, navigation}) {
                 color: COLORS.white,
                 marginLeft: 8,
               }}>
-              827
+              {item?.conunt}
             </Text>
           </View>
         )}

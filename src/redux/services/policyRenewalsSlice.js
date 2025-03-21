@@ -1,11 +1,25 @@
-import {baseApi} from './api';
+import { baseApi } from './api';
 
 console.log('working');
 
 export const motorRenewalsSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
+
+    getprintMotorRenewalsList: builder.query({
+      query: ({ id, fromDate, toDate }) => {
+        console.log('From Date:', fromDate);
+        console.log('To Date:', toDate);
+
+        const finalUrl = `agent/getPrintMotorRenewal/${id}?fromDate=${fromDate}&toDate=${toDate}`;
+        console.log('Final URL:', finalUrl);
+
+        return finalUrl;
+      },
+    }),
+
+
     getmotorRenewalsList: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         console.log('From Date:', fromDate);
         console.log('To Date:', toDate);
 
@@ -17,7 +31,7 @@ export const motorRenewalsSlice = baseApi.injectEndpoints({
     }),
 
     getnonMotorRenewalsList: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         console.log('From Date:', fromDate);
         console.log('To Date:', toDate);
 
@@ -31,5 +45,5 @@ export const motorRenewalsSlice = baseApi.injectEndpoints({
 });
 
 // Export hooks
-export const {useGetmotorRenewalsListQuery, useGetnonMotorRenewalsListQuery} =
+export const { useGetmotorRenewalsListQuery, useGetnonMotorRenewalsListQuery, useGetprintMotorRenewalsListQuery } =
   motorRenewalsSlice;
