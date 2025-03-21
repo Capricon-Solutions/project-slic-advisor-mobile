@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -20,11 +20,11 @@ import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import moment from 'moment';
-import {useMonthlyCreationMutation} from '../../../redux/services/plannerSlice';
+import { useGetMonthlyPlanQuery, useMonthlyCreationMutation } from '../../../redux/services/plannerSlice';
 
-export default function MonthlyPlan({navigation}) {
+export default function MonthlyPlan({ navigation }) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
+  const [MonthlyCreate, { data: newActivity, isLoading, error }] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -32,6 +32,25 @@ export default function MonthlyPlan({navigation}) {
   const [proposals, setProposals] = useState('');
   const [closed, setClosed] = useState('');
   const [leads, setLeads] = useState('');
+
+  const {
+    data: planData,
+    isLoading: loadingPlan,
+    error: planError,
+  } = useGetMonthlyPlanQuery();
+
+  useEffect(() => {
+    if (planData?.data) {
+      const data = planData?.data;
+      setmeetings(data?.noOfMeetings);
+      setPresentations(data?.noOfPresents);
+      setQuotations(data?.noOfQuots);
+      setProposals(data?.noOfProposals);
+      setClosed(data?.noOfClosed);
+      setLeads(data?.noOfLeads);
+    }
+  }, [planData])
+
 
   const body = {
     numberOfMeetings: meetings,
@@ -42,7 +61,7 @@ export default function MonthlyPlan({navigation}) {
     numberOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
   };
-
+  console.log("planData", planData)
   const validateForm = () => {
     if (
       !meetings ||
@@ -76,10 +95,10 @@ export default function MonthlyPlan({navigation}) {
   };
 
   const StepperItems = [
-    {id: 1, Title: 'Policy Info'},
-    {id: 2, Title: 'Vehicle Info'},
-    {id: 3, Title: 'Customer Basic Info'},
-    {id: 4, Title: 'Customer Contact Info'},
+    { id: 1, Title: 'Policy Info' },
+    { id: 2, Title: 'Vehicle Info' },
+    { id: 3, Title: 'Customer Basic Info' },
+    { id: 4, Title: 'Customer Contact Info' },
   ];
 
   const handleNext = () => {
@@ -103,7 +122,7 @@ export default function MonthlyPlan({navigation}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
         style={{}}>
         <Text
           style={{

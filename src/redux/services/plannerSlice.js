@@ -1,10 +1,13 @@
-import {baseApi} from './api';
+import { baseApi } from './api';
 
 export const plannerSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getEventsAndActivitiess: builder.query({
-      query: ({date}) => `planner/getEventsAndActivities/905717?date=${date}`,
+      query: ({ date }) => `planner/getEventsAndActivities/905717?date=${date}`,
       providesTags: ['Events'],
+    }),
+    getMonthlyPlan: builder.query({
+      query: () => `planner/GetPlannerMonthly/905717`,
     }),
     getLeads: builder.query({
       query: () => `planner/GetPlannerLeadList?agentCode=905717`,
@@ -106,4 +109,5 @@ export const {
   useGetLeadByIdQuery,
   useMonthlyCreationMutation,
   useLeadCreationMutation,
+  useGetMonthlyPlanQuery
 } = plannerSlice;
