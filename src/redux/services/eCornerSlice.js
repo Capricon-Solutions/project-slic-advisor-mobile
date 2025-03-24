@@ -9,7 +9,20 @@ export const eCornerSlice = baseApi.injectEndpoints({
         return url;
       },
     }),
+    getcommissionStatement: builder.mutation({
+      query: (selectedDate, selectedType, selectedCode) => {
+        const finalUrl = `print/getCommisionStatement/${selectedCode}?yearMonth=${selectedDate}&stype=${selectedType}`;
+        console.log('Final URL:', finalUrl);
+        // console.log('Final body:', body);
 
+        return {
+          url: finalUrl,
+          method: 'GET',
+          // body: body,
+        };
+      },
+      // invalidatesTags: ['Events'],
+    }),
 
     // getLeadById: builder.query({
     //   query: id => `planner/GetPlannerLeadById?Id=${id}`,
@@ -38,5 +51,6 @@ export const eCornerSlice = baseApi.injectEndpoints({
 
 // Export hooks
 export const {
-  useGetGetGogreenDetailsAllQuery
+  useGetGetGogreenDetailsAllQuery,
+  useGetcommissionStatementMutation
 } = eCornerSlice;

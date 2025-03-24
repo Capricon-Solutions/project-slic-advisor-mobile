@@ -25,7 +25,7 @@ export default function ELetterItems({ item, navigation }) {
           fontFamily: Fonts.Roboto.SemiBold,
           fontSize: 13,
           color: COLORS.textColor
-        }}>Mr. W A D WICKRAMAARACHCHIE</Text>
+        }}>{item?.customerName}</Text>
         <TouchableOpacity style={{
           backgroundColor: COLORS.grassGreen,
           justifyContent: 'center',
@@ -36,7 +36,7 @@ export default function ELetterItems({ item, navigation }) {
           <Text style={{
             color: COLORS.white, fontSize: 10,
             fontFamily: Fonts.Roboto.Bold
-          }}>Renewed</Text>
+          }}>{item?.policyStatus}</Text>
         </TouchableOpacity>
       </View>
 
@@ -49,13 +49,13 @@ export default function ELetterItems({ item, navigation }) {
               fontSize: 13,
               marginBottom: 2,
               color: COLORS.textColor
-            }}>VM1119001710000088</Text>
+            }}>{item?.policyNo}</Text>
             <Text style={{
               fontFamily: Fonts.Roboto.Regular,
               fontSize: 13,
               marginVertical: 2,
               color: COLORS.textColor
-            }}>CBG 1240</Text>
+            }}>{item?.vehicleNo}</Text>
             <View style={styles.subDatamargin}>
               <Text style={{
                 fontFamily: Fonts.Roboto.Bold,
@@ -66,7 +66,7 @@ export default function ELetterItems({ item, navigation }) {
                 fontFamily: Fonts.Roboto.Regular,
                 fontSize: 13,
                 color: COLORS.textColor
-              }}>07/02/2025</Text>
+              }}>{item?.dueDate}</Text>
             </View>
             <View style={styles.subDatamargin}>
               <Text style={{
@@ -78,7 +78,7 @@ export default function ELetterItems({ item, navigation }) {
                 fontFamily: Fonts.Roboto.Regular,
                 fontSize: 13,
                 color: COLORS.textColor
-              }}>LKR 57,818.58</Text>
+              }}>{item?.premiumAmount}</Text>
             </View>
 
           </View>

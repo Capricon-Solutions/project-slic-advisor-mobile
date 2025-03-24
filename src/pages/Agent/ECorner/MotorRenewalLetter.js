@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,8 @@ import EconerItems from '../../../components/EconerItems';
 import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import moment from 'moment';
 const window = Dimensions.get('window');
 
 const data = [
@@ -68,9 +70,53 @@ export default function MotorRenewalLetter({ navigation }) {
   const renderLetterItems = ({ item }) => (
     <ELetterItems item={item} navigation={navigation} />
   );
+  const [searchText, setSearchText] = useState('');
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
+  const [filteredData, setFilteredData] = useState(data);
+  const handleSearch = () => {
+    console.log("searchText", searchText);
+    const filtered = motorRenewalsList?.data.filter(item =>
+      item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase())
+    );
+    console.log("filtered", filtered);
+    setFilteredData(filtered);
+  };
+  function handleClear(v) {
+    if (v == "") {
+      setFilteredData(motorRenewalsList?.data);
+    }
+  }
+  // const currentYear = new Date().getFullYear();
+  const lastMonthStart = moment()
+    .subtract(3, 'month')
+    .startOf('month')
+    .format('YYYY-MM-DD');
+  const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  const [fromDate, toDate] = selectedDate
+    ? selectedDate.split(' to ')
+    : [lastMonthStart, currentMonthEnd];
 
+  const {
+    data: motorRenewalsList,
+    error,
+    isFetching,
+    refetch,
+  } = useGetmotorRenewalsListQuery({
+    id: 905717, // Dynamic ID
+    fromDate: fromDate,
+    toDate: toDate,
+  });
+
+
+  useEffect(() => {
+    refetch
+    setFilteredData(motorRenewalsList?.data);
+    console.log('motorRenewalsList?.data', motorRenewalsList?.data)
+  }, [fromDate])
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -85,11 +131,16 @@ export default function MotorRenewalLetter({ navigation }) {
         <View style={[styles.searchWrap, { marginHorizontal: 15, marginVertical: 3 }]}>
           <TextInput
             style={styles.textInput}
-            // onChangeText={v => setSearchText(v)}
+            value={searchText}
+            onChangeText={v => {
+              setSearchText(v)
+              handleClear(v)
+            }
+            }
             placeholder="Quick search"
           />
           <TouchableOpacity
-            // onPress={() => handleSearch()}
+            onPress={handleSearch}
             style={styles.searchButton}>
             <Feather name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
@@ -97,6 +148,7 @@ export default function MotorRenewalLetter({ navigation }) {
         <View style={[styles.searchWrap, { marginHorizontal: 15, marginBottom: 3 }]}>
           <TextInput
             style={styles.textInput}
+            value={fromDate + ' - ' + toDate}
             // onChangeText={v => setSearchText(v)}
             placeholder="11/2024"
           />
@@ -109,7 +161,7 @@ export default function MotorRenewalLetter({ navigation }) {
 
         <View>
           <FlatList
-            data={data}
+            data={filteredData}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               fadeDuration: 1000,
