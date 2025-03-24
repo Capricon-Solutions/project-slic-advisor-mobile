@@ -15,6 +15,9 @@ export const plannerSlice = baseApi.injectEndpoints({
     getLeadById: builder.query({
       query: id => `planner/GetPlannerLeadById?Id=${id}`,
     }),
+    getLeadActivities: builder.query({
+      query: id => `planner/GetLeadActivities?Id=${id}&agentCode=905717`,
+    }),
     activityDelete: builder.mutation({
       query: id => {
         const finalUrl = `planner/removePlannerActivity/905717?activityId=${id}`;
@@ -109,5 +112,6 @@ export const {
   useGetLeadByIdQuery,
   useMonthlyCreationMutation,
   useLeadCreationMutation,
-  useGetMonthlyPlanQuery
+  useGetMonthlyPlanQuery,
+  useGetLeadActivitiesQuery
 } = plannerSlice;

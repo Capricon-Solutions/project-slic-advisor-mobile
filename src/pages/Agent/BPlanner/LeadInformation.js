@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,22 +6,22 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
-import {useGetLeadByIdQuery} from '../../../redux/services/plannerSlice';
+import { useGetLeadActivitiesQuery, useGetLeadByIdQuery } from '../../../redux/services/plannerSlice';
 import moment from 'moment';
 import LoadingScreen from '../../../components/LoadingScreen';
 
-export default function LeadInformation({navigation, route}) {
-  const tableHead = ['Type', 'Premium', 'Income'];
-  const {item} = route.params;
+export default function LeadInformation({ navigation, route }) {
+  const tableHead = ['Activity ID', 'Date and Time', 'Type', 'Description'];
+  const { item } = route.params;
 
   const {
     data: leadData,
@@ -30,35 +30,29 @@ export default function LeadInformation({navigation, route}) {
   } = useGetLeadByIdQuery(item?.leadId, {
     skip: !item?.leadId, // Prevent query if leadId is not available
   });
+  const {
+    data: LeadActivitie,
+    isLoading: LeadActivitieLoading,
+    error: LeadActivitieError,
+  } = useGetLeadActivitiesQuery(item?.leadId, {
+    skip: !item?.leadId, // Prevent query if leadId is not available
+  });
+
   const leadInfo = leadData?.data;
   console.log('leadInfo', leadInfo);
-  const table = [
-    {
-      id: '01777',
-      date: '21/12/2024 03.45pm',
-      type: 'appointment',
-      description: 'Description',
-    },
-    {
-      id: '01777',
-      date: '21/12/2024 03.45pm',
-      type: 'Quotation',
-      description: 'Description',
-    },
-    {
-      id: '01777',
-      date: '21/12/2024 03.45pm',
-      type: 'appointment',
-      description: 'Description',
-    },
-  ];
-  const tableData = table.map(item => [
-    item.id,
-    item.date,
-    item.type,
+  console.log('LeadActivitie', LeadActivitie);
+
+
+  const test = LeadActivitie?.data
+
+  const tableData = LeadActivitie?.data.map(item => [
+    item.activityId,
+    // item.activityDate,
+    moment(item?.activityDate).format('YYYY-MM-DD'),
+    item.activityType,
     item.description,
   ]);
-  const columnWidths = [130, 110, 110];
+  const columnWidths = [110, 110, 110, 120];
   const [expanded, setExpanded] = useState(1);
 
   return (
@@ -66,7 +60,7 @@ export default function LeadInformation({navigation, route}) {
       <HeaderBackground />
       <Header Title="Lead Information" onPress={() => navigation.goBack()} />
       {isLoading ? (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <LoadingScreen />
         </View>
       ) : (
@@ -100,7 +94,7 @@ export default function LeadInformation({navigation, route}) {
               </Text>
               <View
                 // onPress={() => (expanded !== 1 ? setExpanded(1) : setExpanded(0))}
-                style={{alignItems: 'center', padding: 3}}>
+                style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 1 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -165,7 +159,7 @@ export default function LeadInformation({navigation, route}) {
                 onPress={() =>
                   expanded !== 2 ? setExpanded(2) : setExpanded(0)
                 }
-                style={{alignItems: 'center', padding: 3}}>
+                style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 2 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -234,7 +228,7 @@ export default function LeadInformation({navigation, route}) {
               </Text>
               <View
                 // onPress={() => (expanded !== 3 ? setExpanded(3) : setExpanded(0))}
-                style={{alignItems: 'center', padding: 3}}>
+                style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 3 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -318,7 +312,7 @@ export default function LeadInformation({navigation, route}) {
                 }}>
                 policy Info
               </Text>
-              <View style={{alignItems: 'center', padding: 3}}>
+              <View style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 4 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -356,9 +350,9 @@ export default function LeadInformation({navigation, route}) {
                   value={
                     leadInfo?.premium != null
                       ? new Intl.NumberFormat('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(leadInfo.premium)
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(leadInfo.premium)
                       : ''
                   }
                   borderColor={COLORS.warmGray}
@@ -407,7 +401,7 @@ export default function LeadInformation({navigation, route}) {
               </Text>
               <View
                 // onPress={() => (expanded !== 5 ? setExpanded(5) : setExpanded(0))}
-                style={{alignItems: 'center', padding: 3}}>
+                style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 5 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -469,7 +463,7 @@ export default function LeadInformation({navigation, route}) {
               </Text>
               <View
                 // onPress={() => (expanded !== 6 ? setExpanded(6) : setExpanded(0))}
-                style={{alignItems: 'center', padding: 3}}>
+                style={{ alignItems: 'center', padding: 3 }}>
                 <Octicons
                   name={expanded == 6 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -478,7 +472,7 @@ export default function LeadInformation({navigation, route}) {
               </View>
             </TouchableOpacity>
             {expanded == 6 && (
-              <View style={{marginVertical: 5}}>
+              <View style={{ marginVertical: 5 }}>
                 <TableComponent
                   haveTotal={true}
                   tableHead={tableHead}
