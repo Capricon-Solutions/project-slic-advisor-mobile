@@ -42,7 +42,7 @@ const TableComponent = ({
                   textStyle={styles.headText}
                 />
                 {/* Table Rows */}
-                {tableData?.map((rowData, rowIndex) => (
+                {tableData?.map((rowData, rowIndex, index) => (
                   <Row
                     key={rowIndex}
                     data={rowData?.map((cellData, cellIndex) =>
@@ -57,7 +57,10 @@ const TableComponent = ({
                           </Text>
                         </TouchableOpacity>
                       ) : (
-                        <Text key={cellIndex} style={styles.text}>
+                        <Text key={cellIndex} style={[
+                          styles.text,
+                          haveTotal && rowIndex === tableData.length - 1 && styles.boldText, // Apply boldText to the last row if haveTotal is true
+                        ]}>
                           {cellData}
                         </Text>
                       )
@@ -107,6 +110,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.Roboto.SemiBold,
     color: COLORS.primaryRed,
+  },
+  boldText: {
+    fontWeight: 'bold',
+    color: COLORS.darkText,
+    // textAlign: 'left',
   },
 });
 

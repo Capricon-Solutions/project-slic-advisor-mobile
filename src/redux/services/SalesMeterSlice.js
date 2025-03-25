@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   SalesMeterResponse: {
@@ -23,7 +23,7 @@ const initialState = {
           income: '15,368.00',
         },
         {
-          type: 'Gen. Collec. - Cash',
+          type: 'Total',
           premium: '182,205.78',
           income: '15,368.00',
         },
@@ -42,6 +42,6 @@ export const SalesMeterSlice = createSlice({
   },
 });
 
-export const {GetsalesMeterResponse} = SalesMeterSlice.actions;
+export const { GetsalesMeterResponse } = SalesMeterSlice.actions;
 
 export default SalesMeterSlice.reducer;

@@ -53,12 +53,12 @@ export default function MonthlyPlan({ navigation }) {
 
 
   const body = {
-    numberOfMeetings: meetings,
-    numberOfPresents: presentations,
-    numberOfQuotations: quotations,
-    numberOfProposals: proposals,
-    numberOfClosed: closed,
-    numberOfLeads: leads,
+    noOfMeetings: meetings,
+    noOfPresents: presentations,
+    noOfQuots: quotations,
+    noOfProposals: proposals,
+    noOfClosed: closed,
+    noOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
   };
   console.log("planData", planData)
