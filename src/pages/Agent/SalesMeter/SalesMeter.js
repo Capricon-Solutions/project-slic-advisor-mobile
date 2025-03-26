@@ -15,9 +15,9 @@ import Fonts from '../../../theme/Fonts';
 import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import { Checkbox, Avatar, Menu, Divider, PaperProvider } from 'react-native-paper';
 
 import HeaderBackground from '../../../components/HeaderBackground';
-import { Avatar } from 'react-native-paper';
 import trophy from '../../../icons/trophy.png'; // Replace with the actual logo path
 import Target from '../../../icons/Target.png'; // Replace with the actual logo path
 import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
@@ -104,12 +104,32 @@ export default function SalesMeter({ navigation }) {
   const currentYearGrowth = CurrentMonthAchievement?.data?.growth;
   const lastYear = salesMeterResponse.lastYear;
   const currentYear = salesMeterResponse.currentYear;
+  const [visible, setVisible] = React.useState(false);
 
 
   useEffect(() => {
     console.log("CurrentMonthAchievement", CurrentMonthAchievement);
   }, [])
-
+  // const menuItems = [
+  //   {
+  //     title: 'Profile',
+  //     onPress: () => {
+  //       console.log('Profile Pressed');
+  //     },
+  //   },
+  //   {
+  //     title: 'Settings',
+  //     onPress: () => {
+  //       console.log('Settings Pressed');
+  //     },
+  //   },
+  //   {
+  //     title: 'Logout',
+  //     onPress: () => {
+  //       console.log('Logout Pressed');
+  //     },
+  //   },
+  // ];
 
   return (
     <View style={[Styles.container, { paddingHorizontal: 0 }]}>
@@ -154,6 +174,33 @@ export default function SalesMeter({ navigation }) {
                       color={COLORS.white}
                       size={20}
                     />
+                    {/* <Menu
+                      visible={visible}
+                      onDismiss={() => setVisible(false)}
+                      anchor={
+                        <TouchableOpacity onPress={() => setVisible(true)} style={{ marginLeft: 5 }}>
+                          <View style={{}}>
+                            <Octicons
+                              name={'chevron-down'}
+                              color={COLORS.white}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      }>
+                      {menuItems?.map((item, index) => (
+                        <React.Fragment key={index}>
+                          <Menu.Item
+                            onPress={() => {
+                              item.onPress();
+                              closeMenu();
+                            }}
+                            title={item.title}
+                          />
+                          {index !== menuItems.length - 1 && <Divider />}
+                        </React.Fragment>
+                      ))}
+                    </Menu> */}
                   </View>
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <CircularProgress

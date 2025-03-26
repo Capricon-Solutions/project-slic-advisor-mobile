@@ -17,13 +17,14 @@ import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
 import { styles } from './styles';
-import { useGetHelpQuery } from '../../redux/services/loginSlice';
+import { useGetHelpQuery, useUserLoginMutation } from '../../redux/services/loginSlice';
+import { showToast } from '../../components/ToastMessage';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,6 +33,37 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = () => {
     console.log('help:', help);
     console.log('Password:', password);
+  };
+  const [userLogin, { isLoading: loginLoading, error: loginError, data }] = useUserLoginMutation();
+
+  const handleSubmit = async (e) => {
+    // e.preventDefault(); // Uncomment if you are using it inside a form
+
+    const body = {
+      Username: username,
+      Password: password,
+    };
+
+    console.log("Request body:", body);
+
+    try {
+      // Trigger userLogin mutation and get the response
+      const response = await userLogin(body).unwrap();
+
+      // Log the API response
+      console.log('Login successful! Response:', response);
+
+      // Handle success (e.g., navigation, storing JWT token, etc.)
+      navigation.navigate('TypeTest');
+    } catch (err) {
+      // Handle error (e.g., showing error message)
+      console.error('Login failed:', err);
+      showToast({
+        type: 'error',
+        text1: 'Failed',
+        text2: err?.data?.Message || 'Something went wrong.',
+      });
+    }
   };
 
   return (
@@ -53,13 +85,14 @@ const LoginScreen = ({ navigation }) => {
       <Text style={styles.subText}>
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
-
+      <Text>{username}</Text>
       <View style={{ marginVertical: 5, width: '100%' }}>
-        <SquareTextBox Title={'Username'}></SquareTextBox>
+        <SquareTextBox Title={'Username'}
+          setValue={text => setUsername(text)}></SquareTextBox>
       </View>
 
       <View style={{ marginVertical: 5, width: '100%' }}>
-        <SquareTextBox Title={'Enter Password '} Secure={true}></SquareTextBox>
+        <SquareTextBox Title={'Enter Password '} Secure={true} setValue={text => setPassword(text)}></SquareTextBox>
       </View>
 
       {/* Remember Me and Forgot Password */}
@@ -81,7 +114,8 @@ const LoginScreen = ({ navigation }) => {
       {/* Login Button */}
       <View style={{ width: '100%', alignItems: 'center' }}>
         <Button
-          onPress={() => navigation.navigate('TypeTest')}
+          isLoading={loginLoading}
+          onPress={() => handleSubmit()}
           Title={'SIGN IN'}></Button>
       </View>
 
