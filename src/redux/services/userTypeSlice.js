@@ -1,7 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   userType: 1,
+
 };
 
 export const userTypeSlice = createSlice({
@@ -14,6 +15,6 @@ export const userTypeSlice = createSlice({
   },
 });
 
-export const {GetuserType} = userTypeSlice.actions;
+export const { GetuserType } = userTypeSlice.actions;
 
 export default userTypeSlice.reducer;

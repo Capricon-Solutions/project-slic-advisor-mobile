@@ -1,9 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   agentCode: 905717,
-  defaultImageUrl:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIEd2zxEc_4IQ1jHyniHLECu15zRjkHTBJzA&s',
+  defaultImageUrl: null,
   profileResponse: {
     data: {
       name: 'John Snow',
@@ -47,7 +46,7 @@ export const ProfileSlice = createSlice({
   },
 });
 
-export const {GetprofileResponse, SetdefaultImageUrl, GetAgentCode} =
+export const { GetprofileResponse, SetdefaultImageUrl, GetAgentCode } =
   ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

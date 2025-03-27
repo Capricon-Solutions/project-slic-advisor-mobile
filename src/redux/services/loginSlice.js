@@ -8,7 +8,7 @@ export const loginApi = baseApi.injectEndpoints({
 
     userLogin: builder.mutation({
       query: (body) => {
-        const finalUrl = 'http://122.255.4.181:2003/api/auth/login'; // Hardcoded URL for login
+        const finalUrl = 'http://122.255.4.181:2003/BellSalesLogin/api/auth/login'; // Hardcoded URL for login
         console.log(`Final URL for userLogin: ${finalUrl}`); // Log the final URL
 
         return {

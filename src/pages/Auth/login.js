@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -19,6 +19,7 @@ import AboutModal from '../../components/AboutModal';
 import { styles } from './styles';
 import { useGetHelpQuery, useUserLoginMutation } from '../../redux/services/loginSlice';
 import { showToast } from '../../components/ToastMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
@@ -28,7 +29,56 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [errorShow, setErrorShow] = useState(false);
   const { data: help, isLoading, error } = useGetHelpQuery();
+
+  // Comment this in apk release
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     const storedUsername = await AsyncStorage.getItem("username");
+  //     const storedPassword = await AsyncStorage.getItem("password");
+  //     setUsername(storedUsername);
+  //     setPassword(storedPassword);
+  //     console.log("username", username);
+  //     console.log("password", password);
+  //     if (username !== '' && password !== '') {
+  //       handleSubmit()
+  //     }
+
+  //   }, 2000);
+  // }, [username, password])
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('TypeTest');
+    }, 500);
+  }, [])
+
+
+
+  useEffect(() => {
+    const loadUsername = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem("username");
+        const storedPassword = await AsyncStorage.getItem("password");
+
+        console.log("username", storedUsername)
+        if (storedUsername) {
+          setUsername(storedUsername);
+          setPassword(storedPassword);
+          setRememberMe(true);
+        } else {
+          setRememberMe(false);
+        }
+      } catch (error) {
+        console.error("Error loading username:", error);
+      }
+    };
+
+    loadUsername();
+
+  }, [username]);
+
+
   // console.log('help:', help);
   const handleLogin = () => {
     console.log('help:', help);
@@ -36,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
   };
   const [userLogin, { isLoading: loginLoading, error: loginError, data }] = useUserLoginMutation();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     // e.preventDefault(); // Uncomment if you are using it inside a form
 
     const body = {
@@ -53,18 +103,40 @@ const LoginScreen = ({ navigation }) => {
       // Log the API response
       console.log('Login successful! Response:', response);
 
+      savePassword();
       // Handle success (e.g., navigation, storing JWT token, etc.)
-      navigation.navigate('TypeTest');
+
     } catch (err) {
       // Handle error (e.g., showing error message)
       console.error('Login failed:', err);
+      setErrorShow(true);
       showToast({
         type: 'error',
         text1: 'Failed',
         text2: err?.data?.Message || 'Something went wrong.',
       });
+
     }
   };
+
+  async function savePassword() {
+    try {
+      if (!rememberMe) {
+        // console.log("save password"),
+        await AsyncStorage.removeItem("username");
+        await AsyncStorage.removeItem("password");
+        navigation.navigate('TypeTest');
+      } else {
+        await AsyncStorage.setItem("username", username);
+        await AsyncStorage.setItem("password", password);
+        navigation.navigate('TypeTest');
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
+
+
+  }
 
   return (
     <View style={styles.container}>
@@ -85,14 +157,27 @@ const LoginScreen = ({ navigation }) => {
       <Text style={styles.subText}>
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
-      <Text>{username}</Text>
+      {/* <Text>{username}</Text> */}
       <View style={{ marginVertical: 5, width: '100%' }}>
         <SquareTextBox Title={'Username'}
-          setValue={text => setUsername(text)}></SquareTextBox>
+          value={username}
+          errorBorder={errorShow}
+          setValue={text => {
+            setUsername(text);
+
+            setErrorShow(false);
+          }}></SquareTextBox>
       </View>
 
       <View style={{ marginVertical: 5, width: '100%' }}>
-        <SquareTextBox Title={'Enter Password '} Secure={true} setValue={text => setPassword(text)}></SquareTextBox>
+        <SquareTextBox Title={'Enter Password '}
+          Secure={true}
+          value={password}
+          errorBorder={errorShow}
+          setValue={text => {
+            setPassword(text);
+            setErrorShow(false);
+          }}></SquareTextBox>
       </View>
 
       {/* Remember Me and Forgot Password */}
@@ -102,7 +187,10 @@ const LoginScreen = ({ navigation }) => {
             uncheckedColor={COLORS.subtext}
             color={COLORS.primary}
             status={rememberMe ? 'checked' : 'unchecked'}
-            onPress={() => setRememberMe(!rememberMe)}
+            onPress={() => {
+              setRememberMe(!rememberMe);
+
+            }}
           />
           <Text style={styles.checkboxLabel}>Remember Me</Text>
         </View>
@@ -128,6 +216,14 @@ const LoginScreen = ({ navigation }) => {
           for help.
         </Text>
       </View>
+      {/* {errorShow &&
+        <View style={{ paddingTop: 10, }}>
+          <Text style={{ color: COLORS.primaryRed, fontFamily: Fonts.Roboto.SemiBold, fontSize: 13 }}>
+            Invalid credentials. Please try again.
+          </Text>
+        </View>
+      } */}
+
     </View>
   );
 };

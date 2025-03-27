@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,46 +12,42 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {Avatar} from 'react-native-paper';
-import avatar from '../../../images/avatar.png'; // Replace with the actual logo path
-import SALES_PERFORMANCE from '../../../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
-import GENERAL from '../../../icons/GENERAL.png'; // Replace with the actual logo path
-import PRODUCT_PORTFOLIO from '../../../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
-import E_CORNER from '../../../icons/E-CORNER.png'; // Replace with the actual logo path
-import CLUB from '../../../icons/CLUB.png'; // Replace with the actual logo path
-import B_PLANNER from '../../../icons/B-PLANNER.png'; // Replace with the actual logo path
-import IndividualModal from '../../../components/IndividualModal';
+import { Avatar } from 'react-native-paper';
 import individualPerforamance from '../../../icons/individualPerforamance.png'; // Replace with the actual logo path
 import policyRenewal from '../../../icons/policyRenewal.png'; // Replace with the actual logo path
 import ppwIcon from '../../../icons/PPW.png'; // Replace with the actual logo path
+import RNFS from 'react-native-fs';
 
-import {styles} from './styles';
+import { styles } from './styles';
 // import GeneralModal from '../../../components/GeneralModal';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
 import RMGrid from '../../../components/RMGrid';
 import AgentProgressCard from '../../../components/AgentProgressCard';
 import RMProgressCard from '../../../components/RMProgressCard';
-import {Getpath} from '../../../redux/services/NavControllerSlice';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
+import { SetdefaultImageUrl } from '../../../redux/services/ProfileSlice';
+import { useGetImageQuery, useLazyGetImageUrlQuery } from '../../../redux/services/profilePicSlice';
 
 const window = Dimensions.get('window');
 
-export default function Dashboard({navigation}) {
+export default function Dashboard({ navigation }) {
   const dispatch = useDispatch();
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [generaModalVisible, setgeneraModalVisible] = useState(false);
   const [salesModalVisible, setsalesModalVisible] = useState(false);
   const [flagVisible, setFlagVisible] = useState(false);
+
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
@@ -81,6 +77,51 @@ export default function Dashboard({navigation}) {
   const totalNumberofRegions = profileResponse?.Summery.totalNumberofRegions;
   const branchRank = profileResponse?.Summery.branchRank;
   const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
+
+  const {
+    data: ProfilePic,
+    error,
+    isLoading,
+  } = useGetImageQuery({
+    id: 123321,
+  });
+
+
+  useEffect(() => {
+
+    fetchImage();
+  }, [ProfilePic?.data?.urlPath]);
+
+
+  async function fetchImage() {
+    if (!ProfilePic?.data?.urlPath) return;
+
+    // Append a timestamp to the URL to prevent caching
+    const url = `http://122.255.4.181:2001${ProfilePic.data.urlPath}?t=${new Date().getTime()}`;
+    const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+
+    console.log("Fetching new image...");
+    try {
+      const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
+      console.log("Fetching from URL:", url);
+
+      const response = await RNFS.downloadFile({
+        fromUrl: url,
+        toFile: filePath,
+        headers: { 'x-api-key': apiKey },
+      }).promise;
+
+      if (response.statusCode === 200) {
+        dispatch(SetdefaultImageUrl(`file://${filePath}`));
+        // setImageUri(`file://${filePath}`);
+      } else {
+        console.error('Failed to fetch image');
+      }
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  }
+
 
   const GeneralModal = [
     {
@@ -113,7 +154,6 @@ export default function Dashboard({navigation}) {
       },
     },
   ];
-
   const SalesModal = [
     {
       title: 'Individual Performance',
@@ -130,61 +170,67 @@ export default function Dashboard({navigation}) {
   const IndividualPerformanceType =
     usertype === 1 || usertype === 5
       ? [
-          {
-            title: 'Individual Statistics',
-            icon: individualPerforamance,
-            onPress: () => {
-              setsalesModalVisible(false);
-              setModalVisible(false);
-              navigation.navigate('IndividualStatistics');
-            },
+        {
+          title: 'Individual Statistics',
+          icon: individualPerforamance,
+          onPress: () => {
+            setsalesModalVisible(false);
+            setModalVisible(false);
+            navigation.navigate('IndividualStatistics');
           },
-        ]
+        },
+      ]
       : [
-          {
-            title: 'My Self',
-            icon: individualPerforamance,
-            onPress: () => {
-              setModalVisible(false);
-              navigation.navigate('MyselfPerformance');
-            },
+        {
+          title: 'My Self',
+          icon: individualPerforamance,
+          onPress: () => {
+            setModalVisible(false);
+            navigation.navigate('MyselfPerformance');
           },
-          {
-            title: 'Team',
-            expandable: true,
-            subButtons: [
-              {
-                title: 'Team Statistics',
-                onPress: () => {
-                  setModalVisible(false);
-                  navigation.navigate('TeamStatistics');
-                },
+        },
+        {
+          title: 'Team',
+          expandable: true,
+          subButtons: [
+            {
+              title: 'Team Statistics',
+              onPress: () => {
+                setModalVisible(false);
+                navigation.navigate('TeamStatistics');
               },
-              {
-                title: 'Current Performance',
-                onPress: () => {
-                  setModalVisible(false);
-                  navigation.navigate('TeamPerformance');
-                  console.log('test');
-                },
-              },
-            ],
-            icon: policyRenewal,
-            onPress: 'expand',
-          },
-          {
-            title: 'Team Member',
-            icon: policyRenewal,
-            onPress: () => {
-              setModalVisible(false);
-              navigation.navigate('TeamMemberGrid');
             },
+            {
+              title: 'Current Performance',
+              onPress: () => {
+                setModalVisible(false);
+                navigation.navigate('TeamPerformance');
+                console.log('test');
+              },
+            },
+          ],
+          icon: policyRenewal,
+          onPress: 'expand',
+        },
+        {
+          title: 'Team Member',
+          icon: policyRenewal,
+          onPress: () => {
+            setModalVisible(false);
+            navigation.navigate('TeamMemberGrid');
           },
-        ];
+        },
+      ];
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
+  const getInitials = (name) => {
+    return name
+      .split(" ") // Split by space
+      .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
+      .join(""); // Join them together
+  };
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
       {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
 
       <BottomModal
@@ -242,18 +288,28 @@ export default function Dashboard({navigation}) {
             onPress={() => navigation.navigate('Profile')}
             Title={'Sign In'}
             style={styles.profilePicture}>
-            <Avatar.Image
-              size={window.width * 0.15}
-              style={{backgroundColor: 'transparent'}}
-              source={{uri: defaultImageUrl}}
-            />
+            {defaultImageUrl ? (
+              <Avatar.Image label="XD"
+                size={window.width * 0.15}
+                style={{ backgroundColor: 'transparent' }}
+                source={{ uri: defaultImageUrl }}
+              />
+            ) :
+              (
+                <Avatar.Text
+                  label={getInitials(name)}
+                  size={window.width * 0.15}
+
+                />
+              )}
+
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Profile');
               dispatch(Getpath(0));
             }}
-            style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
+            style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
             <Text style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>Region Name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
@@ -262,14 +318,14 @@ export default function Dashboard({navigation}) {
               {usertype == 1
                 ? 'Advisor'
                 : usertype == 2
-                ? 'Team Leader'
-                : usertype == 3
-                ? 'Regional Manager'
-                : usertype == 4
-                ? 'Branch Manager'
-                : usertype == 5
-                ? 'Marketing executive'
-                : 'Unknown'}
+                  ? 'Team Leader'
+                  : usertype == 3
+                    ? 'Regional Manager'
+                    : usertype == 4
+                      ? 'Branch Manager'
+                      : usertype == 5
+                        ? 'Marketing executive'
+                        : 'Unknown'}
               )
             </Text>
           </TouchableOpacity>
@@ -288,7 +344,7 @@ export default function Dashboard({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.ExtraBold,
@@ -298,14 +354,14 @@ export default function Dashboard({navigation}) {
             {usertype == 1
               ? 'Advisor Summary'
               : usertype == 2
-              ? 'Team Leader Summary'
-              : usertype == 3
-              ? 'Central 1 Region Summary'
-              : usertype == 4
-              ? ' Western 1 Branch Summary'
-              : usertype == 5
-              ? ' Marketing executive Summary'
-              : 'user type unknown'}
+                ? 'Team Leader Summary'
+                : usertype == 3
+                  ? 'Central 1 Region Summary'
+                  : usertype == 4
+                    ? ' Western 1 Branch Summary'
+                    : usertype == 5
+                      ? ' Marketing executive Summary'
+                      : 'user type unknown'}
           </Text>
         </View>
 
@@ -347,7 +403,7 @@ export default function Dashboard({navigation}) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -359,7 +415,7 @@ export default function Dashboard({navigation}) {
             regionalRank={regionalRank}
             branchRank={branchRank}
             islandRank={islandRank}
-            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 

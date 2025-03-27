@@ -28,7 +28,9 @@ import {
   SetdefaultImageUrl,
 } from '../../redux/services/ProfileSlice';
 import { pick, types } from '@react-native-documents/picker';
-import { useGetImageQuery } from '../../redux/services/profilePicSlice';
+import RNFS from 'react-native-fs';
+
+import { useAddImageMutation, useGetImageQuery, useGetImageUrlQuery, useLazyGetImageUrlQuery } from '../../redux/services/profilePicSlice';
 const window = Dimensions.get('window');
 
 const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
@@ -41,23 +43,43 @@ export default function Profile({ navigation }) {
   );
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
   const [image, setImage] = useState();
+  const [imageUri, setImageUri] = useState(null);
 
-  useEffect(() => {
-    console.log('defaultImageUrl', defaultImageUrl);
-  }, [defaultImageUrl]);
+  // const {
+  //   data: ProfilePic,
+  //   error,
+  //   refetch,
+  //   isLoading,
+  // } = useGetImageQuery({
+  //   id: 123321,
+  // });
+  // const [getImageUrl, { data: ProfilePicUrl, error: errorPic, isLoading: isLoadingPic }] =
+  //   useLazyGetImageUrlQuery();
+  const [uploadImage, { data: uploadedImage, error: uploadError, isLoading: isUploading }] = useAddImageMutation();
 
-  const {
-    data: ProfilePic,
-    error,
-    isLoading,
-  } = useGetImageQuery({
-    id: 907719,
-  });
-  useEffect(() => {
-    console.log('isLoading', isLoading);
-    console.log('ProfilePic', ProfilePic);
-    console.log('error', error?.data?.Error);
-  }, [ProfilePic, isLoading]);
+
+  // useEffect(() => {
+  //   if (ProfilePic?.data?.urlPath) {
+  //     // Trigger the lazy query when the ProfilePic URL is available
+  //     // getImageUrl({ url: ProfilePic.data.urlPath });
+  //     console.log("ProfilePic.data.urlPath", ProfilePic.data.urlPath);
+  //   }
+  // }, [ProfilePic?.data?.urlPath]);
+
+
+
+  const handleUpload = async (uri) => {
+    const agencyCode = 123321
+    const imageFile = uri;
+    console.log("imageFilePicker", imageFile);
+    try {
+      const response = await uploadImage({ agencyCode, imageFile }).unwrap();
+      console.log('Image uploaded successfully:', response);
+      refetch();
+    } catch (err) {
+      console.error('Image upload failed:', err);
+    }
+  };
 
   const attachmentPicker = async () => {
     console.log('test');
@@ -70,8 +92,11 @@ export default function Profile({ navigation }) {
       });
       setImage(result.uri);
       console.log(result);
+      console.log("result.uri", result.uri);
 
       dispatch(SetdefaultImageUrl(result.uri));
+      const uri = result;
+      handleUpload(uri);
     } catch (err) {
       // see error handling
     }
@@ -91,10 +116,56 @@ export default function Profile({ navigation }) {
   const status = profileResponse?.status;
   const agentCode = profileResponse?.agentCode;
 
+  const getInitials = (name) => {
+    return name
+      .split(" ") // Split by space
+      .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
+      .join(""); // Join them together
+  };
+  // useEffect(() => {
+  //   const fetchImage = async () => {
+  //     if (!ProfilePic?.data?.urlPath) return;
+
+  //     // Append timestamp to prevent caching
+  //     const url = `http://122.255.4.181:2001${ProfilePic.data.urlPath}?t=${Date.now()}`;
+  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+
+  //     try {
+  //       const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
+  //       console.log("Fetching image from:", url);
+
+  //       const response = await RNFS.downloadFile({
+  //         fromUrl: url,
+  //         toFile: filePath,
+  //         headers: { 'x-api-key': apiKey },
+  //       }).promise;
+
+  //       if (response.statusCode === 200) {
+  //         console.log("Downloaded image path:", `file://${filePath}`);
+  //         // setImageUri(`file://${filePath}`);
+  //         // dispatch(SetdefaultImageUrl(`file://${filePath}`));
+  //       } else {
+  //         console.error('Failed to fetch image, status:', response.statusCode);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching image:', error);
+  //     }
+  //   };
+
+  //   fetchImage();
+  // }, [ProfilePic?.data?.urlPath, defaultImageUrl]);
+
+  useEffect(() => {
+    console.log("defaultImageUrl", defaultImageUrl)
+  }, [defaultImageUrl])
+
+
+
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Profile" onPress={() => navigation.goBack()} />
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
@@ -102,13 +173,23 @@ export default function Profile({ navigation }) {
         {/* Profile Section */}
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
-            <Avatar.Image size={pictureSize} source={{ uri: defaultImageUrl }} />
+            {defaultImageUrl ? (
+              <Avatar.Image style={{ backgroundColor: COLORS.lightBorder }} size={pictureSize} source={{ uri: defaultImageUrl }} />
+            ) :
+              (
+                <Avatar.Text
+                  label={getInitials(name)}
+                  size={pictureSize}
+                // style={{ backgroundColor: COLORS.}}
+                />
+              )}
             <TouchableOpacity
               style={styles.editIcon}
               onPress={() => attachmentPicker()}>
               <Feather name="edit-3" color={COLORS.black} size={20} />
             </TouchableOpacity>
           </View>
+          {isUploading && <Text style={{ color: COLORS.primary }}>Uploading</Text>}
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.profileRole}>
             {usertype == 1

@@ -42,8 +42,9 @@ export default function SquareTextBox({
         <TextInput
           mode={'outlined'}
           readOnly={readOnly}
-          outlineColor={errorBorder ? COLORS.errorBorder : COLORS.borderColor}
-          outlineStyle={{ borderRadius: 8, borderWidth: 0 }}
+          outlineColor={errorBorder ? COLORS.errorBorder : 'transparent'}
+          outlineStyle={{ borderRadius: 8, borderWidth: 1 }}
+          activeOutlineColor={errorBorder ? COLORS.errorBorder : COLORS.borderColor}
           style={[
             Styles.textInput,
             {
