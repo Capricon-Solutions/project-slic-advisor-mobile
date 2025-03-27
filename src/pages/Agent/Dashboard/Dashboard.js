@@ -51,6 +51,9 @@ export default function Dashboard({ navigation }) {
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
+  const profile = useSelector(
+    state => state.Profile.profile,
+  );
   const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
   console.log('userType', usertype);
@@ -66,8 +69,9 @@ export default function Dashboard({ navigation }) {
       console.log('path', path);
     }, [path]),
   );
+  console.log("profile", profile);
   // API Binds
-  const name = profileResponse?.name;
+  const name = profile?.User?.FirstName;
   const regionName = profileResponse?.regionName;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
@@ -77,6 +81,7 @@ export default function Dashboard({ navigation }) {
   const totalNumberofRegions = profileResponse?.Summery.totalNumberofRegions;
   const branchRank = profileResponse?.Summery.branchRank;
   const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
+  console.log("name", name);
 
   const {
     data: ProfilePic,
@@ -224,8 +229,7 @@ export default function Dashboard({ navigation }) {
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
   const getInitials = (name) => {
-    return name
-      .split(" ") // Split by space
+    return name?.split(" ") // Split by space
       .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
       .join(""); // Join them together
   };

@@ -20,11 +20,15 @@ import { styles } from './styles';
 import { useGetHelpQuery, useUserLoginMutation } from '../../redux/services/loginSlice';
 import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -47,11 +51,11 @@ const LoginScreen = ({ navigation }) => {
 
   //   }, 2000);
   // }, [username, password])
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('TypeTest');
-    }, 500);
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     navigation.navigate('TypeTest');
+  //   }, 500);
+  // }, [])
 
 
 
@@ -101,8 +105,8 @@ const LoginScreen = ({ navigation }) => {
       const response = await userLogin(body).unwrap();
 
       // Log the API response
-      console.log('Login successful! Response:', response);
-
+      console.log('Login successful! Response:', response?.User);
+      dispatch(Setprofile(response));
       savePassword();
       // Handle success (e.g., navigation, storing JWT token, etc.)
 

@@ -48,8 +48,41 @@ const HorizontalTableComponent = ({
               style={styles.head}
               textStyle={styles.headText}
             />
-            {/* Table Rows with Alternating Colors */}
             {tableData.map((rowData, index) => (
+              <Row
+                key={index}
+                data={rowData.map((cellData, cellIndex) => (
+                  <TouchableOpacity
+                    disabled={!clickable}
+                    key={cellIndex}
+                    onPress={() => handleCellPress(cellData)}>
+                    <Text
+                      style={[
+                        styles.text,
+                        cellIndex === 0 ? styles.leftAlignText : styles.centerAlignText, // Left-align first column, center-align others
+                        haveTotal &&
+                        index === tableData.length - 1 &&
+                        styles.boldText,
+                      ]}>
+                      {cellData}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                widthArr={columnWidths}
+                style={[
+                  styles.row,
+                  index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                ]}
+                textStyle={[
+                  styles.text,
+                  haveTotal &&
+                  index === tableData.length - 1 &&
+                  styles.boldText,
+                ]}
+              />
+            ))}
+
+            {/* {tableData.map((rowData, index) => (
               <Row
                 key={index}
                 data={rowData.map((cellData, cellIndex) => (
@@ -78,10 +111,10 @@ const HorizontalTableComponent = ({
                   styles.text,
                   haveTotal &&
                   index === tableData.length - 1 &&
-                  styles.boldText, // Apply boldText only if hasTotal is true
+                  styles.boldText, 
                 ]}
               />
-            ))}
+            ))} */}
           </Table>
         </View>
       </View>
@@ -129,6 +162,12 @@ const styles = StyleSheet.create({
   },
   transparentText: {
     color: 'transparent', // Make first header item text transparent
+  },
+  leftAlignText: {
+    textAlign: 'left',  // First column aligned left
+  },
+  centerAlignText: {
+    textAlign: 'center', // Other columns aligned center
   },
 });
 

@@ -33,7 +33,9 @@ export default function LandscapeHeader({
   haveMenu,
   haveCall,
   haveWhatsapp,
-  calenderClick
+  calenderClick,
+  fromDate,
+  toDate
 }) {
   return (
     <View
@@ -106,7 +108,8 @@ export default function LandscapeHeader({
 
         {haveSearch && (
           <View style={styles.searchWrap}>
-            <TextInput style={styles.textInput} placeholder="11/2024" />
+            <TextInput style={styles.textInput} value={fromDate + ' - ' + toDate}
+              placeholder="11/2024" />
             <TouchableOpacity onPress={calenderClick} style={styles.searchButton}>
               <Feather name="calendar" color={COLORS.primaryGreen} size={20} />
             </TouchableOpacity>

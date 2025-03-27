@@ -14,7 +14,7 @@ import COLORS from '../theme/colors';
 import moment from 'moment';
 const window = Dimensions.get('window');
 
-const squareSize = Math.min(window.width * 0.86, window.height * 0.9); // Use the smaller value
+const squareSize = Math.min(window.width * 0.92, window.height * 0.92); // Use the smaller value
 
 const months = [
   'January',

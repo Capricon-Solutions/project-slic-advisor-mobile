@@ -23,16 +23,17 @@ import { Avatar } from 'react-native-paper';
 import avatar from '../../images/avatar.png'; // Replace with the actual logo path
 import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
+import LoaderKit from 'react-native-loader-kit';
+
 import {
   GetprofileResponse,
   SetdefaultImageUrl,
 } from '../../redux/services/ProfileSlice';
 import { pick, types } from '@react-native-documents/picker';
 import RNFS from 'react-native-fs';
-
 import { useAddImageMutation, useGetImageQuery, useGetImageUrlQuery, useLazyGetImageUrlQuery } from '../../redux/services/profilePicSlice';
-const window = Dimensions.get('window');
 
+const window = Dimensions.get('window');
 const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
 
 export default function Profile({ navigation }) {
@@ -41,32 +42,13 @@ export default function Profile({ navigation }) {
   const profileResponse = useSelector(
     state => state.Profile.profileResponse.data,
   );
+  const profile = useSelector(
+    state => state.Profile.profile,
+  );
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
   const [image, setImage] = useState();
   const [imageUri, setImageUri] = useState(null);
-
-  // const {
-  //   data: ProfilePic,
-  //   error,
-  //   refetch,
-  //   isLoading,
-  // } = useGetImageQuery({
-  //   id: 123321,
-  // });
-  // const [getImageUrl, { data: ProfilePicUrl, error: errorPic, isLoading: isLoadingPic }] =
-  //   useLazyGetImageUrlQuery();
   const [uploadImage, { data: uploadedImage, error: uploadError, isLoading: isUploading }] = useAddImageMutation();
-
-
-  // useEffect(() => {
-  //   if (ProfilePic?.data?.urlPath) {
-  //     // Trigger the lazy query when the ProfilePic URL is available
-  //     // getImageUrl({ url: ProfilePic.data.urlPath });
-  //     console.log("ProfilePic.data.urlPath", ProfilePic.data.urlPath);
-  //   }
-  // }, [ProfilePic?.data?.urlPath]);
-
-
 
   const handleUpload = async (uri) => {
     const agencyCode = 123321
@@ -103,7 +85,9 @@ export default function Profile({ navigation }) {
   };
 
   // API Binds
-  const name = profileResponse?.name;
+  const name = profile?.User?.FirstName;
+
+  // const name = profileResponse?.name;
   const regionName = profileResponse?.regionName;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
@@ -122,38 +106,7 @@ export default function Profile({ navigation }) {
       .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
       .join(""); // Join them together
   };
-  // useEffect(() => {
-  //   const fetchImage = async () => {
-  //     if (!ProfilePic?.data?.urlPath) return;
 
-  //     // Append timestamp to prevent caching
-  //     const url = `http://122.255.4.181:2001${ProfilePic.data.urlPath}?t=${Date.now()}`;
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
-
-  //     try {
-  //       const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
-  //       console.log("Fetching image from:", url);
-
-  //       const response = await RNFS.downloadFile({
-  //         fromUrl: url,
-  //         toFile: filePath,
-  //         headers: { 'x-api-key': apiKey },
-  //       }).promise;
-
-  //       if (response.statusCode === 200) {
-  //         console.log("Downloaded image path:", `file://${filePath}`);
-  //         // setImageUri(`file://${filePath}`);
-  //         // dispatch(SetdefaultImageUrl(`file://${filePath}`));
-  //       } else {
-  //         console.error('Failed to fetch image, status:', response.statusCode);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching image:', error);
-  //     }
-  //   };
-
-  //   fetchImage();
-  // }, [ProfilePic?.data?.urlPath, defaultImageUrl]);
 
   useEffect(() => {
     console.log("defaultImageUrl", defaultImageUrl)
@@ -174,7 +127,28 @@ export default function Profile({ navigation }) {
         <View style={styles.profileContainer}>
           <View style={styles.imageContainer}>
             {defaultImageUrl ? (
-              <Avatar.Image style={{ backgroundColor: COLORS.lightBorder }} size={pictureSize} source={{ uri: defaultImageUrl }} />
+              <View>
+                <Avatar.Image style={{ backgroundColor: COLORS.lightBorder }} size={pictureSize} source={{ uri: defaultImageUrl }} />
+                {isUploading &&
+                  <View style={{
+                    borderRadius: 100, alignItems: 'center',
+                    justifyContent: 'center', position: 'absolute', height: pictureSize, width: pictureSize,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                  }}>
+                    {/* <Text style={{
+                      color: COLORS.ashBlue,
+                      fontSize: 14,
+                      fontFamily: Fonts.Roboto.SemiBold
+
+                    }}>Uploading...</Text> */}
+                    <LoaderKit
+                      style={{ width: 30, height: 30 }}
+                      name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+                      color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+                    />
+                  </View>}
+
+              </View>
             ) :
               (
                 <Avatar.Text
@@ -184,12 +158,13 @@ export default function Profile({ navigation }) {
                 />
               )}
             <TouchableOpacity
-              style={styles.editIcon}
+              disabled={isUploading}
+              style={[styles.editIcon, { backgroundColor: isUploading ? COLORS.modalBorder : '#B8E4E7' }]}
               onPress={() => attachmentPicker()}>
               <Feather name="edit-3" color={COLORS.black} size={20} />
             </TouchableOpacity>
           </View>
-          {isUploading && <Text style={{ color: COLORS.primary }}>Uploading</Text>}
+
           <Text style={styles.profileName}>{name}</Text>
           <Text style={styles.profileRole}>
             {usertype == 1
