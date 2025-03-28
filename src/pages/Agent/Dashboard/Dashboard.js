@@ -303,7 +303,7 @@ export default function Dashboard({ navigation }) {
                 <Avatar.Text
                   label={getInitials(name)}
                   size={window.width * 0.15}
-
+                  style={{ backgroundColor: COLORS.primary }}
                 />
               )}
 

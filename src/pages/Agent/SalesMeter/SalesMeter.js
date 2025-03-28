@@ -38,6 +38,7 @@ import { useSelector } from 'react-redux';
 import { useGetDepartmentMutation } from '../../../redux/services/setTargetSlice';
 import { useGetAgentCurrentMonthAchievementQuery, useGetAgentCurrentMonthIncomeQuery, useSalesIncomeQuery } from '../../../redux/services/SalesMeterApiSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
+import SalesTableComponent from '../../../components/SalesTableComponent';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -46,7 +47,7 @@ export default function SalesMeter({ navigation }) {
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [target, setTarget] = useState('');
-
+  const [type, setType] = useState("M");
   const salesMeterResponse = useSelector(
     state => state.SalesMeter.SalesMeterResponse.data,
   );
@@ -77,377 +78,383 @@ export default function SalesMeter({ navigation }) {
     id: 905717,
   });
 
-
+  const filterdData = type == "M" ? CurrentMonthAchievement?.data?.monthly : CurrentMonthAchievement?.data?.cumulative
+  console.log("filterdData", filterdData);
   const tableHead = ['Type', 'Premium', 'Income'];
-  const tableData = CurrentMonthIncome?.data.map(item => [
-    item.cashDebit,
-    item.totalPremium?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-    item.totalCommission?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-  ]);
+  const tableData = type == "M" ? CurrentMonthIncome?.data?.monthly.map(item => [
+    item?.cashDebit,
+    item?.totalPremium?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    item?.totalCommission?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+  ]) : CurrentMonthIncome?.data?.cumulative.map(item => [
+    item?.cashDebit,
+    item?.totalPremium?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    item?.totalCommission?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+  ])
 
-  const totalPremiumSum = CurrentMonthIncome?.data.reduce((sum, item) => sum + (item.totalPremium || 0), 0)
-    .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const totalPremiumSum = type == "M" ? CurrentMonthIncome?.data?.monthly.reduce((sum, item) => sum + (item.totalPremium || 0), 0)
+    .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : CurrentMonthIncome?.data?.cumulative.reduce((sum, item) => sum + (item.totalPremium || 0), 0)
+      .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-  const totalCommissionSum = CurrentMonthIncome?.data.reduce((sum, item) => sum + (item.totalCommission || 0), 0)
-    .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const totalCommissionSum = type == "M" ? CurrentMonthIncome?.data?.monthly.reduce((sum, item) => sum + (item.totalCommission || 0), 0)
+    .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : CurrentMonthIncome?.data?.cumulative.reduce((sum, item) => sum + (item.totalCommission || 0), 0)
+      .toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
   tableData?.push(["Total", totalPremiumSum, totalCommissionSum]);
-  const columnWidths = [110, 120, 120];
+  const columnWidths = [100, 110, 110];
 
   // API Binds
 
-  const monthlySalePercentage = CurrentMonthAchievement?.data?.achievement;
+  const monthlySalePercentage = filterdData?.achievement;
   const monthlySale = salesIncome?.data?.targetAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const lastYearAchievement = CurrentMonthAchievement?.data?.totalPremium.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const currentYearAchivement = CurrentMonthAchievement?.data?.achievement;
-  const lastYearTarget = CurrentMonthAchievement?.data?.totalTarget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const currentYearGrowth = CurrentMonthAchievement?.data?.growth;
+  const lastYearAchievement = filterdData?.totalPremium.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const currentYearAchivement = filterdData?.achievement;
+  const lastYearTarget = filterdData?.totalTarget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const currentYearGrowth = filterdData?.growth;
   const lastYear = salesMeterResponse.lastYear;
   const currentYear = salesMeterResponse.currentYear;
   const [visible, setVisible] = React.useState(false);
 
 
   useEffect(() => {
-    console.log("CurrentMonthAchievement", CurrentMonthAchievement);
+    console.log("filterdData", filterdData);
   }, [])
-  // const menuItems = [
-  //   {
-  //     title: 'Profile',
-  //     onPress: () => {
-  //       console.log('Profile Pressed');
-  //     },
-  //   },
-  //   {
-  //     title: 'Settings',
-  //     onPress: () => {
-  //       console.log('Settings Pressed');
-  //     },
-  //   },
-  //   {
-  //     title: 'Logout',
-  //     onPress: () => {
-  //       console.log('Logout Pressed');
-  //     },
-  //   },
-  // ];
+  const menuItems = [
+    {
+      title: 'Monthly',
+      onPress: () => {
+        setType("M");
+        // console.log('Profile Pressed');
+      },
+    },
+    {
+      title: 'Cumulative',
+      onPress: () => {
+        setType("C");
+        // console.log('Settings Pressed');
+      },
+    },
+
+  ];
+  const closeMenu = () => setVisible(false);
 
   return (
     <View style={[Styles.container, { paddingHorizontal: 0 }]}>
-      <HeaderBackground />
-      <SetTargetModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
-
-      <View>
-        <Header
-          Title="Sales meter"
-          onPress={() => navigation.goBack()}
-          haveButton={true}
-          ButtonTitle={'Set Target'}
-          onButton={() => setModalVisible(true)}
+      <PaperProvider>
+        <HeaderBackground />
+        <SetTargetModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
         />
-      </View>
-      {isLoading || achiveLoading ? (
-        <LoadingScreen />
-      ) :
-        (
-          <ScrollView
-            fadingEdgeLength={20}
-            contentContainerStyle={{ paddingHorizontal: 10 }}>
-            <View
-              style={{
-                // backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
-                marginVertical: 10,
-              }}>
+
+        <View>
+          <Header
+            Title="Sales meter"
+            onPress={() => navigation.goBack()}
+            haveButton={true}
+            ButtonTitle={'Set Target'}
+            onButton={() => setModalVisible(true)}
+          />
+        </View>
+        {isLoading || achiveLoading ? (
+          <LoadingScreen />
+        ) :
+          (
+            <ScrollView
+              fadingEdgeLength={20}
+              contentContainerStyle={{ paddingHorizontal: 10 }}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  height: 220,
+                  // backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
+                  marginVertical: 10,
                 }}>
-                <View style={styles.monthlyCardWrap}>
-                  <View style={styles.monthlyCard}>
-                    <Text style={styles.monthlyText}>MONTHLY</Text>
-                    <Octicons
-                      name={'chevron-down'}
-                      color={COLORS.white}
-                      size={20}
-                    />
-                    {/* <Menu
-                      visible={visible}
-                      onDismiss={() => setVisible(false)}
-                      anchor={
-                        <TouchableOpacity onPress={() => setVisible(true)} style={{ marginLeft: 5 }}>
-                          <View style={{}}>
-                            <Octicons
-                              name={'chevron-down'}
-                              color={COLORS.white}
-                              size={20}
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      }>
-                      {menuItems?.map((item, index) => (
-                        <React.Fragment key={index}>
-                          <Menu.Item
-                            onPress={() => {
-                              item.onPress();
-                              closeMenu();
-                            }}
-                            title={item.title}
-                          />
-                          {index !== menuItems.length - 1 && <Divider />}
-                        </React.Fragment>
-                      ))}
-                    </Menu> */}
-                  </View>
-                  <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <CircularProgress
-                      value={monthlySalePercentage}
-                      radius={63}
-                      duration={2000}
-                      progressValueColor={COLORS.textColor}
-                      maxValue={100}
-                      activeStrokeWidth={15}
-                      inActiveStrokeWidth={15}
-                      activeStrokeColor={COLORS.primary}
-                      inActiveStrokeColor={COLORS.lightBorder}
-                      // title={'Progress'}
-                      valueSuffix={'%'}
-                      // titleColor={'red'}
-                      titleStyle={{ fontWeight: 'bold' }}
-                    />
-                  </View>
-
-                  <View style={styles.monthlyAmount}>
-                    <Text
-                      style={{
-                        color: COLORS.black,
-                        fontSize: window.width * 0.04,
-                        fontFamily: Fonts.Roboto.SemiBold,
-                      }}>
-                      LKR {monthlySale}
-                    </Text>
-                  </View>
-                </View>
                 <View
                   style={{
-                    flex: 0.5,
-                    margin: 4,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    height: 220,
                   }}>
-                  <View style={styles.achivemantTopCard}>
-                    <View
-                      style={{
-                        flex: 0.5,
-                        flexDirection: 'row',
-                        padding: 10,
-                      }}>
-                      <View
-                        style={{
-                          flex: 0.26,
-
-                          justifyContent: 'center',
-                        }}>
-                        <View style={styles.cardIcon}>
-                          <Image
-                            source={trophy}
-                            style={styles.cardiconimage}></Image>
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          flex: 0.74,
-                          justifyContent: 'center',
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <Text style={styles.cardText}>Achievement</Text>
-                          <Text
-                            style={[
-                              styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
-                            ]}>
-                            2025
-                          </Text>
-                        </View>
-
-                        <Text style={styles.cardValue}>
-                          {' '}
-                          LKR {lastYearAchievement}
-                        </Text>
-                      </View>
+                  <View style={styles.monthlyCardWrap}>
+                    <TouchableOpacity onPress={() => setVisible(true)} style={styles.monthlyCard}>
+                      <Text style={styles.monthlyText}>MONTHLY</Text>
+                      {/* <Octicons
+                        name={'chevron-down'}
+                        color={COLORS.white}
+                        size={20}
+                      /> */}
+                      <Menu
+                        visible={visible}
+                        onDismiss={() => setVisible(false)}
+                        anchor={
+                          <TouchableOpacity onPress={() => setVisible(true)} style={{ marginLeft: 5 }}>
+                            <View style={{}}>
+                              <Octicons
+                                name={'chevron-down'}
+                                color={COLORS.white}
+                                size={20}
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        }>
+                        {menuItems?.map((item, index) => (
+                          <React.Fragment key={index}>
+                            <Menu.Item
+                              onPress={() => {
+                                item.onPress();
+                                closeMenu();
+                              }}
+                              title={item.title}
+                            />
+                            {index !== menuItems.length - 1 && <Divider />}
+                          </React.Fragment>
+                        ))}
+                      </Menu>
+                    </TouchableOpacity>
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                      <CircularProgress
+                        value={monthlySalePercentage}
+                        radius={63}
+                        duration={2000}
+                        progressValueColor={COLORS.textColor}
+                        maxValue={100}
+                        activeStrokeWidth={15}
+                        inActiveStrokeWidth={15}
+                        activeStrokeColor={COLORS.primary}
+                        inActiveStrokeColor={COLORS.lightBorder}
+                        // title={'Progress'}
+                        valueSuffix={'%'}
+                        // titleColor={'red'}
+                        titleStyle={{ fontWeight: 'bold' }}
+                      />
                     </View>
-                    <View
-                      style={{
-                        flex: 0.5,
-                        flexDirection: 'row',
-                        padding: 10,
-                      }}>
-                      <View
-                        style={{
-                          flex: 0.26,
-                          justifyContent: 'center',
-                        }}>
-                        <View style={styles.cardIcon}>
-                          <Image
-                            source={Target}
-                            style={styles.cardiconimage}></Image>
-                        </View>
-                      </View>
 
-                      <View
+                    <View style={styles.monthlyAmount}>
+                      <Text
                         style={{
-                          flex: 0.74,
-                          justifyContent: 'center',
+                          color: COLORS.black,
+                          fontSize: window.width * 0.04,
+                          fontFamily: Fonts.Roboto.SemiBold,
                         }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <Text style={styles.cardText}>Target</Text>
-                          <Text
-                            style={[
-                              styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
-                            ]}>
-                            2025
-                          </Text>
-                        </View>
-
-                        <Text style={styles.cardValue}> LKR {lastYearTarget}</Text>
-                      </View>
+                        LKR {monthlySale}
+                      </Text>
                     </View>
                   </View>
-
-                  <View style={styles.achivemantBottomCard}>
-                    <View
-                      style={{
-                        flex: 0.5,
-                        flexDirection: 'row',
-                        padding: 10,
-                      }}>
+                  <View
+                    style={{
+                      flex: 0.5,
+                      margin: 4,
+                    }}>
+                    <View style={styles.achivemantTopCard}>
                       <View
                         style={{
-                          flex: 0.26,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <View style={styles.cardIcon}>
-                          <Image
-                            source={trophy}
-                            style={styles.cardiconimage}></Image>
-                        </View>
-                      </View>
-                      {/* ///////////////// */}
-                      <View
-                        style={{
-                          flex: 0.74,
-                          justifyContent: 'center',
+                          flex: 0.5,
+                          flexDirection: 'row',
+                          padding: 10,
                         }}>
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
+                            flex: 0.26,
+
+                            justifyContent: 'center',
                           }}>
-                          <Text style={styles.cardText}>Achievement</Text>
-                          <Text
-                            style={[
-                              styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
-                            ]}>
-                            2025
+                          <View style={styles.cardIcon}>
+                            <Image
+                              source={trophy}
+                              style={styles.cardiconimage}></Image>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flex: 0.74,
+                            justifyContent: 'center',
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.cardText}>Achievement</Text>
+                            <Text
+                              style={[
+                                styles.cardText,
+                                { fontFamily: Fonts.Roboto.SemiBold },
+                              ]}>
+                              2025
+                            </Text>
+                          </View>
+
+                          <Text style={styles.cardValue}>
+                            {' '}
+                            LKR {lastYearAchievement}
                           </Text>
                         </View>
-
-                        <Text style={styles.cardValue}>
-                          {' '}
-                          {currentYearAchivement}%
-                        </Text>
                       </View>
-                      {/* //////////// */}
+                      <View
+                        style={{
+                          flex: 0.5,
+                          flexDirection: 'row',
+                          padding: 10,
+                        }}>
+                        <View
+                          style={{
+                            flex: 0.26,
+                            justifyContent: 'center',
+                          }}>
+                          <View style={styles.cardIcon}>
+                            <Image
+                              source={Target}
+                              style={styles.cardiconimage}></Image>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 0.74,
+                            justifyContent: 'center',
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.cardText}>Target</Text>
+                            <Text
+                              style={[
+                                styles.cardText,
+                                { fontFamily: Fonts.Roboto.SemiBold },
+                              ]}>
+                              2025
+                            </Text>
+                          </View>
+
+                          <Text style={styles.cardValue}> LKR {lastYearTarget}</Text>
+                        </View>
+                      </View>
                     </View>
-                    <View
-                      style={{
-                        flex: 0.5,
-                        flexDirection: 'row',
-                        padding: 10,
-                      }}>
+
+                    <View style={styles.achivemantBottomCard}>
                       <View
                         style={{
-                          flex: 0.26,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <View style={styles.cardIcon}>
-                          <Image
-                            source={Target}
-                            style={styles.cardiconimage}></Image>
-                        </View>
-                      </View>
-                      {/* ///////////////// */}
-                      <View
-                        style={{
-                          flex: 0.74,
-                          justifyContent: 'center',
+                          flex: 0.5,
+                          flexDirection: 'row',
+                          padding: 10,
                         }}>
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
+                            flex: 0.26,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}>
-                          <Text style={styles.cardText}>Growth</Text>
-                          <Text
-                            style={[
-                              styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
-                            ]}>
-                            2025
+                          <View style={styles.cardIcon}>
+                            <Image
+                              source={trophy}
+                              style={styles.cardiconimage}></Image>
+                          </View>
+                        </View>
+                        {/* ///////////////// */}
+                        <View
+                          style={{
+                            flex: 0.74,
+                            justifyContent: 'center',
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.cardText}>Achievement</Text>
+                            <Text
+                              style={[
+                                styles.cardText,
+                                { fontFamily: Fonts.Roboto.SemiBold },
+                              ]}>
+                              2025
+                            </Text>
+                          </View>
+
+                          <Text style={styles.cardValue}>
+                            {' '}
+                            {currentYearAchivement}%
                           </Text>
                         </View>
-
-                        <Text style={styles.cardValue}> {currentYearGrowth}%</Text>
+                        {/* //////////// */}
                       </View>
-                      {/* //////////// */}
+                      <View
+                        style={{
+                          flex: 0.5,
+                          flexDirection: 'row',
+                          padding: 10,
+                        }}>
+                        <View
+                          style={{
+                            flex: 0.26,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <View style={styles.cardIcon}>
+                            <Image
+                              source={Target}
+                              style={styles.cardiconimage}></Image>
+                          </View>
+                        </View>
+                        {/* ///////////////// */}
+                        <View
+                          style={{
+                            flex: 0.74,
+                            justifyContent: 'center',
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.cardText}>Growth</Text>
+                            <Text
+                              style={[
+                                styles.cardText,
+                                { fontFamily: Fonts.Roboto.SemiBold },
+                              ]}>
+                              2025
+                            </Text>
+                          </View>
+
+                          <Text style={styles.cardValue}> {currentYearGrowth}%</Text>
+                        </View>
+                        {/* //////////// */}
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
 
-            {/* <Table headers={headers} data={data} /> */}
-            <View style={{ alignItems: 'center', flex: 1 }}>
-              <TableComponent
-                haveTotal={true}
-                tableHead={tableHead}
-                tableData={tableData}
-                columnWidths={columnWidths}
-              />
-            </View>
+              {/* <Table headers={headers} data={data} /> */}
+              <View style={{ alignItems: 'center', flex: 1 }}>
+                <SalesTableComponent
+                  haveTotal={true}
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  columnWidths={columnWidths}
+                />
+              </View>
 
-            {/* Important Notice */}
-            <View style={Styles.noticeContainer}>
-              <Text style={Styles.noticeTitle}>IMPORTANT</Text>
-              <Text style={Styles.noticeText}>
-                Please note that the commission income figures shown on this page
-                are only based on the businesses issued for the current month.{' '}
-                {'\n'}
-                In particular, debit commission income shown here is based on the
-                debit businesses received and not on the debit premiums settled
-                during the month. Also, the figures do not include other income
-                types such as bonuses, incentives, or ORC commissions. {'\n'}In
-                summary, this is only an indicative estimate for you to plan your
-                activities. The final figures are subject to change according to
-                applicable company policies.
-              </Text>
-            </View>
-          </ScrollView>
-        )}
-
+              {/* Important Notice */}
+              <View style={Styles.noticeContainer}>
+                <Text style={Styles.noticeTitle}>IMPORTANT</Text>
+                <Text style={Styles.noticeText}>
+                  Please note that the commission income figures shown on this page
+                  are only based on the businesses issued for the current month.{' '}
+                  {'\n'}
+                  In particular, debit commission income shown here is based on the
+                  debit businesses received and not on the debit premiums settled
+                  during the month. Also, the figures do not include other income
+                  types such as bonuses, incentives, or ORC commissions. {'\n'}In
+                  summary, this is only an indicative estimate for you to plan your
+                  activities. The final figures are subject to change according to
+                  applicable company policies.
+                </Text>
+              </View>
+            </ScrollView>
+          )}
+      </PaperProvider>
     </View>
   );
 }

@@ -79,7 +79,7 @@ export default function NonMotorRenewalCompact({ navigation }) {
     item?.totalAmount?.toString() ?? '',
     item?.isPaid?.toString() ?? '',
   ]);
-  const columnWidths = [100, 175, 155, 70, 100, 100, 100];
+  const columnWidths = [100, 175, 200, 70, 100, 100, 100];
   const [isPickerVisible, setPickerVisible] = useState(false);
   return (
     <View style={Styles.container}>

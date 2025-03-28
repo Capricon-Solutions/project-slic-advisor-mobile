@@ -113,7 +113,7 @@ export default function PendingClaims({ navigation, route }) {
     const [expanded, setExpanded] = useState(false);
     return (
       <TouchableOpacity onPress={() => setExpanded(!expanded)} style={styles.card}>
-        <View style={{ backgroundColor: COLORS.pendingColor, borderRadius: 100, alignItems: 'center' }}>
+        <View style={{ backgroundColor: COLORS.TopBackColor, borderRadius: 100, alignItems: 'center' }}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.Bold,

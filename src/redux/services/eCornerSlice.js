@@ -9,6 +9,13 @@ export const eCornerSlice = baseApi.injectEndpoints({
         return url;
       },
     }),
+    getEDocument: builder.query({
+      query: () => {
+        const url = `print/edocuments`;
+        console.log("Fetching URL test", url);
+        return url;
+      },
+    }),
     getcommissionStatement: builder.mutation({
       query: (selectedDate, selectedType, selectedCode) => {
         const finalUrl = `print/getCommisionStatement/${selectedCode}?yearMonth=${selectedDate}&stype=${selectedType}`;
@@ -52,5 +59,6 @@ export const eCornerSlice = baseApi.injectEndpoints({
 // Export hooks
 export const {
   useGetGetGogreenDetailsAllQuery,
-  useGetcommissionStatementMutation
+  useGetcommissionStatementMutation,
+  useGetEDocumentQuery
 } = eCornerSlice;

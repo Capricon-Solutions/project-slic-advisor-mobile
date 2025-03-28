@@ -20,7 +20,7 @@ const window = Dimensions.get('window');
 export default function EDocItems({ item, navigation }) {
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(item.page)}
+      // onPress={() => navigation.navigate(item.page)}
       style={styles.container}>
       <View
         style={{
@@ -53,13 +53,14 @@ export default function EDocItems({ item, navigation }) {
         }}>
         <View>
           <Text
+            numberOfLines={1}
             style={{
               fontFamily: Fonts.Roboto.Bold,
               color: COLORS.textColor,
-              fontSize: window.width * 0.036,
+              fontSize: window.width * 0.035,
               marginBottom: 8,
             }}>
-            {item?.type}
+            {item?.docName}
           </Text>
         </View>
 
@@ -76,7 +77,7 @@ export default function EDocItems({ item, navigation }) {
           <Feather name="download" color={COLORS.white} size={13} />
           <Text
             style={{
-              fontSize: 10,
+              fontSize: 9.5,
               fontFamily: Fonts.Roboto.Bold,
               color: COLORS.white,
               marginLeft: 8,

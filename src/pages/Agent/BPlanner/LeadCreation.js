@@ -294,13 +294,8 @@ export default function LeadCreation({ navigation, route }) {
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
               dropdownData={[
-                { label: 'Appointment', value: 'A' },
-                { label: 'Meeting', value: 'M' },
-                { label: 'Presentation', value: 'P' },
-                { label: 'Quatation', value: 'Q' },
-                { label: 'Proposal', value: 'S' },
-                { label: 'Closed', value: 'C' },
-                { label: 'Reject', value: 'R' },
+                { label: 'Motor', value: 'M' },
+                { label: 'Non-Motor', value: 'G' },
               ]}
             />
             <SquareTextBoxOutlined

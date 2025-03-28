@@ -28,6 +28,7 @@ import {
 } from '../../../redux/services/contactSlice';
 import EconerItems from '../../../components/EconerItems';
 import EDocItems from '../../../components/EDocItems';
+import { useGetEDocumentQuery } from '../../../redux/services/eCornerSlice';
 const window = Dimensions.get('window');
 
 const data = [
@@ -63,6 +64,11 @@ const data = [
 ];
 
 export default function EDocument({ navigation }) {
+
+  const { data: EDocument, isLoading } = useGetEDocumentQuery();
+  const [SelectedType, setSelectedType] = useState(1);
+
+  console.log("EDocument", EDocument);
   const renderDocItems = ({ item }) => (
     <EDocItems item={item} navigation={navigation} />
   );
@@ -84,26 +90,105 @@ export default function EDocument({ navigation }) {
             <Feather name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
+
+        <View style={styles.mainWrap}>
+          <TouchableOpacity
+            onPress={() => setSelectedType(1)}
+            style={{
+              backgroundColor:
+                SelectedType == 1 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 5,
+            }}>
+            <Text
+              style={{
+                color: SelectedType == 1 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Motor
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelectedType(2)}
+            style={{
+              backgroundColor:
+                SelectedType == 2 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: SelectedType == 2 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Non-Motor
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setSelectedType(3)}
+            style={{
+              backgroundColor:
+                SelectedType == 3 ? COLORS.primary : COLORS.white,
+              borderRadius: 12,
+              flex: 0.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: SelectedType == 3 ? COLORS.white : COLORS.black,
+                fontFamily: Fonts.Roboto.SemiBold,
+              }}>
+              Claims
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={{
           paddingHorizontal: 15,
           fontFamily: Fonts.Roboto.Bold,
           color: COLORS.textColor,
           fontSize: 15,
           marginTop: 5
-        }}>Motor Documents</Text>
+        }}>{SelectedType == 1 ? "Motor" : SelectedType == 2 ? "Non-Motor" : "Claims"} Documents</Text>
         <View>
-          <FlatList
-            data={data}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-              paddingHorizontal: 15,
-            }}
-            renderItem={renderDocItems}
-          // keyExtractor={item => item.id.toString()}
-          />
+
+          {isLoading ? (
+            <View style={{
+              position: 'absolute',
+              // backgroundColor: 'red',
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+
+              <LoadingScreen />
+            </View>
+          ) :
+            (
+              <FlatList
+                data={SelectedType == 1 ?
+                  EDocument?.data?.motor : SelectedType == 2 ?
+                    EDocument?.data?.nonMotor : EDocument?.data?.claims}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                  paddingHorizontal: 15,
+                }}
+                renderItem={renderDocItems}
+              // keyExtractor={item => item.id.toString()}
+              />
+            )
+
+          }
+
         </View>
       </View>
     </View>

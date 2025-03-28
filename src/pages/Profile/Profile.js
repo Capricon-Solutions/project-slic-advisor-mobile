@@ -154,7 +154,7 @@ export default function Profile({ navigation }) {
                 <Avatar.Text
                   label={getInitials(name)}
                   size={pictureSize}
-                // style={{ backgroundColor: COLORS.}}
+                  style={{ backgroundColor: COLORS.primary }}
                 />
               )}
             <TouchableOpacity

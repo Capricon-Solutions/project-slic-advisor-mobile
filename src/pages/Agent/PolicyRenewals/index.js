@@ -57,8 +57,8 @@ export default function PolicyRenewals({ navigation }) {
     'Policy Status',
   ];
 
-  const columnWidths = [110, 190, 100, 180, 90, 110, 110, 110];
-  const columnWidths2 = [110, 190, 180, 90, 110, 110, 110];
+  const columnWidths = [110, 190, 100, 200, 90, 110, 110, 110];
+  const columnWidths2 = [110, 190, 200, 90, 110, 110, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonthStart = moment()
     .subtract(3, 'month')

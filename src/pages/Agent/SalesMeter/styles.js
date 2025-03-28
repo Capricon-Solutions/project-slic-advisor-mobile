@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardText: {
-    fontSize: window.width * 0.032,
+    fontSize: window.width * 0.03,
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.black,
   },
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     width: 18,
   },
   cardValue: {
-    fontSize: window.width * 0.034,
+    fontSize: window.width * 0.032,
     fontFamily: Fonts.Roboto.Bold,
     color: COLORS.black,
   },

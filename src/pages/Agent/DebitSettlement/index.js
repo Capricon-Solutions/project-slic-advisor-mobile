@@ -83,6 +83,18 @@ export default function DebitSettlement({ navigation }) {
             clearOnFocus={true}
             closeOnBlur={true}
             showClear={false}
+            style={{}}
+            textInputProps={{
+
+              autoCorrect: false,
+              autoCapitalize: 'none',
+              style: {
+
+                color: COLORS.textColor,
+              },
+            }}
+            containerStyle={{}}
+            contentContainerStyle={{ color: 'red' }}
             closeOnSubmit={false}
             initialValue={{ id: '1' }} // or just '2'
             onSelectItem={setSelectedItem}

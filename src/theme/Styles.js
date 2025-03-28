@@ -146,7 +146,7 @@ export const Styles = StyleSheet.create({
   },
   smallbuttonText: {
     color: 'white',
-    fontSize: window.width * 0.037,
+    fontSize: window.width * 0.034,
     fontFamily: Fonts.Roboto.SemiBold,
   },
   // Dashboard

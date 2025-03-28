@@ -86,7 +86,7 @@ export default function MotorRenewalCompact({ navigation }) {
     item?.premiumAmount?.toString() ?? '',
     item?.policyStatus?.toString() ?? '',
   ]);
-  const columnWidths = [100, 140, 100, 140, 70, 100, 100, 100];
+  const columnWidths = [100, 140, 100, 200, 70, 100, 100, 100];
 
 
   return (
