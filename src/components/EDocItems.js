@@ -7,9 +7,12 @@ import {
   Image,
   Linking,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 
 import COLORS from '../theme/colors';
 import { Styles } from '../theme/Styles';
@@ -17,10 +20,47 @@ import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function EDocItems({ item, navigation }) {
+export default function EDocItems({ item, navigation, onPress }) {
+  const [downloadProgress, setDownloadProgress] = React.useState(0);
+  const [isDownloading, setIsDownloading] = React.useState(false);
+
+  const downloadAndOpenPDF = async (path) => {
+    try {
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      const pdfUrl = `http://122.255.4.181:2001/api/print/${path}`;
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
+
+      const options = {
+        fromUrl: pdfUrl,
+        toFile: localFilePath,
+        headers: {
+          'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
+        },
+        progress: (res) => {
+          const progress = (res.bytesWritten / res.contentLength);
+          setDownloadProgress(progress);
+        },
+      };
+
+      // Download the file
+      const download = RNFS.downloadFile(options);
+      await download.promise;
+
+      // Open the downloaded file
+      await FileViewer.open(localFilePath, { showOpenWithDialog: true });
+      console.log('PDF opened successfully!');
+    } catch (error) {
+      console.error('Download/Open Error:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <TouchableOpacity
-      // onPress={() => navigation.navigate(item.page)}
+      onPress={() => downloadAndOpenPDF(item?.path)}
       style={styles.container}>
       <View
         style={{
@@ -64,28 +104,42 @@ export default function EDocItems({ item, navigation }) {
           </Text>
         </View>
 
-
-        <View
-          style={{
-            backgroundColor: COLORS.grassGreen,
-            paddingVertical: 3,
-            paddingHorizontal: 5,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            borderRadius: 6,
-          }}>
-          <Feather name="download" color={COLORS.white} size={13} />
-          <Text
+        {isDownloading ? (
+          <View style={{ width: '100%' }}>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  { width: `${downloadProgress * 100}%` }
+                ]}
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {Math.round(downloadProgress * 100)}% Downloaded
+            </Text>
+          </View>
+        ) : (
+          <View
             style={{
-              fontSize: 9.5,
-              fontFamily: Fonts.Roboto.Bold,
-              color: COLORS.white,
-              marginLeft: 8,
+              backgroundColor: COLORS.grassGreen,
+              paddingVertical: 3,
+              paddingHorizontal: 5,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              borderRadius: 6,
             }}>
-            Download as PDF
-          </Text>
-        </View>
-
+            <Feather name="download" color={COLORS.white} size={13} />
+            <Text
+              style={{
+                fontSize: 9.5,
+                fontFamily: Fonts.Roboto.Bold,
+                color: COLORS.white,
+                marginLeft: 8,
+              }}>
+              Download as PDF
+            </Text>
+          </View>
+        )}
       </View>
       <View
         style={{
@@ -93,21 +147,25 @@ export default function EDocItems({ item, navigation }) {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View
-          style={{
-            borderRadius: 8,
-            height: 32,
-            width: 32,
-            backgroundColor: COLORS.primary,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <MaterialCommunityIcons
-            name="download"
-            color={COLORS.white}
-            size={25}
-          />
-        </View>
+        {isDownloading ? (
+          <ActivityIndicator size="small" color={COLORS.primary} />
+        ) : (
+          <View
+            style={{
+              borderRadius: 8,
+              height: 32,
+              width: 32,
+              backgroundColor: COLORS.primary,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <MaterialCommunityIcons
+              name="download"
+              color={COLORS.white}
+              size={25}
+            />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -124,10 +182,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     flexDirection: 'row',
-    // height: 111,
     shadowOffset: {
       width: 0,
       height: 2,
     },
+  },
+  progressBarContainer: {
+    height: 5,
+    width: '100%',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 3,
+    marginTop: -3
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.primary,
+  },
+  progressText: {
+    fontSize: 12,
+    color: COLORS.textColor,
+    fontFamily: Fonts.Roboto.Regular,
   },
 });

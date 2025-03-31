@@ -219,7 +219,7 @@ export default function TrainingCalender({ navigation }) {
                 color: COLORS.grayText,
                 textAlign: 'center',
               }}>
-              Np events for the selected date
+              No events for the selected date
             </Text>
           </View>
 
