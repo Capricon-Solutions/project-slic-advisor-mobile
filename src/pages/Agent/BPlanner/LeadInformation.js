@@ -436,7 +436,11 @@ export default function LeadInformation({ navigation, route }) {
                   mediumFont={true}
                   Label={'Year of Manufacture'}
                   readOnly={true}
-                  // value={String(leadInfo?.vehicleValue ?? '')}
+                  value={
+                    leadInfo?.vehicleManuf
+                      ? moment(leadInfo.vehicleManuf).format('YYYY/MM/DD')
+                      : ''
+                  }
                   borderColor={COLORS.warmGray}
                 />
               </View>

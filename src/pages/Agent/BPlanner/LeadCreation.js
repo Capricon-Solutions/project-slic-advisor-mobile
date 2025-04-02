@@ -107,7 +107,7 @@ export default function LeadCreation({ navigation, route }) {
         }
       } else if (currentStep == 2) {
         console.log(currentStep);
-        if (validateForm2()) {
+        if (!validateForm2()) {
           console.log("trigger2")
           setCurrentStep(3);
         }
@@ -195,18 +195,18 @@ export default function LeadCreation({ navigation, route }) {
 
   const validateForm1 = () => {
     if (
-      !leadType ||
-      !policyNo ||
-      !insCom ||
-      !premium ||
-      !selectedDate ||
-      !refNo
+      !leadType
+      // !policyNo ||
+      // !insCom ||
+      // !premium ||
+      // !selectedDate ||
+      // !refNo
     ) {
       console.log("test errors")
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Lead type is mandatory. 🚨',
       });
       return false;
     }
@@ -225,11 +225,13 @@ export default function LeadCreation({ navigation, route }) {
     return true;
   };
   const validateForm3 = () => {
-    if (!customerName || !nic || !selectedDate2 || !occupation) {
+    if (!customerName
+      // || !nic || !selectedDate2 || !occupation
+    ) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Customer Name is mandatory. 🚨',
       });
       return false;
     }
@@ -250,7 +252,7 @@ export default function LeadCreation({ navigation, route }) {
   };
   const handleLeadCreate = async () => {
 
-    if (validateForm4()) // Stop if validation fails
+    if (!validateForm4()) // Stop if validation fails
       console.log("work")
     showToast({
       type: 'error',

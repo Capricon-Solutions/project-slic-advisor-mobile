@@ -29,6 +29,15 @@ export const SalesMeterApi = baseApi.injectEndpoints({
       },
     }),
 
+    // getCurrentMonthRank
+    getCurrentMonthRank: builder.query({
+      query: ({ id }) => {
+        const url = `agent/getCurrentMonthRank/${id}`;
+        console.log('Fetching Notifications from:', url);
+        return url;
+      },
+    }),
+
     setTarget: builder.mutation({
       query: ({ body }) => {
         console.log('POST request payload:', body);
@@ -48,5 +57,6 @@ export const {
   useGetAgentCurrentMonthAchievementQuery,
   useSalesIncomeQuery,
   useGetAgentCurrentMonthIncomeQuery,
-  useSetTargetMutation
+  useSetTargetMutation,
+  useGetCurrentMonthRankQuery
 } = SalesMeterApi;

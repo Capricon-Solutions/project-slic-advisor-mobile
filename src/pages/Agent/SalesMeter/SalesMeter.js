@@ -211,7 +211,7 @@ export default function SalesMeter({ navigation }) {
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                       <CircularProgress
-                        value={monthlySalePercentage}
+                        value={monthlySalePercentage || 0}
                         radius={63}
                         duration={2000}
                         progressValueColor={COLORS.textColor}
@@ -234,7 +234,7 @@ export default function SalesMeter({ navigation }) {
                           fontSize: window.width * 0.04,
                           fontFamily: Fonts.Roboto.SemiBold,
                         }}>
-                        LKR {monthlySale}
+                        LKR {monthlySale || 0.00}
                       </Text>
                     </View>
                   </View>
@@ -284,7 +284,7 @@ export default function SalesMeter({ navigation }) {
 
                           <Text style={styles.cardValue}>
                             {' '}
-                            LKR {lastYearAchievement}
+                            LKR {lastYearAchievement || 0.00}
                           </Text>
                         </View>
                       </View>
@@ -326,7 +326,7 @@ export default function SalesMeter({ navigation }) {
                             </Text>
                           </View>
 
-                          <Text style={styles.cardValue}> LKR {lastYearTarget}</Text>
+                          <Text style={styles.cardValue}> LKR {lastYearTarget || 0.00}</Text>
                         </View>
                       </View>
                     </View>
@@ -373,7 +373,7 @@ export default function SalesMeter({ navigation }) {
 
                           <Text style={styles.cardValue}>
                             {' '}
-                            {currentYearAchivement}%
+                            {currentYearAchivement || 0}%
                           </Text>
                         </View>
                         {/* //////////// */}

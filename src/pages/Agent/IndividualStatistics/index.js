@@ -112,14 +112,7 @@ export default function IndividualStatistics({ navigation }) {
     item?.endorsement?.toString() ?? '',
     item?.total?.toString() ?? '',
   ]);
-  const renderItem = ({ item }) => <ContactListItem item={item} />;
 
-  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
-
-  const handleLoad = (from, to) => {
-    console.log('Selected From:', from);
-    console.log('Selected To:', to);
-  };
 
   return (
     <View style={Styles.container}>
@@ -136,7 +129,7 @@ export default function IndividualStatistics({ navigation }) {
         <LandscapeHeader
           haveSearch={true}
           calenderClick={() => setPickerVisible(true)}
-          Title="IndividualStatistics"
+          Title="Individual Statistics"
           onPress={() => navigation.goBack()}
           fromDate={fromDate}
           toDate={toDate}
@@ -162,13 +155,6 @@ export default function IndividualStatistics({ navigation }) {
         />
       </ScrollView>
       {isFetching && <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
-        {/* <LoadingScreen /> */}
-        {/* <LoaderKit
-          style={{ width: 45, height: 45 }}
-          name={'LineScale'} // Optional: see list of animations below
-          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-        /> */}
-
 
         <LoaderKit
           style={{ width: 50, height: 50 }}

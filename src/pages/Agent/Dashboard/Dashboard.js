@@ -37,6 +37,7 @@ import RMProgressCard from '../../../components/RMProgressCard';
 import { Getpath } from '../../../redux/services/NavControllerSlice';
 import { SetdefaultImageUrl } from '../../../redux/services/ProfileSlice';
 import { useGetImageQuery, useLazyGetImageUrlQuery } from '../../../redux/services/profilePicSlice';
+import { useGetCurrentMonthRankQuery } from '../../../redux/services/SalesMeterApiSlice';
 
 const window = Dimensions.get('window');
 
@@ -70,17 +71,28 @@ export default function Dashboard({ navigation }) {
     }, [path]),
   );
   console.log("profile", profile);
+
+  const {
+    data: CurrentMonthRank,
+    error: achiveError,
+    isLoading: achiveLoading,
+    isFetching: achiveFetch,
+  } = useGetCurrentMonthRankQuery({
+    id: 905717,
+  });
+  console.log("CurrentMonthRank", CurrentMonthRank);
+
   // API Binds
-  const name = profile?.User?.FirstName;
-  const regionName = profileResponse?.regionName;
+  const name = CurrentMonthRank?.data?.agentName;
+  const regionName = CurrentMonthRank?.data?.region;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
-  const totalIslandRank = profileResponse?.Summery.totalIslandRank;
-  const islandRank = profileResponse?.Summery.islandRank;
-  const regionalRank = profileResponse?.Summery.regionalRank;
-  const totalNumberofRegions = profileResponse?.Summery.totalNumberofRegions;
-  const branchRank = profileResponse?.Summery.branchRank;
-  const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
+  const totalIslandRank = CurrentMonthRank?.data?.islandTotal;
+  const islandRank = CurrentMonthRank?.data?.islandRank;
+  const regionalRank = CurrentMonthRank?.data?.regionalRank;
+  const totalNumberofRegions = CurrentMonthRank?.data?.regionalTotal;
+  const branchRank = CurrentMonthRank?.data?.branchRank;
+  const totalNumberofBranches = CurrentMonthRank?.data?.branchTotal;
   console.log("name", name);
 
   const {
@@ -314,7 +326,7 @@ export default function Dashboard({ navigation }) {
               dispatch(Getpath(0));
             }}
             style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
-            <Text style={styles.UserName}>{name}</Text>
+            <Text numberOfLines={1} style={styles.UserName}>{name}</Text>
             <Text style={styles.regionName}>Region Name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
             <Text style={styles.position}>
@@ -375,6 +387,7 @@ export default function Dashboard({ navigation }) {
             totalNumberofRegions={totalNumberofRegions}
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
+            loading={CurrentMonthRank ? false : true}
             branchRank={branchRank}
             islandRank={islandRank}
             onPress={() => {

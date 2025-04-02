@@ -20,6 +20,7 @@ import { TextInput } from 'react-native-paper';
 import Button from './Button';
 import { useSetTargetMutation } from '../redux/services/SalesMeterApiSlice';
 import { showToast, ToastMessage } from './ToastMessage';
+import moment from 'moment';
 
 const window = Dimensions.get('window');
 
@@ -38,6 +39,7 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
   // };
   const currentDate = new Date();
   const yearMonth = `${currentDate.getFullYear()}/${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+  const currentTargetDate = moment().format('YYYY/MMMM');
 
   const body = {
 
@@ -123,7 +125,7 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>
-                Set your target for 2025/December
+                Set your target for {currentTargetDate}
               </Text>
               <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
                 <MaterialCommunityIcons

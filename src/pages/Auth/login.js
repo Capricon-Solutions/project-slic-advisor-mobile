@@ -22,6 +22,7 @@ import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
+import { CommonActions } from '@react-navigation/native';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
@@ -84,10 +85,10 @@ const LoginScreen = ({ navigation }) => {
 
 
   // console.log('help:', help);
-  const handleLogin = () => {
-    console.log('help:', help);
-    console.log('Password:', password);
-  };
+  // const handleLogin = () => {
+  //   console.log('help:', help);
+  //   console.log('Password:', password);
+  // };
   const [userLogin, { isLoading: loginLoading, error: loginError, data }] = useUserLoginMutation();
 
   const handleSubmit = async () => {
@@ -133,7 +134,15 @@ const LoginScreen = ({ navigation }) => {
       } else {
         await AsyncStorage.setItem("username", username);
         await AsyncStorage.setItem("password", password);
-        navigation.navigate('TypeTest');
+        // await AsyncStorage.setItem("loggedIn", true);
+
+        navigation.navigate("TypeTest");
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{ name: 'AppStack' }],
+        //   })
+        // );
       }
     } catch (error) {
       console.error("Error saving data:", error);
