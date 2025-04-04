@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -37,6 +37,7 @@ import DropdownFilled from '../../../components/DropdownFilled';
 import { Getpath } from '../../../redux/services/NavControllerSlice';
 import { useDispatch } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import { useApproveTrainingMutation, useGetTrainingListQuery } from '../../../redux/services/trainingSlice';
 
 const window = Dimensions.get('window');
 
@@ -84,25 +85,401 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
+// export default function TrainingCalender({ navigation }) {
+//   const [selectedItem, setSelectedItem] = useState();
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const [itemOne, setItemOne] = useState(true);
+//   const [itemTwo, setItemTwo] = useState(true);
+//   const [trainingType, setTrainingType] = useState();
+//   const [selected, setSelected] = useState({
+//     '2025-02-01': { selected: true, marked: true, selectedColor: 'blue' },
+//     '2025-02-02': { marked: true },
+//     '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
+//   });
+//   const dispatch = useDispatch();
+
+//   useFocusEffect(
+//     useCallback(() => {
+//       dispatch(Getpath(0));
+
+//     }, [])
+//   );
+
+//   const {
+//     data: TrainingList,
+//     isFetching,
+//     refetch,
+//     error,
+//   } = useGetTrainingListQuery({});
+
+
+//   console.log("TrainingList", TrainingList);
+//   return (
+//     <View style={Styles.container}>
+//       <NotAttending
+//         modalVisible={modalVisible}
+//         setModalVisible={setModalVisible}
+//       />
+//       <View style={[Styles.container, { overflow: 'scroll' }]}>
+//         <HeaderBackground />
+//         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
+//         <ScrollView
+//           showsVerticalScrollIndicator={false}
+//           fadingEdgeLength={20}
+//           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+//           style={{}}>
+//           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//             <Text
+//               style={{
+//                 fontSize: 14,
+//                 fontFamily: Fonts.Roboto.SemiBold,
+//                 color: COLORS.textColor,
+//               }}>
+//               Select User Type
+//             </Text>
+//             <View style={{ width: '60%', marginLeft: 20 }}>
+//               {/* <AutocompleteDropdown
+//                 clearOnFocus={true}
+//                 closeOnBlur={true}
+//                 closeOnSubmit={false}
+//                 onSelectItem={setSelectedItem}
+//                 dataSet={[
+//                   {id: '1', title: 'Myself'},
+//                   {id: '2', title: 'Marketing executive'},
+//                   {id: '2', title: 'Team Leader'},
+//                   {id: '2', title: 'All'},
+//                 ]}
+//               /> */}
+//               <DropdownFilled
+//                 Color={COLORS.white}
+//                 BorderColor={COLORS.textColor}
+//                 initialValue={trainingType}
+//                 placeholder="Select Training Type"
+//                 onSelect={value => setTrainingType(value)}
+//                 dropdownData={[
+//                   { label: 'All', value: 'A' },
+//                   { label: 'Motor', value: 'M' },
+//                   { label: 'Non-Motor', value: 'G' },
+//                 ]}
+//               />
+//             </View>
+//           </View>
+
+//           <View
+//             style={{
+//               borderRadius: 15,
+//               backgroundColor: COLORS.white,
+//               padding: 5,
+//               elevation: 5,
+
+//               marginVertical: 15,
+//             }}>
+//             <Calendar
+//               onDayPress={day => {
+//                 setSelected(day.dateString);
+//               }}
+//               style={{
+//                 borderColor: 'gray',
+//               }}
+//               theme={{
+//                 backgroundColor: '#ffffff',
+//                 calendarBackground: '#ffffff',
+//                 textSectionTitleColor: '#b6c1cd',
+//                 selectedDayBackgroundColor: COLORS.primary,
+//                 selectedDayTextColor: 'white',
+//                 todayTextColor: '#00adf5',
+//                 dayTextColor: '#2d4150',
+//                 textDisabledColor: '#dd99ee',
+//               }}
+//               markedDates={selected}
+//             />
+//           </View>
+
+//           <View
+//             style={{
+//               flexDirection: 'row',
+//               justifyContent: 'space-between',
+//               alignItems: 'center',
+//               marginTop: 5,
+//             }}>
+//             <Text
+//               style={{
+//                 fontFamily: Fonts.Roboto.SemiBold,
+//                 fontSize: 14,
+//                 color: COLORS.textColor,
+//               }}>
+//               Monday, 22/January/2025
+//             </Text>
+//             <View>
+//               {/* <SmallButton Title={'View Training List'} /> */}
+//               <TouchableOpacity
+//                 style={styles.smallButton}
+//                 onPress={() => navigation.navigate('TrainingList')}>
+//                 <Text style={styles.smallButtonText}>View Training List</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+
+//           <View>
+//             <Text
+//               style={{
+//                 fontFamily: Fonts.Roboto.Medium,
+//                 fontSize: 14,
+//                 marginVertical: 25,
+//                 color: COLORS.grayText,
+//                 textAlign: 'center',
+//               }}>
+//               No events for the selected date
+//             </Text>
+//           </View>
+
+//           <View>
+//             <Text
+//               style={{
+//                 fontFamily: Fonts.Roboto.SemiBold,
+//                 color: COLORS.textColor,
+//                 fontSize: 14,
+//                 marginVertical: 3,
+//               }}>
+//               Upcoming Training Sessions
+//             </Text>
+//           </View>
+
+
+
+//             <View style={styles.cardWrap}>
+//               <View
+//                 style={{
+//                   flexDirection: 'row',
+//                   justifyContent: 'space-between',
+//                   alignItems: 'center',
+//                 }}>
+//                 <Text
+//                   style={{
+//                     color: COLORS.primary,
+//                     fontFamily: Fonts.Roboto.Bold,
+//                     fontSize: 14,
+//                   }}>
+//                   Motor Claims Training
+//                 </Text>
+
+//                 <TouchableOpacity
+//                   onPress={() => setItemOne(false)}
+//                   style={{
+//                     right: 13,
+//                     borderRadius: 15,
+//                     padding: 2,
+//                     backgroundColor: COLORS.lightBorder,
+//                   }}>
+//                   <MaterialCommunityIcons
+//                     name="close"
+//                     color={COLORS.primaryGreen}
+//                     size={20}
+//                   />
+//                 </TouchableOpacity>
+//               </View>
+//               <View
+//                 style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+//                 <View style={{ flex: 0.6 }}>
+//                   <Text
+//                     style={{
+//                       color: COLORS.textColor,
+//                       fontFamily: Fonts.Roboto.Bold,
+//                       fontSize: 16,
+//                     }}>
+//                     Mr. John Smith
+//                   </Text>
+
+//                   <Text
+//                     style={{
+//                       color: COLORS.grayText,
+//                       fontFamily: Fonts.Roboto.Medium,
+//                       fontSize: 13,
+//                     }}>
+//                     Session Method : Online
+//                   </Text>
+
+//                   <Text
+//                     style={{
+//                       color: COLORS.grayText,
+//                       fontFamily: Fonts.Roboto.Medium,
+//                       fontSize: 13,
+//                     }}>
+//                     Session Type : General
+//                   </Text>
+
+//                   <View
+//                     style={{
+//                       flexDirection: 'row',
+//                       alignItems: 'center',
+//                       marginVertical: 3,
+//                     }}>
+//                     <Feather name="calendar" color={COLORS.grayText} size={16} />
+//                     <Text
+//                       style={{
+//                         color: COLORS.textColor,
+//                         fontFamily: Fonts.Roboto.Medium,
+//                         fontSize: 13,
+//                         marginLeft: 5,
+//                       }}>
+//                       January 17, 2025
+//                     </Text>
+//                   </View>
+
+//                   <View
+//                     style={{
+//                       flexDirection: 'row',
+//                       alignItems: 'center',
+//                       marginVertical: 3,
+//                     }}>
+//                     <Feather name="clock" color={COLORS.grayText} size={16} />
+//                     <Text
+//                       style={{
+//                         color: COLORS.textColor,
+//                         fontFamily: Fonts.Roboto.Medium,
+//                         fontSize: 13,
+//                         marginLeft: 5,
+//                       }}>
+//                       10:00 AM - 12:00 PM.
+//                     </Text>
+//                   </View>
+//                 </View>
+
+//                 <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
+//                   <View
+//                     style={{
+//                       width: '90%',
+//                       paddingHorizontal: 10,
+//                       marginVertical: 10
+//                     }}>
+//                     <SmallButton Title={'Done'}
+//                       onPress={() => setItemOne(false)} />
+//                   </View>
+//                   <TouchableOpacity
+//                     onPress={() => setModalVisible(true)}>
+//                     <Text
+//                       style={{
+//                         color: COLORS.primary,
+//                         fontSize: 14,
+//                         fontFamily: Fonts.Roboto.SemiBold,
+//                       }}>
+//                       Can't Attend?
+//                     </Text>
+//                   </TouchableOpacity>
+//                 </View>
+//               </View>
+//             </View>
+
+
+
+//           {(itemOne == false && itemTwo == false) && (
+//             <View>
+//               <Text
+//                 style={{
+//                   fontFamily: Fonts.Roboto.Medium,
+//                   fontSize: 14,
+//                   marginVertical: 25,
+//                   color: COLORS.grayText,
+//                   textAlign: 'center',
+//                 }}>
+//                 No Training sessions for the selected date
+//               </Text>
+//             </View>
+//           )}
+//         </ScrollView>
+//       </View>
+//     </View>
+//   );
+// }
+
 export default function TrainingCalender({ navigation }) {
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [itemOne, setItemOne] = useState(true);
-  const [itemTwo, setItemTwo] = useState(true);
   const [trainingType, setTrainingType] = useState();
-  const [selected, setSelected] = useState({
-    '2025-02-01': { selected: true, marked: true, selectedColor: 'blue' },
-    '2025-02-02': { marked: true },
-    '2025-02-03': { selected: true, marked: true, selectedColor: 'blue' },
-  });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [markedDates, setMarkedDates] = useState({});
+  const [selectedTrainings, setSelectedTrainings] = useState([]);
+  const [type, setType] = useState("A");
   const dispatch = useDispatch();
 
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
-
     }, [])
   );
+
+  const {
+    data: TrainingList,
+    isFetching,
+    refetch,
+    error,
+  } = useGetTrainingListQuery(type);
+
+  const [approveTraining, { isLoading: isApproving, error: approveError }] = useApproveTrainingMutation();
+
+  useEffect(() => {
+    console.log("TrainingList", TrainingList);
+  }, [TrainingList])
+
+
+  useEffect(() => {
+    if (TrainingList?.data) {
+      // Transform the API data to create marked dates
+      const dates = {};
+      TrainingList.data.forEach(item => {
+        const dateStr = item.trainDate.split('T')[0]; // Get just the date part
+        dates[dateStr] = { marked: true, dotColor: COLORS.primary };
+      });
+      setMarkedDates(dates);
+    }
+  }, [TrainingList]);
+
+  const handleDayPress = (day) => {
+    const dateStr = day.dateString;
+    setSelectedDate(dateStr);
+
+    // Find trainings for the selected date
+    const selectedDateData = TrainingList?.data?.find(
+      item => item.trainDate.split('T')[0] === dateStr
+    );
+
+    if (selectedDateData) {
+      setSelectedTrainings(selectedDateData.trainingsListForDate);
+    } else {
+      setSelectedTrainings([]);
+    }
+
+    // First, clear any existing selections
+    const updatedMarkedDates = { ...markedDates };
+
+    // Remove selection from all dates
+    Object.keys(updatedMarkedDates).forEach(date => {
+      if (updatedMarkedDates[date].selected) {
+        delete updatedMarkedDates[date].selected;
+        delete updatedMarkedDates[date].selectedColor;
+      }
+    });
+
+    // Add selection to the new date
+    updatedMarkedDates[dateStr] = {
+      ...updatedMarkedDates[dateStr],
+      selected: true,
+      selectedColor: COLORS.primary
+    };
+
+    setMarkedDates(updatedMarkedDates);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  };
 
   return (
     <View style={Styles.container}>
@@ -128,24 +505,12 @@ export default function TrainingCalender({ navigation }) {
               Select User Type
             </Text>
             <View style={{ width: '60%', marginLeft: 20 }}>
-              {/* <AutocompleteDropdown
-                clearOnFocus={true}
-                closeOnBlur={true}
-                closeOnSubmit={false}
-                onSelectItem={setSelectedItem}
-                dataSet={[
-                  {id: '1', title: 'Myself'},
-                  {id: '2', title: 'Marketing executive'},
-                  {id: '2', title: 'Team Leader'},
-                  {id: '2', title: 'All'},
-                ]}
-              /> */}
               <DropdownFilled
                 Color={COLORS.white}
                 BorderColor={COLORS.textColor}
                 initialValue={trainingType}
                 placeholder="Select Training Type"
-                onSelect={value => setTrainingType(value)}
+                onSelect={value => setType(value)}
                 dropdownData={[
                   { label: 'All', value: 'A' },
                   { label: 'Motor', value: 'M' },
@@ -161,16 +526,14 @@ export default function TrainingCalender({ navigation }) {
               backgroundColor: COLORS.white,
               padding: 5,
               elevation: 5,
-
               marginVertical: 15,
             }}>
             <Calendar
-              onDayPress={day => {
-                setSelected(day.dateString);
-              }}
+              onDayPress={handleDayPress}
               style={{
                 borderColor: 'gray',
               }}
+              markedDates={markedDates}
               theme={{
                 backgroundColor: '#ffffff',
                 calendarBackground: '#ffffff',
@@ -181,7 +544,6 @@ export default function TrainingCalender({ navigation }) {
                 dayTextColor: '#2d4150',
                 textDisabledColor: '#dd99ee',
               }}
-              markedDates={selected}
             />
           </View>
 
@@ -198,10 +560,9 @@ export default function TrainingCalender({ navigation }) {
                 fontSize: 14,
                 color: COLORS.textColor,
               }}>
-              Monday, 22/January/2025
+              {selectedDate ? formatDate(selectedDate) : 'Select a date'}
             </Text>
             <View>
-              {/* <SmallButton Title={'View Training List'} /> */}
               <TouchableOpacity
                 style={styles.smallButton}
                 onPress={() => navigation.navigate('TrainingList')}>
@@ -210,284 +571,7 @@ export default function TrainingCalender({ navigation }) {
             </View>
           </View>
 
-          <View>
-            <Text
-              style={{
-                fontFamily: Fonts.Roboto.Medium,
-                fontSize: 14,
-                marginVertical: 25,
-                color: COLORS.grayText,
-                textAlign: 'center',
-              }}>
-              No events for the selected date
-            </Text>
-          </View>
-
-          <View>
-            <Text
-              style={{
-                fontFamily: Fonts.Roboto.SemiBold,
-                color: COLORS.textColor,
-                fontSize: 14,
-                marginVertical: 3,
-              }}>
-              Upcoming Training Sessions
-            </Text>
-          </View>
-
-          {itemOne &&
-
-            <View style={styles.cardWrap}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 14,
-                  }}>
-                  Motor Claims Training
-                </Text>
-
-                <TouchableOpacity
-                  onPress={() => setItemOne(false)}
-                  style={{
-                    right: 13,
-                    borderRadius: 15,
-                    padding: 2,
-                    backgroundColor: COLORS.lightBorder,
-                  }}>
-                  <MaterialCommunityIcons
-                    name="close"
-                    color={COLORS.primaryGreen}
-                    size={20}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ flex: 0.6 }}>
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Bold,
-                      fontSize: 16,
-                    }}>
-                    Mr. John Smith
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: COLORS.grayText,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                    }}>
-                    Session Method : Online
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: COLORS.grayText,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                    }}>
-                    Session Type : General
-                  </Text>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 3,
-                    }}>
-                    <Feather name="calendar" color={COLORS.grayText} size={16} />
-                    <Text
-                      style={{
-                        color: COLORS.textColor,
-                        fontFamily: Fonts.Roboto.Medium,
-                        fontSize: 13,
-                        marginLeft: 5,
-                      }}>
-                      January 17, 2025
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 3,
-                    }}>
-                    <Feather name="clock" color={COLORS.grayText} size={16} />
-                    <Text
-                      style={{
-                        color: COLORS.textColor,
-                        fontFamily: Fonts.Roboto.Medium,
-                        fontSize: 13,
-                        marginLeft: 5,
-                      }}>
-                      10:00 AM - 12:00 PM.
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
-                  <View
-                    style={{
-                      width: '90%',
-                      paddingHorizontal: 10,
-                      marginVertical: 10
-                    }}>
-                    <SmallButton Title={'Done'}
-                      onPress={() => setItemOne(false)} />
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => setModalVisible(true)}>
-                    <Text
-                      style={{
-                        color: COLORS.primary,
-                        fontSize: 14,
-                        fontFamily: Fonts.Roboto.SemiBold,
-                      }}>
-                      Can't Attend?
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          }
-          {itemTwo &&
-
-
-            <View style={styles.cardWrap}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.primary,
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 14,
-                  }}>
-                  Motor Claims Training
-                </Text>
-
-                <TouchableOpacity
-                  onPress={() => setItemTwo(false)}
-                  style={{
-                    right: 13,
-                    borderRadius: 15,
-                    padding: 2,
-                    backgroundColor: COLORS.lightBorder,
-                  }}>
-                  <MaterialCommunityIcons
-                    name="close"
-                    color={COLORS.primaryGreen}
-                    size={20}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ flex: 0.6 }}>
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Bold,
-                      fontSize: 16,
-                    }}>
-                    Mr. John Smith
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: COLORS.grayText,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                    }}>
-                    Session Method : Online
-                  </Text>
-
-                  <Text
-                    style={{
-                      color: COLORS.grayText,
-                      fontFamily: Fonts.Roboto.Medium,
-                      fontSize: 13,
-                    }}>
-                    Session Type : General
-                  </Text>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 3,
-                    }}>
-                    <Feather name="calendar" color={COLORS.grayText} size={16} />
-                    <Text
-                      style={{
-                        color: COLORS.textColor,
-                        fontFamily: Fonts.Roboto.Medium,
-                        fontSize: 13,
-                        marginLeft: 5,
-                      }}>
-                      January 17, 2025
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginVertical: 3,
-                    }}>
-                    <Feather name="clock" color={COLORS.grayText} size={16} />
-                    <Text
-                      style={{
-                        color: COLORS.textColor,
-                        fontFamily: Fonts.Roboto.Medium,
-                        fontSize: 13,
-                        marginLeft: 5,
-                      }}>
-                      10:00 AM - 12:00 PM.
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
-                  <View
-                    style={{
-                      width: '90%',
-                      paddingHorizontal: 10,
-                      marginVertical: 10
-                    }}>
-                    <SmallButton
-                      onPress={() => setItemTwo(false)} Title={'Done'} />
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => setModalVisible(true)}>
-                    <Text
-                      style={{
-                        color: COLORS.primary,
-                        fontSize: 14,
-                        fontFamily: Fonts.Roboto.SemiBold,
-                      }}>
-                      Can't Attend?
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          }
-
-          {(itemOne == false && itemTwo == false) && (
+          {selectedTrainings.length === 0 ? (
             <View>
               <Text
                 style={{
@@ -497,11 +581,199 @@ export default function TrainingCalender({ navigation }) {
                   color: COLORS.grayText,
                   textAlign: 'center',
                 }}>
-                No Training sessions for the selected date
+                {selectedDate ? 'No events for the selected date' : 'Please select a date to view trainings'}
               </Text>
             </View>
+          ) : (
+            <>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.SemiBold,
+                    color: COLORS.textColor,
+                    fontSize: 14,
+                    marginVertical: 3,
+                  }}>
+                  Upcoming Training Sessions
+                </Text>
+              </View>
+
+              {selectedTrainings.map((training, index) => (
+                <View key={index} style={styles.cardWrap}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.primary,
+                        fontFamily: Fonts.Roboto.Bold,
+                        fontSize: 14,
+                      }}>
+                      {training.topic}
+                    </Text>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        // Remove this training from the list
+                        setSelectedTrainings(prev =>
+                          prev.filter((_, i) => i !== index)
+                        );
+                      }}
+                      style={{
+                        right: 13,
+                        borderRadius: 15,
+                        padding: 2,
+                        backgroundColor: COLORS.lightBorder,
+                      }}>
+                      <MaterialCommunityIcons
+                        name="close"
+                        color={COLORS.primaryGreen}
+                        size={20}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ flex: 0.6 }}>
+                      <Text
+                        style={{
+                          color: COLORS.textColor,
+                          fontFamily: Fonts.Roboto.Bold,
+                          fontSize: 16,
+                        }}>
+                        {training.description}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Session Method : Online
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Session Type : {training.trainType === 'G' ? 'General' : 'Motor'}
+                      </Text>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginVertical: 3,
+                        }}>
+                        <Feather name="calendar" color={COLORS.grayText} size={16} />
+                        <Text
+                          style={{
+                            color: COLORS.textColor,
+                            fontFamily: Fonts.Roboto.Medium,
+                            fontSize: 13,
+                            marginLeft: 5,
+                          }}>
+                          {formatDate(training.trainDate)}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginVertical: 3,
+                        }}>
+                        <Feather name="clock" color={COLORS.grayText} size={16} />
+                        <Text
+                          style={{
+                            color: COLORS.textColor,
+                            fontFamily: Fonts.Roboto.Medium,
+                            fontSize: 13,
+                            marginLeft: 5,
+                          }}>
+                          {formatTime(training.trainDate)}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
+                      <View
+                        style={{
+                          width: '90%',
+                          paddingHorizontal: 10,
+                          marginVertical: 10
+                        }}>
+                        <SmallButton
+                          Title={'Done'}
+                          onPress={() => {
+                            console.log(" training.trainId", training.trainId);
+                            // Call the approveTraining mutation with the training ID
+                            approveTraining(id = training.trainId)
+                              .unwrap()
+                              .then(() => {
+                                // On success, remove the training from the list
+                                setSelectedTrainings(prev =>
+                                  prev.filter((_, i) => i !== index)
+                                );
+                              })
+                              .catch(error => {
+                                console.error('Failed to approve training:', error);
+                                // You might want to show an error message to the user here
+                              });
+                          }}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(true)}>
+                        <Text
+                          style={{
+                            color: COLORS.primary,
+                            fontSize: 14,
+                            fontFamily: Fonts.Roboto.SemiBold,
+                          }}>
+                          Can't Attend?
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    {/* <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
+                      <View
+                        style={{
+                          width: '90%',
+                          paddingHorizontal: 10,
+                          marginVertical: 10
+                        }}>
+                        <SmallButton
+                          Title={'Done'}
+                          onPress={() => {
+                            setSelectedTrainings(prev =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(true)}>
+                        <Text
+                          style={{
+                            color: COLORS.primary,
+                            fontSize: 14,
+                            fontFamily: Fonts.Roboto.SemiBold,
+                          }}>
+                          Can't Attend?
+                        </Text>
+                      </TouchableOpacity>
+                    </View> */}
+                  </View>
+                </View>
+              ))}
+            </>
           )}
         </ScrollView>
+
       </View>
     </View>
   );

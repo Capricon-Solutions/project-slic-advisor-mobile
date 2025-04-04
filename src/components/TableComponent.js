@@ -78,7 +78,7 @@ const TableComponent = ({
         </ScrollView>
       ) : tableData?.length == 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.errorText}>Don't have any data yet</Text>
+          <Text style={styles.errorText}>Don't have any data..!</Text>
         </View>
       ) : (
         <View style={styles.emptyContainer}>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: 'center',
     fontFamily: Fonts.Roboto.SemiBold,
-    color: COLORS.primaryRed,
+    color: COLORS.borderColor,
   },
   boldText: {
     fontWeight: 'bold',

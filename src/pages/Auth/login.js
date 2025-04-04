@@ -17,7 +17,7 @@ import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
 import { styles } from './styles';
-import { useGetHelpQuery, useUserLoginMutation } from '../../redux/services/loginSlice';
+import { useChangePasswordMutation, useGetHelpQuery, useUserLoginMutation } from '../../redux/services/loginSlice';
 import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
@@ -36,28 +36,6 @@ const LoginScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [errorShow, setErrorShow] = useState(false);
   const { data: help, isLoading, error } = useGetHelpQuery();
-
-  // Comment this in apk release
-  // useEffect(() => {
-  //   setTimeout(async () => {
-  //     const storedUsername = await AsyncStorage.getItem("username");
-  //     const storedPassword = await AsyncStorage.getItem("password");
-  //     setUsername(storedUsername);
-  //     setPassword(storedPassword);
-  //     console.log("username", username);
-  //     console.log("password", password);
-  //     if (username !== '' && password !== '') {
-  //       handleSubmit()
-  //     }
-
-  //   }, 2000);
-  // }, [username, password])
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigation.navigate('TypeTest');
-  //   }, 500);
-  // }, [])
-
 
 
   useEffect(() => {
@@ -83,36 +61,24 @@ const LoginScreen = ({ navigation }) => {
 
   }, [username]);
 
-
-  // console.log('help:', help);
-  // const handleLogin = () => {
-  //   console.log('help:', help);
-  //   console.log('Password:', password);
-  // };
   const [userLogin, { isLoading: loginLoading, error: loginError, data }] = useUserLoginMutation();
 
   const handleSubmit = async () => {
-    // e.preventDefault(); // Uncomment if you are using it inside a form
 
     const body = {
       Username: username,
       Password: password,
     };
-
     console.log("Request body:", body);
 
     try {
-      // Trigger userLogin mutation and get the response
       const response = await userLogin(body).unwrap();
-
-      // Log the API response
       console.log('Login successful! Response:', response?.User);
       dispatch(Setprofile(response));
       savePassword();
-      // Handle success (e.g., navigation, storing JWT token, etc.)
 
     } catch (err) {
-      // Handle error (e.g., showing error message)
+
       console.error('Login failed:', err);
       setErrorShow(true);
       showToast({

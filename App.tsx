@@ -103,7 +103,7 @@ function App(): React.JSX.Element {
 
   const AppStack = () => (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="TypeTest"
       screenOptions={{
         orientation: 'portrait',
         headerShown: false,

@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Fonts from '../../theme/Fonts';
 import COLORS from '../../theme/colors';
 
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     borderRadius: 11,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 4,
+    marginVertical: 3,
   },
   condIconWrap: {
     margin: 2,

@@ -69,8 +69,8 @@ export default function AgentProgressCard({
             inActiveStrokeColor={COLORS.lightBorder}
             valueSuffix={`/${totalIslandRank}`}
             titleStyle={{ fontWeight: 'bold' }}
-            progressValueStyle={{ fontSize: 25, fontFamily: Fonts.Roboto.Bold }}
-            valueSuffixStyle={{ fontSize: 22, color: COLORS.textColor }}
+            progressValueStyle={{ fontSize: 20, fontFamily: Fonts.Roboto.Bold }}
+            valueSuffixStyle={{ fontSize: 20, color: COLORS.textColor }}
           />
           <Text style={{ fontSize: window.width * 0.045, marginTop: 5, fontFamily: Fonts.Roboto.Medium, color: COLORS.textColor }}>
             Island Rank
@@ -91,8 +91,8 @@ export default function AgentProgressCard({
               activeStrokeColor={COLORS.regionalRank}
               inActiveStrokeColor={COLORS.lightBorder}
               valueSuffix={`/${totalNumberofRegions}`}
-              progressValueStyle={{ fontSize: window.height * 0.023, fontFamily: Fonts.Roboto.Bold }}
-              valueSuffixStyle={{ fontSize: window.height * 0.018, color: COLORS.regionalRank }}
+              progressValueStyle={{ fontSize: window.height * 0.020, fontFamily: Fonts.Roboto.Bold }}
+              valueSuffixStyle={{ fontSize: window.height * 0.016, color: COLORS.regionalRank, fontFamily: Fonts.Roboto.SemiBold }}
               titleStyle={{ fontWeight: 'bold' }}
             />
             <Text style={{ marginTop: 2, fontSize: window.width * 0.03, fontFamily: Fonts.Roboto.Medium, color: COLORS.textColor }}>
@@ -113,8 +113,8 @@ export default function AgentProgressCard({
               activeStrokeColor={COLORS.branchRank}
               inActiveStrokeColor={COLORS.lightBorder}
               valueSuffix={`/${totalNumberofBranches}`}
-              progressValueStyle={{ fontSize: window.height * 0.023, fontFamily: Fonts.Roboto.Bold }}
-              valueSuffixStyle={{ fontSize: window.height * 0.018, color: COLORS.branchRank }}
+              progressValueStyle={{ fontSize: window.height * 0.020, fontFamily: Fonts.Roboto.Bold }}
+              valueSuffixStyle={{ fontSize: window.height * 0.016, color: COLORS.branchRank, fontFamily: Fonts.Roboto.SemiBold }}
               titleStyle={{ fontWeight: 'bold' }}
             />
             <Text style={{ marginTop: 2, fontSize: window.width * 0.03, fontFamily: Fonts.Roboto.Medium, color: COLORS.textColor }}>
