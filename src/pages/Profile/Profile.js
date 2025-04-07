@@ -102,8 +102,7 @@ export default function Profile({ navigation }) {
   const agentCode = profileResponse?.agentCode;
 
   const getInitials = (name) => {
-    return name
-      .split(" ") // Split by space
+    return name?.split(" ") // Split by space
       .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
       .join(""); // Join them together
   };

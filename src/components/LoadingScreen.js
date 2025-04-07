@@ -13,12 +13,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
+import LoaderKit from 'react-native-loader-kit';
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import {ActivityIndicator} from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 const window = Dimensions.get('window');
 
-export default function LoadingScreen({isLoading}) {
+export default function LoadingScreen({ isLoading }) {
   return (
     <View
       style={{
@@ -30,7 +31,12 @@ export default function LoadingScreen({isLoading}) {
       }}>
       {/* {isLoading && ( */}
       <View style={{}}>
-        <ActivityIndicator color={COLORS.primary} size={'large'} />
+        {/* <ActivityIndicator color={COLORS.primary} size={'large'} /> */}
+        <LoaderKit
+          style={{ width: 50, height: 50 }}
+          name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+          color={COLORS.primary} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+        />
         {/* <Text>load</Text> */}
       </View>
       {/* )} */}
