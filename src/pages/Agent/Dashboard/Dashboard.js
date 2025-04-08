@@ -37,7 +37,7 @@ import RMProgressCard from '../../../components/RMProgressCard';
 import { Getpath } from '../../../redux/services/NavControllerSlice';
 import { SetdefaultImageUrl } from '../../../redux/services/ProfileSlice';
 import { useGetImageQuery, useLazyGetImageUrlQuery } from '../../../redux/services/profilePicSlice';
-import { useGetCurrentMonthRankQuery } from '../../../redux/services/SalesMeterApiSlice';
+import { useGetCurrentMonthRankQuery, useGetRMSummeryQuery } from '../../../redux/services/SalesMeterApiSlice';
 
 const window = Dimensions.get('window');
 
@@ -79,6 +79,14 @@ export default function Dashboard({ navigation }) {
     isFetching: achiveFetch,
   } = useGetCurrentMonthRankQuery({
     id: 905717,
+  });
+  const {
+    data: RMSummeryData,
+    error: RMSummeryError,
+    isLoading: RMSummeryLoading,
+    isFetching: RMSummeryFetching,
+  } = useGetRMSummeryQuery({
+    month: 3,
   });
   console.log("CurrentMonthRank", CurrentMonthRank);
 
@@ -419,7 +427,9 @@ export default function Dashboard({ navigation }) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
+            loading={RMSummeryData ? false : true}
             islandRank={islandRank}
+            Data={RMSummeryData?.data}
           // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
@@ -431,7 +441,9 @@ export default function Dashboard({ navigation }) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
+            loading={RMSummeryData ? false : true}
             islandRank={islandRank}
+            Data={RMSummeryData?.data}
           // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}

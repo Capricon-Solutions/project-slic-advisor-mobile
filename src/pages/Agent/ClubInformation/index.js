@@ -47,13 +47,14 @@ export default function ClubInformation({ navigation }) {
   // );
   const nextClubTable = nextClubInfo?.data[0]?.last5Years;
 
-  const tableHead = ['Total', 'Endorsement'];
+  const tableHead = ['Income Year', 'Comm. Income'];
 
   const columnWidths = [window.width * 0.41, window.width * 0.41];
   console.log("nextClubTable", nextClubInfo?.data[0]?.last5Years);
   const tableData = nextClubTable?.map(item => [
-    item?.amount?.toString() ?? '',
+
     item?.year?.toString() ?? '',
+    item?.amount?.toString() ?? '',
   ]);
   // console.log("clubInfoResponse", clubInfoResponse);
 
@@ -74,6 +75,7 @@ export default function ClubInformation({ navigation }) {
   const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
   const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
   const nextLimit = clubInfoResponse?.nextLimit;
+  console.log("tableData", tableData);
   return (
     <View style={[Styles.container, { paddingHorizontal: 10 }]}>
       <HeaderBackground />
@@ -193,8 +195,8 @@ export default function ClubInformation({ navigation }) {
                     value={lastUpdatedDate?.toString() ?? ''}
                   />
                   <OutlinedTextBox
-                    Title={'Annual income up to ' + annualIncomeUpTo?.date}
-                    value={annualIncomeUpTo?.amount?.toString() ?? ''}
+                    Title={'Annual income up to ' + lastUpdatedDate?.toString() ?? ''}
+                    value={tableData[0][1]}
                   />
                 </View>
                 {tableData ? (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,84 +9,80 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../../theme/Styles';
+import { Styles } from '../../../../theme/Styles';
 import HeaderBackground from '../../../../components/HeaderBackground';
 import Header from '../../../../components/Header';
 import COLORS from '../../../../theme/colors';
 import Fonts from '../../../../theme/Fonts';
-import KpiSummery from '../../../../icons/KpiSummery.png'; // Replace with the actual logo path
+import KpiSummeryIcon from '../../../../icons/KpiSummery.png'; // Replace with the actual logo path
 import * as Progress from 'react-native-progress';
-
-import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
-import ContactListItem from '../../../../components/contactListItem';
-import DepartmentItem from '../../../../components/DepartmentItem';
-import {styles} from './styles';
+import { FlatList } from 'react-native';
+import { styles } from './styles';
 import LoadingScreen from '../../../../components/LoadingScreen';
-import {
-  useGetBranchesQuery,
-  useGetDepartmentQuery,
-} from '../../../../redux/services/contactSlice';
+import { useKpiSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+
 const window = Dimensions.get('window');
 
-export default function KPISummary({navigation}) {
-  const [SelectedType, setSelectedType] = useState(1);
+export default function KPISummary({ navigation }) {
+  const [selectedType, setSelectedType] = useState('monthly'); // 'monthly' or 'cumulative'
 
-  const data = [
-    {
-      id: '1',
-      name: 'Motor New',
-      price: 'LKR 3,445,513.00',
-      priceOutof: 'LKR 27,721,140.00',
-      progress: 0.3,
-    },
-    {
-      id: '2',
-      name: 'Motor Renewal',
-      price: 'LKR 5,771,060.00',
-      priceOutof: 'LKR 75,632,110.00',
-      progress: 0.5,
-    },
-    {
-      id: '3',
-      name: 'Total Motor',
-      price: 'LKR 9,216,573.00',
-      priceOutof: 'LKR 103,353,250.00',
-      progress: 0.7,
-    },
-    {
-      id: '4',
-      name: 'Non Motor New',
-      price: 'LKR 3,445,513.00',
-      priceOutof: 'LKR 27,721,140.00',
-      progress: 0.7,
-    },
-    {
-      id: '5',
-      name: 'Non Motor Renewal',
-      price: 'LKR 3,445,513.00',
-      priceOutof: 'LKR 27,721,140.00',
-      progress: 0.2,
-    },
-    {
-      id: '6',
-      name: 'Total Non Motor ',
-      price: 'LKR 3,445,513.00',
-      priceOutof: 'LKR 27,721,140.00',
-      progress: 0.1,
-    },
-  ];
+  const {
+    data: KpiSummery,
+    error: KpiSummeryError,
+    isLoading: KpiSummeryLoading,
+    isFetching: KpiSummeryFetching,
+  } = useKpiSummeryQuery({
+    month: 4,
+  });
+
+  // Format number to LKR currency with commas
+  const formatCurrency = (value) => {
+    return `LKR ${value.toLocaleString('en-US')}.00`;
+  };
+
+  // Transform the API data to match the required format
+  const transformData = (sourceData) => {
+    if (!sourceData) return [];
+
+    return sourceData.map(item => ({
+      id: item.kpi.replace(/\s+/g, '-').toLowerCase(),
+      name: item.kpi,
+      price: formatCurrency(item.achievement),
+      priceOutof: formatCurrency(item.target),
+      progress: item.achPresentage / 100, // Convert percentage to decimal
+      growthPercentage: item.growthPresentage,
+      lastYear: formatCurrency(item.lastYear),
+    }));
+  };
+
+  // Get the appropriate data based on selected tab
+  const getCurrentData = () => {
+    if (KpiSummeryLoading || KpiSummeryFetching || !KpiSummery?.data) {
+      return [];
+    }
+
+    return selectedType === 'monthly'
+      ? transformData(KpiSummery.data.monthly)
+      : transformData(KpiSummery.data.cumulative);
+  };
+
+  const currentData = getCurrentData();
+
+  if (KpiSummeryLoading || KpiSummeryFetching) {
+    return <LoadingScreen />;
+  }
+
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="KPI Summary" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
-            onPress={() => setSelectedType(1)}
+            onPress={() => setSelectedType('monthly')}
             style={{
               backgroundColor:
-                SelectedType == 1 ? COLORS.primary : COLORS.white,
+                selectedType === 'monthly' ? COLORS.primary : COLORS.white,
               borderRadius: 15,
               flex: 0.5,
               justifyContent: 'center',
@@ -95,17 +91,17 @@ export default function KPISummary({navigation}) {
             }}>
             <Text
               style={{
-                color: SelectedType == 1 ? COLORS.white : COLORS.black,
+                color: selectedType === 'monthly' ? COLORS.white : COLORS.black,
                 fontFamily: Fonts.Roboto.SemiBold,
               }}>
               Monthly
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setSelectedType(2)}
+            onPress={() => setSelectedType('cumulative')}
             style={{
               backgroundColor:
-                SelectedType == 2 ? COLORS.primary : COLORS.white,
+                selectedType === 'cumulative' ? COLORS.primary : COLORS.white,
               borderRadius: 15,
               flex: 0.5,
               justifyContent: 'center',
@@ -113,19 +109,15 @@ export default function KPISummary({navigation}) {
             }}>
             <Text
               style={{
-                color: SelectedType == 2 ? COLORS.white : COLORS.black,
+                color: selectedType === 'cumulative' ? COLORS.white : COLORS.black,
                 fontFamily: Fonts.Roboto.SemiBold,
               }}>
-              Cumalative
+              Cumulative
             </Text>
           </TouchableOpacity>
         </View>
 
-        {/* {isLoading == true ? (
-          <LoadingScreen />
-        ) : ( */}
         <View>
-          {/* {SelectedType == 1 ? ( */}
           <View
             style={{
               borderRadius: 15,
@@ -134,8 +126,8 @@ export default function KPISummary({navigation}) {
               elevation: 10,
               marginBottom: 20,
             }}>
-            <View style={{flexDirection: 'row', marginBottom: 10}}>
-              <View style={{flex: 0.2}}>
+            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+              <View style={{ flex: 0.2 }}>
                 <View
                   style={{
                     height: 45,
@@ -146,32 +138,34 @@ export default function KPISummary({navigation}) {
                     alignItems: 'center',
                   }}>
                   <Image
-                    style={{height: 23, width: 23}}
-                    source={KpiSummery}></Image>
+                    style={{ height: 23, width: 23 }}
+                    source={KpiSummeryIcon}></Image>
                 </View>
               </View>
-              <View style={{flex: 0.8, justifyContent: 'center'}}>
+              <View style={{ flex: 0.8, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontFamily: Fonts.Roboto.SemiBold,
                     color: COLORS.textColor,
                   }}>
                   Region KPI Summary
+                  {/* ({selectedType === 'monthly' ? 'Monthly' : 'Cumulative'}) */}
                 </Text>
               </View>
             </View>
-            {/* //progress items */}
+
             <FlatList
-              data={data}
+              data={currentData}
               keyExtractor={item => item.id}
               showsVerticalScrollIndicator={false}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <View>
                   <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
+
                     }}>
                     <Text
                       style={{
@@ -179,7 +173,7 @@ export default function KPISummary({navigation}) {
                         color: COLORS.textColor,
                         fontSize: 12,
                       }}>
-                      {item?.name}
+                      {item.name}
                     </Text>
 
                     <Text
@@ -188,40 +182,37 @@ export default function KPISummary({navigation}) {
                         color: COLORS.textColor,
                         fontSize: 10.5,
                       }}>
-                      <Text style={{color: COLORS.primaryGreen}}>
+                      <Text style={{ color: COLORS.primaryGreen }}>
                         {item.price}
                       </Text>{' '}
                       /{' '}
-                      <Text style={{color: COLORS.primaryRed}}>
-                        {' '}
-                        {item.price}
+                      <Text style={{ color: COLORS.primaryRed }}>
+                        {item.priceOutof}
                       </Text>
                     </Text>
                   </View>
                   <View
                     style={{
                       alignItems: 'center',
-                      marginBottom: 20,
-                      marginTop: 6,
+                      marginBottom: 1,
+                      marginTop: 3,
                     }}>
                     <Progress.Bar
-                      progress={item?.progress}
+                      progress={item.progress}
                       width={window.width * 0.83}
                       height={12}
                       borderRadius={100}
-                      color={COLORS.primary}
+                      color={item.progress >= 1 ? COLORS.primary : COLORS.primary}
                     />
+                    <Text style={{ fontSize: 10, marginTop: 4 }}>
+                      Growth: {item.growthPercentage}% (LY: {item.lastYear})
+                    </Text>
                   </View>
                 </View>
               )}
             />
-            {/* /// */}
           </View>
-          {/* ) : ( */}
-          <View></View>
-          {/* )} */}
         </View>
-        {/* )} */}
       </ScrollView>
     </View>
   );

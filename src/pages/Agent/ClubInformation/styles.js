@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 15,
     marginBottom: 15,
-    marginVertical: 20,
+    marginBottom: 20,
+    marginTop: 10,
     flex: 1
   },
   noticeContainer: {

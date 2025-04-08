@@ -37,6 +37,14 @@ export const SalesMeterApi = baseApi.injectEndpoints({
         return url;
       },
     }),
+    // getCurrentMonthRank
+    getRMSummery: builder.query({
+      query: ({ month }) => {
+        const url = `general/getGeneralTotalRm/Western 3?month=${month}`;
+        console.log('Fetching Notifications from:', url);
+        return url;
+      },
+    }),
 
     setTarget: builder.mutation({
       query: ({ body }) => {
@@ -58,5 +66,6 @@ export const {
   useSalesIncomeQuery,
   useGetAgentCurrentMonthIncomeQuery,
   useSetTargetMutation,
-  useGetCurrentMonthRankQuery
+  useGetCurrentMonthRankQuery,
+  useGetRMSummeryQuery
 } = SalesMeterApi;
