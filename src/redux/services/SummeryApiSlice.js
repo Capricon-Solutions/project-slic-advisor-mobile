@@ -30,6 +30,15 @@ export const SummeryApi = baseApi.injectEndpoints({
       },
     }),
 
+    // RegionalSummery
+    RegionalSummery: builder.query({
+      query: ({ month }) => {
+        const url = `general/getRegionalSummary/${month}`;
+        console.log('Fetching Notifications from:', url);
+        return url;
+      },
+    }),
+
   }),
 });
 
@@ -37,5 +46,6 @@ export const SummeryApi = baseApi.injectEndpoints({
 export const {
   useKpiSummeryQuery,
   useClassSummeryQuery,
-  useDuesSummeryQuery
+  useDuesSummeryQuery,
+  useRegionalSummeryQuery
 } = SummeryApi;

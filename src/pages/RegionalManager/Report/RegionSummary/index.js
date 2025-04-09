@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../../theme/Styles';
+import { Styles } from '../../../../theme/Styles';
 import HeaderBackground from '../../../../components/HeaderBackground';
 import Header from '../../../../components/Header';
 import COLORS from '../../../../theme/colors';
@@ -21,24 +21,30 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../../components/contactListItem';
 import DepartmentItem from '../../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
+import LoaderKit from 'react-native-loader-kit';
+
 import LoadingScreen from '../../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../../redux/services/contactSlice';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import TableComponent from '../../../../components/TableComponent';
 import RegionTableComponent from '../../../../components/RegionTableComponent';
+import { useRegionalSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+import moment from 'moment';
 const window = Dimensions.get('window');
 
-export default function RegionSummary({navigation}) {
-  const [SelectedType, setSelectedType] = useState(1);
+export default function RegionSummary({ navigation }) {
+  const [selectedType, setSelectedType] = useState('monthly');
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
+  const currentMonthNumber = moment().month() + 1; // +1 because Moment.js months are 0-indexed
+  const currentMonthName = moment().format('MMMM');
   const tableHead = [
     'Region',
     '2024 Ach',
@@ -47,95 +53,108 @@ export default function RegionSummary({navigation}) {
     '2023 Ach',
     'Grow (%)',
   ];
-  const columnWidths = [110, 60, 60, 60, 60, 60];
-  const Data = [
-    {
-      id: 1,
-      region: 'Western 1 ',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-    {
-      id: 2,
-      region: 'Southern 1',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-    {
-      id: 3,
-      region: 'Western 2 ',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-    {
-      id: 4,
-      region: 'Western 3 ',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-    {
-      id: 5,
-      region: 'Eastern 2',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-    {
-      id: 6,
-      region: 'southern 3',
-      '2024Ach': '18',
-      '2024Tar': '132',
-      ach: '14%',
-      '2023Ach': '120',
-      grow: '-84%',
-    },
-  ];
+  const columnWidths = [130, 70, 70, 60, 70, 60];
 
-  const tableData = Data.map(item => [
-    item.id.toString() + '. ' + item.region.toString(),
-    item['2024Ach'].toString(),
-    item['2024Tar'].toString(),
-    item.ach.toString(),
-    item['2023Ach'].toString(),
-    item.grow.toString(),
+
+
+  const {
+    data: RegionalSummery,
+    error: RegionalSummeryError,
+    isLoading: RegionalSummeryLoading,
+    isFetching: RegionalSummeryFetching,
+  } = useRegionalSummeryQuery({
+    month: currentMonthNumber,
+  });
+  const DataSet = selectedType == "monthly" ? RegionalSummery?.data?.monthly : RegionalSummery?.data?.cumulative;
+
+  const tableData = DataSet?.map(item => [
+    item.rank?.toString() + '. ' + item.region?.toString(),
+    item.achievement?.toString(),
+    item.target?.toString(),
+    item.achPresentage?.toString(),
+    item.lastYear?.toString(),
+    item.growthPresentage?.toString(),
   ]);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Region Summary" onPress={() => navigation.goBack()} />
-      <View style={{paddingHorizontal: 20}}>
-        <Text
-          style={{
-            fontFamily: Fonts.Roboto.SemiBold,
-            color: COLORS.textColor,
-            fontSize: 15,
-            marginBottom: 15,
-          }}>
-          Compare this year’s sales with last year’s to track growth and trends.
-        </Text>
-        <RegionTableComponent
-          tableHead={tableHead}
-          tableData={tableData}
-          columnWidths={columnWidths}
-          haveTotal={false}
-          navigation={navigation}
-          touchable={true}
-        />
-      </View>
+
+
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+
+        <View style={{}}>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.SemiBold,
+              color: COLORS.textColor,
+              fontSize: 15,
+              marginBottom: 0,
+            }}>
+            Compare this year’s sales with last year’s to track growth and trends.
+          </Text>
+
+          <View style={styles.mainWrap}>
+            <TouchableOpacity
+              onPress={() => setSelectedType('monthly')}
+              style={{
+                backgroundColor:
+                  selectedType === 'monthly' ? COLORS.primary : COLORS.white,
+                borderRadius: 15,
+                flex: 0.5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 4,
+              }}>
+              <Text
+                style={{
+                  color: selectedType === 'monthly' ? COLORS.white : COLORS.black,
+                  fontFamily: Fonts.Roboto.SemiBold,
+                }}>
+                Monthly
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedType('cumulative')}
+              style={{
+                backgroundColor:
+                  selectedType === 'cumulative' ? COLORS.primary : COLORS.white,
+                borderRadius: 15,
+                flex: 0.5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 4,
+              }}>
+              <Text
+                style={{
+                  color: selectedType === 'cumulative' ? COLORS.white : COLORS.black,
+                  fontFamily: Fonts.Roboto.SemiBold,
+                }}>
+                Cumulative
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <RegionTableComponent
+            tableHead={tableHead}
+            tableData={tableData}
+            columnWidths={columnWidths}
+            haveTotal={false}
+            navigation={navigation}
+            touchable={true}
+          />
+
+        </View>
+      </ScrollView>
+      {RegionalSummeryLoading &&
+
+        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+
+          <LoaderKit
+            style={{ width: 50, height: 50 }}
+            name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+            color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+          />
+        </View>}
     </View>
   );
 }

@@ -31,6 +31,7 @@ import OutlinedTextBox from '../../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../../components/LandscapeHeader';
 import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
+import { useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
 
 const window = Dimensions.get('window');
 const data = [
@@ -64,31 +65,30 @@ export default function Report({ navigation, route }) {
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
+  const {
+    data: RmReport,
+    error: RmReportError,
+    isLoading: RmReportLoading,
+    isFetching: RmReportFetching,
+  } = useRmReportQuery({
+    branch: "test",
+  });
+  const tableData = RmReport?.data?.map(item => [
+    item?.branch?.toString() ?? '',
 
-  const tableData = IndividualStatResponse?.tableData?.map(item => [
-    item?.first.toString() ?? '',
-
-    item?.Renewal.toString() ?? '',
-    item?.NB.toString() ?? '',
-    item?.Refund,
-    item?.Endorsement.toString() ?? '',
-    item?.Total.toString() ?? '',
+    item?.renewal?.toString() ?? '',
+    item?.nb?.toString() ?? '',
+    // item?.refundPpw?.toString() ?? '',
+    {
+      ppw: item?.refundPpw?.toString() ?? '',
+      other: item?.refundOther?.toString() ?? ''
+    },
+    item?.endorsement?.toString() ?? '',
+    item?.total?.toString() ?? '',
   ]);
 
-  const handleLoad = (from, to) => {
-    console.log('Selected From:', from);
-    console.log('Selected To:', to);
-  };
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
+
+  console.log("RmReport", RmReport);
 
   const toggleOrientation = () => {
     if (isLandscape) {
@@ -166,7 +166,7 @@ export default function Report({ navigation, route }) {
               justifyContent: 'flex-end',
               marginVertical: 5,
             }}>
-            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
+            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
@@ -204,7 +204,7 @@ export default function Report({ navigation, route }) {
                 ]}
               />
             </View>
-            <View style={{ flex: 0.12, marginHorizontal: 2 }}>
+            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Branch'}
                 mode={'modal'}
@@ -228,7 +228,7 @@ export default function Report({ navigation, route }) {
         </ScrollView>
       ) : (
         <FlatList
-          data={IndividualStatResponse?.tableData}
+          data={RmReport?.data}
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{ padding: 10 }}
@@ -253,7 +253,7 @@ export default function Report({ navigation, route }) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item.first}
+                  {item.branch.toString() ?? ''}
                 </Text>
               </View>
 
@@ -266,22 +266,60 @@ export default function Report({ navigation, route }) {
                   width: '100%',
                 }}>
                 <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'Renewal'} value={item.Renewal} />
+                  <OutlinedTextBox Title={'Renewal'}
+                    value={
+                      item.renewal !== null && item.renewal !== undefined
+                        ? Number(item.renewal).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                        : ''
+                    }
+                  />
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'NB'} value={item.NB} />
+                  <OutlinedTextBox Title={'NB'}
+
+                    value={
+                      item.renewal !== null && item.nb !== undefined
+                        ? Number(item.nb).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                        : ''
+                    }
+                  />
                 </View>
               </View>
 
               {/* Second Row */}
               <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
                 <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'PPW'} value={item.Refund.ppw} />
+                  <OutlinedTextBox Title={'PPW'}
+
+                    value={
+                      item.renewal !== null && item.refundPpw !== undefined
+                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                        : ''
+                    }
+                  />
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'Others'} value={item.Refund.other} />
+                  <OutlinedTextBox Title={'Others'}
+                    value={
+                      item.renewal !== null && item.refundOther !== undefined
+                        ? Number(item.refundOther).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                        : ''
+                    }
+                  />
                 </View>
               </View>
 
@@ -289,12 +327,30 @@ export default function Report({ navigation, route }) {
               <View>
                 <OutlinedTextBox
                   Title={'Endorsement'}
-                  value={item.Endorsement}
+
+
+                  value={
+                    item.renewal !== null && item.endorsement !== undefined
+                      ? Number(item.endorsement).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                      : ''
+                  }
                 />
               </View>
 
               <View>
-                <OutlinedTextBox Title={'Total'} value={item.Total} />
+                <OutlinedTextBox Title={'Total'}
+                  value={
+                    item.renewal !== null && item.total !== undefined
+                      ? Number(item.total).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                      : ''
+                  }
+                />
               </View>
             </View>
           )}

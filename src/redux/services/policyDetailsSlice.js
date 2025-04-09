@@ -53,6 +53,10 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     getPremiumHistory: builder.query({
       query: ({ id }) => `agent/getPremiumHistory?PolicyNo=${id}`,
     }),
+    // DebitSettlement
+    DebitSettlement: builder.query({
+      query: ({ id }) => `salesIncome/DebitSettlement?policyNo=${id}`,
+    }),
   }),
 });
 
@@ -61,4 +65,5 @@ export const {
   useGetPolicyDetailsQuery,
   useGetClaimHistoryQuery,
   useGetPremiumHistoryQuery,
+  useDebitSettlementQuery
 } = policyDetailsApi;

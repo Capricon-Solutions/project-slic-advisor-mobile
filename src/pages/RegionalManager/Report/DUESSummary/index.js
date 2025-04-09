@@ -37,8 +37,8 @@ const window = Dimensions.get('window');
 
 export default function DUESSummary({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
-  const motorData = useSelector(state => state.DUES.motorData);
-  const nonmotorData = useSelector(state => state.DUES.nonmotorData);
+  // const motorData = useSelector(state => state.DUES.motorData);
+  // const nonmotorData = useSelector(state => state.DUES.nonmotorData);
   const currentMonthNumber = moment().month() + 1; // +1 because Moment.js months are 0-indexed
   const currentMonthName = moment().format('MMMM');
 
@@ -52,7 +52,164 @@ export default function DUESSummary({ navigation }) {
     month: currentMonthNumber,
   });
 
-  const DataSet = SelectedType == 1 ? DuesSummeryData?.data : DuesSummeryData?.data;
+  const Response = DuesSummeryData?.data;
+  const motorData = [
+    {
+      id: '1',
+      icon: 'warning-amber',
+      name: 'Pending Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Vehicle Count to be Renewed',
+          value: Response?.renewalVehicleCount,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total to be Paid',
+          value: 61745,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium',
+          value: 3745,
+        },
+      ],
+    },
+    {
+      id: '2',
+      icon: 'check-circle-outline',
+      name: 'Renewed Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Renewal Vehicle Count',
+          value: 509,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total',
+          value: 1745,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium to be Paid',
+          value: 37617,
+        },
+      ],
+    },
+    {
+      id: '3',
+      icon: 'attach-money',
+      name: 'Renewal Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Renewal Vehicle Count',
+          value: 1091,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total',
+          value: 61745,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium',
+          value: 3745,
+        },
+      ],
+    },
+  ]
+
+  const nonmotorData = [
+    {
+      id: '1',
+      icon: 'warning-amber',
+      name: 'Pending Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Policy Count to be Renewed',
+          value: 10951,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total to be Paid',
+          value: 461745,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium to be Paid',
+          value: 543745,
+        },
+      ],
+    },
+    {
+      id: '2',
+      icon: 'check-circle-outline',
+      name: 'Renewed Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Renewal Policy Count',
+          value: 5309,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total',
+          value: 17345,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium',
+          value: 3745617,
+        },
+      ],
+    },
+    {
+      id: '3',
+      icon: 'attach-money',
+      name: 'Renewal Summary',
+      subItem: [
+        {
+          id: 1,
+          type: 'count',
+          name: 'Renewal Policy Count',
+          value: 1091,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Total',
+          value: 614745,
+        },
+        {
+          id: 1,
+          type: 'price',
+          name: 'Renewal Premium',
+          value: 37445,
+        },
+      ],
+    },
+  ]
+
+  const DataSet = SelectedType == 1 ? motorData : nonmotorData;
   console.log("DuesSummeryData", DuesSummeryData);
   return (
     <View style={Styles.container}>
@@ -99,11 +256,7 @@ export default function DUESSummary({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* {isLoading == true ? (
-          <LoadingScreen />
-        ) : ( */}
         <View>
-          {/* {SelectedType == 1 ? ( */}
           <View
             style={{
               borderRadius: 15,
@@ -157,7 +310,7 @@ export default function DUESSummary({ navigation }) {
             </View>
             {SelectedType == 1 ? (
               <FlatList
-                data={motorData}
+                data={DataSet}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
