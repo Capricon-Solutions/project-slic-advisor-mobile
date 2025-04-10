@@ -64,6 +64,10 @@ import DebitSettlementRenewal from './src/pages/Agent/DebitSettlementRenewal';
 import ReportSwitch from './src/pages/RegionalManager/Report/ReportSwitch';
 import {ToastMessage} from './src/components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AdvisorReport from './src/pages/RegionalManager/Report/Report/AdvisorReport';
+import DirectReport from './src/pages/RegionalManager/Report/Report/DirectReport';
+import MeReport from './src/pages/RegionalManager/Report/Report/MeReport';
+import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLeaderReport';
 
 const Stack = createNativeStackNavigator();
 
@@ -103,7 +107,7 @@ function App(): React.JSX.Element {
 
   const AppStack = () => (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="TypeTest"
       screenOptions={{
         orientation: 'portrait',
         headerShown: false,
@@ -167,6 +171,10 @@ function App(): React.JSX.Element {
       <Stack.Screen name="MotorRenewal" component={MotorRenewal} />
       <Stack.Screen name="EDocument" component={EDocument} />
       <Stack.Screen name="MotorRenewalLetter" component={MotorRenewalLetter} />
+      <Stack.Screen name="AdvisorReport" component={AdvisorReport} />
+      <Stack.Screen name="DirectReport" component={DirectReport} />
+      <Stack.Screen name="MeReport" component={MeReport} />
+      <Stack.Screen name="TeamLeaderReport" component={TeamLeaderReport} />
       <Stack.Screen
         name="CommissionStatement"
         component={CommissionStatement}

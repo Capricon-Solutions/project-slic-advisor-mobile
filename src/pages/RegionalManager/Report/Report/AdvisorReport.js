@@ -31,7 +31,7 @@ import OutlinedTextBox from '../../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../../components/LandscapeHeader';
 import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
-import { useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
+import { useAdvisorReportQuery, useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
 
 const window = Dimensions.get('window');
 const data = [
@@ -45,36 +45,37 @@ const data = [
   { label: 'Item 8', value: '8' },
 ];
 
-export default function Report({ navigation, route }) {
+export default function AdvisorReport({ navigation, route }) {
   const { Title = "" } = route.params || {};
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = [
-    'Branch',
+    'Team Leader',
     'Renewal',
     'NB',
     'Refunds',
     'Endorsements',
     'Total',
   ];
-  const columnWidths = [150, 145, 130, 160, 135, 135];
+  const columnWidths = [150, 120, 120, 160, 120, 120];
   const [isLandscape, setIsLandscape] = useState(false);
 
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
   const {
-    data: RmReport,
-    error: RmReportError,
-    isLoading: RmReportLoading,
-    isFetching: RmReportFetching,
-  } = useRmReportQuery({
+    data: AdvisorReport,
+    error: AdvisorReportError,
+    isLoading: AdvisorReportLoading,
+    isFetching: AdvisorReportFetching,
+  } = useAdvisorReportQuery({
     branch: "test",
   });
-  const tableData = RmReport?.data?.map(item => [
-    item?.branch?.toString() ?? '',
+  console.log("AdvisorReport", AdvisorReport);
+  const tableData = AdvisorReport?.data?.map(item => [
+    item?.advisor?.toString() ?? '',
 
     item?.renewal?.toString() ?? '',
     item?.nb?.toString() ?? '',
@@ -87,22 +88,6 @@ export default function Report({ navigation, route }) {
     item?.total?.toString() ?? '',
   ]);
 
-  const branchList = RmReport && RmReport.data
-    ? RmReport.data.map(item => ({
-      label: item.branch,
-      value: item.branch
-    }))
-    : [];
-
-  const dropdownOptions = [
-    { label: 'All', value: 'All' },
-    ...branchList
-  ];
-
-
-
-  console.log("RmReport", RmReport);
-
   const toggleOrientation = () => {
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
@@ -111,6 +96,21 @@ export default function Report({ navigation, route }) {
     }
     setIsLandscape(!isLandscape);
   };
+
+
+
+  const advisorList = AdvisorReport && AdvisorReport.data
+    ? AdvisorReport.data.map(item => ({
+      label: item.advisor,
+      value: item.advisor
+    }))
+    : [];
+
+  const dropdownOptions = [
+    { label: 'All', value: 'All' },
+    ...advisorList
+  ];
+
 
   return (
     <View style={Styles.container}>
@@ -133,6 +133,7 @@ export default function Report({ navigation, route }) {
           />
         )}
       </View>
+      {/* <Text style={{ color: 'black' }}>nin</Text> */}
       <View
         style={{
           justifyContent: 'flex-end',
@@ -142,6 +143,7 @@ export default function Report({ navigation, route }) {
           gap: 5,
           paddingRight: 20,
         }}>
+
         <TouchableOpacity
           onPress={toggleOrientation}
           style={{ flexDirection: 'row', gap: 5 }}>
@@ -219,7 +221,7 @@ export default function Report({ navigation, route }) {
             </View>
             <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
-                label={'Branch'}
+                label={'Advisor'}
                 mode={'modal'}
                 dropdownData={dropdownOptions}
               />
@@ -238,7 +240,7 @@ export default function Report({ navigation, route }) {
         </ScrollView>
       ) : (
         <FlatList
-          data={RmReport?.data}
+          data={AdvisorReport?.data}
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{ padding: 10 }}
@@ -263,7 +265,7 @@ export default function Report({ navigation, route }) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item.branch.toString() ?? ''}
+                  {item?.advisor?.toString() ?? ''}
                 </Text>
               </View>
 
@@ -278,8 +280,8 @@ export default function Report({ navigation, route }) {
                 <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'Renewal'}
                     value={
-                      item.renewal !== null && item.renewal !== undefined
-                        ? Number(item.renewal).toLocaleString('en-US', {
+                      item?.renewal !== null && item?.renewal !== undefined
+                        ? Number(item?.renewal).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
                         })
@@ -292,8 +294,8 @@ export default function Report({ navigation, route }) {
                   <OutlinedTextBox Title={'NB'}
 
                     value={
-                      item.renewal !== null && item.nb !== undefined
-                        ? Number(item.nb).toLocaleString('en-US', {
+                      item?.renewal !== null && item?.nb !== undefined
+                        ? Number(item?.nb).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
                         })
@@ -309,7 +311,7 @@ export default function Report({ navigation, route }) {
                   <OutlinedTextBox Title={'PPW'}
 
                     value={
-                      item.renewal !== null && item.refundPpw !== undefined
+                      item.renewal !== null && item?.refundPpw !== undefined
                         ? Number(item.refundPpw).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
@@ -322,7 +324,7 @@ export default function Report({ navigation, route }) {
                 <View style={{ flex: 1 }}>
                   <OutlinedTextBox Title={'Others'}
                     value={
-                      item.renewal !== null && item.refundOther !== undefined
+                      item?.renewal !== null && item?.refundOther !== undefined
                         ? Number(item.refundOther).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2
@@ -341,7 +343,7 @@ export default function Report({ navigation, route }) {
 
                   value={
                     item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item.endorsement).toLocaleString('en-US', {
+                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                       })
@@ -353,8 +355,8 @@ export default function Report({ navigation, route }) {
               <View>
                 <OutlinedTextBox Title={'Total'}
                   value={
-                    item.renewal !== null && item.total !== undefined
-                      ? Number(item.total).toLocaleString('en-US', {
+                    item?.renewal !== null && item?.total !== undefined
+                      ? Number(item.total)?.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                       })

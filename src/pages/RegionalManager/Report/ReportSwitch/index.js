@@ -71,7 +71,7 @@ export default function ReportSwitch({ navigation }) {
 
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('Report', { Title: 'Marketing executive' });
+        navigation.navigate('MeReport', { Title: 'Marketing executive' });
       },
     },
     {
@@ -79,7 +79,7 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('Report', { Title: 'Team leader' });
+        navigation.navigate('TeamLeaderReport', { Title: 'Team leader' });
       },
     },
     {
@@ -87,7 +87,7 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('Report', { Title: 'Advisor' });
+        navigation.navigate('AdvisorReport', { Title: 'Advisor' });
       },
     },
     {
@@ -95,7 +95,7 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('Report', { Title: 'Direct' });
+        navigation.navigate('DirectReport', { Title: 'Direct' });
       },
     },
 

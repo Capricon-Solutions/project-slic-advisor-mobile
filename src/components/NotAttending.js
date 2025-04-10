@@ -19,9 +19,46 @@ import SquareTextBox from './SquareTextBox';
 import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
+import { useNotAttendingMutation } from '../redux/services/trainingSlice';
+import { showToast, ToastMessage } from './ToastMessage';
 
-export default function NotAttending({ modalVisible, setModalVisible }) {
+export default function NotAttending({ modalVisible, setModalVisible, selectedId }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
+  const [reason, setReason] = React.useState('');
+  const [additionalComments, setAdditionalComments] = React.useState('');
+  const [notAttending, { isLoading: notAttendingLoading, error: notAttendingError }] = useNotAttendingMutation();
+
+  function notAttendingApi() {
+    if (!reason.trim()) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return;
+    }
+    const body = {
+      agentCode: 905717,
+      trainId: selectedId,
+      reason,
+      additionalComments,
+    };
+
+    notAttending(body)
+      .unwrap()
+      .then(() => {
+        // Success - close the modal
+        setReason('');
+        setAdditionalComments('');
+        hide();
+
+      })
+      .catch((err) => {
+        // Handle error if needed
+        console.error('Not attending error:', err);
+      });
+  }
+
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -67,6 +104,7 @@ export default function NotAttending({ modalVisible, setModalVisible }) {
               }),
             },
           ]}>
+
           <View style={styles.modalContainer}>
             <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
               <MaterialCommunityIcons
@@ -79,8 +117,21 @@ export default function NotAttending({ modalVisible, setModalVisible }) {
               <Text style={styles.modalTitle}>Reason for Not Attending?</Text>
             </View>
 
-            <SquareTextBox Label={'Reasons *'} Title={'What is the reasons'} />
-            <SquareTextBox Label={'Additional Comments '} Title={'Explain Why'} />
+            <SquareTextBox
+              Label={'Reasons *'}
+              Title={'What is the reasons'}
+              value={reason}
+              error={!reason.trim()}
+
+              setValue={text => setReason(text)}
+            />
+
+            <SquareTextBox
+              Label={'Additional Comments '}
+              Title={'Explain Why'}
+              value={additionalComments}
+              setValue={text => setAdditionalComments(text)}
+            />
 
             <View
               style={{
@@ -90,12 +141,13 @@ export default function NotAttending({ modalVisible, setModalVisible }) {
                 justifyContent: 'space-evenly',
               }}>
               <View style={{ flex: 0.35 }}>
-                <AlertButton Title={'Confirm'} />
+                <AlertButton Title={'Confirm'} isLoading={notAttendingLoading} onPress={() => notAttendingApi()} />
               </View>
             </View>
           </View>
         </Animated.View>
       </TouchableOpacity>
+      <ToastMessage />
     </Modal>
   );
 }

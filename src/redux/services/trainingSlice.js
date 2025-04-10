@@ -2,10 +2,7 @@ import { baseApi } from './api';
 
 export const trainingSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
-    // getEventsAndActivitiess: builder.query({
-    //   query: ({ date }) => `planner/getEventsAndActivities/905717?date=${date}`,
-    //   providesTags: ['Events'],
-    // }),
+
     getTrainingList: builder.query({
       query: type => {
         console.log('Training Type:', type); // Log the type parameter
@@ -21,17 +18,32 @@ export const trainingSlice = baseApi.injectEndpoints({
       },
     }),
 
+    //approveTraining
     approveTraining: builder.mutation({
       query: id => {
         const finalUrl = `training/approveTrainingByAgent/905717?trainId=${id}`;
         console.log('id:', id);
         console.log('Final URL:', finalUrl);
         // console.log('Final body:', body);
-
         return {
           url: finalUrl,
           method: 'PUT',
+        };
+      },
+      invalidatesTags: ['Trainings'],
+    }),
 
+    //NotAttending
+    NotAttending: builder.mutation({
+      query: body => {
+        const finalUrl = `training/notAttendTrainingByAgent`;
+        console.log('body:', body);
+        console.log('Final URL:', finalUrl);
+        // console.log('Final body:', body);
+        return {
+          url: finalUrl,
+          method: 'PUT',
+          body: body
         };
       },
       invalidatesTags: ['Trainings'],
@@ -42,18 +54,9 @@ export const trainingSlice = baseApi.injectEndpoints({
 
 // Export hooks
 export const {
-  useGetEventsAndActivitiessQuery,
-  useGetLeadsQuery,
-  useActivityCreationMutation,
-  useActivityDeleteMutation,
-  useEventCreationMutation,
-  useEventDeleteMutation,
-  useGetLeadByIdQuery,
-  useMonthlyCreationMutation,
-  useLeadCreationMutation,
-  useGetMonthlyPlanQuery,
-  useGetLeadActivitiesQuery,
+
   useGetTrainingListQuery,
   useApproveTrainingMutation,
-  useGetTrainingListByDateQuery
+  useGetTrainingListByDateQuery,
+  useNotAttendingMutation
 } = trainingSlice;

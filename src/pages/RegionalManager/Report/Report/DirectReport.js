@@ -45,7 +45,7 @@ const data = [
   { label: 'Item 8', value: '8' },
 ];
 
-export default function Report({ navigation, route }) {
+export default function DirectReport({ navigation, route }) {
   const { Title = "" } = route.params || {};
 
   const [value, setValue] = useState(null);
