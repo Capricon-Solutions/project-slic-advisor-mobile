@@ -19,6 +19,7 @@ import * as Progress from 'react-native-progress';
 import DuesSummery from '../../../../icons/DuesSummery.png'; // Replace with the actual logo path
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LoaderKit from 'react-native-loader-kit';
 
 import Octicons from 'react-native-vector-icons/Octicons';
 import { FlatList } from 'react-native';
@@ -32,12 +33,16 @@ import {
 } from '../../../../redux/services/contactSlice';
 import { useSelector } from 'react-redux';
 import { useClassSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+import moment from 'moment';
 const window = Dimensions.get('window');
 
 export default function ClassSummary({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
+  const currentMonthNumber = moment().month() + 1; // +1 because Moment.js months are 0-indexed
+  const currentMonthName = moment().format('MMMM');
+  const previousMonthName = moment().subtract(1, 'months').format('MMMM');
 
   const {
     data: ClassSummery,
@@ -47,6 +52,8 @@ export default function ClassSummary({ navigation }) {
   } = useClassSummeryQuery({
     month: 4,
   });
+
+  const DataSet = SelectedType == 1 ? ClassSummery?.data?.monthly : ClassSummery?.data?.cumulative;
   const formatCurrency = (value) => {
     const num = Number(value || 0);
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -175,8 +182,9 @@ export default function ClassSummary({ navigation }) {
                   fontSize: 13,
                 }}>
                 {SelectedType == 1
-                  ? 'December summary'
-                  : 'January to December summary'}
+                  ? `${currentMonthName} summary`
+                  : `January to December summary`}
+                {/* : `${previousMonthName} to ${currentMonthName} summary`} */}
               </Text>
             </View>
 
@@ -184,12 +192,12 @@ export default function ClassSummary({ navigation }) {
               <AmountFields
                 icon={'attach-money'}
                 title={'Premium'}
-                amount={`LKR ${formatCurrency(ClassSummery?.data?.totalPremium)}`}
+                amount={`LKR ${formatCurrency(DataSet?.totalPremium)}`}
               />
               <AmountFields
                 icon={'outlined-flag'}
                 title={'Target'}
-                amount={`LKR ${formatCurrency(ClassSummery?.data?.totalTarget)}`}
+                amount={`LKR ${formatCurrency(DataSet?.totalTarget)}`}
               />
             </View>
           </View>
@@ -207,7 +215,7 @@ export default function ClassSummary({ navigation }) {
                 color: COLORS.textColor,
                 fontSize: 13,
               }}>
-              December summary
+              {currentMonthName} summary
             </Text>
           </View>
 
@@ -250,12 +258,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.motorTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.motorTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.motorTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.motorTotalTarget)}`}
                 />
               </View>
             </View>
@@ -300,12 +308,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.fireTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.fireTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.fireTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.fireTotalTarget)}`}
                 />
               </View>
             </View>
@@ -350,12 +358,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.generalAccidentTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.generalAccidentTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.generalAccidentTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.generalAccidentTotalTarget)}`}
                 />
               </View>
             </View>
@@ -400,12 +408,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.marineTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.marineTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.marineTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.marineTotalTarget)}`}
                 />
               </View>
             </View>
@@ -450,12 +458,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.legalTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.legalTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.legalTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.legalTotalTarget)}`}
                 />
               </View>
             </View>
@@ -500,12 +508,12 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.wciTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.wciTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.wciTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.wciTotalTarget)}`}
                 />
               </View>
             </View>
@@ -550,18 +558,27 @@ export default function ClassSummary({ navigation }) {
                 <AmountFields
                   icon={'attach-money'}
                   title={'Premium'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.esiTotalPremium)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.esiTotalPremium)}`}
                 />
                 <AmountFields
                   icon={'outlined-flag'}
                   title={'Target'}
-                  amount={`LKR ${formatCurrency(ClassSummery?.data?.esiTotalTarget)}`}
+                  amount={`LKR ${formatCurrency(DataSet?.esiTotalTarget)}`}
                 />
               </View>
             </View>
           </View>
         </View>
       </ScrollView>
+      {ClassSummeryLoading && (
+        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+          <LoaderKit
+            style={{ width: 50, height: 50 }}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
+      )}
     </View>
   );
 }

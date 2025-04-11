@@ -20,6 +20,7 @@ import { FlatList } from 'react-native';
 import { styles } from './styles';
 import LoadingScreen from '../../../../components/LoadingScreen';
 import { useKpiSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+import LoaderKit from 'react-native-loader-kit';
 
 const window = Dimensions.get('window');
 
@@ -214,6 +215,15 @@ export default function KPISummary({ navigation }) {
           </View>
         </View>
       </ScrollView>
+      {KpiSummeryLoading && (
+        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+          <LoaderKit
+            style={{ width: 50, height: 50 }}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
+      )}
     </View>
   );
 }

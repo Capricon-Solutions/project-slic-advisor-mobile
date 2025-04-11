@@ -19,6 +19,7 @@ import * as Progress from 'react-native-progress';
 import DuesSummery from '../../../../icons/DuesSummery.png'; // Replace with the actual logo path
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LoaderKit from 'react-native-loader-kit';
 
 import Octicons from 'react-native-vector-icons/Octicons';
 import { FlatList } from 'react-native';
@@ -52,7 +53,7 @@ export default function DUESSummary({ navigation }) {
     month: currentMonthNumber,
   });
 
-  const Response = DuesSummeryData?.data;
+  const Response = SelectedType == 1 ? DuesSummeryData?.data?.motor : DuesSummeryData?.data?.nonMotor;
   const motorData = [
     {
       id: '1',
@@ -63,19 +64,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Vehicle Count to be Renewed',
-          value: Response?.renewalVehicleCount,
+          value: Response?.vehicleCountToBeRenewed || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total to be Paid',
-          value: 61745,
+          value: Response?.renewalTotalToBePaid || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium',
-          value: 3745,
+          value: Response?.renewalPremiumToBePaid || 0,
         },
       ],
     },
@@ -88,19 +89,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Renewal Vehicle Count',
-          value: 509,
+          value: Response?.renewedVehicleCount || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total',
-          value: 1745,
+          value: Response?.renewedTotal || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium to be Paid',
-          value: 37617,
+          value: Response?.renewedPremium || 0,
         },
       ],
     },
@@ -113,19 +114,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Renewal Vehicle Count',
-          value: 1091,
+          value: Response?.renewalVehicleCount || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total',
-          value: 61745,
+          value: Response?.renewalTotal || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium',
-          value: 3745,
+          value: Response?.renewalPremium || 0,
         },
       ],
     },
@@ -141,19 +142,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Policy Count to be Renewed',
-          value: 10951,
+          value: Response?.policyCountToBeRenewed || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total to be Paid',
-          value: 461745,
+          value: Response?.renewalTotalToBePaid || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium to be Paid',
-          value: 543745,
+          value: Response?.renewalPremiumToBePaid || 0,
         },
       ],
     },
@@ -166,19 +167,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Renewal Policy Count',
-          value: 5309,
+          value: Response?.renewedRenewedPolicyCount || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total',
-          value: 17345,
+          value: Response?.renewedRenewalTotal || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium',
-          value: 3745617,
+          value: Response?.renewedRenewalPremium || 0,
         },
       ],
     },
@@ -191,19 +192,19 @@ export default function DUESSummary({ navigation }) {
           id: 1,
           type: 'count',
           name: 'Renewal Policy Count',
-          value: 1091,
+          value: Response?.renewalPolicyCount || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Total',
-          value: 614745,
+          value: Response?.renewalTotal || 0,
         },
         {
           id: 1,
           type: 'price',
           name: 'Renewal Premium',
-          value: 37445,
+          value: Response?.renewalPremium || 0,
         },
       ],
     },
@@ -482,6 +483,15 @@ export default function DUESSummary({ navigation }) {
           <View></View>
         </View>
       </ScrollView>
+      {DuesSummeryLoading && (
+        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+          <LoaderKit
+            style={{ width: 50, height: 50 }}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
+      )}
     </View>
   );
 }
