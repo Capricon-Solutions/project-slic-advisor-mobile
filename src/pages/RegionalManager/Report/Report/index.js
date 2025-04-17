@@ -13,12 +13,8 @@ import {
 import { Styles } from '../../../../theme/Styles';
 import { FlatList } from 'react-native';
 import { styles } from './styles';
-import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
-import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
-import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
-import SmallButton from '../../../../components/SmallButton';
 import Button from '../../../../components/Button';
 import COLORS from '../../../../theme/colors';
 import Fonts from '../../../../theme/Fonts';
@@ -32,6 +28,7 @@ import LandscapeHeader from '../../../../components/LandscapeHeader';
 import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
 import { useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
+import ReportFilter from '../../../../components/ReportFilter';
 
 const window = Dimensions.get('window');
 const data = [
@@ -47,10 +44,14 @@ const data = [
 
 export default function Report({ navigation, route }) {
   const { Title = "" } = route.params || {};
-
   const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState(1);
+  const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
+  const [type, setType] = useState();
+  const [branch, setBranch] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  // const [ value, setValue]= useState();
+
   const tableHead = [
     'Branch',
     'Renewal',
@@ -71,14 +72,16 @@ export default function Report({ navigation, route }) {
     isLoading: RmReportLoading,
     isFetching: RmReportFetching,
   } = useRmReportQuery({
-    branch: "test",
+    branch: branch,
+    type: type,
+    month: selectedMonth,
+    type: SelectedType,
+    value: value
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
-
     item?.renewal?.toString() ?? '',
     item?.nb?.toString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
     {
       ppw: item?.refundPpw?.toString() ?? '',
       other: item?.refundOther?.toString() ?? ''
@@ -95,11 +98,9 @@ export default function Report({ navigation, route }) {
     : [];
 
   const dropdownOptions = [
-    { label: 'All', value: 'All' },
+    { label: 'All', value: '' },
     ...branchList
   ];
-
-
 
   console.log("RmReport", RmReport);
 
@@ -116,6 +117,24 @@ export default function Report({ navigation, route }) {
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
+      <ReportFilter
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        dropdownOptions={dropdownOptions}
+        lastTitle={"Branch"}
+        onPressSearch={() => {
+          // PolicyListResponse(searchData);
+          setModalVisible(false);
+        }}
+        onPressClear={() => console.log('clear ', policyValues)}
+        Name="Report Filter"
+        onViewDetailsChange={(value) => setValue(value)}
+        onTypeChange={(value) => setSelectedType(value)}
+        onMonthChange={(value) => setSelectedmonth(value)}
+        onBranchChange={(value) => setBranch(value)}
+      />
+
+
       <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
         {isLandscape == true ? (
           <LandscapeHeader
@@ -135,13 +154,26 @@ export default function Report({ navigation, route }) {
       </View>
       <View
         style={{
-          justifyContent: 'flex-end',
+          justifyContent: isLandscape == false ? 'space-between' : 'flex-end',
           width: '100%',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,
           paddingRight: 20,
         }}>
+        {isLandscape == false &&
+          <View style={{ alignItems: 'flex-end', marginHorizontal: 20 }}>
+            <TouchableOpacity style={{ flexDirection: 'row', gap: 5 }} onPress={() => setModalVisible(true)}>
+              <Text style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Bold,
+                // fontSize: 13
+              }}>Filter By</Text>
+              <MaterialIcons name="filter-list" size={20} color={COLORS.primary} />
+
+            </TouchableOpacity>
+          </View>
+        }
         <TouchableOpacity
           onPress={toggleOrientation}
           style={{ flexDirection: 'row', gap: 5 }}>
@@ -163,6 +195,7 @@ export default function Report({ navigation, route }) {
           )}
         </TouchableOpacity>
       </View>
+
       {isLandscape == true ? (
         <ScrollView
           contentContainerStyle={{
@@ -201,20 +234,22 @@ export default function Report({ navigation, route }) {
                 label={'Month'}
                 mode={'modal'}
                 dropdownData={[
-                  { label: 'Cumulative', value: '00' },
-                  { label: 'January', value: '01' },
-                  { label: 'February', value: '02' },
-                  { label: 'March', value: '03' },
-                  { label: 'April', value: '04' },
-                  { label: 'May', value: '05' },
-                  { label: 'June', value: '06' },
-                  { label: 'July', value: '07' },
-                  { label: 'August', value: '08' },
-                  { label: 'September', value: '09' },
+                  { label: 'Cumulative', value: '0' },
+                  { label: 'January', value: '1' },
+                  { label: 'February', value: '2' },
+                  { label: 'March', value: '3' },
+                  { label: 'April', value: '4' },
+                  { label: 'May', value: '5' },
+                  { label: 'June', value: '6' },
+                  { label: 'July', value: '7' },
+                  { label: 'August', value: '8' },
+                  { label: 'September', value: '9' },
                   { label: 'October', value: '10' },
                   { label: 'November', value: '11' },
                   { label: 'December', value: '12' },
                 ]}
+                selectedValue={selectedMonth}
+                onValueChange={(value) => setSelectedmonth(value)}
               />
             </View>
             <View style={{ flex: 0.19, marginHorizontal: 2 }}>
@@ -222,6 +257,7 @@ export default function Report({ navigation, route }) {
                 label={'Branch'}
                 mode={'modal'}
                 dropdownData={dropdownOptions}
+                onValueChange={(value) => setBranch(value)} // ✅ Captures selection
               />
             </View>
             <View style={{ flex: 0.13, marginHorizontal: 2 }}>
@@ -252,7 +288,6 @@ export default function Report({ navigation, route }) {
                 padding: 15,
               }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
                   style={{ height: 17, width: 17 }}
                   source={Building}></Image>
@@ -337,8 +372,6 @@ export default function Report({ navigation, route }) {
               <View>
                 <OutlinedTextBox
                   Title={'Endorsement'}
-
-
                   value={
                     item.renewal !== null && item.endorsement !== undefined
                       ? Number(item.endorsement).toLocaleString('en-US', {

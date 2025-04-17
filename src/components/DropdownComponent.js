@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,23 +6,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponent = ({dropdownData, mode, label}) => {
+const DropdownComponent = ({ dropdownData, mode, label, onValueChange }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
   const renderLabel = () => {
     // if (value || isFocus) {
     return (
-      <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
+      <Text style={[styles.label, isFocus && { color: 'blue' }]}>{label}</Text>
     );
     // }
     // return null;
+  };
+  const handleChange = (item) => {
+    setValue(item.value);
+    setIsFocus(false);
+    if (onValueChange) {
+      onValueChange(item.value); // 🔥 Send selected value to parent
+    }
   };
 
   return (
@@ -30,15 +37,15 @@ const DropdownComponent = ({dropdownData, mode, label}) => {
       {renderLabel()}
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        selectedStyle={{color: 'red'}}
-        itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
+        selectedStyle={{ color: 'red' }}
+        itemTextStyle={{ color: COLORS.textColor, fontSize: 14 }}
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        containerStyle={{width: window.width * 0.5, fontSize: 12}}
+        containerStyle={{ width: window.width * 0.5, fontSize: 12 }}
         data={dropdownData}
         search
         maxHeight={300}
@@ -49,10 +56,7 @@ const DropdownComponent = ({dropdownData, mode, label}) => {
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
+        onChange={handleChange}
         renderLeftIcon={() => (
           <MaterialCommunityIcons
             style={styles.icon}
