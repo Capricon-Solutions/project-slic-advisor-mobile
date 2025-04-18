@@ -33,6 +33,7 @@ import { pick, types } from '@react-native-documents/picker';
 import RNFS from 'react-native-fs';
 import { useAddImageMutation, useGetImageQuery, useGetImageUrlQuery, useLazyGetImageUrlQuery } from '../../redux/services/profilePicSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use the smaller value
@@ -117,7 +118,13 @@ export default function Profile({ navigation }) {
     await AsyncStorage.removeItem("password");
     await AsyncStorage.removeItem("loggedIn");
 
-    navigation.navigate('Login')
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'NavigateToAuthStack' }],
+        // The name of the Stack.Screen
+      })
+    );
   }
 
   return (

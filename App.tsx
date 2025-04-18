@@ -95,11 +95,22 @@ function App(): React.JSX.Element {
     fetchUsername();
   }, []);
 
-  // const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   // **Auth Stack (Contains Only Login)**
+
   const AuthStack = () => (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen
+        options={{
+          gestureEnabled: true, // Disable swipe back
+        }}
+        name="Login"
+        component={LoginScreen}
+      />
+      <Stack.Screen
+        name="NavigateToAppStack"
+        options={{headerShown: false}}
+        component={AppStack}
+      />
     </Stack.Navigator>
   );
 
@@ -107,16 +118,28 @@ function App(): React.JSX.Element {
 
   const AppStack = () => (
     <Stack.Navigator
-      initialRouteName="TypeTest"
+      initialRouteName="AgentNavigator"
       screenOptions={{
         orientation: 'portrait',
         headerShown: false,
         animation: 'slide_from_right',
       }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="TypeTest" component={TypeTest} />
+      {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
 
-      <Stack.Screen name="AgentNavigator" component={AgentNavigator} />
+      <Stack.Screen
+        name="NavigateToAuthStack"
+        options={{headerShown: false}}
+        component={AuthStack}
+      />
+
+      <Stack.Screen name="TypeTest" component={TypeTest} />
+      <Stack.Screen
+        name="AgentNavigator"
+        component={AgentNavigator}
+        options={{
+          gestureEnabled: false, // Disable swipe back
+        }}
+      />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="SalesMeter" component={SalesMeter} />
@@ -201,12 +224,7 @@ function App(): React.JSX.Element {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          {/* Conditionally Render AuthStack or AppStack */}
-          {/* {isLoggedIn ? ( */}
-          <Stack.Screen name="AppStack" component={AppStack} />
-          {/* ) : ( */}
-          {/* <Stack.Screen name="AuthStack" component={AuthStack} /> */}
-          {/* )} */}
+          <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

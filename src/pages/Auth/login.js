@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { TextInput, Checkbox } from 'react-native-paper';
 import Svg, { Path } from 'react-native-svg';
@@ -23,6 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
 import { CommonActions } from '@react-navigation/native';
+import { GetuserType } from '../../redux/services/userTypeSlice';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
@@ -59,10 +61,51 @@ const LoginScreen = ({ navigation }) => {
 
     loadUsername();
 
-  }, [username]);
+  }, []);
 
   const [userLogin, { isLoading: loginLoading, error: loginError, data }] = useUserLoginMutation();
 
+  function navigator() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'NavigateToAppStack' }],
+        // The name of the Stack.Screen
+      })
+    );
+  }
+
+  function userManagement(response) {
+    console.log("response", response?.User?.UserType);
+    if (response?.User?.UserType == "A") {
+      dispatch(GetuserType(1));
+      navigator();
+      // navigation.navigate('AgentNavigator');
+    } else if (response?.User?.UserType == "O") {
+      dispatch(GetuserType(2));
+      navigator();
+    } else if (response?.User?.UserType == "M") {
+      dispatch(GetuserType(5));
+      navigator();
+    } else if (response?.User?.UserType == "B") {
+      dispatch(GetuserType(4));
+      navigator();
+    } else if (response?.User?.UserType == "R") {
+      dispatch(GetuserType(3));
+      navigator();
+    } else {
+      Alert.alert(
+        'User Role Issue',
+        'Cant find matching user role.',
+      );
+
+
+
+
+
+    }
+
+  }
   const handleSubmit = async () => {
 
     const body = {
@@ -75,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
       const response = await userLogin(body).unwrap();
       console.log('Login successful! Response:', response?.User);
       dispatch(Setprofile(response));
-      savePassword();
+      savePassword(response);
 
     } catch (err) {
 
@@ -90,19 +133,22 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  async function savePassword() {
+  async function savePassword(response) {
     try {
       if (!rememberMe) {
         // console.log("save password"),
         await AsyncStorage.removeItem("username");
         await AsyncStorage.removeItem("password");
-        navigation.navigate('TypeTest');
+        // navigation.navigate('TypeTest');
+
+        userManagement(response);
       } else {
         await AsyncStorage.setItem("username", username);
         await AsyncStorage.setItem("password", password);
         // await AsyncStorage.setItem("loggedIn", true);
+        userManagement(response);
 
-        navigation.navigate("TypeTest");
+        // navigation.navigate("TypeTest");
         // navigation.dispatch(
         //   CommonActions.reset({
         //     index: 0,

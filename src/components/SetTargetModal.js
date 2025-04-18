@@ -148,6 +148,7 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 keyboardType="numeric"
                 activeOutlineColor={COLORS.primary}
                 outlineColor="transparent"
+                textColor={COLORS.textColor}
                 value={inputValue} // Controlled component
                 onChangeText={text => setInputValue(text)} // Store input value
                 style={{

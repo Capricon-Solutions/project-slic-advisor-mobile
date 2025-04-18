@@ -16,7 +16,7 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 
-export default function AboutModal({modalVisible, setModalVisible, data}) {
+export default function AboutModal({ modalVisible, setModalVisible, data }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ export default function AboutModal({modalVisible, setModalVisible, data}) {
           setModalVisible(false);
         }}
         activeOpacity={1}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -75,9 +75,9 @@ export default function AboutModal({modalVisible, setModalVisible, data}) {
               />
             </TouchableOpacity>
             <Image source={Contacts} style={styles.avatar} />
-            <Text style={styles.modalTitle}>Get Access To B-Connect</Text>
+            <Text style={styles.modalTitle}>Get Access To GI Sales Connect</Text>
             <Text style={styles.contactText}>Please Contact: {data?.name}</Text>
-            <View style={{width: '70%', alignItems: 'center'}}>
+            <View style={{ width: '70%', alignItems: 'center' }}>
               <View style={styles.contactItem}>
                 <MaterialCommunityIcons
                   name="phone"
@@ -99,7 +99,7 @@ export default function AboutModal({modalVisible, setModalVisible, data}) {
             </View>
 
             <Text style={styles.note}>
-              <Text style={{color: COLORS.errorBorder}}>Note:</Text> Send the
+              <Text style={{ color: COLORS.errorBorder }}>Note:</Text> Send the
               Request With Your Agency Code
             </Text>
           </View>
