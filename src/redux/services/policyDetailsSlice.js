@@ -53,6 +53,9 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     getPremiumHistory: builder.query({
       query: ({ id }) => `agent/getPremiumHistory?PolicyNo=${id}`,
     }),
+    getPendingHistory: builder.query({
+      query: ({ id }) => `agent/getPendingHistory?policyNumber=${id}`,
+    }),
     // DebitSettlement
     DebitSettlement: builder.query({
       query: ({ id }) => `salesIncome/DebitSettlement?policyNo=${id}`,
@@ -65,5 +68,6 @@ export const {
   useGetPolicyDetailsQuery,
   useGetClaimHistoryQuery,
   useGetPremiumHistoryQuery,
-  useDebitSettlementQuery
+  useDebitSettlementQuery,
+  useGetPendingHistoryQuery
 } = policyDetailsApi;

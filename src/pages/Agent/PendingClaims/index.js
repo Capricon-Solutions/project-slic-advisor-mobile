@@ -18,9 +18,10 @@ import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
 import { styles } from './styles';
 import { useSelector } from 'react-redux';
-import { useGetClaimHistoryQuery } from '../../../redux/services/policyDetailsSlice';
+import { useGetClaimHistoryQuery, useGetPendingHistoryQuery, useGetPremiumHistoryQuery } from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponentDoc from '../../../components/TableComponentDoc';
+import moment from 'moment';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -49,14 +50,22 @@ export default function PendingClaims({ navigation, route }) {
   //   state => state.claimHistory.claimHistoryResponse.data,
   // );
   const { policyNo } = route.params;
+  // const {
+  //   data: ClaimHistory,
+
+  // } = useGetClaimHistoryQuery({
+  //   id: policyNo, // Dynamic ID
+  // });
   const {
     data: ClaimHistory,
     error,
     isFetching,
-  } = useGetClaimHistoryQuery({
+  } = useGetPendingHistoryQuery({
     id: policyNo, // Dynamic ID
   });
   const claimHistoryResponse = ClaimHistory?.data;
+
+
 
   console.log('PendingClaims', ClaimHistory);
 
@@ -124,14 +133,30 @@ export default function PendingClaims({ navigation, route }) {
             Pending
           </Text>
         </View>
-        <DetailLine Title={'Policy Number'} detail={item.intDate} />
-        <DetailLine Title={'Intimation No.'} detail={item.voucher} />
-        <DetailLineBold Title={'Job No.'} detail={item.dateOfLoss} />
-        <DetailLine Title={'Ins. Name'} detail={item.intDate} />
-        <DetailLine Title={'Date Of Lost'} detail={item.payTyp} />
-        <DetailLine Title={'Date Of intimation'} detail={item.vouSts} />
-        <DetailLine Title={'Date Of Register'} detail={'LKR ' + item.padAmount} />
-        <DetailLine Title={'Estimated liability'} detail={item.payDate} />
+        <DetailLine Title={'Policy Number'} detail={item.policyNo} />
+        <DetailLine Title={'Intimation No.'} detail={item.intimationNo} />
+        <DetailLineBold Title={'Job No.'} detail={item.jobNo} />
+        <DetailLine Title={'Ins. Name'} detail={item.name} />
+        <DetailLine
+          Title={'Date Of Loss'}
+          detail={item.dateOfLoss ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') : 'N/A'}
+        />
+        <DetailLine
+          Title={'Date Of Intimation'}
+          detail={item.dateOfIntimation ?
+            moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') :
+            'N/A'}
+        />
+        <DetailLine
+          Title={'Date Of Register'}
+          detail={item.dateOfRegister ?
+            moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') :
+            'N/A'}
+        />
+        <DetailLine Title={'Estimated liability'} detail={'LKR ' + Number(item.estimatedLiability).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })} />
         {expanded &&
           <TableComponentDoc
             haveTotal={false}
