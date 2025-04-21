@@ -17,7 +17,7 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 
-export default function AboutModal({ modalVisible, setModalVisible, data }) {
+export default function ForgotPasswordModal({ modalVisible, setModalVisible, data }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -44,18 +44,13 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
     }).start();
     setTimeout(() => setModalVisible(false), 300);
   }
+
+
   const handleCall = phoneNumber => {
+    // Open the phone dialer with the contact number
     const phoneURL = `tel:${phoneNumber}`;
     Linking.openURL(phoneURL).catch(err =>
       console.error('Failed to make a call:', err),
-    );
-  };
-
-  const handleEmail = (email, subject = '', body = '') => {
-    const emailURL = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    Linking.openURL(emailURL).catch(err =>
-      console.error('Failed to send email:', err)
     );
   };
 
@@ -89,12 +84,12 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
                 size={24}
               />
             </TouchableOpacity>
-            <Image source={Contacts} style={styles.avatar} />
-            <Text style={styles.modalTitle}>Get Access To GI Sales Connect</Text>
-            <Text style={styles.contactText}>Please Contact: {data?.name}</Text>
+            {/* <Image source={Contacts} style={styles.avatar} /> */}
+            <Text style={styles.modalTitle}>Forgot Password Support</Text>
+            <Text style={styles.contactText}>Please Contact: <Text style={{ fontFamily: Fonts.Roboto.Bold }}>{data?.contactSupport}</Text></Text>
             <View style={{ width: '70%', alignItems: 'center' }}>
               <TouchableOpacity
-                onPress={() => handleCall(data?.telephone)}
+                onPress={() => handleCall(data?.callExtension)}
                 style={styles.contactItem}>
                 <MaterialCommunityIcons
                   name="phone"
@@ -102,24 +97,13 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
                   color={COLORS.primaryGreen}
                 />
                 <Text style={styles.contactDetails}>
-                  Phone - {data?.telephone}
+                  Call Extention - {data?.callExtension}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleEmail(data?.email)} style={styles.contactItem}>
-                <MaterialCommunityIcons
-                  name="email"
-                  size={20}
-                  color={COLORS.primaryGreen}
-                />
-                <Text style={styles.contactDetails}>Email - {data?.email}</Text>
-              </TouchableOpacity>
+
             </View>
 
-            <Text style={styles.note}>
-              <Text style={{ color: COLORS.errorBorder }}>Note:</Text> Send the
-              Request With Your Agency Code
-            </Text>
+
           </View>
         </Animated.View>
       </TouchableOpacity>
@@ -142,7 +126,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.lightBorder,
     alignItems: 'center',
-    paddingVertical: 50,
+    paddingVertical: 30,
   },
   closeButton: {
     position: 'absolute',
@@ -165,7 +149,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   contactText: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.black,
     marginBottom: 20,

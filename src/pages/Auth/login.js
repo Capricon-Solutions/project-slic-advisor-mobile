@@ -25,6 +25,7 @@ import { useDispatch } from 'react-redux';
 import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
 import { CommonActions } from '@react-navigation/native';
 import { GetuserType } from '../../redux/services/userTypeSlice';
+import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
@@ -36,6 +37,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
   const [errorShow, setErrorShow] = useState(false);
   const { data: help, isLoading, error } = useGetHelpQuery();
 
@@ -173,6 +175,12 @@ const LoginScreen = ({ navigation }) => {
         data={help?.data}
       />
 
+      <ForgotPasswordModal
+        modalVisible={modalVisible2}
+        setModalVisible={setModalVisible2}
+        data={help?.data}
+      />
+
       <HeaderBackground />
       {/* Logo */}
       <Image source={Logo} style={styles.logo} />
@@ -219,7 +227,7 @@ const LoginScreen = ({ navigation }) => {
           />
           <Text style={styles.checkboxLabel}>Remember Me</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible2(true)}>
           <Text style={styles.forgotPassword}>Forgot Password ?</Text>
         </TouchableOpacity>
       </View>
