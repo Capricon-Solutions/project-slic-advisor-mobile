@@ -87,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
     } else if (response?.User?.UserType == "M") {
       dispatch(GetuserType(5));
       navigator();
-    } else if (response?.User?.UserType == "B") {
+    } else if (response?.User?.UserType == "S") {
       dispatch(GetuserType(4));
       navigator();
     } else if (response?.User?.UserType == "R") {

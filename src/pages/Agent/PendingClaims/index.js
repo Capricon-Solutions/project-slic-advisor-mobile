@@ -200,7 +200,6 @@ export default function PendingClaims({ navigation, route }) {
         fadingEdgeLength={20}
         contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
 
-
         {isFetching ? (
           <View style={{ height: window.height * 0.7 }}>
             <LoadingScreen />

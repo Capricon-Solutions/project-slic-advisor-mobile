@@ -54,6 +54,16 @@ export default NotificationSlice.reducer;
 
 export const notificationsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
+    getCompetitions: builder.query({
+      query: ({ id }) => {
+        const url = `notification/competitions`;
+        console.log('Fetching competitions from:', url);
+        return url;
+      },
+      // providesTags: ['Notifications'], // ✅ Marks this query with a tag
+    }),
+
+
     getNotifications: builder.query({
       query: ({ id }) => {
         const url = `notification/getNotifications/${id}`;
@@ -89,5 +99,9 @@ export const notificationsApi = baseApi.injectEndpoints({
 });
 
 // Export hooks
-export const { useGetNotificationsQuery, useReadNotificationMutation, useDeleteNotificationMutation } =
+export const {
+  useGetNotificationsQuery,
+  useReadNotificationMutation,
+  useDeleteNotificationMutation,
+  useGetCompetitionsQuery } =
   notificationsApi;
