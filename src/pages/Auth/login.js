@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
 import { CommonActions } from '@react-navigation/native';
-import { GetuserType } from '../../redux/services/userTypeSlice';
+import { GetuserType, SetagentCode } from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 // const { width } = Dimensions.get('window');
@@ -78,6 +78,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function userManagement(response) {
+    dispatch(SetagentCode(response?.User?.UserCode));
     console.log("response", response?.User?.UserType);
     if (response?.User?.UserType == "A") {
       dispatch(GetuserType(1));

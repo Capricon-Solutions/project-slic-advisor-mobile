@@ -42,6 +42,8 @@ import { useGetCurrentMonthRankQuery, useGetRMSummeryQuery } from '../../../redu
 const window = Dimensions.get('window');
 
 export default function Dashboard({ navigation }) {
+  const AgentCode = useSelector(state => state.userType.userType);
+
   const dispatch = useDispatch();
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
