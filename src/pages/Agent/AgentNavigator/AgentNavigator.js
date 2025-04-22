@@ -129,7 +129,9 @@ export default function MyTabs() {
         <Tab.Screen
           name="Training Calender"
           component={TrainingCalender}
+
           options={{
+
             tabBarLabel: 'Training Calender',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -240,7 +242,7 @@ export default function MyTabs() {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Training Calender"
           component={TrainingCalender}
           options={{
@@ -253,7 +255,7 @@ export default function MyTabs() {
               />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="Report"
           component={Report}
@@ -266,9 +268,10 @@ export default function MyTabs() {
                 size={size}
               />
             ),
+
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="B-Advisor"
           component={Badvisor}
           options={{
@@ -276,8 +279,9 @@ export default function MyTabs() {
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="earth" color={color} size={size} />
             ),
+
           }}
-        />
+        /> */}
       </Tab.Navigator>
     );
   }
@@ -302,7 +306,7 @@ export default function MyTabs() {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Training Calender"
           component={TrainingCalender}
           options={{
@@ -315,7 +319,7 @@ export default function MyTabs() {
               />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="ReportSwitch"
           component={ReportSwitch}
@@ -331,7 +335,7 @@ export default function MyTabs() {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="B-Advisor"
           component={Badvisor}
           options={{
@@ -340,7 +344,7 @@ export default function MyTabs() {
               <AntDesign name="earth" color={color} size={size} />
             ),
           }}
-        />
+        /> */}
       </Tab.Navigator>
     );
   }

@@ -84,8 +84,8 @@ export default function ForgotPasswordModal({ modalVisible, setModalVisible, dat
                 size={24}
               />
             </TouchableOpacity>
-            {/* <Image source={Contacts} style={styles.avatar} /> */}
-            <Text style={styles.modalTitle}>Forgot Password Support</Text>
+            <Image source={Contacts} style={styles.avatar} />
+            <Text style={styles.modalTitle}>Get help for Login</Text>
             <Text style={styles.contactText}>Please Contact: <Text style={{ fontFamily: Fonts.Roboto.Bold }}>{data?.contactSupport}</Text></Text>
             <View style={{ width: '70%', alignItems: 'center' }}>
               <TouchableOpacity

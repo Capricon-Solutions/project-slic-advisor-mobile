@@ -89,7 +89,6 @@ export default function Profile({ navigation }) {
   // API Binds
   const name = profile?.User?.FirstName;
 
-  // const name = profileResponse?.name;
   const regionName = profileResponse?.regionName;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
@@ -122,7 +121,6 @@ export default function Profile({ navigation }) {
       CommonActions.reset({
         index: 0,
         routes: [{ name: 'NavigateToAuthStack' }],
-        // The name of the Stack.Screen
       })
     );
   }
@@ -148,12 +146,7 @@ export default function Profile({ navigation }) {
                     justifyContent: 'center', position: 'absolute', height: pictureSize, width: pictureSize,
                     backgroundColor: 'rgba(255, 255, 255, 0.7)',
                   }}>
-                    {/* <Text style={{
-                      color: COLORS.ashBlue,
-                      fontSize: 14,
-                      fontFamily: Fonts.Roboto.SemiBold
 
-                    }}>Uploading...</Text> */}
                     <LoaderKit
                       style={{ width: 30, height: 30 }}
                       name={'LineScalePulseOutRapid'} // Optional: see list of animations below
@@ -201,13 +194,14 @@ export default function Profile({ navigation }) {
           </View>
 
           <SquareTextBoxOutlined
-            Label={'Agent Code'}
+            Label={usertype == 3 ? 'Region Code' : usertype == 4 ? 'Branch Code' : 'Agent Code'}
             value={agentCode?.toString() ?? ''}
           />
-
-          <SquareTextBoxOutlined
-            Label={'Personal Code'}
-            value={personalCode?.toString() ?? ''}></SquareTextBoxOutlined>
+          {usertype !== 4 &&
+            <SquareTextBoxOutlined
+              Label={'Personal Code'}
+              value={personalCode?.toString() ?? ''}></SquareTextBoxOutlined>
+          }
 
           <SquareTextBoxOutlined
             Label={'NIC Number'}

@@ -356,18 +356,21 @@ export default function Dashboard({ navigation }) {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Notification');
-              dispatch(Getpath(0));
-            }}
-            style={styles.notiIcon}>
-            <MaterialCommunityIcons
-              name="bell-outline"
-              color={COLORS.iconDisabled}
-              size={window.width * 0.075}
-            />
-          </TouchableOpacity>
+          {[1, 2, 5].includes(usertype) && (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Notification');
+                dispatch(Getpath(0));
+              }}
+              style={styles.notiIcon}
+            >
+              <MaterialCommunityIcons
+                name="bell-outline"
+                color={COLORS.iconDisabled}
+                size={window.width * 0.075}
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={{ marginTop: 10 }}>

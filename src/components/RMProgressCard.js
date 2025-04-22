@@ -87,7 +87,7 @@ export default function RMProgressCard({
           <View style={{ position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
             <CircularProgress
               value={DataSet?.achPresentage}
-              radius={window.height * 0.115}
+              radius={window.height * 0.11}
               duration={2000}
               progressValueColor={COLORS.textColor}
               maxValue={100}
