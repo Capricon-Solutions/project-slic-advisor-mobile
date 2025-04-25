@@ -122,7 +122,9 @@ export default function ReportFilter({
           <DropdownComponent
             label={'View Details'}
             mode={'modal'}
-            dropdownData={[{ label: 'NOP', value: '1' }]}
+            dropdownData={[{ label: 'Value', value: '1' },
+            { label: 'NOP', value: '2' }
+            ]}
             selectedValue={viewDetails}
             onValueChange={setViewDetails}
           />
@@ -131,8 +133,8 @@ export default function ReportFilter({
             label={'Type'}
             mode={'modal'}
             dropdownData={[
-              { label: 'General Cumulative', value: '1' },
-              { label: 'Motor Monthly', value: '2' },
+              { label: 'General Cumulative', value: 'G' },
+              { label: 'Motor Monthly', value: 'M' },
             ]}
             selectedValue={type}
             onValueChange={setType}

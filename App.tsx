@@ -194,7 +194,11 @@ function App(): React.JSX.Element {
       <Stack.Screen name="MotorRenewal" component={MotorRenewal} />
       <Stack.Screen name="EDocument" component={EDocument} />
       <Stack.Screen name="MotorRenewalLetter" component={MotorRenewalLetter} />
-      <Stack.Screen name="AdvisorReport" component={AdvisorReport} />
+      <Stack.Screen
+        name="AdvisorReport"
+        options={{orientation: 'landscape'}}
+        component={AdvisorReport}
+      />
       <Stack.Screen name="DirectReport" component={DirectReport} />
       <Stack.Screen name="MeReport" component={MeReport} />
       <Stack.Screen name="TeamLeaderReport" component={TeamLeaderReport} />

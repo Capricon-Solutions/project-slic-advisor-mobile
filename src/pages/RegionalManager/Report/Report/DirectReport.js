@@ -103,6 +103,16 @@ export default function DirectReport({ navigation, route }) {
     }))
     : [];
 
+  // {
+  //   "branch": 412,
+  //   "renewal": "Athurugiriya",
+  //   "nb": 8252093.38,
+  //   "refundPpw": 12022791.43,
+  //   "refundOther": 2303109.63,
+  //   "endorsement": 0,
+  //   "total": 0,
+  // }
+
   const dropdownOptions = [
     { label: 'All', value: 'All' },
     ...branchList

@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import { Table, Row, Rows } from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -34,7 +34,7 @@ const HorizontalReportTable = ({
             {/* Table Header */}
 
             <Row
-              data={tableHead.map((item, index) => (
+              data={tableHead?.map((item, index) => (
                 <View
                   style={[
                     styles.mainHeader,
@@ -92,7 +92,7 @@ const HorizontalReportTable = ({
               textStyle={styles.headText}
             />
             {/* Table Rows with Alternating Colors */}
-            {tableData.map((rowData, index) => (
+            {tableData?.map((rowData, index) => (
               <Row
                 key={index}
                 data={rowData.map((cellData, cellIndex) => (
@@ -109,8 +109,8 @@ const HorizontalReportTable = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
+                              index === tableData.length - 1 &&
+                              styles.boldText,
                             ]}>
                             {cellData}
                           </Text>
@@ -135,8 +135,8 @@ const HorizontalReportTable = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
+                              index === tableData.length - 1 &&
+                              styles.boldText,
                             ]}>
                             {cellData?.ppw}
                           </Text>
@@ -153,8 +153,8 @@ const HorizontalReportTable = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
+                              index === tableData.length - 1 &&
+                              styles.boldText,
                             ]}>
                             {cellData?.other}
                           </Text>
@@ -171,8 +171,8 @@ const HorizontalReportTable = ({
                 textStyle={[
                   styles.text,
                   haveTotal &&
-                    index === tableData.length - 1 &&
-                    styles.boldText, // Apply boldText only if hasTotal is true
+                  index === tableData.length - 1 &&
+                  styles.boldText, // Apply boldText only if hasTotal is true
                 ]}
               />
             ))}
@@ -184,12 +184,12 @@ const HorizontalReportTable = ({
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
+  container: { padding: 0 },
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  head: {backgroundColor: 'transparent'},
+  head: { backgroundColor: 'transparent' },
   headText: {
     margin: 2,
     fontFamily: Fonts.Roboto.Regular,
@@ -218,9 +218,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: COLORS.textColor,
   },
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
-  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
+  row: { height: 50 },
+  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
+  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

@@ -49,14 +49,14 @@ const data = [
 export default function AdvisorReport({ navigation, route }) {
   const { Title = "" } = route.params || {};
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(1);
   const [SelectedType, setSelectedType] = useState(1);
   const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
   const [type, setType] = useState();
   const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const tableHead = [
-    'Team Leader',
+    'Advisor',
     'Renewal',
     'NB',
     'Refunds',
@@ -78,21 +78,21 @@ export default function AdvisorReport({ navigation, route }) {
     branch: branch,
     type: type,
     month: selectedMonth,
-    type: SelectedType,
+    // type: SelectedType,
     value: value
   });
-  console.log("AdvisorReport", AdvisorReport);
+  console.log("AdvisorReport", AdvisorReport?.data);
   const tableData = AdvisorReport?.data?.map(item => [
-    item?.advisor?.toString() ?? '',
+    item?.agentName?.toString() ?? '',
 
-    item?.renewal?.toString() ?? '',
+    value == 1 ? item?.renewalPremium?.toString() ?? '' : item?.nopRenewal?.toString() ?? '',
     item?.nb?.toString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? ''
+      ppw: value == 1 ? item?.ppwAmount?.toString() ?? '' : item?.nopPpw?.toString() ?? '',
+      other: value == 1 ? item?.otherRefundAAmount?.toString() ?? '' : item?.nopOtherRefund?.toString() ?? ''
     },
-    item?.endorsement?.toString() ?? '',
+    value == 1 ? item?.endorsementsAmount?.toString() ?? '' : item?.nopEndorsements?.toString() ?? '',
     item?.total?.toString() ?? '',
   ]);
 
@@ -109,8 +109,8 @@ export default function AdvisorReport({ navigation, route }) {
 
   const advisorList = AdvisorReport && AdvisorReport.data
     ? AdvisorReport.data.map(item => ({
-      label: item.advisor,
-      value: item.advisor
+      label: item.agentName,
+      value: item.agentCode
     }))
     : [];
 
@@ -222,7 +222,9 @@ export default function AdvisorReport({ navigation, route }) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
-                dropdownData={[{ label: 'NOP', value: '1' }]}
+                dropdownData={[{ label: 'Value', value: '1' },
+                { label: 'NOP', value: '2' }]}
+                onValueChange={(value) => setValue(value)}
               />
             </View>
             <View style={{ flex: 0.2, marginHorizontal: 2 }}>
