@@ -82,22 +82,22 @@ console.log("help response",help);
   }
 
   function userManagement(response) {
-    dispatch(SetagentCode(response?.User?.UserCode));
-    console.log("response", response?.User?.UserType);
-    if (response?.User?.UserType == "A") {
+    dispatch(SetagentCode(response?.user?.userCode));
+    console.log("response", response?.user?.userType);
+    if (response?.user?.userType == "A") {
       dispatch(GetuserType(1));
       navigator();
       // navigation.navigate('AgentNavigator');
-    } else if (response?.User?.UserType == "O") {
+    } else if (response?.user?.userType == "O") {
       dispatch(GetuserType(2));
       navigator();
-    } else if (response?.User?.UserType == "M") {
+    } else if (response?.user?.userType == "M") {
       dispatch(GetuserType(5));
       navigator();
-    } else if (response?.User?.UserType == "S") {
+    } else if (response?.user?.userType == "S") {
       dispatch(GetuserType(4));
       navigator();
-    } else if (response?.User?.UserType == "R") {
+    } else if (response?.user?.userType == "R") {
       dispatch(GetuserType(3));
       navigator();
     } else {
