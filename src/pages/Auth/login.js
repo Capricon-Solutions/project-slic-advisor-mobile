@@ -42,6 +42,10 @@ const LoginScreen = ({ navigation }) => {
   const { data: help, isLoading, error } = useGetHelpQuery();
 
 
+  useEffect( ()=>{
+console.log("help response",help);
+  },[])
+
   useEffect(() => {
     const loadUsername = async () => {
       try {

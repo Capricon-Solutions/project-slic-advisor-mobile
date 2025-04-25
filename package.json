@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+     "postinstall": "patch-package"
   },
   "dependencies": {
     "@nassim99/react-native-gauge": "^0.0.8",
@@ -21,6 +22,8 @@
     "@reduxjs/toolkit": "^2.5.1",
     "metro-react-native-babel-preset": "^0.77.0",
     "moment": "^2.30.1",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.74.0",
     "react-native-autocomplete-dropdown": "^2.1.0",
