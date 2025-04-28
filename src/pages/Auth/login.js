@@ -90,14 +90,18 @@ const LoginScreen = ({ navigation }) => {
       navigator();
       // navigation.navigate('AgentNavigator');
     } else if (response?.user?.userType == "O") {
+    } else if (response?.user?.userType == "O") {
       dispatch(GetuserType(2));
       navigator();
+    } else if (response?.user?.userType == "M") {
     } else if (response?.user?.userType == "M") {
       dispatch(GetuserType(5));
       navigator();
     } else if (response?.user?.userType == "S") {
+    } else if (response?.user?.userType == "S") {
       dispatch(GetuserType(4));
       navigator();
+    } else if (response?.user?.userType == "R") {
     } else if (response?.user?.userType == "R") {
       dispatch(GetuserType(3));
       navigator();
