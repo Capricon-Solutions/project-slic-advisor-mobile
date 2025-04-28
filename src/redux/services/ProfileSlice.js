@@ -4,6 +4,7 @@ const initialState = {
   agentCode: 905717,
   defaultImageUrl: null,
   profile: null,
+  token: null,
   profileResponse: {
     data: {
       name: 'John Snow',
@@ -47,10 +48,13 @@ export const ProfileSlice = createSlice({
     Setprofile: (state, action) => {
       state.profile = action.payload;
     },
+    Settoken: (state, action) => {
+      state.token = action.payload;
+    }
   },
 });
 
-export const { GetprofileResponse, SetdefaultImageUrl, GetAgentCode, Setprofile } =
+export const { GetprofileResponse, SetdefaultImageUrl, GetAgentCode, Setprofile, Settoken } =
   ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

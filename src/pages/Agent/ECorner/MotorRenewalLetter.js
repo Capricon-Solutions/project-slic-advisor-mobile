@@ -21,6 +21,7 @@ import DepartmentItem from '../../../components/DepartmentItem';
 import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
+import LoaderKit from 'react-native-loader-kit';
 
 import {
   useGetBranchesQuery,
@@ -116,7 +117,7 @@ export default function MotorRenewalLetter({ navigation }) {
     refetch
     setFilteredData(motorRenewalsList?.data);
     console.log('motorRenewalsList?.data', motorRenewalsList?.data)
-  }, [fromDate])
+  }, [motorRenewalsList])
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -160,20 +161,52 @@ export default function MotorRenewalLetter({ navigation }) {
         </View>
 
         <View>
-          <FlatList
-            data={filteredData}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-              paddingHorizontal: 15,
-            }}
-            renderItem={renderLetterItems}
-          // keyExtractor={item => item.id.toString()}
-          />
+          {filteredData?.length < 1 ? (
+            <View style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '80%'
+            }}>
+              <Text style={{
+                fontFamily: Fonts?.Roboto?.Bold,
+                fontSize: window.width * 0.04,
+                color: COLORS.grayText
+              }}>
+                {"No letters available.!"}
+              </Text>
+            </View>
+
+
+          ) :
+            (
+
+
+              <FlatList
+                data={filteredData}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  fadeDuration: 1000,
+                  backgroundColor: 'transparent',
+                  paddingBottom: window.height * 0.25,
+                  paddingHorizontal: 15,
+                }}
+                renderItem={renderLetterItems}
+              // keyExtractor={item => item.id.toString()}
+              />
+            )}
+
+
         </View>
+
       </View>
+      {isFetching && <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+
+        <LoaderKit
+          style={{ width: 50, height: 50 }}
+          name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+        />
+      </View>}
     </View>
   );
 }

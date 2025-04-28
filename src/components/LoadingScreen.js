@@ -35,7 +35,7 @@ export default function LoadingScreen({ isLoading }) {
         <LoaderKit
           style={{ width: 50, height: 50 }}
           name={'LineScalePulseOutRapid'} // Optional: see list of animations below
-          color={COLORS.primary} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
         />
         {/* <Text>load</Text> */}
       </View>

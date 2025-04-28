@@ -51,16 +51,15 @@ export default function Dashboard({ navigation }) {
   const [salesModalVisible, setsalesModalVisible] = useState(false);
   const [flagVisible, setFlagVisible] = useState(false);
 
-  const profileResponse = useSelector(
-    state => state.Profile.profileResponse.data,
-  );
-  const profile = useSelector(
-    state => state.Profile.profile,
-  );
+
   const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
   console.log('userType', usertype);
   console.log('path', path);
+  const profile = useSelector(
+    state => state.Profile.profile,
+  );
+  const profileResponse = profile?.user;
 
   useFocusEffect(
     useCallback(() => {
@@ -93,7 +92,7 @@ export default function Dashboard({ navigation }) {
   console.log("CurrentMonthRank", CurrentMonthRank);
 
   // API Binds
-  const name = CurrentMonthRank?.data?.agentName;
+  const name = profileResponse?.firstName;
   const regionName = CurrentMonthRank?.data?.region;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;

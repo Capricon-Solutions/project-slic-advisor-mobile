@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,19 +10,19 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import LoadingScreen from '../../../components/LoadingScreen';
 import NotificationItem from '../../../components/NotificationItem';
-import {GestureHandlerRootView} from 'react-native-gesture-handler'; // Import GestureHandlerRootView
-import {useSelector} from 'react-redux';
-import {useGetNotificationsQuery} from '../../../redux/services/NotificationSlice';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
+import { useSelector } from 'react-redux';
+import { useGetNotificationsQuery } from '../../../redux/services/NotificationSlice';
 const window = Dimensions.get('window');
 
-export default function Notification({navigation}) {
+export default function Notification({ navigation }) {
   const notificationResponse = useSelector(
     state => state.Notifications.notificationsResponse,
   );
@@ -36,7 +36,7 @@ export default function Notification({navigation}) {
     id: 123456,
   });
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <GestureHandlerRootView
       style={{
         flex: 1,
@@ -50,7 +50,7 @@ export default function Notification({navigation}) {
   );
 
   return (
-    <View style={[Styles.container, {backgroundColor: COLORS.grayBackground}]}>
+    <View style={[Styles.container, { backgroundColor: COLORS.grayBackground }]}>
       <HeaderBackground />
       <Header Title="Notification" onPress={() => navigation.goBack()} />
 
@@ -60,24 +60,51 @@ export default function Notification({navigation}) {
           paddingBottom: 10,
           flex: 1,
         }}>
-        {isFetching == true ? (
-          <View style={{height: window.height * 0.8}}>
-            <LoadingScreen />
-          </View>
-        ) : (
-          <FlatList
-            data={Notifications?.data}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              fadeDuration: 1000,
 
-              backgroundColor: 'transparent',
-              paddingBottom: window.height * 0.25,
-            }}
-            renderItem={renderItem}
-            keyExtractor={item => item?.id?.toString()}
-          />
-        )}
+        {Notifications?.data == null ? (
+          <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1
+          }}>
+            <Text style={{
+              fontFamily: Fonts?.Roboto?.Bold,
+              fontSize: window.width * 0.04,
+              color: COLORS.grayText
+            }}>
+              {"No notifications available.!"}
+            </Text>
+          </View>
+
+        ) :
+          (
+            <View>
+
+
+              {isFetching == true ? (
+                <View style={{ height: window.height * 0.8 }}>
+                  <LoadingScreen />
+                </View>
+              ) : (
+                <FlatList
+                  data={Notifications?.data}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    fadeDuration: 1000,
+
+                    backgroundColor: 'transparent',
+                    paddingBottom: window.height * 0.25,
+                  }}
+                  renderItem={renderItem}
+                  keyExtractor={item => item?.id?.toString()}
+                />
+              )}
+
+            </View>
+          )
+
+        }
+
       </ScrollView>
       <View
         style={{

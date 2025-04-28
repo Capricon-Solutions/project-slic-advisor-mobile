@@ -22,7 +22,7 @@ import { useChangePasswordMutation, useGetHelpQuery, useUserLoginMutation } from
 import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { GetprofileResponse, Setprofile } from '../../redux/services/ProfileSlice';
+import { GetprofileResponse, Setprofile, Settoken } from '../../redux/services/ProfileSlice';
 import { CommonActions } from '@react-navigation/native';
 import { GetuserType, SetagentCode } from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
@@ -42,9 +42,9 @@ const LoginScreen = ({ navigation }) => {
   const { data: help, isLoading, error } = useGetHelpQuery();
 
 
-  useEffect( ()=>{
-console.log("help response",help);
-  },[])
+  useEffect(() => {
+    console.log("help response", help);
+  }, [])
 
   useEffect(() => {
     const loadUsername = async () => {
@@ -82,22 +82,23 @@ console.log("help response",help);
   }
 
   function userManagement(response) {
-    dispatch(SetagentCode(response?.User?.UserCode));
-    console.log("response", response?.User?.UserType);
-    if (response?.User?.UserType == "A") {
+    dispatch(SetagentCode(response?.user?.userCode));
+    dispatch(Settoken(response?.token));
+    console.log("response", response?.user?.userType);
+    if (response?.user?.userType == "A") {
       dispatch(GetuserType(1));
       navigator();
       // navigation.navigate('AgentNavigator');
-    } else if (response?.User?.UserType == "O") {
+    } else if (response?.user?.userType == "O") {
       dispatch(GetuserType(2));
       navigator();
-    } else if (response?.User?.UserType == "M") {
+    } else if (response?.user?.userType == "M") {
       dispatch(GetuserType(5));
       navigator();
-    } else if (response?.User?.UserType == "S") {
+    } else if (response?.user?.userType == "S") {
       dispatch(GetuserType(4));
       navigator();
-    } else if (response?.User?.UserType == "R") {
+    } else if (response?.user?.userType == "R") {
       dispatch(GetuserType(3));
       navigator();
     } else {
@@ -123,7 +124,7 @@ console.log("help response",help);
 
     try {
       const response = await userLogin(body).unwrap();
-      console.log('Login successful! Response:', response?.User);
+      console.log('Login successful! Response:', response?.user);
       dispatch(Setprofile(response));
       savePassword(response);
 

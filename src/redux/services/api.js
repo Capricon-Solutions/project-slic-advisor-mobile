@@ -6,7 +6,9 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://122.255.4.181:2001/api/', // API base URL
     prepareHeaders: (headers, { getState }) => {
-      const token = getState()?.auth?.token;
+      // const token = getState()?.auth?.token;
+      const token = getState()?.Profile?.token;
+      console.log("token", token);
       const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Your API key
 
       if (token) {

@@ -41,12 +41,12 @@ const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const usertype = useSelector(state => state.userType.userType);
-  const profileResponse = useSelector(
-    state => state.Profile.profileResponse.data,
-  );
+
   const profile = useSelector(
     state => state.Profile.profile,
   );
+  const profileResponse = profile?.user;
+  console.log("profileResponse", profileResponse);
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
   const [image, setImage] = useState();
   const [imageUri, setImageUri] = useState(null);
@@ -87,19 +87,19 @@ export default function Profile({ navigation }) {
   };
 
   // API Binds
-  const name = profile?.User?.FirstName;
+  const name = profileResponse?.firstName;
 
-  const regionName = profileResponse?.regionName;
+  const regionName = profileResponse?.region;
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
   const personalCode = profileResponse?.personalCode;
   const nic = profileResponse?.nic;
   const email = profileResponse?.email;
-  const phone = profileResponse?.phone;
-  const contact = profileResponse?.contact;
-  const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
+  const phone = profileResponse?.mobileNumber;
+  const contact = profileResponse?.phoneNumber;
+  // const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
   const status = profileResponse?.status;
-  const agentCode = profileResponse?.agentCode;
+  const agentCode = profileResponse?.userCode;
 
   const getInitials = (name) => {
     return name?.split(" ") // Split by space
@@ -195,29 +195,29 @@ export default function Profile({ navigation }) {
 
           <SquareTextBoxOutlined
             Label={usertype == 3 ? 'Region Code' : usertype == 4 ? 'Branch Code' : 'Agent Code'}
-            value={agentCode?.toString() ?? ''}
+            value={agentCode?.toString() ?? 'Unavailable'}
           />
           {usertype !== 4 &&
             <SquareTextBoxOutlined
               Label={'Personal Code'}
-              value={personalCode?.toString() ?? ''}></SquareTextBoxOutlined>
+              value={personalCode?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
           }
 
           <SquareTextBoxOutlined
             Label={'NIC Number'}
-            value={nic?.toString() ?? ''}></SquareTextBoxOutlined>
+            value={nic?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'E-mail Address'}
-            value={email?.toString() ?? ''}></SquareTextBoxOutlined>
+            value={email?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Mobile Number'}
-            value={phone?.toString() ?? ''}></SquareTextBoxOutlined>
+            value={phone?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Contact Number'}
-            value={contact?.toString() ?? ''}></SquareTextBoxOutlined>
+            value={contact?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
         </View>
 
         {/* Settings & Logout */}
