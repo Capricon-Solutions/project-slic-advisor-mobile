@@ -29,7 +29,7 @@ export default function EDocItems({ item, navigation, onPress }) {
       setIsDownloading(true);
       setDownloadProgress(0);
 
-      const pdfUrl = `http://122.255.4.181:2001/api/print/${path}`;
+      const pdfUrl = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
       const options = {

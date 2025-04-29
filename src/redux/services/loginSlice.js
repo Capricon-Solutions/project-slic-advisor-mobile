@@ -8,7 +8,7 @@ export const loginApi = baseApi.injectEndpoints({
 
     userLogin: builder.mutation({
       query: (body) => {
-        const finalUrl = 'http://122.255.4.181:2003/BellSalesLogin/api/auth/login'; // Hardcoded URL for login
+        const finalUrl = 'https://oo4843l2ch.execute-api.ap-southeast-1.amazonaws.com/BellSalesLogin/api/auth/login'; // Hardcoded URL for login
         console.log(`Final URL for userLogin: ${finalUrl}`); // Log the final URL
 
         return {
@@ -20,7 +20,7 @@ export const loginApi = baseApi.injectEndpoints({
     }),
     changePassword: builder.mutation({
       query: (body) => {
-        const finalUrl = 'http://122.255.4.181:2003/BellSalesLogin/api/auth/change-password'; // Hardcoded URL for login
+        const finalUrl = 'https://oo4843l2ch.execute-api.ap-southeast-1.amazonaws.com/BellSalesLogin/api/auth/change-password'; // Hardcoded URL for login
         console.log(`Final URL for userLogin: ${finalUrl}`); // Log the final URL
 
         return {

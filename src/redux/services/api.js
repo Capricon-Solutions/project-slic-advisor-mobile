@@ -4,7 +4,7 @@ export const baseApi = createApi({
   reducerPath: 'api',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://122.255.4.181:2001/api/', // API base URL
+    baseUrl: 'https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/', // API base URL
     prepareHeaders: (headers, { getState }) => {
       // const token = getState()?.auth?.token;
       const token = getState()?.Profile?.token;

@@ -204,7 +204,7 @@ export default function EDocument({ navigation }) {
 
   const downloadAndOpenPDF = async (path) => {
     try {
-      const pdfUrl = `http://122.255.4.181:2001/api/print/${path}`;
+      const pdfUrl = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
       const options = {

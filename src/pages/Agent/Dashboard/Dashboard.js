@@ -123,7 +123,7 @@ export default function Dashboard({ navigation }) {
     if (!ProfilePic?.data?.urlPath) return;
 
     // Append a timestamp to the URL to prevent caching
-    const url = `http://122.255.4.181:2001${ProfilePic.data.urlPath}?t=${new Date().getTime()}`;
+    const url = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com${ProfilePic.data.urlPath}?t=${new Date().getTime()}`;
     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
 
     console.log("Fetching new image...");
