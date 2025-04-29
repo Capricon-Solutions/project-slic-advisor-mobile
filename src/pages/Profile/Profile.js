@@ -41,7 +41,7 @@ const pictureSize = Math.min(window.width * 0.35, window.height * 0.35); // Use 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const usertype = useSelector(state => state.userType.userType);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const profile = useSelector(
     state => state.Profile.profile,
   );
@@ -53,7 +53,7 @@ export default function Profile({ navigation }) {
   const [uploadImage, { data: uploadedImage, error: uploadError, isLoading: isUploading }] = useAddImageMutation();
 
   const handleUpload = async (uri) => {
-    const agencyCode = 123321
+    const agencyCode = userCode
     const imageFile = uri;
     console.log("imageFilePicker", imageFile);
     try {

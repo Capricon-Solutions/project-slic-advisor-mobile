@@ -34,6 +34,7 @@ import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
 export default function TeamStatistics({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
   const [selectedDate, setSelectedDate] = useState(null);
@@ -53,7 +54,7 @@ export default function TeamStatistics({ navigation }) {
     isFetching,
     refetch,
   } = useGetteamPerfQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

@@ -31,6 +31,7 @@ import { useGetTrainingListByDateQuery } from '../../../redux/services/trainingS
 const window = Dimensions.get('window');
 
 export default function TrainingList({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const lastMonthStart = moment()
@@ -60,7 +61,7 @@ export default function TrainingList({ navigation }) {
     isFetching,
     refetch,
     error,
-  } = useGetTrainingListByDateQuery({ fromDate, toDate });
+  } = useGetTrainingListByDateQuery({ fromDate, toDate, userCode });
 
   useEffect(() => {
     console.log("TrainingList", TrainingList);

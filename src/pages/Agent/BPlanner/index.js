@@ -46,6 +46,7 @@ import {
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import { showToast } from '../../../components/ToastMessage';
+import { useSelector } from 'react-redux';
 
 const window = Dimensions.get('window');
 
@@ -94,6 +95,7 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 
 export default function BPlanner({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [calenderVisible, setCalenderVisible] = useState(true);
@@ -136,9 +138,9 @@ export default function BPlanner({ navigation }) {
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({ date });
+  } = useGetEventsAndActivitiessQuery({ date, userCode });
   const { data: Leads } = useGetLeadsQuery(
-    { date },
+    { date, userCode },
     { refetchOnMountOrArgChange: false },
   );
   useEffect(() => {
@@ -211,16 +213,20 @@ export default function BPlanner({ navigation }) {
 
     try {
       if (checkedActivities[0].type == 'Event') {
-        const response = await DeleteEvent(checkedActivities[0].activityId);
-        showToast({
+        const response = await DeleteEvent({
+          activityId: checkedActivities[0].activityId,
+          userCode: userCode,
+        }); showToast({
           type: 'success',
           text1: 'Deleted',
           text2: 'Event deleted Successfully.',
         });
         console.log('Event Deleted:', response);
       } else {
-        const response = await DeleteActivity(checkedActivities[0].activityId);
-        showToast({
+        const response = await DeleteEvent({
+          activityId: checkedActivities[0].activityId,
+          userCode: userCode,
+        }); showToast({
           type: 'success',
           text1: 'Deleted',
           text2: 'Activity deleted Successfully.',

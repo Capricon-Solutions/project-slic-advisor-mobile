@@ -33,6 +33,7 @@ import TableComponentPR from '../../../components/TableComponentPR';
 const window = Dimensions.get('window');
 
 export default function PolicyRenewals({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   // const [loading, setLoading] = useState(false); // Loading state
 
@@ -75,7 +76,7 @@ export default function PolicyRenewals({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
@@ -86,7 +87,7 @@ export default function PolicyRenewals({ navigation }) {
     isFetching: isFetchingN,
     refetch: refetchN,
   } = useGetnonMotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

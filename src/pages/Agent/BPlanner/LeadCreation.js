@@ -32,6 +32,7 @@ import { showToast } from '../../../components/ToastMessage';
 
 export default function LeadCreation({ navigation, route }) {
   const { eventDate } = route.params;
+  const userCode = useSelector(state => state.Profile.userCode);
   const agentCode = useSelector(state => state.Profile.agentCode);
   const date = eventDate;
   const {
@@ -39,7 +40,7 @@ export default function LeadCreation({ navigation, route }) {
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({ date });
+  } = useGetEventsAndActivitiessQuery({ date, userCode });
   const [dropdownData, setDropdownData] = useState([]);
   const dropdownArray = PlannerActivities?.data?.plannerEvents;
 

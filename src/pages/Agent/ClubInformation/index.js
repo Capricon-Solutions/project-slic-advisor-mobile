@@ -36,11 +36,12 @@ import LoadingScreen from '../../../components/LoadingScreen';
 const window = Dimensions.get('window');
 
 export default function ClubInformation({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const { data: clubInfo, isFetching, error } = useGetClubQuery();
-  const { data: nextClubInfo, isFetching: isNextFetching, error: nextError } = useGetNextClubQuery();
-
+  const { data: clubInfo, isFetching, error } = useGetClubQuery(userCode);
+  const { data: nextClubInfo, isFetching: isNextFetching, error: nextError } = useGetNextClubQuery(userCode);
+  console.log("userCode", userCode);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
@@ -194,10 +195,15 @@ export default function ClubInformation({ navigation }) {
                     Title={'Last Updated Date'}
                     value={lastUpdatedDate?.toString() ?? ''}
                   />
-                  <OutlinedTextBox
-                    Title={'Annual income up to ' + lastUpdatedDate?.toString() ?? ''}
-                    value={tableData[0][1]}
-                  />
+                  {
+                    tableData &&
+
+                    <OutlinedTextBox
+                      Title={'Annual income up to ' + lastUpdatedDate?.toString() ?? ''}
+                      value={tableData[0][1]}
+                    />
+                  }
+
                 </View>
                 {tableData ? (
                   <View style={{ flex: 1 }}>

@@ -38,7 +38,7 @@ export default function PPWCancellation({ navigation }) {
   // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
   const [selectedValue, setSelectedValue] = useState(null);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
 
   const tableHead = [
@@ -82,7 +82,7 @@ export default function PPWCancellation({ navigation }) {
     error: errorC,
     isFetching: isFetchingC,
   } = useGetPPWCanceledListQuery({
-    id: 907719, // Dynamic ID
+    id: userCode, // Dynamic ID
     pType: selectedValue,
     fromDate: fromDate,
     toDate: toDate,
@@ -93,7 +93,7 @@ export default function PPWCancellation({ navigation }) {
     error,
     isFetching,
   } = useGetPPWReminderListQuery({
-    id: 907719, // Dynamic ID
+    id: userCode, // Dynamic ID
     pType: selectedValue,
     fromDate: fromDate,
     toDate: toDate,

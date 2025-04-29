@@ -44,6 +44,7 @@ import moment from 'moment';
 const window = Dimensions.get('window');
 
 export default function MotorRenewal({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
@@ -65,7 +66,7 @@ export default function MotorRenewal({ navigation }) {
   //   isFetching,
   //   refetch,
   // } = useGetprintMotorRenewalsListQuery({
-  //   id: 905717, // Dynamic ID
+  //   id: userCode, // Dynamic ID
   //   fromDate: fromDate,
   //   toDate: toDate,
   // });
@@ -76,7 +77,7 @@ export default function MotorRenewal({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

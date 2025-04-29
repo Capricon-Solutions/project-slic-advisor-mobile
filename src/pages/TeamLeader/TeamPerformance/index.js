@@ -33,6 +33,7 @@ import { useGetteamCurrentPerfMonthQuery, useGetteamCurrentPerfYearQuery } from 
 const window = Dimensions.get('window');
 
 export default function TeamPerformance({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'New', 'Renewals', 'Total'];
   const columnWidths = [200, 160, 160, 160];
@@ -43,7 +44,7 @@ export default function TeamPerformance({ navigation }) {
     isFetching,
     refetch,
   } = useGetteamCurrentPerfMonthQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     //  fromDate: fromDate,
     //  toDate: toDate,
   });
@@ -53,7 +54,7 @@ export default function TeamPerformance({ navigation }) {
     isFetching: yearFetching,
 
   } = useGetteamCurrentPerfYearQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     //  fromDate: fromDate,
     //  toDate: toDate,
   });

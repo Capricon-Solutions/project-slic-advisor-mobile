@@ -44,6 +44,7 @@ import SalesTableComponent from '../../../components/SalesTableComponent';
 const window = Dimensions.get('window');
 
 export default function SalesMeter({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [target, setTarget] = useState('');
@@ -58,7 +59,7 @@ export default function SalesMeter({ navigation }) {
     isLoading,
     isFetching,
   } = useGetAgentCurrentMonthIncomeQuery({
-    id: 905717,
+    id: userCode,
   });
 
   const {
@@ -67,7 +68,7 @@ export default function SalesMeter({ navigation }) {
     isLoading: achiveLoading,
     isFetching: achiveFetch,
   } = useGetAgentCurrentMonthAchievementQuery({
-    id: 905717,
+    id: userCode,
   });
   const {
     data: salesIncome,
@@ -75,7 +76,7 @@ export default function SalesMeter({ navigation }) {
     isLoading: salesIncomeLoading,
     isFetching: salesIncomeFetch,
   } = useSalesIncomeQuery({
-    id: 905717,
+    id: userCode,
   });
 
   const filterdData = type == "M" ? CurrentMonthAchievement?.data?.monthly : CurrentMonthAchievement?.data?.cumulative

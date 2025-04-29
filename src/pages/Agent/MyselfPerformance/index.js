@@ -34,6 +34,8 @@ import { useGetindividualPerfQuery } from '../../../redux/services/IndividualPer
 const window = Dimensions.get('window');
 
 export default function MyselfPerformance({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
+
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
   const [selectedDate, setSelectedDate] = useState(null);
@@ -54,7 +56,7 @@ export default function MyselfPerformance({ navigation }) {
     isFetching,
     refetch,
   } = useGetindividualPerfQuery({
-    id: 360115, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

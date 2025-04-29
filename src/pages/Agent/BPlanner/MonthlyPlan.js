@@ -23,6 +23,7 @@ import moment from 'moment';
 import { useGetMonthlyPlanQuery, useMonthlyCreationMutation } from '../../../redux/services/plannerSlice';
 
 export default function MonthlyPlan({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
   const [MonthlyCreate, { data: newActivity, isLoading, error }] =
     useMonthlyCreationMutation();
@@ -37,7 +38,7 @@ export default function MonthlyPlan({ navigation }) {
     data: planData,
     isLoading: loadingPlan,
     error: planError,
-  } = useGetMonthlyPlanQuery();
+  } = useGetMonthlyPlanQuery(userCode);
 
   useEffect(() => {
     if (planData?.data) {
@@ -81,7 +82,7 @@ export default function MonthlyPlan({ navigation }) {
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await MonthlyCreate(body);
+      const response = await MonthlyCreate({ body, userCode });
       console.log('Activity Created:', response?.error?.status);
       if (response?.error?.status == '500') {
         console.log('something went wrong');

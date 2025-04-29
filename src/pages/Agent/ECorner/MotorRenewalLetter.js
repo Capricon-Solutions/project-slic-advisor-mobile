@@ -33,6 +33,7 @@ import ELetterItems from '../../../components/ELetterItems';
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 const window = Dimensions.get('window');
 
 const data = [
@@ -72,7 +73,7 @@ export default function MotorRenewalLetter({ navigation }) {
     <ELetterItems item={item} navigation={navigation} />
   );
   const [searchText, setSearchText] = useState('');
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
@@ -107,7 +108,7 @@ export default function MotorRenewalLetter({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

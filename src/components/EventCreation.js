@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableOpacity,
   Animated,
@@ -24,16 +24,16 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import MonthYearPicker from './MonthYearPicker';
-import {useEventCreationMutation} from '../redux/services/plannerSlice';
+import { useEventCreationMutation } from '../redux/services/plannerSlice';
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
-import {showToast, ToastMessage} from './ToastMessage';
+import { showToast, ToastMessage } from './ToastMessage';
 
-export default function EventCreation({modalVisible, setModalVisible}) {
+export default function EventCreation({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [description, setDescription] = useState('');
 
@@ -55,7 +55,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
     hideDatePicker();
   };
-  const [EventCreate, {data: newEvent, isLoading, error}] =
+  const [EventCreate, { data: newEvent, isLoading, error }] =
     useEventCreationMutation();
 
   const validateForm = () => {
@@ -74,7 +74,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await EventCreate(body);
+      const response = await EventCreate({ body, });
 
       setModalVisible(false);
       console.log('Activity Created:', response);
@@ -119,7 +119,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
           hide();
         }}
         activeOpacity={1}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -133,7 +133,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
-            style={{backgroundColor: 'red'}}
+            style={{ backgroundColor: 'red' }}
             datePickerModeAndorid={'spinner'}
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
@@ -155,10 +155,10 @@ export default function EventCreation({modalVisible, setModalVisible}) {
                   size={24}
                 />
               </TouchableOpacity>
-              <View style={{width: '100%', marginBottom: 15}}>
+              <View style={{ width: '100%', marginBottom: 15 }}>
                 <Text style={styles.modalTitle}>Event Creation</Text>
               </View>
-              <View style={{flexDirection: 'row', position: 'relative'}}>
+              <View style={{ flexDirection: 'row', position: 'relative' }}>
                 <SquareTextBox
                   Label={'Date *'}
                   readOnly={true}
@@ -191,7 +191,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
                   marginTop: 15,
                   justifyContent: 'space-evenly',
                 }}>
-                <View style={{flex: 0.35}}>
+                <View style={{ flex: 0.35 }}>
                   <AlertButton
                     onPress={() => handleEventCreate()}
                     isLoading={isLoading}

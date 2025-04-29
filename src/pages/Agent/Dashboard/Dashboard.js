@@ -43,7 +43,7 @@ const window = Dimensions.get('window');
 
 export default function Dashboard({ navigation }) {
   const AgentCode = useSelector(state => state.userType.userType);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const dispatch = useDispatch();
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
@@ -79,7 +79,7 @@ export default function Dashboard({ navigation }) {
     isLoading: achiveLoading,
     isFetching: achiveFetch,
   } = useGetCurrentMonthRankQuery({
-    id: 905717,
+    id: userCode,
   });
   const {
     data: RMSummeryData,

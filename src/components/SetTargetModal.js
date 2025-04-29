@@ -21,13 +21,14 @@ import Button from './Button';
 import { useSetTargetMutation } from '../redux/services/SalesMeterApiSlice';
 import { showToast, ToastMessage } from './ToastMessage';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const window = Dimensions.get('window');
 
 export default function SetTargetModal({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [inputValue, setInputValue] = React.useState(null);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
   const [setTarget, { data, isLoading, error }] = useSetTargetMutation();
   // const handlePostRequest = () => {
@@ -43,7 +44,7 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
 
   const body = {
 
-    "agentCode": 905717,
+    "agentCode": userCode,
     "yearMonth": yearMonth,
     "target": inputValue
 

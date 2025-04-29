@@ -22,7 +22,7 @@ import { useChangePasswordMutation, useGetHelpQuery, useUserLoginMutation } from
 import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { GetprofileResponse, Setprofile, Settoken } from '../../redux/services/ProfileSlice';
+import { GetprofileResponse, Setprofile, Settoken, SetUserCode } from '../../redux/services/ProfileSlice';
 import { CommonActions } from '@react-navigation/native';
 import { GetuserType, SetagentCode } from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function userManagement(response) {
-    dispatch(SetagentCode(response?.user?.userCode));
+    dispatch(SetUserCode(response?.user?.userCode));
     dispatch(Settoken(response?.token));
     console.log("response", response?.user?.userType);
     if (response?.user?.userType == "A") {

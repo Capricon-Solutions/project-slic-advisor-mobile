@@ -35,7 +35,7 @@ import Button from '../../../components/Button';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import DropdownFilled from '../../../components/DropdownFilled';
 import { Getpath } from '../../../redux/services/NavControllerSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { useApproveTrainingMutation, useGetTrainingListQuery } from '../../../redux/services/trainingSlice';
 
@@ -86,6 +86,7 @@ LocaleConfig.locales['fr'] = {
 LocaleConfig.defaultLocale = 'fr';
 
 export default function TrainingCalender({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [trainingType, setTrainingType] = useState();
@@ -107,7 +108,7 @@ export default function TrainingCalender({ navigation }) {
     isFetching,
     refetch,
     error,
-  } = useGetTrainingListQuery(type);
+  } = useGetTrainingListQuery({ type, userCode });
 
   const [approveTraining, { isLoading: isApproving, error: approveError }] = useApproveTrainingMutation();
 
@@ -409,7 +410,7 @@ export default function TrainingCalender({ navigation }) {
                           onPress={() => {
                             console.log(" training.trainId", training.trainId);
                             // Call the approveTraining mutation with the training ID
-                            approveTraining(id = training.trainId)
+                            approveTraining({ id: training.trainId, userCode })
                               .unwrap()
                               .then(() => {
                                 // On success, remove the training from the list

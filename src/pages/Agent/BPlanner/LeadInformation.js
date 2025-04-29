@@ -20,6 +20,7 @@ import moment from 'moment';
 import LoadingScreen from '../../../components/LoadingScreen';
 
 export default function LeadInformation({ navigation, route }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const tableHead = ['Activity ID', 'Date and Time', 'Type', 'Description'];
   const { item } = route.params;
 
@@ -34,9 +35,12 @@ export default function LeadInformation({ navigation, route }) {
     data: LeadActivitie,
     isLoading: LeadActivitieLoading,
     error: LeadActivitieError,
-  } = useGetLeadActivitiesQuery(item?.leadId, {
-    skip: !item?.leadId, // Prevent query if leadId is not available
-  });
+  } = useGetLeadActivitiesQuery(
+    { id: item?.leadId, userCode: userCode },  // Pass both parameters here
+    {
+      skip: !item?.leadId || !userCode,        // Skip if either is missing
+    }
+  );
 
   const leadInfo = leadData?.data;
   console.log('leadInfo', leadInfo);

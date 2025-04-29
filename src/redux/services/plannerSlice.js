@@ -3,24 +3,24 @@ import { baseApi } from './api';
 export const plannerSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getEventsAndActivitiess: builder.query({
-      query: ({ date }) => `planner/getEventsAndActivities/905717?date=${date}`,
+      query: ({ date, userCode }) => `planner/getEventsAndActivities/${userCode}?date=${date}`,
       providesTags: ['Events'],
     }),
     getMonthlyPlan: builder.query({
-      query: () => `planner/GetPlannerMonthly/905717`,
+      query: (userCode) => `planner/GetPlannerMonthly/${userCode}`,
     }),
     getLeads: builder.query({
-      query: () => `planner/GetPlannerLeadList?agentCode=905717`,
+      query: (userCode) => `planner/GetPlannerLeadList?agentCode=${userCode}`,
     }),
     getLeadById: builder.query({
       query: id => `planner/GetPlannerLeadById?Id=${id}`,
     }),
     getLeadActivities: builder.query({
-      query: id => `planner/GetLeadActivities?Id=${id}&agentCode=905717`,
+      query: ({ id, userCode }) => `planner/GetLeadActivities?Id=${id}&agentCode=${userCode}`,
     }),
     activityDelete: builder.mutation({
-      query: id => {
-        const finalUrl = `planner/removePlannerActivity/905717?activityId=${id}`;
+      query: ({ id, userCode }) => {
+        const finalUrl = `planner/removePlannerActivity/${userCode}?activityId=${id}`;
         console.log('Final URL:', finalUrl);
 
         return {
@@ -31,8 +31,8 @@ export const plannerSlice = baseApi.injectEndpoints({
       invalidatesTags: ['Events'],
     }),
     eventDelete: builder.mutation({
-      query: id => {
-        const finalUrl = `planner/removePlannerEvent/905717?eventId=${id}`;
+      query: ({ id, userCode }) => {
+        const finalUrl = `planner/removePlannerEvent/${userCode}?eventId=${id}`;
         console.log('Final URL:', finalUrl);
 
         return {
@@ -43,8 +43,8 @@ export const plannerSlice = baseApi.injectEndpoints({
       invalidatesTags: ['Events'],
     }),
     activityCreation: builder.mutation({
-      query: body => {
-        const finalUrl = `planner/addPlannerActivity/905717`;
+      query: ({ body, userCode }) => {
+        const finalUrl = `planner/addPlannerActivity/${userCode}`;
         console.log('Final URL:', finalUrl);
         console.log('Final body:', body);
 
@@ -71,8 +71,8 @@ export const plannerSlice = baseApi.injectEndpoints({
       invalidatesTags: ['Events'],
     }),
     monthlyCreation: builder.mutation({
-      query: body => {
-        const finalUrl = `planner/addPlannerMonthly/905717`;
+      query: ({ body, userCode }) => {
+        const finalUrl = `planner/addPlannerMonthly/${userCode}`;
         console.log('Final URL:', finalUrl);
         console.log('Final body:', body);
 
@@ -85,8 +85,8 @@ export const plannerSlice = baseApi.injectEndpoints({
       invalidatesTags: ['Events'],
     }),
     eventCreation: builder.mutation({
-      query: body => {
-        const finalUrl = `planner/AddPlannerEvent/905717`;
+      query: ({ body, userCode }) => {
+        const finalUrl = `planner/AddPlannerEvent/${userCode}`;
         console.log('Final URL:', finalUrl);
         console.log('Final body:', body);
 
