@@ -20,8 +20,10 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 
-export default function SendPaymentLink({ modalVisible, setModalVisible }) {
+export default function SendPaymentLink({ modalVisible, setModalVisible, handleSubmit, loading, phone, setPhone }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
+
+
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -80,8 +82,14 @@ export default function SendPaymentLink({ modalVisible, setModalVisible }) {
               <Text style={styles.modalTitle}>Send Payment Link</Text>
             </View>
 
-            <SquareTextBox Label={'Contact Number'} Title={'0702056214'} />
-
+            {/* <SquareTextBox Label={'Contact Number'} Title={phone} /> */}
+            <SquareTextBox
+              Label={'Contact Number'}
+              Title={'Enter phone number'} // placeholder
+              value={phone}                // value to display
+              setValue={setPhone}          // updater function to allow editing
+              keyboardType="phone-pad"
+            />
             <View
               style={{
                 flexDirection: 'row',
@@ -89,11 +97,11 @@ export default function SendPaymentLink({ modalVisible, setModalVisible }) {
                 marginTop: 15,
                 justifyContent: 'space-evenly',
               }}>
-              <View style={{ flex: 0.35 }}>
+              {/* <View style={{ flex: 0.35 }}>
                 <AlertButtonWhite Title={'Update'} />
-              </View>
+              </View> */}
               <View style={{ flex: 0.35 }}>
-                <AlertButton Title={'Confirm'} />
+                <AlertButton isLoading={loading} Title={'Confirm'} onPress={handleSubmit} />
               </View>
             </View>
           </View>

@@ -25,9 +25,10 @@ import { TextInput } from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
-import { useDebitSettlementQuery } from '../../../redux/services/policyDetailsSlice';
+import { useDebitSettlementQuery, useDebitSettlementSmsMutation, useDebitSettlementSmsQuery } from '../../../redux/services/policyDetailsSlice';
 import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
+import { showToast } from '../../../components/ToastMessage';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -36,6 +37,13 @@ const window = Dimensions.get('window');
 export default function DebitSettlement({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const { policyNo } = route.params;
+  const { phone } = route.params;
+  const [mobileNo, setMobileNo] = useState(null);
+
+  useEffect(() => {
+    if (phone) setMobileNo(phone);
+  }, [phone]);
+
   const {
     data: DebitSettlement,
     error: DebitSettlementError,
@@ -45,14 +53,56 @@ export default function DebitSettlement({ navigation, route }) {
     id: policyNo,
     // id: "VM6125002610000185",
   });
-
   const [selectedItem, setSelectedItem] = useState(DebitSettlement?.data?.paymentType);
 
+  const [debitSettlementSms, { isLoading, error }] = useDebitSettlementSmsMutation();
   useEffect(() => {
     console.log("DebitSettlement", DebitSettlement);
   }, [DebitSettlement])
 
   console.log("policyNo", policyNo);
+
+
+  const handleSubmit = async () => {
+
+
+    const body = {
+      "policyNumber": policyNo,
+      "amount": DebitSettlement?.data?.premiumNetValue || 0,
+      "mobileNo": mobileNo
+    };
+
+    try {
+      const response = await debitSettlementSms(body).unwrap();
+      console.log("response", response);
+      if (response?.success == true) {
+
+        showToast({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Sms sent successfully',
+        });
+        setModalVisible(false);
+        setTimeout(() => {
+          navigation.goBack();
+        }, 800);
+
+      }
+
+
+    } catch (err) {
+
+      showToast({
+        type: 'error',
+        text1: 'Failed',
+        text2: err?.data?.Message || 'Something went wrong.',
+      });
+    }
+
+  };
+
+
+
 
 
 
@@ -63,6 +113,10 @@ export default function DebitSettlement({ navigation, route }) {
       <SendPaymentLink
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        handleSubmit={handleSubmit}
+        phone={mobileNo}
+        loading={isLoading}
+        setPhone={setMobileNo}
       />
 
       <Header

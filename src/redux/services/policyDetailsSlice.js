@@ -60,6 +60,25 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     DebitSettlement: builder.query({
       query: ({ id }) => `salesIncome/DebitSettlement?policyNo=${id}`,
     }),
+    // DebitSettlementSms
+    // DebitSettlementSms: builder.mutation({
+    //   query: (body) => ({
+    //     url: 'salesIncome/DebitSettlementSms',
+    //     method: 'POST',
+    //     body,
+    //   }),
+    // }),
+    DebitSettlementSms: builder.mutation({
+      query: (body) => {
+        const url = 'salesIncome/DebitSettlementSms';
+        console.log('body:', body);
+        return {
+          url,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -69,5 +88,6 @@ export const {
   useGetClaimHistoryQuery,
   useGetPremiumHistoryQuery,
   useDebitSettlementQuery,
-  useGetPendingHistoryQuery
+  useGetPendingHistoryQuery,
+  useDebitSettlementSmsMutation
 } = policyDetailsApi;

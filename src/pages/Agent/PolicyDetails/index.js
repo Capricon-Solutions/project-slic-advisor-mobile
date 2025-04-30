@@ -189,7 +189,7 @@ export default function PolicyDetails({ navigation, route }) {
             <SmallButton
               Title={'Debit Settlement/ Payment'}
               onPress={() =>
-                navigation.navigate('DebitSettlement', { policyNo: policyNo })
+                navigation.navigate('DebitSettlement', { policyNo: policyNo, phone: phone })
               }
               disabledButton={false}
             />
