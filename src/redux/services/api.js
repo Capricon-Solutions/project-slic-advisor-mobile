@@ -1,14 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const baseApi = createApi({
   reducerPath: 'api',
 
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/', // API base URL
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, {getState}) => {
       // const token = getState()?.auth?.token;
       const token = getState()?.Profile?.token;
-      console.log("token", token);
+      console.log('token', token);
       const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Your API key
 
       if (token) {

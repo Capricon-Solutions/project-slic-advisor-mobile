@@ -11,7 +11,7 @@ export const policyListSlice = baseApi.injectEndpoints({
           url += `?filterTxt=${encodeURIComponent(filterText)}`;
         }
 
-        console.log('✅ Final URL:', url); // Check the final URL
+        console.log('getPolicies Final URL:', url); // Check the final URL
 
         return url;
       },

@@ -1,3 +1,17 @@
+const today = new Date();
+const fiveYearsAgo = new Date();
+fiveYearsAgo.setFullYear(today.getFullYear() - 5);
+
+// Format as 'YYYY/MM/DD'
+const formatDate = date =>
+  `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    2,
+    '0',
+  )}/${String(date.getDate()).padStart(2, '0')}`;
+
+const startDate = formatDate(fiveYearsAgo);
+const endDate = formatDate(today);
+
 const SearchParams = {
   AllSearch: {
     BusinessType: 'A',
@@ -8,8 +22,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -25,8 +39,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -43,25 +57,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
-    TodayReminders: false,
-    MobileNumber: '',
-    AgentCode: 905717,
-    NicNumber: '',
-    BusiRegNo: '',
-  },
-  NonMotorSearch: {
-    BusinessType: 'A',
-    PremiumsPending: false,
-    ClaimPending: false,
-    Flagged: false,
-    BadClaims: false,
-    DebitOutstanding: false,
-    PolicyNumber: '',
-    VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -77,8 +74,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -94,8 +91,8 @@ const SearchParams = {
     DebitOutstanding: true,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -111,8 +108,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: false,
     MobileNumber: '',
     AgentCode: 905717,
@@ -128,8 +125,8 @@ const SearchParams = {
     DebitOutstanding: false,
     PolicyNumber: '',
     VehicleNumber: '',
-    StartFromDt: '2023/01/01',
-    StartToDt: '2025/01/01',
+    StartFromDt: startDate,
+    StartToDt: endDate,
     TodayReminders: true,
     MobileNumber: '',
     AgentCode: 905717,

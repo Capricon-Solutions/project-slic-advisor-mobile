@@ -1,12 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { baseApi } from './api';
+import {createSlice} from '@reduxjs/toolkit';
+import {baseApi} from './api';
 
 export const SummeryApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     // kpiSummery
     kpiSummery: builder.query({
-      query: ({ month }) => {
-        const url = `general/getRegionalKpiSummary/Western 3?month=${month}`;
+      query: ({month, regionName}) => {
+        const encodedRegion = encodeURIComponent(regionName);
+        const url = `general/getRegionalKpiSummary/${encodedRegion}?month=${month}`;
         console.log('Fetching Notifications from:', url);
         return url;
       },
@@ -14,8 +15,9 @@ export const SummeryApi = baseApi.injectEndpoints({
 
     // ClassSummery
     ClassSummery: builder.query({
-      query: ({ month }) => {
-        const url = `general/getRegionalClassSummary/Western 3?year=2025&month=${month}`;
+      query: ({month, regionName}) => {
+        const encodedRegion = encodeURIComponent(regionName);
+        const url = `general/getRegionalClassSummary/${encodedRegion}?year=2025&month=${month}`;
         console.log('Fetching Notifications from:', url);
         return url;
       },
@@ -23,8 +25,9 @@ export const SummeryApi = baseApi.injectEndpoints({
 
     // DuesSummery
     DuesSummery: builder.query({
-      query: ({ month }) => {
-        const url = `general/getGeneralRegionalDueSummary/Western 3?year=2025&month=${month}`;
+      query: ({month, regionName}) => {
+        const encodedRegion = encodeURIComponent(regionName);
+        const url = `general/getGeneralRegionalDueSummary/${encodedRegion}?year=2025&month=${month}`;
         console.log('Fetching Notifications from:', url);
         return url;
       },
@@ -32,13 +35,12 @@ export const SummeryApi = baseApi.injectEndpoints({
 
     // RegionalSummery
     RegionalSummery: builder.query({
-      query: ({ month }) => {
+      query: ({month}) => {
         const url = `general/getRegionalSummary/${month}`;
         console.log('Fetching Notifications from:', url);
         return url;
       },
     }),
-
   }),
 });
 
@@ -47,5 +49,6 @@ export const {
   useKpiSummeryQuery,
   useClassSummeryQuery,
   useDuesSummeryQuery,
-  useRegionalSummeryQuery
+  useRegionalSummeryQuery,
 } = SummeryApi;
+

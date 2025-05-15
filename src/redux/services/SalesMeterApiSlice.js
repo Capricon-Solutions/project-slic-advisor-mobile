@@ -1,53 +1,52 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { baseApi } from './api';
+import {createSlice} from '@reduxjs/toolkit';
+import {baseApi} from './api';
 
 export const SalesMeterApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     // salesIncome
     salesIncome: builder.query({
-      query: ({ id }) => {
+      query: ({id}) => {
         const url = `salesIncome/getIncome/${id}`;
-        console.log('Fetching Notifications from:', url);
+        console.log('Fetching  from:', url);
         return url;
       },
-
     }),
     // getAgentCurrentMonthAchievement
     getAgentCurrentMonthAchievement: builder.query({
-      query: ({ id }) => {
+      query: ({id}) => {
         const url = `agent/getAgentCurrentMonthAchievement/${id}`;
-        console.log('Fetching Notifications from:', url);
+        console.log('Fetching  from:', url);
         return url;
       },
     }),
     // getAgentCurrentMonthAchievement
     getAgentCurrentMonthIncome: builder.query({
-      query: ({ id }) => {
+      query: ({id}) => {
         const url = `agent/getAgentCurrentMonthIncome/${id}`;
-        console.log('Fetching Notifications from:', url);
+        console.log('Fetching  from:', url);
         return url;
       },
     }),
 
     // getCurrentMonthRank
     getCurrentMonthRank: builder.query({
-      query: ({ id }) => {
+      query: ({id}) => {
         const url = `agent/getCurrentMonthRank/${id}`;
-        console.log('Fetching Notifications from:', url);
+        console.log('Fetching  from:', url);
         return url;
       },
     }),
     // getCurrentMonthRank
     getRMSummery: builder.query({
-      query: ({ month }) => {
-        const url = `general/getGeneralTotalRm/Western 3?month=${month}`;
-        console.log('Fetching Notifications from:', url);
+      query: ({month, region}) => {
+        const url = `general/getGeneralTotalRm/${region}?month=${month}`;
+        console.log('Fetching  from: ccccccc', url);
         return url;
       },
     }),
 
     setTarget: builder.mutation({
-      query: ({ body }) => {
+      query: ({body}) => {
         console.log('POST request payload:', body);
         return {
           url: 'salesIncome/setTarget',
@@ -56,7 +55,6 @@ export const SalesMeterApi = baseApi.injectEndpoints({
         };
       },
     }),
-
   }),
 });
 
@@ -67,5 +65,5 @@ export const {
   useGetAgentCurrentMonthIncomeQuery,
   useSetTargetMutation,
   useGetCurrentMonthRankQuery,
-  useGetRMSummeryQuery
+  useGetRMSummeryQuery,
 } = SalesMeterApi;

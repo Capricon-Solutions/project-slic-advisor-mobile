@@ -138,10 +138,11 @@ const TableComponentEC = ({
           <Text
             style={{
               textAlign: 'center',
-              fontFamily: Fonts.Roboto.SemiBold,
+              fontFamily: Fonts.Roboto.Bold,
               color: COLORS.primaryRed,
+              fontSize: 16,
             }}>
-            Don't have any data yet
+            Sorry, No Dat found
           </Text>
         </View>
       ) : (

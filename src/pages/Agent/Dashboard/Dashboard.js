@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,36 +12,42 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { Avatar } from 'react-native-paper';
+import {Avatar} from 'react-native-paper';
 import individualPerforamance from '../../../icons/individualPerforamance.png'; // Replace with the actual logo path
 import policyRenewal from '../../../icons/policyRenewal.png'; // Replace with the actual logo path
 import ppwIcon from '../../../icons/PPW.png'; // Replace with the actual logo path
 import RNFS from 'react-native-fs';
 
-import { styles } from './styles';
+import {styles} from './styles';
 // import GeneralModal from '../../../components/GeneralModal';
 import BottomModal from '../../../components/BottomModal';
 import teamPerformance from '../../../icons/teamPerformance.png'; // Replace with the actual logo path
 import Flag from '../../../components/Flag';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AgentGrid from '../../../components/AgentGrid';
 import RMGrid from '../../../components/RMGrid';
 import AgentProgressCard from '../../../components/AgentProgressCard';
 import RMProgressCard from '../../../components/RMProgressCard';
-import { Getpath } from '../../../redux/services/NavControllerSlice';
-import { SetdefaultImageUrl } from '../../../redux/services/ProfileSlice';
-import { useGetImageQuery, useLazyGetImageUrlQuery } from '../../../redux/services/profilePicSlice';
-import { useGetCurrentMonthRankQuery, useGetRMSummeryQuery } from '../../../redux/services/SalesMeterApiSlice';
+import {Getpath} from '../../../redux/services/NavControllerSlice';
+import {SetdefaultImageUrl} from '../../../redux/services/ProfileSlice';
+import {
+  useGetImageQuery,
+  useLazyGetImageUrlQuery,
+} from '../../../redux/services/profilePicSlice';
+import {
+  useGetCurrentMonthRankQuery,
+  useGetRMSummeryQuery,
+} from '../../../redux/services/SalesMeterApiSlice';
 
 const window = Dimensions.get('window');
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard({navigation}) {
   const AgentCode = useSelector(state => state.userType.userType);
   const userCode = useSelector(state => state.Profile.userCode);
   const dispatch = useDispatch();
@@ -51,14 +57,11 @@ export default function Dashboard({ navigation }) {
   const [salesModalVisible, setsalesModalVisible] = useState(false);
   const [flagVisible, setFlagVisible] = useState(false);
 
-
   const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
   console.log('userType', usertype);
   console.log('path', path);
-  const profile = useSelector(
-    state => state.Profile.profile,
-  );
+  const profile = useSelector(state => state.Profile.profile);
   const profileResponse = profile?.user;
 
   useFocusEffect(
@@ -71,7 +74,7 @@ export default function Dashboard({ navigation }) {
       console.log('path', path);
     }, [path]),
   );
-  console.log("profile", profile);
+  console.log('profile', profile);
 
   const {
     data: CurrentMonthRank,
@@ -81,19 +84,24 @@ export default function Dashboard({ navigation }) {
   } = useGetCurrentMonthRankQuery({
     id: userCode,
   });
+  const regionName = profileResponse?.region;
+
   const {
     data: RMSummeryData,
     error: RMSummeryError,
     isLoading: RMSummeryLoading,
     isFetching: RMSummeryFetching,
   } = useGetRMSummeryQuery({
-    month: 3,
+    month: new Date().getMonth() + 1,
+    region: regionName,
   });
-  console.log("CurrentMonthRank", CurrentMonthRank);
+  console.log('CurrentMonthRank', CurrentMonthRank);
+  console.log('RMSummeryData', RMSummeryData);
+  console.log('RMSummeryError', RMSummeryError);
 
   // API Binds
   const name = profileResponse?.firstName;
-  const regionName = CurrentMonthRank?.data?.region;
+
   const designation = profileResponse?.designation;
   const imageUrl = profileResponse?.imageUrl;
   const totalIslandRank = CurrentMonthRank?.data?.islandTotal;
@@ -102,39 +110,38 @@ export default function Dashboard({ navigation }) {
   const totalNumberofRegions = CurrentMonthRank?.data?.regionalTotal;
   const branchRank = CurrentMonthRank?.data?.branchRank;
   const totalNumberofBranches = CurrentMonthRank?.data?.branchTotal;
-  console.log("name", name);
+  console.log('name', name);
 
   const {
     data: ProfilePic,
     error,
     isLoading,
   } = useGetImageQuery({
-    id: 123321,
+    id: userCode,
   });
 
-
   useEffect(() => {
-
     fetchImage();
   }, [ProfilePic?.data?.urlPath]);
-
 
   async function fetchImage() {
     if (!ProfilePic?.data?.urlPath) return;
 
     // Append a timestamp to the URL to prevent caching
-    const url = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com${ProfilePic.data.urlPath}?t=${new Date().getTime()}`;
+    const url = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com${
+      ProfilePic.data.urlPath
+    }?t=${new Date().getTime()}`;
     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
 
-    console.log("Fetching new image...");
+    console.log('Fetching new image...');
     try {
       const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
-      console.log("Fetching from URL:", url);
+      console.log('Fetching from URL:', url);
 
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
-        headers: { 'x-api-key': apiKey },
+        headers: {'x-api-key': apiKey},
       }).promise;
 
       if (response.statusCode === 200) {
@@ -147,7 +154,6 @@ export default function Dashboard({ navigation }) {
       console.error('Error fetching image:', error);
     }
   }
-
 
   const GeneralModal = [
     {
@@ -196,66 +202,67 @@ export default function Dashboard({ navigation }) {
   const IndividualPerformanceType =
     usertype === 1 || usertype === 5
       ? [
-        {
-          title: 'Individual Statistics',
-          icon: individualPerforamance,
-          onPress: () => {
-            setsalesModalVisible(false);
-            setModalVisible(false);
-            navigation.navigate('IndividualStatistics');
+          {
+            title: 'Individual Statistics',
+            icon: individualPerforamance,
+            onPress: () => {
+              setsalesModalVisible(false);
+              setModalVisible(false);
+              navigation.navigate('IndividualStatistics');
+            },
           },
-        },
-      ]
+        ]
       : [
-        {
-          title: 'My Self',
-          icon: individualPerforamance,
-          onPress: () => {
-            setModalVisible(false);
-            navigation.navigate('MyselfPerformance');
-          },
-        },
-        {
-          title: 'Team',
-          expandable: true,
-          subButtons: [
-            {
-              title: 'Team Statistics',
-              onPress: () => {
-                setModalVisible(false);
-                navigation.navigate('TeamStatistics');
-              },
+          {
+            title: 'My Self',
+            icon: individualPerforamance,
+            onPress: () => {
+              setModalVisible(false);
+              navigation.navigate('MyselfPerformance');
             },
-            {
-              title: 'Current Performance',
-              onPress: () => {
-                setModalVisible(false);
-                navigation.navigate('TeamPerformance');
-                console.log('test');
-              },
-            },
-          ],
-          icon: policyRenewal,
-          onPress: 'expand',
-        },
-        {
-          title: 'Team Member',
-          icon: policyRenewal,
-          onPress: () => {
-            setModalVisible(false);
-            navigation.navigate('TeamMemberGrid');
           },
-        },
-      ];
+          {
+            title: 'Team',
+            expandable: true,
+            subButtons: [
+              {
+                title: 'Team Statistics',
+                onPress: () => {
+                  setModalVisible(false);
+                  navigation.navigate('TeamStatistics');
+                },
+              },
+              {
+                title: 'Current Performance',
+                onPress: () => {
+                  setModalVisible(false);
+                  navigation.navigate('TeamPerformance');
+                  console.log('test');
+                },
+              },
+            ],
+            icon: policyRenewal,
+            onPress: 'expand',
+          },
+          {
+            title: 'Team Member',
+            icon: policyRenewal,
+            onPress: () => {
+              setModalVisible(false);
+              navigation.navigate('TeamMemberGrid');
+            },
+          },
+        ];
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
 
-  const getInitials = (name) => {
-    return name?.split(" ") // Split by space
+  const getInitials = name => {
+    return name
+      ?.split(' ') // Split by space
       .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
-      .join(""); // Join them together
+      .join(''); // Join them together
   };
   return (
-    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
+    <View style={[Styles.container, {paddingHorizontal: 0}]}>
       {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
 
       <BottomModal
@@ -314,28 +321,29 @@ export default function Dashboard({ navigation }) {
             Title={'Sign In'}
             style={styles.profilePicture}>
             {defaultImageUrl ? (
-              <Avatar.Image label="XD"
+              <Avatar.Image
+                label="XD"
                 size={window.width * 0.15}
-                style={{ backgroundColor: 'transparent' }}
-                source={{ uri: defaultImageUrl }}
+                style={{backgroundColor: 'transparent'}}
+                source={{uri: defaultImageUrl}}
               />
-            ) :
-              (
-                <Avatar.Text
-                  label={getInitials(name)}
-                  size={window.width * 0.15}
-                  style={{ backgroundColor: COLORS.primary }}
-                />
-              )}
-
+            ) : (
+              <Avatar.Text
+                label={getInitials(name)}
+                size={window.width * 0.15}
+                style={{backgroundColor: COLORS.primary}}
+              />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Profile');
               dispatch(Getpath(0));
             }}
-            style={{ flex: 0.6, justifyContent: 'center', paddingLeft: 3 }}>
-            <Text numberOfLines={1} style={styles.UserName}>{name}</Text>
+            style={{flex: 0.6, justifyContent: 'center', paddingLeft: 3}}>
+            <Text numberOfLines={1} style={styles.UserName}>
+              {name}
+            </Text>
             <Text style={styles.regionName}>Region Name - {regionName}</Text>
             {/* <Text style={styles.position}>( {designation})</Text> */}
             <Text style={styles.position}>
@@ -343,14 +351,14 @@ export default function Dashboard({ navigation }) {
               {usertype == 1
                 ? 'Advisor'
                 : usertype == 2
-                  ? 'Team Leader'
-                  : usertype == 3
-                    ? 'Regional Manager'
-                    : usertype == 4
-                      ? 'Branch Manager'
-                      : usertype == 5
-                        ? 'Marketing executive'
-                        : 'Unknown'}
+                ? 'Team Leader'
+                : usertype == 3
+                ? 'Regional Manager'
+                : usertype == 4
+                ? 'Branch Manager'
+                : usertype == 5
+                ? 'Marketing executive'
+                : 'Unknown'}
               )
             </Text>
           </TouchableOpacity>
@@ -361,8 +369,7 @@ export default function Dashboard({ navigation }) {
                 navigation.navigate('Notification');
                 dispatch(Getpath(0));
               }}
-              style={styles.notiIcon}
-            >
+              style={styles.notiIcon}>
               <MaterialCommunityIcons
                 name="bell-outline"
                 color={COLORS.iconDisabled}
@@ -372,7 +379,7 @@ export default function Dashboard({ navigation }) {
           )}
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 10}}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.ExtraBold,
@@ -382,14 +389,14 @@ export default function Dashboard({ navigation }) {
             {usertype == 1
               ? 'Advisor Summary'
               : usertype == 2
-                ? 'Team Leader Summary'
-                : usertype == 3
-                  ? 'Central 1 Region Summary'
-                  : usertype == 4
-                    ? ' Western 1 Branch Summary'
-                    : usertype == 5
-                      ? ' Marketing executive Summary'
-                      : 'user type unknown'}
+              ? 'Team Leader Summary'
+              : usertype == 3
+              ? `${regionName} Region Summary`
+              : usertype == 4
+              ? `${regionName} Branch Summary`
+              : usertype == 5
+              ? ' Marketing executive Summary'
+              : 'user type unknown'}
           </Text>
         </View>
 
@@ -399,7 +406,7 @@ export default function Dashboard({ navigation }) {
             totalNumberofRegions={totalNumberofRegions}
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
-            loading={CurrentMonthRank ? false : true}
+            loading={achiveLoading}
             branchRank={branchRank}
             islandRank={islandRank}
             onPress={() => {
@@ -431,10 +438,10 @@ export default function Dashboard({ navigation }) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
-            loading={RMSummeryData ? false : true}
+            loading={RMSummeryLoading}
             islandRank={islandRank}
             Data={RMSummeryData?.data}
-          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -445,10 +452,10 @@ export default function Dashboard({ navigation }) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
-            loading={RMSummeryData ? false : true}
+            loading={RMSummeryLoading}
             islandRank={islandRank}
             Data={RMSummeryData?.data}
-          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
+            // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 

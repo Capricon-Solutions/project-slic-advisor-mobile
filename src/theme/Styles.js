@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import COLORS from './colors';
 import Fonts from './Fonts';
 
@@ -14,7 +14,7 @@ export const Styles = StyleSheet.create({
   // Login
   customTheme: {
     colors: {
-      primary: COLORS.ashBlue,  // Text color for the input
+      primary: COLORS.ashBlue, // Text color for the input
       background: 'white', // Background color in light mode
       surface: 'white', // Surface color
       text: COLORS.ashBlue, // Text color in input
@@ -203,7 +203,7 @@ export const Styles = StyleSheet.create({
   itemcontentdata: {
     fontFamily: Fonts.Roboto.Regular,
     fontSize: 13,
-    color: COLORS.gray,
+    color: COLORS.grayText,
     marginBottom: 3,
     marginLeft: 3,
   },

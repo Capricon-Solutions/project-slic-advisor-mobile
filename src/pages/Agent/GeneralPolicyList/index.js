@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,10 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import PolicyFilter from '../../../components/PolicyFilter';
@@ -25,14 +25,14 @@ import {
   useSearchPoliciesMutation,
 } from '../../../redux/services/policyListSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
-import { PaperProvider } from 'react-native-paper';
+import {PaperProvider} from 'react-native-paper';
 import SearchParams from '../../../redux/SearchParams';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function GeneralPolicyList({ navigation }) {
+export default function GeneralPolicyList({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchType, setSearchType] = useState('A');
@@ -52,7 +52,7 @@ export default function GeneralPolicyList({ navigation }) {
     setPolicyValues(newValues);
   };
 
-  const [PolicyListResponse, { data: PolicyListData, isLoading, error }] =
+  const [PolicyListResponse, {data: PolicyListData, isLoading, error}] =
     useSearchPoliciesMutation();
 
   const searchData = {
@@ -73,42 +73,70 @@ export default function GeneralPolicyList({ navigation }) {
     BusiRegNo: policyValues.BusiRegNo,
   };
 
+  const searchParamMap = {
+    A: SearchParams.AllSearch,
+    M: SearchParams.MotorSearch,
+    G: SearchParams.NonMotorSearch,
+    P: SearchParams.premiumPending,
+    D: SearchParams.debitOutstanding,
+    C: SearchParams.claimPending,
+    F: SearchParams.remindersSet,
+    Filter: searchData,
+  };
+
   useEffect(() => {
-    PolicyListResponse(
-      searchType === 'A'
-        ? SearchParams.AllSearch
-        : searchType === 'M'
-          ? SearchParams.MotorSearch
-          : searchType === 'G'
-            ? SearchParams.NonMotorSearch
-            : searchType === 'P'
-              ? SearchParams.premiumPending
-              : searchType === 'D'
-                ? SearchParams.debitOutstanding
-                : searchType === 'C'
-                  ? SearchParams.claimPending
-                  : searchType === 'F'
-                    ? SearchParams.remindersSet
-                    : searchType === 'Filter'
-                      ? searchData
-                      : SearchParams.AllSearch,
-    )
+    console.log('searchType', searchType);
+
+    const selectedSearchParam =
+      searchParamMap[searchType] || SearchParams.AllSearch;
+    console.log('selectedSearchParam', selectedSearchParam);
+    PolicyListResponse(selectedSearchParam)
       .then(response => {
-        // console.log('Response:', response);
+        console.log('Response:', response);
       })
       .catch(err => {
         console.log('Error:', err);
       });
-  }, [searchType]);
+  }, [searchType]); // include searchData if it's used in 'Filter'
+
+  // useEffect(() => {
+  //   console.log('searchType', searchType);
+  //   // return;
+  //   PolicyListResponse(
+  //     searchType === 'A'
+  //       ? SearchParams.AllSearch
+  //       : searchType === 'M'
+  //       ? SearchParams.MotorSearch
+  //       : searchType === 'G'
+  //       ? SearchParams.NonMotorSearch
+  //       : searchType === 'P'
+  //       ? SearchParams.premiumPending
+  //       : searchType === 'D'
+  //       ? SearchParams.debitOutstanding
+  //       : searchType === 'C'
+  //       ? SearchParams.claimPending
+  //       : searchType === 'F'
+  //       ? SearchParams.remindersSet
+  //       : searchType === 'Filter'
+  //       ? searchData
+  //       : SearchParams.AllSearch,
+  //   )
+  //     .then(response => {
+  //       console.log('Response:', response);
+  //     })
+  //     .catch(err => {
+  //       console.log('Error:', err);
+  //     });
+  // }, [searchType]);
 
   useEffect(() => {
     // console.log('policyValues', policyValues);
     // console.log('PolicyList', PolicyList);
     console.log('PolicyListResponse', PolicyListData);
-  }, [searchType]);
+  }, [searchType, PolicyListData]);
 
   const PolicyList = error ? [] : PolicyListData?.data;
-  const renderPolicyItem = ({ item }) => (
+  const renderPolicyItem = ({item}) => (
     <PolicyItem item={item} navigation={navigation} />
   );
   const menuItems = [
@@ -151,7 +179,7 @@ export default function GeneralPolicyList({ navigation }) {
 
   return (
     <PaperProvider>
-      <View style={[Styles.container, { paddingHorizontal: 0 }]}>
+      <View style={[Styles.container, {paddingHorizontal: 0}]}>
         <HeaderBackground />
 
         <View>
@@ -188,7 +216,7 @@ export default function GeneralPolicyList({ navigation }) {
             </View>
           ) : (
             <View>
-              {PolicyList?.length !== 0 ? (
+              {PolicyList?.length > 0 ? (
                 <FlatList
                   data={PolicyList}
                   showsVerticalScrollIndicator={false}
@@ -200,17 +228,19 @@ export default function GeneralPolicyList({ navigation }) {
                     paddingHorizontal: 15,
                   }}
                   renderItem={renderPolicyItem}
-                // keyExtractor={item => item.id.toString()}
+                  // keyExtractor={item => item.id.toString()}
                 />
               ) : (
                 <View
                   style={{
-                    height: window.height * 0.9,
+                    height: window.height * 0.85,
 
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text>policies not available</Text>
+                  <Text style={{color: COLORS.grayText}}>
+                    policies not available yet.!
+                  </Text>
                 </View>
               )}
             </View>

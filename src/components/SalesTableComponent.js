@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { Table, Row } from 'react-native-table-component';
+import {Table, Row} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -22,8 +22,8 @@ const SalesTableComponent = ({
   Error,
   clickableColumns = [], // Array of column indices that should be clickable
 }) => {
-  const handleCellPress = (cellData) => {
-    navigation.navigate('PolicyDetails', { policyNo: cellData })
+  const handleCellPress = cellData => {
+    navigation.navigate('PolicyDetails', {policyNo: cellData});
     console.log('Clicked Cell:', cellData);
   };
 
@@ -33,7 +33,7 @@ const SalesTableComponent = ({
         <ScrollView horizontal>
           <View style={styles.container}>
             <View style={styles.tableWrapper}>
-              <Table borderStyle={{ borderWidth: 1, borderColor: COLORS.white }}>
+              <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
                 {/* Table Header */}
                 <Row
                   data={tableHead}
@@ -49,12 +49,14 @@ const SalesTableComponent = ({
                       clickableColumns.includes(cellIndex) ? (
                         <TouchableOpacity
                           key={cellIndex}
-                          onPress={() => handleCellPress(cellData)}
-                        >
-                          <Text style={[
-                            styles.text,
-                            cellIndex === 0 ? styles.firstColumnText : styles.otherColumnsText,
-                          ]}>
+                          onPress={() => handleCellPress(cellData)}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.firstColumnText
+                                : styles.otherColumnsText,
+                            ]}>
                             {cellData}
                           </Text>
                         </TouchableOpacity>
@@ -63,13 +65,16 @@ const SalesTableComponent = ({
                           key={cellIndex}
                           style={[
                             styles.text,
-                            cellIndex === 0 ? styles.firstColumnText : styles.otherColumnsText,
-                            haveTotal && rowIndex === tableData.length - 1 && styles.boldText, // Apply boldText to the last row if haveTotal is true
-                          ]}
-                        >
+                            cellIndex === 0
+                              ? styles.firstColumnText
+                              : styles.otherColumnsText,
+                            haveTotal &&
+                              rowIndex === tableData.length - 1 &&
+                              styles.boldText, // Apply boldText to the last row if haveTotal is true
+                          ]}>
                           {cellData}
                         </Text>
-                      )
+                      ),
                     )}
                     widthArr={columnWidths}
                     style={[
@@ -78,14 +83,13 @@ const SalesTableComponent = ({
                     ]}
                   />
                 ))}
-
               </Table>
             </View>
           </View>
         </ScrollView>
       ) : tableData?.length == 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.errorText}>Don't have any data yet</Text>
+          <Text style={styles.errorText}>Sorry, No Dat found</Text>
         </View>
       ) : (
         <View style={styles.emptyContainer}>
@@ -97,15 +101,21 @@ const SalesTableComponent = ({
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
-  tableWrapper: { borderRadius: 10, overflow: 'hidden' },
-  head: { height: 50, backgroundColor: '#00A8B5' },
-  headText: { margin: 6, fontWeight: 'bold', color: '#fff', textAlign: 'center' },
-  text: { marginVertical: 6, marginHorizontal: 10, textAlign: 'center', fontSize: 13, color: COLORS.textColor },
-  clickableText: { color: COLORS.primary, textDecorationLine: 'underline' }, // Style for clickable columns
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' },
-  rowWhite: { backgroundColor: '#FFFFFF' },
+  container: {padding: 0},
+  tableWrapper: {borderRadius: 10, overflow: 'hidden'},
+  head: {height: 50, backgroundColor: '#00A8B5'},
+  headText: {margin: 6, fontWeight: 'bold', color: '#fff', textAlign: 'center'},
+  text: {
+    marginVertical: 6,
+    marginHorizontal: 10,
+    textAlign: 'center',
+    fontSize: 13,
+    color: COLORS.textColor,
+  },
+  clickableText: {color: COLORS.primary, textDecorationLine: 'underline'}, // Style for clickable columns
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'},
+  rowWhite: {backgroundColor: '#FFFFFF'},
   emptyContainer: {
     flex: 1,
     height: window.height * 0.5,
@@ -122,8 +132,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     textAlign: 'center',
-    fontFamily: Fonts.Roboto.SemiBold,
+    fontFamily: Fonts.Roboto.Bold,
     color: COLORS.primaryRed,
+    fontSize: 16,
   },
   boldText: {
     fontWeight: 'bold',

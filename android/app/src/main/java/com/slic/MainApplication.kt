@@ -11,6 +11,7 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor;
 
 
 class MainApplication : Application(), ReactApplication {

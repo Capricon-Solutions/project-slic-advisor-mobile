@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
+import Fonts from '../theme/Fonts';
 
 const HorizontalTableComponent = ({
   tableHead,
@@ -15,7 +16,7 @@ const HorizontalTableComponent = ({
   columnWidths,
   haveTotal,
   onPress,
-  clickable
+  clickable,
 }) => {
   const handleCellPress = cellData => {
     onPress();
@@ -23,112 +24,105 @@ const HorizontalTableComponent = ({
   };
 
   return (
-    <ScrollView horizontal>
-      <View style={styles.container}>
-        <View style={styles.tableWrapper}>
-          <Table
-            borderStyle={{
-              borderWidth: 1,
-              borderColor: COLORS.white,
-            }}>
-            {/* Table Header */}
-
-            <Row
-              data={tableHead.map((item, index) => (
-                <Text
-                  key={index}
-                  style={[
-                    styles.headText,
-                    index === 0 ? styles.firstCell : null, // Apply red background to first item
-                  ]}>
-                  {item}
-                </Text>
-              ))}
-              widthArr={columnWidths}
-              style={styles.head}
-              textStyle={styles.headText}
-            />
-            {tableData.map((rowData, index) => (
-              <Row
-                key={index}
-                data={rowData.map((cellData, cellIndex) => (
-                  <TouchableOpacity
-                    disabled={!clickable}
-                    key={cellIndex}
-                    onPress={() => handleCellPress(cellData)}>
+    <View style={styles.fullContainer}>
+      {tableData.length === 0 ? (
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>Sorry, No Data Found</Text>
+        </View>
+      ) : (
+        <ScrollView horizontal>
+          <View style={styles.container}>
+            <View style={styles.tableWrapper}>
+              <Table
+                borderStyle={{
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}>
+                {/* Table Header */}
+                <Row
+                  data={tableHead.map((item, index) => (
                     <Text
+                      key={index}
                       style={[
-                        styles.text,
-                        cellIndex === 0 ? styles.leftAlignText : styles.centerAlignText, // Left-align first column, center-align others
-                        haveTotal &&
+                        styles.headText,
+                        index === 0 ? styles.firstCell : null,
+                      ]}>
+                      {item}
+                    </Text>
+                  ))}
+                  widthArr={columnWidths}
+                  style={styles.head}
+                  textStyle={styles.headText}
+                />
+                {tableData.map((rowData, index) => (
+                  <Row
+                    key={index}
+                    data={rowData.map((cellData, cellIndex) => (
+                      <TouchableOpacity
+                        disabled={!clickable}
+                        key={cellIndex}
+                        onPress={() => handleCellPress(cellData)}>
+                        <Text
+                          style={[
+                            styles.text,
+                            cellIndex === 0
+                              ? styles.leftAlignText
+                              : styles.centerAlignText,
+                            haveTotal &&
+                              index === tableData.length - 1 &&
+                              styles.boldText,
+                          ]}>
+                          {cellData}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                    widthArr={columnWidths}
+                    style={[
+                      styles.row,
+                      index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                    ]}
+                    textStyle={[
+                      styles.text,
+                      haveTotal &&
                         index === tableData.length - 1 &&
                         styles.boldText,
-                      ]}>
-                      {cellData}
-                    </Text>
-                  </TouchableOpacity>
+                    ]}
+                  />
                 ))}
-                widthArr={columnWidths}
-                style={[
-                  styles.row,
-                  index % 2 === 0 ? styles.rowGray : styles.rowWhite,
-                ]}
-                textStyle={[
-                  styles.text,
-                  haveTotal &&
-                  index === tableData.length - 1 &&
-                  styles.boldText,
-                ]}
-              />
-            ))}
-
-            {/* {tableData.map((rowData, index) => (
-              <Row
-                key={index}
-                data={rowData.map((cellData, cellIndex) => (
-                  <TouchableOpacity
-                    disabled={clickable == true ? false : true}
-
-                    key={cellIndex}
-                    onPress={() => handleCellPress(cellData)}>
-                    <Text
-                      style={[
-                        styles.text,
-                        haveTotal &&
-                        rowIndex === tableData.length - 1 &&
-                        styles.boldText,
-                      ]}>
-                      {cellData}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-                widthArr={columnWidths}
-                style={[
-                  styles.row,
-                  index % 2 === 0 ? styles.rowGray : styles.rowWhite,
-                ]}
-                textStyle={[
-                  styles.text,
-                  haveTotal &&
-                  index === tableData.length - 1 &&
-                  styles.boldText, 
-                ]}
-              />
-            ))} */}
-          </Table>
-        </View>
-      </View>
-    </ScrollView>
+              </Table>
+            </View>
+          </View>
+        </ScrollView>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  head: { height: 50, backgroundColor: '#00A8B5' },
+  fullContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // padding: 16,
+  },
+  noDataContainer: {
+    // flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+    height: 250,
+  },
+  noDataText: {
+    fontSize: 16,
+    color: COLORS.errorBorder,
+    fontFamily: Fonts.Roboto.Bold,
+  },
+  head: {height: 50, backgroundColor: '#00A8B5'},
   headText: {
     margin: 6,
     fontWeight: 'bold',
@@ -149,9 +143,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.textColor,
   },
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
-  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
+  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,
@@ -164,7 +158,7 @@ const styles = StyleSheet.create({
     color: 'transparent', // Make first header item text transparent
   },
   leftAlignText: {
-    textAlign: 'left',  // First column aligned left
+    textAlign: 'left', // First column aligned left
   },
   centerAlignText: {
     textAlign: 'center', // Other columns aligned center

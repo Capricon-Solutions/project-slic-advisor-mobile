@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,17 @@ import {
   ScrollView,
   ActivityIndicator, // Added for the loading animation
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
-import { useGetBranchesQuery } from '../../../redux/services/contactSlice';
-import { useSelector } from 'react-redux';
+import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
+import {useSelector} from 'react-redux';
 import {
   useGetmotorRenewalsListQuery,
   useGetnonMotorRenewalsListQuery,
@@ -32,7 +32,7 @@ import TableComponentPR from '../../../components/TableComponentPR';
 
 const window = Dimensions.get('window');
 
-export default function PolicyRenewals({ navigation }) {
+export default function PolicyRenewals({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   // const [loading, setLoading] = useState(false); // Loading state
@@ -126,7 +126,7 @@ export default function PolicyRenewals({ navigation }) {
       />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -185,7 +185,7 @@ export default function PolicyRenewals({ navigation }) {
               fontFamily: Fonts.Roboto.Regular,
               fontSize: 14,
               marginBottom: 10,
-              color: COLORS.borderColor
+              color: COLORS.borderColor,
             }}>
             (Click on policy Number to view details)
           </Text>

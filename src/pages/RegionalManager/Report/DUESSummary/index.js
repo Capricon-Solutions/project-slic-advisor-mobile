@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../../theme/Styles';
+import {Styles} from '../../../../theme/Styles';
 import HeaderBackground from '../../../../components/HeaderBackground';
 import Header from '../../../../components/Header';
 import COLORS from '../../../../theme/colors';
@@ -22,27 +22,29 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LoaderKit from 'react-native-loader-kit';
 
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../../components/contactListItem';
 import DepartmentItem from '../../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../../redux/services/contactSlice';
-import { useSelector } from 'react-redux';
-import { useDuesSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+import {useSelector} from 'react-redux';
+import {useDuesSummeryQuery} from '../../../../redux/services/SummeryApiSlice';
 import moment from 'moment';
 const window = Dimensions.get('window');
 
-export default function DUESSummary({ navigation }) {
+export default function DUESSummary({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
   // const motorData = useSelector(state => state.DUES.motorData);
   // const nonmotorData = useSelector(state => state.DUES.nonmotorData);
   const currentMonthNumber = moment().month() + 1; // +1 because Moment.js months are 0-indexed
   const currentMonthName = moment().format('MMMM');
+  const profile = useSelector(state => state.Profile.profile);
 
+  const regionName = profile?.user?.region;
 
   const {
     data: DuesSummeryData,
@@ -51,9 +53,13 @@ export default function DUESSummary({ navigation }) {
     isFetching: DuesSummeryFetching,
   } = useDuesSummeryQuery({
     month: currentMonthNumber,
+    regionName: regionName,
   });
 
-  const Response = SelectedType == 1 ? DuesSummeryData?.data?.motor : DuesSummeryData?.data?.nonMotor;
+  const Response =
+    SelectedType == 1
+      ? DuesSummeryData?.data?.motor
+      : DuesSummeryData?.data?.nonMotor;
   const motorData = [
     {
       id: '1',
@@ -130,7 +136,7 @@ export default function DUESSummary({ navigation }) {
         },
       ],
     },
-  ]
+  ];
 
   const nonmotorData = [
     {
@@ -208,15 +214,15 @@ export default function DUESSummary({ navigation }) {
         },
       ],
     },
-  ]
+  ];
 
   const DataSet = SelectedType == 1 ? motorData : nonmotorData;
-  console.log("DuesSummeryData", DuesSummeryData);
+  console.log('DuesSummeryData', DuesSummeryData);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="DUES Summary" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -266,8 +272,8 @@ export default function DUESSummary({ navigation }) {
               elevation: 10,
               marginBottom: 20,
             }}>
-            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-              <View style={{ flex: 0.2 }}>
+            <View style={{flexDirection: 'row', marginBottom: 10}}>
+              <View style={{flex: 0.2}}>
                 <View
                   style={{
                     height: 45,
@@ -278,11 +284,11 @@ export default function DUESSummary({ navigation }) {
                     alignItems: 'center',
                   }}>
                   <Image
-                    style={{ height: 23, width: 23 }}
+                    style={{height: 23, width: 23}}
                     source={DuesSummery}></Image>
                 </View>
               </View>
-              <View style={{ flex: 0.8, justifyContent: 'center' }}>
+              <View style={{flex: 0.8, justifyContent: 'center'}}>
                 <Text
                   style={{
                     fontFamily: Fonts.Roboto.SemiBold,
@@ -314,7 +320,7 @@ export default function DUESSummary({ navigation }) {
                 data={DataSet}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
+                renderItem={({item}) => (
                   <View
                     style={{
                       padding: 10,
@@ -357,7 +363,7 @@ export default function DUESSummary({ navigation }) {
                     <FlatList
                       data={item.subItem}
                       keyExtractor={(subItem, index) => index.toString()}
-                      renderItem={({ item: subItem }) => (
+                      renderItem={({item: subItem}) => (
                         <View
                           style={{
                             flexDirection: 'row',
@@ -383,9 +389,9 @@ export default function DUESSummary({ navigation }) {
                             {subItem?.type === 'count'
                               ? subItem.value
                               : `LKR ${new Intl.NumberFormat('en-LK', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }).format(subItem.value)}`}
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }).format(subItem.value)}`}
                           </Text>
                         </View>
                       )}
@@ -398,7 +404,7 @@ export default function DUESSummary({ navigation }) {
                 data={nonmotorData}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
+                renderItem={({item}) => (
                   <View
                     style={{
                       padding: 10,
@@ -441,7 +447,7 @@ export default function DUESSummary({ navigation }) {
                     <FlatList
                       data={item.subItem}
                       keyExtractor={(subItem, index) => index.toString()}
-                      renderItem={({ item: subItem }) => (
+                      renderItem={({item: subItem}) => (
                         <View
                           style={{
                             flexDirection: 'row',
@@ -467,9 +473,9 @@ export default function DUESSummary({ navigation }) {
                             {subItem?.type === 'count'
                               ? subItem.value
                               : `LKR ${new Intl.NumberFormat('en-LK', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }).format(subItem.value)}`}
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }).format(subItem.value)}`}
                           </Text>
                         </View>
                       )}
@@ -484,9 +490,17 @@ export default function DUESSummary({ navigation }) {
         </View>
       </ScrollView>
       {DuesSummeryLoading && (
-        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
           <LoaderKit
-            style={{ width: 50, height: 50 }}
+            style={{width: 50, height: 50}}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />
