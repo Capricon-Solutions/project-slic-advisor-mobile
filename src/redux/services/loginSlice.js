@@ -1,8 +1,7 @@
 // loginApi.ts
 import {baseApi} from './api';
 
-const LOGIN_BASE_URL =
-  'https://oo4843l2ch.execute-api.ap-southeast-1.amazonaws.com/BellSalesLogin/api/auth';
+const LOGIN_BASE_URL = 'http://203.115.11.229:2003/BellSalesLogin/api/auth';
 
 export const loginApi = baseApi.injectEndpoints({
   endpoints: builder => ({

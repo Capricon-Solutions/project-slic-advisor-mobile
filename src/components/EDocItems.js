@@ -15,21 +15,21 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 
 import COLORS from '../theme/colors';
-import { Styles } from '../theme/Styles';
+import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function EDocItems({ item, navigation, onPress }) {
+export default function EDocItems({item, navigation, onPress}) {
   const [downloadProgress, setDownloadProgress] = React.useState(0);
   const [isDownloading, setIsDownloading] = React.useState(false);
 
-  const downloadAndOpenPDF = async (path) => {
+  const downloadAndOpenPDF = async path => {
     try {
       setIsDownloading(true);
       setDownloadProgress(0);
 
-      const pdfUrl = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/print/${path}`;
+      const pdfUrl = `http://203.115.11.229:2003/GISalesAppApi/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
       const options = {
@@ -38,8 +38,8 @@ export default function EDocItems({ item, navigation, onPress }) {
         headers: {
           'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
         },
-        progress: (res) => {
-          const progress = (res.bytesWritten / res.contentLength);
+        progress: res => {
+          const progress = res.bytesWritten / res.contentLength;
           setDownloadProgress(progress);
         },
       };
@@ -49,7 +49,7 @@ export default function EDocItems({ item, navigation, onPress }) {
       await download.promise;
 
       // Open the downloaded file
-      await FileViewer.open(localFilePath, { showOpenWithDialog: true });
+      await FileViewer.open(localFilePath, {showOpenWithDialog: true});
       console.log('PDF opened successfully!');
     } catch (error) {
       console.error('Download/Open Error:', error);
@@ -105,12 +105,12 @@ export default function EDocItems({ item, navigation, onPress }) {
         </View>
 
         {isDownloading ? (
-          <View style={{ width: '100%' }}>
+          <View style={{width: '100%'}}>
             <View style={styles.progressBarContainer}>
               <View
                 style={[
                   styles.progressBar,
-                  { width: `${downloadProgress * 100}%` }
+                  {width: `${downloadProgress * 100}%`},
                 ]}
               />
             </View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
     marginBottom: 3,
-    marginTop: -3
+    marginTop: -3,
   },
   progressBar: {
     height: '100%',

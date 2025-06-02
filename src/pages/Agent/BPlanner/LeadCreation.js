@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -18,20 +18,20 @@ import Fonts from '../../../theme/Fonts';
 import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
-import { styles } from './styles';
+import {styles} from './styles';
 import Feather from 'react-native-vector-icons/Feather';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {
   useGetEventsAndActivitiessQuery,
   useLeadCreationMutation,
 } from '../../../redux/services/plannerSlice';
-import { showToast } from '../../../components/ToastMessage';
+import {showToast} from '../../../components/ToastMessage';
 
-export default function LeadCreation({ navigation, route }) {
-  const { eventDate } = route.params;
+export default function LeadCreation({navigation, route}) {
+  const {eventDate} = route.params;
   const userCode = useSelector(state => state.Profile.userCode);
   const agentCode = useSelector(state => state.Profile.agentCode);
   const date = eventDate;
@@ -40,22 +40,22 @@ export default function LeadCreation({ navigation, route }) {
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({ date, userCode });
+  } = useGetEventsAndActivitiessQuery({date, userCode});
   const [dropdownData, setDropdownData] = useState([]);
   const dropdownArray = PlannerActivities?.data?.plannerEvents;
 
   useEffect(() => {
     if (dropdownArray?.length && dropdownData.length === 0) {
       setDropdownData(
-        dropdownArray.map(({ eventDesc, eventId }) => ({
+        dropdownArray.map(({eventDesc, eventId}) => ({
           label: eventDesc,
           value: eventId.toString(),
-        }))
+        })),
       );
     }
   }, [dropdownArray]); // Runs only when dropdownArray changes
 
-  const [leadCreate, { data: newActivity, isLoading, error: errorEvents }] =
+  const [leadCreate, {data: newActivity, isLoading, error: errorEvents}] =
     useLeadCreationMutation();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -91,10 +91,10 @@ export default function LeadCreation({ navigation, route }) {
   }, [date]);
 
   const StepperItems = [
-    { id: 1, Title: 'Policy Info' },
-    { id: 2, Title: 'Vehicle Info' },
-    { id: 3, Title: 'Customer Basic Info' },
-    { id: 4, Title: 'Customer Contact Info' },
+    {id: 1, Title: 'Policy Info'},
+    {id: 2, Title: 'Vehicle Info'},
+    {id: 3, Title: 'Customer Basic Info'},
+    {id: 4, Title: 'Customer Contact Info'},
   ];
 
   const handleNext = () => {
@@ -109,13 +109,13 @@ export default function LeadCreation({ navigation, route }) {
       } else if (currentStep == 2) {
         console.log(currentStep);
         if (!validateForm2()) {
-          console.log("trigger2")
+          console.log('trigger2');
           setCurrentStep(3);
         }
       } else if (currentStep == 3) {
-        console.log("sssef", currentStep);
+        console.log('sssef', currentStep);
         if (validateForm3()) {
-          console.log("trigger")
+          console.log('trigger');
           setCurrentStep(4);
         }
       }
@@ -203,7 +203,7 @@ export default function LeadCreation({ navigation, route }) {
       // !selectedDate ||
       // !refNo
     ) {
-      console.log("test errors")
+      console.log('test errors');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -226,7 +226,8 @@ export default function LeadCreation({ navigation, route }) {
     return true;
   };
   const validateForm3 = () => {
-    if (!customerName
+    if (
+      !customerName
       // || !nic || !selectedDate2 || !occupation
     ) {
       showToast({
@@ -239,9 +240,9 @@ export default function LeadCreation({ navigation, route }) {
     return true;
   };
   const validateForm4 = () => {
-    console.log("here", homeNumber, mobileNumber, workNumber, email, address1)
+    console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
     if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
-      console.log("work this")
+      console.log('work this');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -252,9 +253,9 @@ export default function LeadCreation({ navigation, route }) {
     return true;
   };
   const handleLeadCreate = async () => {
-
-    if (!validateForm4()) // Stop if validation fails
-      console.log("work")
+    if (!validateForm4())
+      // Stop if validation fails
+      console.log('work');
     showToast({
       type: 'error',
       text1: 'Validation Error',
@@ -278,7 +279,7 @@ export default function LeadCreation({ navigation, route }) {
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
-              style={{ backgroundColor: 'red' }}
+              style={{backgroundColor: 'red'}}
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
@@ -297,8 +298,8 @@ export default function LeadCreation({ navigation, route }) {
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
               dropdownData={[
-                { label: 'Motor', value: 'M' },
-                { label: 'Non-Motor', value: 'G' },
+                {label: 'Motor', value: 'M'},
+                {label: 'Non-Motor', value: 'G'},
               ]}
             />
             <SquareTextBoxOutlined
@@ -323,7 +324,7 @@ export default function LeadCreation({ navigation, route }) {
               keyboardType={'number-pad'}
               setValue={text => setPremium(text)}
             />
-            <View style={{ flexDirection: 'row', position: 'relative' }}>
+            <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
                 readOnly={true}
@@ -389,7 +390,7 @@ export default function LeadCreation({ navigation, route }) {
             <DateTimePickerModal
               isVisible={isDatePickerVisible2}
               mode="date"
-              style={{ backgroundColor: 'red' }}
+              style={{backgroundColor: 'red'}}
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm2}
               onCancel={hideDatePicker2}
@@ -416,7 +417,7 @@ export default function LeadCreation({ navigation, route }) {
               value={nic}
               setValue={text => setNic(text)}
             />
-            <View style={{ flexDirection: 'row', position: 'relative' }}>
+            <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
                 Label={'Date Of Birth'}
@@ -439,7 +440,6 @@ export default function LeadCreation({ navigation, route }) {
               Label={'Occupation'}
               borderColor={COLORS.warmGray}
               value={occupation}
-
               setValue={text => setOccupation(text)}
             />
           </View>
@@ -519,7 +519,7 @@ export default function LeadCreation({ navigation, route }) {
       />
       <HeaderBackground />
       <Header Title="Lead Creation" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 15, flex: 1 }}>
+      <View style={{paddingHorizontal: 15, flex: 1}}>
         {/* Select Event card */}
         <View
           style={{
@@ -536,19 +536,21 @@ export default function LeadCreation({ navigation, route }) {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{ flex: 0.63 }}>
-              <DropdownComponentNoLabel label="Select Event" dropdownData={dropdownData} />
-
+            <View style={{flex: 0.63}}>
+              <DropdownComponentNoLabel
+                label="Select Event"
+                dropdownData={dropdownData}
+              />
             </View>
-            <View style={{ flex: 0.35 }}>
+            <View style={{flex: 0.35}}>
               <SmallButton Title={'Set as Default'} />
             </View>
           </View>
         </View>
 
         {/* Stepper */}
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <View style={{ flex: 0.45 }}>
+        <View style={{flexDirection: 'row', marginTop: 20}}>
+          <View style={{flex: 0.45}}>
             <Text
               style={{
                 fontSize: 12,
@@ -592,9 +594,9 @@ export default function LeadCreation({ navigation, route }) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{ paddingHorizontal: 0, marginTop: 3 }}>
+          contentContainerStyle={{paddingHorizontal: 0, marginTop: 3}}>
           {/* <TextInput autoFocus placeholder="svsv" /> */}
-          <View style={{ marginBottom: 20 }}>{renderStepContent()}</View>
+          <View style={{marginBottom: 20}}>{renderStepContent()}</View>
         </ScrollView>
         {/* Navigation Buttons */}
         <View

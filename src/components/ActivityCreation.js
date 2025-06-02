@@ -27,20 +27,23 @@ import MonthYearPicker from './MonthYearPicker';
 import moment from 'moment';
 import {useActivityCreationMutation} from '../redux/services/plannerSlice';
 import {showToast, ToastMessage} from './ToastMessage';
+import {useSelector} from 'react-redux';
 
 export default function ActivityCreation({
   modalVisible,
   setModalVisible,
   leadsData,
+  onActivityCreated,
 }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
-  const [ActivityCreate, {data: newActivity, isLoading, error}] =
+  const [ActivityCreate, {data, isLoading, error}] =
     useActivityCreationMutation();
 
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const userCode = useSelector(state => state.Profile.userCode);
 
   const [selectedLead, setSelectedLead] = useState(0);
   const [selectedType, setSelectedType] = useState('');
@@ -75,8 +78,7 @@ export default function ActivityCreation({
       !selectedType ||
       !description ||
       !meetWith ||
-      !selectedDate ||
-      !selectedTime
+      !selectedDate
     ) {
       showToast({
         type: 'error',
@@ -92,8 +94,16 @@ export default function ActivityCreation({
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await ActivityCreate(body);
-      setModalVisible(false);
+      const response = await ActivityCreate({body, userCode});
+      showToast({
+        type: 'success',
+        text1: 'Activity Created',
+        text2: 'Your activity has been created successfully!',
+      });
+      setTimeout(() => {
+        onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
+        setModalVisible(false);
+      }, 2000);
       console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
@@ -271,7 +281,9 @@ export default function ActivityCreation({
                 Title={'Meeting With'}
                 setValue={text => setMeetWith(text)}
               />
-              <View style={{flexDirection: 'row', position: 'relative'}}>
+              <TouchableOpacity
+                onPress={() => showDatePicker()}
+                style={{flexDirection: 'row', position: 'relative'}}>
                 <SquareTextBox
                   LabelColor={COLORS.ashBlue}
                   Label={'Date *'}
@@ -295,8 +307,8 @@ export default function ActivityCreation({
                   ]}>
                   <Feather name="calendar" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
-              </View>
-              <View style={{flexDirection: 'row', position: 'relative'}}>
+              </TouchableOpacity>
+              {/* <View style={{flexDirection: 'row', position: 'relative'}}>
                 <SquareTextBox
                   LabelColor={COLORS.ashBlue}
                   Label={'Time *'}
@@ -318,7 +330,7 @@ export default function ActivityCreation({
                   ]}>
                   <Feather name="clock" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               <View
                 style={{

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,23 +13,23 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { useSelector } from 'react-redux';
-import { useGetPolicyDetailsQuery } from '../../../redux/services/policyDetailsSlice';
+import {useSelector} from 'react-redux';
+import {useGetPolicyDetailsQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function PolicyDetails({ navigation, route }) {
-  const { policyNo } = route.params; // Extract item from params
+export default function PolicyDetails({navigation, route}) {
+  const {policyNo} = route.params; // Extract item from params
   console.log('policyNo', policyNo);
   const {
     data: PolicyDetails,
@@ -59,10 +59,9 @@ export default function PolicyDetails({ navigation, route }) {
   const isCancelled = policyDetailsResponse?.isCancelled;
   const capacity = policyDetailsResponse?.engineCapacity;
 
+  console.log('PolicyDetails', PolicyDetails);
 
-  console.log("PolicyDetails", PolicyDetails);
-
-  const DetailLine = ({ Title, detail }) => {
+  const DetailLine = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -80,7 +79,7 @@ export default function PolicyDetails({ navigation, route }) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
@@ -105,16 +104,22 @@ export default function PolicyDetails({ navigation, route }) {
       {isLoading ? (
         <LoadingScreen />
       ) : (
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+        <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
           <View style={styles.card}>
-            {
-              isCancelled &&
-              <Text style={{
-                color: COLORS.primaryRed, fontFamily: Fonts.Roboto.SemiBold, textAlign: 'right', position: 'absolute', right: 7, top: 5,
-                fontSize: 12
-              }}>(Cancelled)</Text>
-
-            }
+            {isCancelled && (
+              <Text
+                style={{
+                  color: COLORS.primaryRed,
+                  fontFamily: Fonts.Roboto.SemiBold,
+                  textAlign: 'right',
+                  position: 'absolute',
+                  right: 7,
+                  top: 5,
+                  fontSize: 12,
+                }}>
+                (Cancelled)
+              </Text>
+            )}
             <DetailLine Title={'Policy Number'} detail={policyNo} />
             <DetailLine Title={'Ins. Name'} detail={insName} />
             <DetailLine Title={'Address'} detail={Address} />
@@ -128,7 +133,7 @@ export default function PolicyDetails({ navigation, route }) {
               detail={addCovers?.map((cover, index) => (
                 <Text
                   key={index}
-                  style={{ color: COLORS.grayText, lineHeight: 20 }}>
+                  style={{color: COLORS.grayText, lineHeight: 20}}>
                   {cover.coverTypeName}: {cover.coverValue}
                   {'\n'}
                 </Text>
@@ -136,7 +141,7 @@ export default function PolicyDetails({ navigation, route }) {
             />
           </View>
 
-          <View style={[styles.card, { marginTop: 10 }]}>
+          <View style={[styles.card, {marginTop: 10}]}>
             <View>
               <Text
                 style={{
@@ -148,33 +153,33 @@ export default function PolicyDetails({ navigation, route }) {
                 Vehicle Information
               </Text>
             </View>
-            <DetailLine Title={'Vehicle No.'} detail={vehicleNo} />
-            <DetailLine Title={'Make Year'} detail={makeYear} />
-            <DetailLine Title={'Make'} detail={brand} />
-            <DetailLine Title={'Chasis No.'} detail={chasisNo} />
-            <DetailLine Title={'Engine No.'} detail={engineNo} />
-            <DetailLine Title={'Engine Cap.'} detail={capacity} />
+            <DetailLine Title={'Vehicle No.'} detail={vehicleNo || 'N/A'} />
+            <DetailLine Title={'Make Year'} detail={makeYear || 'N/A'} />
+            <DetailLine Title={'Make'} detail={brand || 'N/A'} />
+            <DetailLine Title={'Chasis No.'} detail={chasisNo || 'N/A'} />
+            <DetailLine Title={'Engine No.'} detail={engineNo || 'N/A'} />
+            <DetailLine Title={'Engine Cap.'} detail={capacity || 'N/A'} />
           </View>
 
           <View
-            style={{ marginHorizontal: window.width * 0.07, marginVertical: 10 }}>
+            style={{marginHorizontal: window.width * 0.07, marginVertical: 10}}>
             <SmallButton
               onPress={() =>
-                navigation.navigate('ClaimHistory', { policyNo: policyNo })
+                navigation.navigate('ClaimHistory', {policyNo: policyNo})
               }
               disabledButton={false}
               Title={'View Claim History'}
             />
             <SmallButton
               onPress={() =>
-                navigation.navigate('PendingClaims', { policyNo: policyNo })
+                navigation.navigate('PendingClaims', {policyNo: policyNo})
               }
               disabledButton={false}
               Title={'Pending Claims'}
             />
             <SmallButton
               onPress={() =>
-                navigation.navigate('PremiumHistory', { policyNo: policyNo })
+                navigation.navigate('PremiumHistory', {policyNo: policyNo})
               }
               disabledButton={false}
               Title={'View Premium(NB/Renewal) History'}
@@ -189,7 +194,10 @@ export default function PolicyDetails({ navigation, route }) {
             <SmallButton
               Title={'Debit Settlement/ Payment'}
               onPress={() =>
-                navigation.navigate('DebitSettlement', { policyNo: policyNo, phone: phone })
+                navigation.navigate('DebitSettlement', {
+                  policyNo: policyNo,
+                  phone: phone,
+                })
               }
               disabledButton={false}
             />

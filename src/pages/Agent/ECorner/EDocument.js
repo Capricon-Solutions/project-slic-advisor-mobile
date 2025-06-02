@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,18 +10,18 @@ import {
   ScrollView,
   Linking,
   Platform,
-  Alert
+  Alert,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 // import Pdf from 'react-native-pdf';
@@ -35,7 +35,7 @@ import {
 } from '../../../redux/services/contactSlice';
 import EconerItems from '../../../components/EconerItems';
 import EDocItems from '../../../components/EDocItems';
-import { useGetEDocumentQuery } from '../../../redux/services/eCornerSlice';
+import {useGetEDocumentQuery} from '../../../redux/services/eCornerSlice';
 const window = Dimensions.get('window');
 
 const data = [
@@ -67,27 +67,20 @@ const data = [
     download: true,
     Share: true,
   },
-
 ];
 
-
-
-export default function EDocument({ navigation }) {
-
-  const { data: EDocument, isLoading } = useGetEDocumentQuery();
+export default function EDocument({navigation}) {
+  const {data: EDocument, isLoading} = useGetEDocumentQuery();
   const [SelectedType, setSelectedType] = useState(1);
 
-  console.log("EDocument", EDocument);
-  const renderDocItems = ({ item }) => (
-    <EDocItems item={item} navigation={navigation}
-    />
+  console.log('EDocument', EDocument);
+  const renderDocItems = ({item}) => (
+    <EDocItems item={item} navigation={navigation} />
   );
 
-
-
-  const downloadAndOpenPDF = async (path) => {
+  const downloadAndOpenPDF = async path => {
     try {
-      const pdfUrl = `https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/print/${path}`;
+      const pdfUrl = `http://203.115.11.229:2003/GISalesAppApi/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
       const options = {
@@ -102,21 +95,20 @@ export default function EDocument({ navigation }) {
       await RNFS.downloadFile(options).promise;
 
       // Open the downloaded file
-      await FileViewer.open(localFilePath, { showOpenWithDialog: true });
+      await FileViewer.open(localFilePath, {showOpenWithDialog: true});
       console.log('PDF opened successfully!');
     } catch (error) {
       console.error('Download/Open Error:', error);
     }
   };
 
-
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="E-Document" onPress={() => navigation.goBack()} />
       {/* <TouchableOpacity style={{ backgroundColor: 'red', height: 30, width: 30 }} onPress={() => downloadAndOpenPDF()}></TouchableOpacity> */}
-      <View style={{ paddingHorizontal: 5 }}>
-        <View style={[styles.searchWrap, { marginHorizontal: 15 }]}>
+      <View style={{paddingHorizontal: 5}}>
+        <View style={[styles.searchWrap, {marginHorizontal: 15}]}>
           <TextInput
             style={styles.textInput}
             // onChangeText={v => setSearchText(v)}
@@ -186,47 +178,54 @@ export default function EDocument({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-        <Text style={{
-          paddingHorizontal: 15,
-          fontFamily: Fonts.Roboto.Bold,
-          color: COLORS.textColor,
-          fontSize: 15,
-          marginTop: 5
-        }}>{SelectedType == 1 ? "Motor" : SelectedType == 2 ? "Non-Motor" : "Claims"} Documents</Text>
+        <Text
+          style={{
+            paddingHorizontal: 15,
+            fontFamily: Fonts.Roboto.Bold,
+            color: COLORS.textColor,
+            fontSize: 15,
+            marginTop: 5,
+          }}>
+          {SelectedType == 1
+            ? 'Motor'
+            : SelectedType == 2
+            ? 'Non-Motor'
+            : 'Claims'}{' '}
+          Documents
+        </Text>
         <View>
-
           {isLoading ? (
-            <View style={{
-              position: 'absolute',
-              // backgroundColor: 'red',
-              flex: 1,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-
+            <View
+              style={{
+                position: 'absolute',
+                // backgroundColor: 'red',
+                flex: 1,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <LoadingScreen />
             </View>
-          ) :
-            (
-              <FlatList
-                data={SelectedType == 1 ?
-                  EDocument?.data?.motor : SelectedType == 2 ?
-                    EDocument?.data?.nonMotor : EDocument?.data?.claims}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  fadeDuration: 1000,
-                  backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
-                  paddingHorizontal: 15,
-                }}
-                renderItem={renderDocItems}
+          ) : (
+            <FlatList
+              data={
+                SelectedType == 1
+                  ? EDocument?.data?.motor
+                  : SelectedType == 2
+                  ? EDocument?.data?.nonMotor
+                  : EDocument?.data?.claims
+              }
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                fadeDuration: 1000,
+                backgroundColor: 'transparent',
+                paddingBottom: window.height * 0.25,
+                paddingHorizontal: 15,
+              }}
+              renderItem={renderDocItems}
               // keyExtractor={item => item.id.toString()}
-              />
-            )
-
-          }
-
+            />
+          )}
         </View>
       </View>
     </View>

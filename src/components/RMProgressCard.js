@@ -84,7 +84,7 @@ export default function RMProgressCard({
       />
     </View>
   ) : (
-    <TouchableOpacity onPress={onPress} style={Styles.rankWrap}>
+    <View onPress={onPress} style={Styles.rankWrap}>
       <View
         style={{
           flex: 0.6,
@@ -229,6 +229,6 @@ export default function RMProgressCard({
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

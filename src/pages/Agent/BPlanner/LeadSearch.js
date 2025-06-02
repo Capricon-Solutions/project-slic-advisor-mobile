@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,49 +9,67 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
 import LeadSearchItem from '../../../components/LeadSearchItem';
-import { useGetLeadsQuery } from '../../../redux/services/plannerSlice';
-import { useSelector } from 'react-redux';
+import {useGetLeadsQuery} from '../../../redux/services/plannerSlice';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
-export default function LeadSearch({ navigation }) {
+export default function LeadSearch({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
-  const { data: branches, isLoading, error } = useGetBranchesQuery();
-  const { data: departments, isDipLoading, diperror } = useGetDepartmentQuery();
-  const { data: Leads } = useGetLeadsQuery(userCode, { refetchOnMountOrArgChange: false });
+  const {data: branches, isLoading, error} = useGetBranchesQuery();
+  const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
+  const {data: Leads} = useGetLeadsQuery(
+    {userCode},
+    {
+      refetchOnMountOrArgChange: false,
+    },
+  );
   const [SelectedType, setSelectedType] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-
+  console.log('userCode', userCode);
   const SELF = Leads?.data?.filter(lead => lead.leadSource === 'BCON') || [];
   const SLIC = Leads?.data?.filter(lead => lead.leadSource === 'CAMP') || [];
 
   // Filter both SELF and SLIC based on searchQuery
-  const filteredSELF = SELF.filter(lead =>
-    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-  const filteredSLIC = SLIC.filter(lead =>
-    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  // const filteredSELF = SELF.filter(lead =>
+  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  // );
+  // const filteredSLIC = SLIC.filter(lead =>
+  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  // );
 
-  const renderDepartmentItem = ({ item }) => (
+  const filteredSELF = searchQuery
+    ? SELF.filter(lead =>
+        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : SELF;
+
+  const filteredSLIC = searchQuery
+    ? SLIC.filter(lead =>
+        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : SLIC;
+  console.log('filteredSLIC', filteredSLIC);
+
+  const renderDepartmentItem = ({item}) => (
     <LeadSearchItem
       item={item}
-      onPress={() => navigation.navigate('LeadInformation', { item: item })}
+      onPress={() => navigation.navigate('LeadInformation', {item: item})}
     />
   );
 
@@ -59,7 +77,7 @@ export default function LeadSearch({ navigation }) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Lead Search" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -125,7 +143,7 @@ export default function LeadSearch({ navigation }) {
                   paddingBottom: window.height * 0.25,
                 }}
                 renderItem={renderDepartmentItem}
-              // keyExtractor={item => item.id.toString()}
+                // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <FlatList
@@ -137,7 +155,7 @@ export default function LeadSearch({ navigation }) {
                   paddingBottom: window.height * 0.25,
                 }}
                 renderItem={renderDepartmentItem}
-              // keyExtractor={item => item.id.toString()}
+                // keyExtractor={item => item.id.toString()}
               />
             )}
           </View>

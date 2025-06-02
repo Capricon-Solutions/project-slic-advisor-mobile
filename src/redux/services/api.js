@@ -4,7 +4,7 @@ export const baseApi = createApi({
   reducerPath: 'api',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://klkzp98p14.execute-api.ap-southeast-1.amazonaws.com/api/', // API base URL
+    baseUrl: 'http://203.115.11.229:2003/GISalesAppApi/api/', // API base URL
     prepareHeaders: (headers, {getState}) => {
       // const token = getState()?.auth?.token;
       const token = getState()?.Profile?.token;
