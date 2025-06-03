@@ -4,7 +4,7 @@ export const baseApi = createApi({
   reducerPath: 'api',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://203.115.11.229:2003/GISalesAppApi/api/', // API base URL
+    baseUrl: 'https://gisalesappapi.slicgeneral.com/api/', // API base URL
     prepareHeaders: (headers, {getState}) => {
       // const token = getState()?.auth?.token;
       const token = getState()?.Profile?.token;

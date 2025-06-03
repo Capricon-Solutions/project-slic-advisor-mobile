@@ -1,4 +1,4 @@
-const apiUrl = `http://203.115.11.229:2003/GISalesAppApi/api/not_attending/${id}`;
+const apiUrl = `https://gisalesappapi.slicgeneral.com/api/not_attending/${id}`;
 
 const headers = {
   'x-api-key': apiKey, // Some APIs use 'x-api-key', check your API documentation

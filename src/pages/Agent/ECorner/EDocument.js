@@ -80,7 +80,7 @@ export default function EDocument({navigation}) {
 
   const downloadAndOpenPDF = async path => {
     try {
-      const pdfUrl = `http://203.115.11.229:2003/GISalesAppApi/api/print/${path}`;
+      const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
       const options = {

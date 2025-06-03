@@ -128,7 +128,7 @@ export default function Dashboard({navigation}) {
     if (!ProfilePic?.data?.urlPath) return;
 
     // Append a timestamp to the URL to prevent caching
-    const url = `http://203.115.11.229:2003/GISalesAppApi${
+    const url = `https://gisalesappapi.slicgeneral.com${
       ProfilePic.data.urlPath
     }?t=${new Date().getTime()}`;
     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
