@@ -495,14 +495,27 @@ export default function SalesMeter({navigation}) {
             </View>
 
             {/* <Table headers={headers} data={data} /> */}
-            <View style={{alignItems: 'center', flex: 1}}>
-              <SalesTableComponent
-                haveTotal={true}
-                tableHead={tableHead}
-                tableData={tableData}
-                columnWidths={columnWidths}
-              />
-            </View>
+            {tableData && (
+              <View style={{alignItems: 'center', flex: 1}}>
+                <SalesTableComponent
+                  haveTotal={true}
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  columnWidths={columnWidths}
+                />
+              </View>
+            )}
+
+            {!tableData && (
+              <View
+                style={{
+                  flex: 1,
+                  marginVertical: window.height * 0.1,
+                  alignItems: 'center',
+                }}>
+                <Text style={Styles.errorText}>Sorry, No Data found</Text>
+              </View>
+            )}
 
             {/* Important Notice */}
             <View style={Styles.noticeContainer}>

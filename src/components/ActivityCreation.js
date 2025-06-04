@@ -45,12 +45,12 @@ export default function ActivityCreation({
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const userCode = useSelector(state => state.Profile.userCode);
 
-  const [selectedLead, setSelectedLead] = useState(0);
+  const [selectedLead, setSelectedLead] = useState();
   const [selectedType, setSelectedType] = useState('');
   const [description, setDescription] = useState('');
   const [meetWith, setMeetWith] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  // const [selectedTime, setSelectedTime] = useState(null);
   const body = {
     leadId: selectedLead,
     activityType: selectedType,
@@ -61,16 +61,15 @@ export default function ActivityCreation({
     proposalNo: '',
     description: description,
   };
-  useEffect(() => {
-    console.log('test', {
-      selectedLead,
-      selectedType,
-      description,
-      meetWith,
-      selectedDate,
-      selectedTime,
-    });
-  }, [selectedTime]);
+  // useEffect(() => {
+  //   console.log('test', {
+  //     selectedLead,
+  //     selectedType,
+  //     description,
+  //     meetWith,
+  //     selectedDate,
+  //   });
+  // }, []);
 
   const validateForm = () => {
     if (
@@ -113,9 +112,9 @@ export default function ActivityCreation({
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
-  };
+  // const showTimePicker = () => {
+  //   setTimePickerVisibility(true);
+  // };
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
@@ -129,10 +128,10 @@ export default function ActivityCreation({
     hideDatePicker();
   };
 
-  const handleTimeConfirm = date => {
-    setSelectedTime(moment(date).format('HH:mm A'));
-    hideTimePicker();
-  };
+  // const handleTimeConfirm = date => {
+  //   setSelectedTime(moment(date).format('HH:mm A'));
+  //   hideTimePicker();
+  // };
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -189,12 +188,12 @@ export default function ActivityCreation({
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
-          <DateTimePickerModal
+          {/* <DateTimePickerModal
             isVisible={isTimePickerVisible}
             mode="time"
             onConfirm={handleTimeConfirm}
             onCancel={hideTimePicker}
-          />
+          /> */}
           {/* <MonthYearPicker
             visible={isPickerVisible}
             onClose={() => setPickerVisible(false)}
@@ -241,7 +240,13 @@ export default function ActivityCreation({
                     label: item.customerName,
                     value: item.leadId,
                   }))}
+                  // dropdownData={[
+                  //   {label: 'John Doe', value: '1'},
+                  //   {label: 'Jane Smith', value: '2'},
+                  //   {label: 'Michael Johnson', value: '3'},
+                  // ]}
                   onSelect={v => setSelectedLead(v)}
+                  // onSelect={v => console.log('v', v)}
                 />
               </View>
               <View style={{width: '100%'}}>

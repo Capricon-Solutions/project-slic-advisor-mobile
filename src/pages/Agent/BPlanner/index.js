@@ -185,10 +185,13 @@ export default function BPlanner({navigation}) {
     console.log('Activities updated:', updatedActivities);
   }, [isFetching]);
   useEffect(() => {
-    console.log('Leads', Leads);
+    console.log('Leads:', Leads);
 
-    setLeadList(Leads?.data);
-    console.log('LeadList test', LeadList);
+    if (Leads?.data && Array.isArray(Leads.data)) {
+      setLeadList(Leads.data);
+    } else {
+      setLeadList([]); // fallback to empty array if no data
+    }
   }, [Leads]);
 
   const openMenu = () => setVisible(true);

@@ -22,6 +22,12 @@ export const Styles = StyleSheet.create({
       outline: COLORS.lightBorder, // Outline color
     },
   },
+  errorText: {
+    textAlign: 'center',
+    fontFamily: Fonts.Roboto.Bold,
+    color: COLORS.primaryRed,
+    fontSize: 16,
+  },
   imageBackground: {
     flex: 1,
     padding: window.width * 0.055,
@@ -42,7 +48,7 @@ export const Styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 0,
     fontWeight: 'bold',
-    color: COLORS.textInputText,
+    color: COLORS.textColor,
     height: 48,
   },
   topBackground: {

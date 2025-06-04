@@ -14,6 +14,7 @@ export default function OutlinedTextBox({
   Label,
   Title,
   Secure,
+  readOnly,
   value,
   keyboardType,
   setValue,
@@ -29,6 +30,7 @@ export default function OutlinedTextBox({
         mode="outlined"
         label={Title}
         // readOnly
+        readOnly={readOnly}
         style={{marginVertical: 3, fontSize: 12, width: '100%'}}
         textColor={COLORS.ashBlue}
         outlineStyle={{borderRadius: 10}}

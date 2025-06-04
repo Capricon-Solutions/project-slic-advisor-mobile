@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,47 +13,54 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
 import clubInfoImg from '../../../icons/clubInfo.png';
-import { useSelector } from 'react-redux';
-import { useGetClubQuery, useGetNextClubQuery } from '../../../redux/services/clubSlice';
+import {useSelector} from 'react-redux';
+import {
+  useGetClubQuery,
+  useGetNextClubQuery,
+} from '../../../redux/services/clubSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function ClubInformation({ navigation }) {
+export default function ClubInformation({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const { data: clubInfo, isFetching, error } = useGetClubQuery(userCode);
-  const { data: nextClubInfo, isFetching: isNextFetching, error: nextError } = useGetNextClubQuery(userCode);
-  console.log("userCode", userCode);
+  const {data: clubInfo, isFetching, error} = useGetClubQuery(userCode);
+  const {
+    data: nextClubInfo,
+    isFetching: isNextFetching,
+    error: nextError,
+  } = useGetNextClubQuery(userCode);
+  console.log('userCode', userCode);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
   // );
-  const nextClubTable = nextClubInfo?.data[0]?.last5Years;
-
+  console.log('nextClubInfo', nextClubInfo);
+  // const nextClubTable = nextClubInfo?.data[0]?.last5Years;
+  const nextClubTable = nextClubInfo?.data?.[0]?.last5Years;
   const tableHead = ['Income Year', 'Comm. Income'];
 
   const columnWidths = [window.width * 0.41, window.width * 0.41];
-  console.log("nextClubTable", nextClubInfo?.data[0]?.last5Years);
+  console.log('nextClubTable', nextClubInfo?.data?.[0]?.last5Years);
   const tableData = nextClubTable?.map(item => [
-
     item?.year?.toString() ?? '',
     item?.amount?.toString() ?? '',
   ]);
@@ -66,19 +73,20 @@ export default function ClubInformation({ navigation }) {
   const currentClublimit = clubInfoResponse?.currentLimit;
   const generalAppointmentDate = clubInfoResponse?.genAppointDate;
   const generalPersistency = clubInfoResponse?.genPersistancy;
-  const last5YearAverage = clubInfoResponse?.last5YearAvg ? Number(clubInfoResponse.last5YearAvg).toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-    : "0.00";
+  const last5YearAverage = clubInfoResponse?.last5YearAvg
+    ? Number(clubInfoResponse.last5YearAvg).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : '0.00';
   const nextClub = clubInfoResponse?.nextClub;
   const platinumClub = clubInfoResponse?.platinumClub;
   const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
   const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
   const nextLimit = clubInfoResponse?.nextLimit;
-  console.log("tableData", tableData);
+  console.log('tableData', tableData);
   return (
-    <View style={[Styles.container, { paddingHorizontal: 10 }]}>
+    <View style={[Styles.container, {paddingHorizontal: 10}]}>
       <HeaderBackground />
 
       <SendPaymentLink
@@ -96,149 +104,158 @@ export default function ClubInformation({ navigation }) {
       />
       {isFetching ? (
         <LoadingScreen />
-      ) :
-        (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ paddingHorizontal: 0 }}>
-            <View style={{ paddingHorizontal: 6 }}>
-              <View style={[styles.card, { alignItems: 'center' }]}>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{paddingHorizontal: 0}}>
+          <View style={{paddingHorizontal: 6}}>
+            <View style={[styles.card, {alignItems: 'center'}]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  width: '100%',
+                  gap: 5,
+                  marginBottom: 5,
+                }}>
+                <Image
+                  style={{height: 26, width: 26}}
+                  source={clubInfoImg}></Image>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.Bold,
+                    fontSize: 15,
+                    color: COLORS.textColor,
+                  }}>
+                  Club Year {clubYear?.toString() ?? ''}
+                </Text>
+              </View>
+              <View style={{marginBottom: 20}}>
                 <View
                   style={{
                     flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
+                    gap: 10,
                     width: '100%',
-                    gap: 5,
-                    marginBottom: 5,
                   }}>
-                  <Image style={{ height: 26, width: 26 }} source={clubInfoImg}></Image>
-                  <Text
-                    style={{
-                      fontFamily: Fonts.Roboto.Bold,
-                      fontSize: 15,
-                      color: COLORS.textColor,
-                    }}>
-                    Club Year {clubYear?.toString() ?? ''}
-                  </Text>
-                </View>
-                <View style={{ marginBottom: 20 }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 10,
-                      width: '100%',
-                    }}>
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={'Current Club'}
-                        value={currentClub?.toString() ?? ''}
-                      />
-                    </View>
-
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={'Current Club’s Limit'}
-                        value={currentClublimit?.toString() ?? ''}
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 10,
-                      width: '100%',
-                    }}>
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={'General Appt. Date'}
-                        value={generalAppointmentDate?.toString() ?? ''}
-                      />
-                    </View>
-
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={'Gen. Persistency'}
-                        value={generalPersistency?.toString() ?? ''}
-                      />
-                    </View>
-                  </View>
-
-                  <OutlinedTextBox
-                    Title={'Last 5 year avg. '}
-                    value={last5YearAverage?.toString() ?? ''}
-                  />
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      gap: 10,
-                      width: '100%',
-                    }}>
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={'Next Club'}
-                        value={nextClub?.toString() ?? ''}
-                      />
-                    </View>
-
-                    <View style={{ flex: 1 }}>
-                      <OutlinedTextBox
-                        Title={"Next Club's Limit"}
-                        value={nextLimit?.toString() ?? ''}
-                      />
-                    </View>
-                  </View>
-
-                  <OutlinedTextBox
-                    Title={'Last Updated Date'}
-                    value={lastUpdatedDate?.toString() ?? ''}
-                  />
-                  {
-                    tableData &&
-
+                  <View style={{flex: 1}}>
                     <OutlinedTextBox
-                      Title={'Annual income up to ' + lastUpdatedDate?.toString() ?? ''}
-                      value={tableData[0][1]}
-                    />
-                  }
-
-                </View>
-                {tableData ? (
-                  <View style={{ flex: 1 }}>
-                    <TableComponent
-                      haveTotal={false}
-                      tableHead={tableHead}
-                      tableData={tableData}
-                      columnWidths={columnWidths}
+                      Title={'Current Club'}
+                      readOnly={true}
+                      value={currentClub?.toString() ?? ''}
                     />
                   </View>
-                ) :
-                  (
-                    <Text style={{
-                      color: COLORS.borderColor, fontFamily: Fonts.Roboto.Medium, fontSize: 16,
-                      marginVertical: 20
-                    }}>No table data available</Text>
-                  )
 
-                }
-
-                {/* Important Notice */}
-                <View style={styles.noticeContainer}>
-                  <Text style={styles.noticeTitle}>* Note</Text>
-                  <Text style={styles.noticeText}>
-                    Your club selection data displayed in this page is only a
-                    forecast based on primitive data. They could be different from
-                    the final club entitlement which is released by Sales Support
-                    Division, after processing these data further.
-                  </Text>
+                  <View style={{flex: 1}}>
+                    <OutlinedTextBox
+                      Title={'Current Club’s Limit'}
+                      readOnly={true}
+                      value={currentClublimit?.toString() ?? ''}
+                    />
+                  </View>
                 </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    width: '100%',
+                  }}>
+                  <View style={{flex: 1}}>
+                    <OutlinedTextBox
+                      Title={'General Appt. Date'}
+                      readOnly={true}
+                      value={generalAppointmentDate?.toString() ?? ''}
+                    />
+                  </View>
+
+                  <View style={{flex: 1}}>
+                    <OutlinedTextBox
+                      Title={'Gen. Persistency'}
+                      readOnly={true}
+                      value={generalPersistency?.toString() ?? ''}
+                    />
+                  </View>
+                </View>
+
+                <OutlinedTextBox
+                  Title={'Last 5 year avg. '}
+                  readOnly={true}
+                  value={last5YearAverage?.toString() ?? ''}
+                />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                    width: '100%',
+                  }}>
+                  <View style={{flex: 1}}>
+                    <OutlinedTextBox
+                      Title={'Next Club'}
+                      readOnly={true}
+                      value={nextClub?.toString() ?? ''}
+                    />
+                  </View>
+
+                  <View style={{flex: 1}}>
+                    <OutlinedTextBox
+                      Title={"Next Club's Limit"}
+                      readOnly={true}
+                      value={nextLimit?.toString() ?? ''}
+                    />
+                  </View>
+                </View>
+
+                <OutlinedTextBox
+                  Title={'Last Updated Date'}
+                  readOnly={true}
+                  value={lastUpdatedDate?.toString() ?? ''}
+                />
+                {tableData && (
+                  <OutlinedTextBox
+                    Title={
+                      'Annual income up to ' + lastUpdatedDate?.toString() ?? ''
+                    }
+                    value={tableData[0][1]}
+                  />
+                )}
+              </View>
+              {tableData ? (
+                <View style={{flex: 1}}>
+                  <TableComponent
+                    haveTotal={false}
+                    tableHead={tableHead}
+                    tableData={tableData}
+                    columnWidths={columnWidths}
+                  />
+                </View>
+              ) : (
+                <Text
+                  style={{
+                    color: COLORS.borderColor,
+                    fontFamily: Fonts.Roboto.Medium,
+                    fontSize: 16,
+                    marginVertical: 20,
+                  }}>
+                  No table data available
+                </Text>
+              )}
+
+              {/* Important Notice */}
+              <View style={styles.noticeContainer}>
+                <Text style={styles.noticeTitle}>* Note</Text>
+                <Text style={styles.noticeText}>
+                  Your club selection data displayed in this page is only a
+                  forecast based on primitive data. They could be different from
+                  the final club entitlement which is released by Sales Support
+                  Division, after processing these data further.
+                </Text>
               </View>
             </View>
-          </ScrollView>
-        )}
-
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 }

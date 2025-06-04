@@ -16,21 +16,21 @@ import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import Button from './Button';
-import { useSetTargetMutation } from '../redux/services/SalesMeterApiSlice';
-import { showToast, ToastMessage } from './ToastMessage';
+import {useSetTargetMutation} from '../redux/services/SalesMeterApiSlice';
+import {showToast, ToastMessage} from './ToastMessage';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const window = Dimensions.get('window');
 
-export default function SetTargetModal({ modalVisible, setModalVisible }) {
+export default function SetTargetModal({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [inputValue, setInputValue] = React.useState(null);
   const userCode = useSelector(state => state.Profile.userCode);
   // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
-  const [setTarget, { data, isLoading, error }] = useSetTargetMutation();
+  const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
   // const handlePostRequest = () => {
   //   setTarget({
   //     agentCode: 2147483647,
@@ -39,16 +39,16 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
   //   });
   // };
   const currentDate = new Date();
-  const yearMonth = `${currentDate.getFullYear()}/${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+  const yearMonth = `${currentDate.getFullYear()}/${String(
+    currentDate.getMonth() + 1,
+  ).padStart(2, '0')}`;
   const currentTargetDate = moment().format('YYYY/MMMM');
-
+  console.log('userCode', userCode);
   const body = {
-
-    "agentCode": userCode,
-    "yearMonth": yearMonth,
-    "target": inputValue
-
-  }
+    agentCode: userCode,
+    yearMonth: yearMonth,
+    target: inputValue,
+  };
   const handlePostRequest = async () => {
     if (!inputValue) {
       showToast({
@@ -59,9 +59,14 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
       return;
     }
     try {
-      const response = await setTarget({ body }).unwrap(); // Unwraps the Promise to get response directly
+      const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
       setModalVisible(false);
-      console.log('Response:', response); // Handle success response
+      console.log('Response:', response.Message); // Handle success response
+      showToast({
+        type: 'error',
+        text1: 'Unsuccessfull ',
+        text2: response.Message,
+      });
     } catch (err) {
       console.error('Error:', err); // Handle error response
       showToast({
@@ -104,13 +109,11 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
       animationType="fade"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-    >
+      onRequestClose={() => setModalVisible(false)}>
       <TouchableOpacity
         onPress={() => hide()}
         activeOpacity={1}
-        style={{ flex: 1 }}
-      >
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -120,15 +123,16 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 outputRange: ['rgba(0,0,0,0.0)', 'rgba(0,0,0,0.2)'],
               }),
             },
-          ]}
-        >
+          ]}>
           {/* Prevent touches inside the modal from triggering the background click */}
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>
                 Set your target for {currentTargetDate}
               </Text>
-              <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
+              <TouchableOpacity
+                onPress={() => hide()}
+                style={styles.closeButton}>
                 <MaterialCommunityIcons
                   name="close"
                   color={COLORS.primaryGreen}
@@ -136,11 +140,14 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 />
               </TouchableOpacity>
 
-              <Text style={{
-                marginTop: 20,
-                marginBottom: 5, fontSize: 15, fontFamily: Fonts.Roboto.Regular,
-                color: COLORS.textColor
-              }}>
+              <Text
+                style={{
+                  marginTop: 20,
+                  marginBottom: 5,
+                  fontSize: 15,
+                  fontFamily: Fonts.Roboto.Regular,
+                  color: COLORS.textColor,
+                }}>
                 Enter your target
               </Text>
 
@@ -161,11 +168,10 @@ export default function SetTargetModal({ modalVisible, setModalVisible }) {
                 }}
               />
 
-              <View style={{ paddingHorizontal: window.width * 0.05 }}>
+              <View style={{paddingHorizontal: window.width * 0.05}}>
                 <Button
                   Title={'Set Target'}
                   onPress={() => {
-
                     handlePostRequest();
                   }}
                 />
