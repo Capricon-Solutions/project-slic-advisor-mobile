@@ -59,7 +59,7 @@ export default function PolicyDetails({navigation, route}) {
   const isCancelled = policyDetailsResponse?.isCancelled;
   const capacity = policyDetailsResponse?.engineCapacity;
 
-  console.log('PolicyDetails', PolicyDetails);
+  // console.log('PolicyDetails', PolicyDetails);
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -184,13 +184,13 @@ export default function PolicyDetails({navigation, route}) {
               disabledButton={false}
               Title={'View Premium(NB/Renewal) History'}
             />
-            <SmallButton
+            {/* <SmallButton
               // onPress={() =>
               //   navigation.navigate('DebitSettlementRenewal', { policyNo: policyNo })
               // }
               disabledButton={false}
               Title={'Debit Renewal'}
-            />
+            /> */}
             <SmallButton
               Title={'Debit Settlement/ Payment'}
               onPress={() =>
