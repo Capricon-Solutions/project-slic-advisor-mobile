@@ -125,7 +125,7 @@ export default function DebitSettlement({navigation, route}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <View contentContainerStyle={{paddingHorizontal: 20}}>
+      <View style={{paddingHorizontal: 20}}>
         <View style={styles.card}>
           <Text
             style={{
