@@ -215,7 +215,7 @@ export default function PolicyRenewals({navigation}) {
                 tableHead={tableHead2}
                 tableData={tableData2}
                 navigation={navigation}
-                clickableColumns={[3]}
+                clickableColumns={[2]}
                 columnWidths={columnWidths2}
                 haveTotal={false}
               />

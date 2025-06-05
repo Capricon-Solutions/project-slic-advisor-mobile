@@ -1,18 +1,18 @@
-import { baseApi } from './api';
+import {baseApi} from './api';
 
 export const eCornerSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getGetGogreenDetailsAll: builder.query({
-      query: (userCode) => {
+      query: userCode => {
         const url = `agent/GetGogreenDetailsAll/${userCode}`;
-        console.log("Fetching URL test", url);
+        console.log('Fetching URL test', url);
         return url;
       },
     }),
     getEDocument: builder.query({
       query: () => {
         const url = `print/edocuments`;
-        console.log("Fetching URL test", url);
+        console.log('Fetching URL test', url);
         return url;
       },
     }),
@@ -30,8 +30,6 @@ export const eCornerSlice = baseApi.injectEndpoints({
       },
       // invalidatesTags: ['Events'],
     }),
-
-
   }),
 });
 
@@ -39,5 +37,5 @@ export const eCornerSlice = baseApi.injectEndpoints({
 export const {
   useGetGetGogreenDetailsAllQuery,
   useGetcommissionStatementMutation,
-  useGetEDocumentQuery
+  useGetEDocumentQuery,
 } = eCornerSlice;

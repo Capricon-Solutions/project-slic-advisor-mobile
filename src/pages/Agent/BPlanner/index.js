@@ -214,7 +214,11 @@ export default function BPlanner({navigation}) {
         type: item.type,
       })); // Extract both activityId and type
 
-    console.log(checkedActivities);
+    console.log('checkedActivities', checkedActivities);
+    console.log(
+      'checkedActivities[0].activityId',
+      checkedActivities[0].activityId,
+    );
 
     try {
       if (checkedActivities[0].type == 'Event') {
@@ -222,11 +226,20 @@ export default function BPlanner({navigation}) {
           activityId: checkedActivities[0].activityId,
           userCode: userCode,
         });
-        showToast({
-          type: 'success',
-          text1: 'Deleted',
-          text2: 'Event deleted Successfully.',
-        });
+        console.log('Event Deleted:', response);
+        if (response?.data?.success === true) {
+          showToast({
+            type: 'success',
+            text1: 'Deleted',
+            text2: 'Event deleted Successfully.',
+          });
+        } else {
+          showToast({
+            type: 'error',
+            text1: 'Failed',
+            text2: 'Event deleted Successfully.',
+          });
+        }
         console.log('Event Deleted:', response);
       } else {
         const response = await DeleteEvent({

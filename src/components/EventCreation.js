@@ -91,7 +91,7 @@ export default function EventCreation({
       setTimeout(() => {
         onEventCreated(moment(selectedDate).format('YYYY-MM-DD'));
         setModalVisible(false);
-      }, 2000);
+      }, 1500);
     } catch (err) {
       console.error('Error creating activity:', err);
     }

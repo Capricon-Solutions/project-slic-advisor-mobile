@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import COLORS from '../theme/colors';
 import moment from 'moment';
 
 const window = Dimensions.get('window');
-const squareSize = Math.min(window.width * 0.86, window.height * 0.9);
+const squareSize = Math.min(window.width * 0.92, window.height * 0.92);
 
 const months = [
   'January',
@@ -31,13 +31,13 @@ const months = [
   'December',
 ];
 
-const MonthYearPickerSingle = ({ visible, onClose, onSelect }) => {
+const MonthYearPickerSingle = ({visible, onClose, onSelect}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleMonthSelection = (year, month) => {
-    setSelectedDate(moment({ year, month: month, day: 1 }));
+    setSelectedDate(moment({year, month: month, day: 1}));
   };
   const handleDone = () => {
     if (selectedDate) {
@@ -52,12 +52,20 @@ const MonthYearPickerSingle = ({ visible, onClose, onSelect }) => {
         <View style={styles.container}>
           {/* Year Navigation */}
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => setSelectedYear((prev) => prev - 1)}>
-              <MaterialCommunityIcons name="chevron-left" color={COLORS.black} size={25} />
+            <TouchableOpacity onPress={() => setSelectedYear(prev => prev - 1)}>
+              <MaterialCommunityIcons
+                name="chevron-left"
+                color={COLORS.black}
+                size={25}
+              />
             </TouchableOpacity>
             <Text style={styles.yearText}>{selectedYear}</Text>
-            <TouchableOpacity onPress={() => setSelectedYear((prev) => prev + 1)}>
-              <MaterialCommunityIcons name="chevron-right" color={COLORS.black} size={25} />
+            <TouchableOpacity onPress={() => setSelectedYear(prev => prev + 1)}>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                color={COLORS.black}
+                size={25}
+              />
             </TouchableOpacity>
           </View>
 
@@ -67,28 +75,28 @@ const MonthYearPickerSingle = ({ visible, onClose, onSelect }) => {
             keyExtractor={(item, index) => index.toString()}
             numColumns={4}
             contentContainerStyle={styles.monthGrid}
-            renderItem={({ item, index }) => {
-              const monthDate = moment(`${selectedYear}-${index + 1}-01`, 'YYYY-MM');
-              const isSelected = selectedDate && monthDate.isSame(selectedDate, 'month');
+            renderItem={({item, index}) => {
+              const monthDate = moment(
+                `${selectedYear}-${index + 1}-01`,
+                'YYYY-MM',
+              );
+              const isSelected =
+                selectedDate && monthDate.isSame(selectedDate, 'month');
               return (
                 <TouchableOpacity
                   style={[
                     styles.monthButton,
                     isSelected ? styles.selectedMonth : {},
                   ]}
-                  onPress={() => handleMonthSelection(selectedYear, index)}
-                >
+                  onPress={() => handleMonthSelection(selectedYear, index)}>
                   <Text
                     style={[
                       styles.monthText,
                       isSelected ? styles.selectedMonthText : {},
-                    ]}
-                  >
+                    ]}>
                     {item}
                   </Text>
                 </TouchableOpacity>
-
-
               );
             }}
           />
@@ -131,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '85%',
   },
-  yearText: { fontSize: 20, fontWeight: 'bold', color: COLORS.textColor },
+  yearText: {fontSize: 20, fontWeight: 'bold', color: COLORS.textColor},
   monthGrid: {
     marginVertical: 20,
     paddingHorizontal: 5,
@@ -147,13 +155,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
   },
-  selectedMonth: { borderColor: '#00AEEF', backgroundColor: '#E0F7FA' },
+  selectedMonth: {borderColor: '#00AEEF', backgroundColor: '#E0F7FA'},
   monthText: {
     fontSize: 11,
     fontFamily: Fonts.Roboto.Medium,
     color: COLORS.textColor,
   },
-  selectedMonthText: { color: '#00AEEF', fontWeight: 'bold' },
+  selectedMonthText: {color: '#00AEEF', fontWeight: 'bold'},
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -173,6 +181,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: COLORS.primaryGreen,
   },
-  closeText: { color: '#555' },
-  doneText: { color: '#fff', fontWeight: 'bold' },
+  closeText: {color: '#555'},
+  doneText: {color: '#fff', fontWeight: 'bold'},
 });

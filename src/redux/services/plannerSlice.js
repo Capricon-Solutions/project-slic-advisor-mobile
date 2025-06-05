@@ -30,8 +30,8 @@ export const plannerSlice = baseApi.injectEndpoints({
         `planner/GetLeadActivities?Id=${id}&agentCode=${userCode}`,
     }),
     activityDelete: builder.mutation({
-      query: ({id, userCode}) => {
-        const finalUrl = `planner/removePlannerActivity/${userCode}?activityId=${id}`;
+      query: ({activityId, userCode}) => {
+        const finalUrl = `planner/removePlannerActivity/${userCode}?activityId=${activityId}`;
         console.log('Final URL:', finalUrl);
 
         return {
@@ -42,8 +42,8 @@ export const plannerSlice = baseApi.injectEndpoints({
       invalidatesTags: ['Events'],
     }),
     eventDelete: builder.mutation({
-      query: ({id, userCode}) => {
-        const finalUrl = `planner/removePlannerEvent/${userCode}?eventId=${id}`;
+      query: ({activityId, userCode}) => {
+        const finalUrl = `planner/removePlannerEvent/${userCode}?eventId=${activityId}`;
         console.log('Final URL:', finalUrl);
 
         return {

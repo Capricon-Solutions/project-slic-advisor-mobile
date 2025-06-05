@@ -102,7 +102,7 @@ export default function ActivityCreation({
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
         setModalVisible(false);
-      }, 2000);
+      }, 1500);
       console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
