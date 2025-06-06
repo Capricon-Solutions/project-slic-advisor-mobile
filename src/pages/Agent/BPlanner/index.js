@@ -237,7 +237,7 @@ export default function BPlanner({navigation}) {
           showToast({
             type: 'error',
             text1: 'Failed',
-            text2: 'Event deleted Successfully.',
+            text2: 'Failed to delete item 🚨',
           });
         }
         console.log('Event Deleted:', response);

@@ -189,6 +189,7 @@ export default function RMProgressCard({
           }}>
           <DropdownComponentNoLabelDashboard
             mode={'modal'}
+            search={false}
             BorderColor={COLORS.textColor}
             // initialValue={BusinessType}
             placeholder="Monthly"

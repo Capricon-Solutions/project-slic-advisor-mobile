@@ -28,6 +28,7 @@ import RNFS from 'react-native-fs'; // File system for downloads
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import moment from 'moment';
+import {showToast} from '../../../components/ToastMessage';
 const window = Dimensions.get('window');
 
 const data = [
@@ -90,14 +91,20 @@ export default function CommissionStatement({navigation}) {
         selectedType,
         selectedCode,
       );
-      // setModalVisible(false);
+      console.log('response?.data?.success ', response);
+      if (response?.data?.success == false) {
+        // Alert.alert('Error', response?.data?.message || 'Something went wrong');
+        showToast({
+          type: 'error',
+          text1: 'Failed',
+          text2: response?.data?.message || 'Something went wrong',
+        });
+        return;
+      } else {
+        const url = response?.data?.data;
+        openDocument(url);
+      }
       console.log('Activity Created:', response);
-      const url = response?.data?.data;
-      // setSelectedType(null);
-      // setSelectedDate(null);
-      // setSelectedCode(null);
-      openDocument(url);
-      // navigation.navigate('BPlanner');
     } catch (err) {
       console.error('Error creating activity:', err);
     }
