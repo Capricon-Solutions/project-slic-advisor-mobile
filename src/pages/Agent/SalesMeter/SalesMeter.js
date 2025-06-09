@@ -234,7 +234,9 @@ export default function SalesMeter({navigation}) {
                   <TouchableOpacity
                     onPress={() => setVisible(true)}
                     style={styles.monthlyCard}>
-                    <Text style={styles.monthlyText}>MONTHLY</Text>
+                    <Text style={styles.monthlyText}>
+                      {type == 'M' ? 'MONTHLY' : 'CUMULATIVE'}
+                    </Text>
                     {/* <Octicons
                         name={'chevron-down'}
                         color={COLORS.white}
