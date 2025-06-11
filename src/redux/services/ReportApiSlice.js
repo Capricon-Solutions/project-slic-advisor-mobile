@@ -31,8 +31,9 @@ export const ReportApi = baseApi.injectEndpoints({
 
     // TeamLeaderReport
     TeamLeaderReport: builder.query({
-      query: ({branch, month, type}) => {
-        const url = `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
+      query: ({branch, year, dept, startMonth, endMonth, type}) => {
+        const url = `report/teamLeaderReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${dept}&reportType=${type}`;
+        //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
         console.log('Fetching Notifications from:', url);
         return url;
       },

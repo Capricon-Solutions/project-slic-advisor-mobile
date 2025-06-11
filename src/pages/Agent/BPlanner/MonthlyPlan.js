@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -20,12 +20,16 @@ import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import moment from 'moment';
-import { useGetMonthlyPlanQuery, useMonthlyCreationMutation } from '../../../redux/services/plannerSlice';
+import {
+  useGetMonthlyPlanQuery,
+  useMonthlyCreationMutation,
+} from '../../../redux/services/plannerSlice';
+import {useSelector} from 'react-redux';
 
-export default function MonthlyPlan({ navigation }) {
+export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, { data: newActivity, isLoading, error }] =
+  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -50,8 +54,7 @@ export default function MonthlyPlan({ navigation }) {
       setClosed(data?.noOfClosed);
       setLeads(data?.noOfLeads);
     }
-  }, [planData])
-
+  }, [planData]);
 
   const body = {
     noOfMeetings: meetings,
@@ -62,7 +65,7 @@ export default function MonthlyPlan({ navigation }) {
     noOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
   };
-  console.log("planData", planData)
+  console.log('planData', planData);
   const validateForm = () => {
     if (
       !meetings ||
@@ -82,7 +85,7 @@ export default function MonthlyPlan({ navigation }) {
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await MonthlyCreate({ body, userCode });
+      const response = await MonthlyCreate({body, userCode});
       console.log('Activity Created:', response?.error?.status);
       if (response?.error?.status == '500') {
         console.log('something went wrong');
@@ -96,10 +99,10 @@ export default function MonthlyPlan({ navigation }) {
   };
 
   const StepperItems = [
-    { id: 1, Title: 'Policy Info' },
-    { id: 2, Title: 'Vehicle Info' },
-    { id: 3, Title: 'Customer Basic Info' },
-    { id: 4, Title: 'Customer Contact Info' },
+    {id: 1, Title: 'Policy Info'},
+    {id: 2, Title: 'Vehicle Info'},
+    {id: 3, Title: 'Customer Basic Info'},
+    {id: 4, Title: 'Customer Contact Info'},
   ];
 
   const handleNext = () => {
@@ -123,7 +126,7 @@ export default function MonthlyPlan({ navigation }) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
         style={{}}>
         <Text
           style={{

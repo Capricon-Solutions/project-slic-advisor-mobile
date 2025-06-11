@@ -55,6 +55,9 @@ const window = Dimensions.get('window');
 
 export default function SalesMeter({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
+
   const value = 40; // 40% of the gauge. min=0 max=100
   const [modalVisible, setModalVisible] = useState(false);
   const [target, setTarget] = useState('');
@@ -62,14 +65,14 @@ export default function SalesMeter({navigation}) {
   const salesMeterResponse = useSelector(
     state => state.SalesMeter.SalesMeterResponse.data,
   );
-
+  console.log('usertypevv', usertype);
   const {
     data: CurrentMonthIncome,
     error,
     isLoading,
     isFetching,
   } = useGetAgentCurrentMonthIncomeQuery({
-    id: userCode,
+    id: usertype == 2 ? personalCode : userCode,
   });
 
   const {
@@ -78,7 +81,7 @@ export default function SalesMeter({navigation}) {
     isLoading: achiveLoading,
     isFetching: achiveFetch,
   } = useGetAgentCurrentMonthAchievementQuery({
-    id: userCode,
+    id: usertype == 2 ? personalCode : userCode,
   });
   const {
     data: salesIncome,
@@ -86,7 +89,7 @@ export default function SalesMeter({navigation}) {
     isLoading: salesIncomeLoading,
     isFetching: salesIncomeFetch,
   } = useSalesIncomeQuery({
-    id: userCode,
+    id: usertype == 2 ? personalCode : userCode,
   });
 
   const filterdData =

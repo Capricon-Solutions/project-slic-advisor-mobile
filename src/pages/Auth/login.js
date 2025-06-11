@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {
   GetprofileResponse,
+  SetPersonalCode,
   Setprofile,
   Settoken,
   SetUserCode,
@@ -91,6 +92,7 @@ const LoginScreen = ({navigation}) => {
 
   function userManagement(response) {
     dispatch(SetUserCode(response?.user?.userCode));
+    dispatch(SetPersonalCode(response?.user?.personalCode));
     dispatch(Settoken(response?.token));
     console.log('response', response?.user?.userType);
     console.log('token', response?.token);

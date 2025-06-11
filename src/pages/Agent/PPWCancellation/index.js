@@ -40,7 +40,8 @@ export default function PPWCancellation({navigation}) {
   const [selectedValue, setSelectedValue] = useState(null);
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
-
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const tableHead = [
     'Policy No',
     'Customer Name',
@@ -65,7 +66,7 @@ export default function PPWCancellation({navigation}) {
   const columnWidths2 = [180, 150, 110, 110, 130, 110, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
-
+  console.log('personalCode', personalCode);
   const lastMonthStart = moment()
     .subtract(2, 'month')
     .startOf('month')
@@ -84,7 +85,7 @@ export default function PPWCancellation({navigation}) {
     error: errorC,
     isFetching: isFetchingC,
   } = useGetPPWCanceledListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     pType: selectedValue,
     fromDate: fromDate,
     toDate: toDate,
@@ -95,7 +96,7 @@ export default function PPWCancellation({navigation}) {
     error,
     isFetching,
   } = useGetPPWReminderListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     pType: selectedValue,
     fromDate: fromDate,
     toDate: toDate,

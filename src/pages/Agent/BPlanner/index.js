@@ -243,7 +243,12 @@ export default function BPlanner({navigation}) {
         }
         console.log('Event Deleted:', response);
       } else {
-        const response = await DeleteEvent({
+        console.log('userCode2', userCode);
+        console.log(
+          'checkedActivities[0].activityId',
+          checkedActivities[0].activityId,
+        );
+        const response = await DeleteActivity({
           activityId: checkedActivities[0].activityId,
           userCode: userCode,
         });

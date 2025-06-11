@@ -59,6 +59,8 @@ export default function Dashboard({navigation}) {
 
   const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
+
   console.log('userType', usertype);
   console.log('path', path);
   const profile = useSelector(state => state.Profile.profile);
@@ -75,14 +77,14 @@ export default function Dashboard({navigation}) {
     }, [path]),
   );
   console.log('profile', profile);
-
+  console.log('usertypess', usertype);
   const {
     data: CurrentMonthRank,
     error: achiveError,
     isLoading: achiveLoading,
     isFetching: achiveFetch,
   } = useGetCurrentMonthRankQuery({
-    id: userCode,
+    id: usertype == 2 ? personalCode : userCode,
   });
   const regionName = profileResponse?.region;
 

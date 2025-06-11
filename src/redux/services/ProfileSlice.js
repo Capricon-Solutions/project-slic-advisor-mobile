@@ -6,6 +6,7 @@ const initialState = {
   profile: null,
   token: null,
   userCode: null,
+  personalCode: null,
   profileResponse: {
     data: {
       name: 'John Snow',
@@ -46,6 +47,12 @@ export const ProfileSlice = createSlice({
     SetUserCode: (state, action) => {
       state.userCode = action.payload;
     },
+    SetUserCode: (state, action) => {
+      state.userCode = action.payload;
+    },
+    SetPersonalCode: (state, action) => {
+      state.personalCode = action.payload;
+    },
     SetdefaultImageUrl: (state, action) => {
       state.defaultImageUrl = action.payload;
     },
@@ -65,6 +72,7 @@ export const {
   Setprofile,
   Settoken,
   SetUserCode,
+  SetPersonalCode,
 } = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;
