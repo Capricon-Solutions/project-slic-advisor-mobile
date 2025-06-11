@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  agentCode: 905717,
+  agentCode: null,
   defaultImageUrl: null,
   profile: null,
   token: null,
@@ -54,11 +54,17 @@ export const ProfileSlice = createSlice({
     },
     Settoken: (state, action) => {
       state.token = action.payload;
-    }
+    },
   },
 });
 
-export const { GetprofileResponse, SetdefaultImageUrl, GetAgentCode, Setprofile, Settoken, SetUserCode } =
-  ProfileSlice.actions;
+export const {
+  GetprofileResponse,
+  SetdefaultImageUrl,
+  GetAgentCode,
+  Setprofile,
+  Settoken,
+  SetUserCode,
+} = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;
