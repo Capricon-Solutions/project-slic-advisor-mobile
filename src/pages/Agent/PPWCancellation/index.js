@@ -71,9 +71,11 @@ export default function PPWCancellation({navigation}) {
     .startOf('month')
     .format('YYYY-MM-DD');
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  console.log('currentMonthEnd', currentMonthEnd);
   const [fromDate, toDate] = selectedDate
     ? selectedDate.split(' to ')
     : [lastMonthStart, currentMonthEnd];
+
   // const ppwCancelationReminderResponse = useSelector(
   //   state => state.ppwCancelation.ppwCancelationReminderResponse.data,
   // );
@@ -116,7 +118,7 @@ export default function PPWCancellation({navigation}) {
     item?.dueDate.toString() ?? '',
   ]);
 
-  const tableData2 = PPWCanceledList?.data.map(item => [
+  const tableData2 = PPWCanceledList?.data?.map(item => [
     item?.policyNumber.toString() ?? '',
     item?.customerName.toString() ?? '',
     item?.vehicleNumber.toString() ?? '',

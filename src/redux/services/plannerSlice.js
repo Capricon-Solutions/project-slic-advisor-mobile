@@ -3,8 +3,11 @@ import {baseApi} from './api';
 export const plannerSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getEventsAndActivitiess: builder.query({
-      query: ({date, userCode}) =>
-        `planner/getEventsAndActivities/${userCode}?date=${date}`,
+      query: ({date, userCode}) => {
+        const url = `planner/getEventsAndActivities/${userCode}?date=${date}`;
+        console.log('Request URL:', url);
+        return url;
+      },
       providesTags: ['Events'],
     }),
     getMonthlyPlan: builder.query({

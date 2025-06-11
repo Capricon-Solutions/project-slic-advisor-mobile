@@ -140,6 +140,7 @@ export default function BPlanner({navigation}) {
     refetch,
     error,
   } = useGetEventsAndActivitiessQuery({date, userCode});
+  console.log('PlannerActivities', PlannerActivities);
   const {data: Leads} = useGetLeadsQuery(
     {date, userCode},
     {refetchOnMountOrArgChange: false},

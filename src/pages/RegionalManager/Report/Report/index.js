@@ -43,12 +43,16 @@ const data = [
 ];
 
 export default function Report({navigation, route}) {
+  const profile = useSelector(state => state.Profile.profile);
+  const profileResponse = profile?.user;
+  const regionName = profileResponse?.region;
   const {Title = ''} = route.params || {};
   const [value, setValue] = useState(null);
   const [SelectedType, setSelectedType] = useState(1);
   const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
   const [type, setType] = useState();
-  const [branch, setBranch] = useState('');
+  const [branch, setBranch] = useState(regionName);
+
   const [modalVisible, setModalVisible] = useState(false);
   // const [ value, setValue]= useState();
 
@@ -63,9 +67,6 @@ export default function Report({navigation, route}) {
   const columnWidths = [150, 145, 130, 160, 135, 135];
   const [isLandscape, setIsLandscape] = useState(false);
 
-  const IndividualStatResponse = useSelector(
-    state => state.teamStat.reportResponse.data,
-  );
   const {
     data: RmReport,
     error: RmReportError,
@@ -73,7 +74,7 @@ export default function Report({navigation, route}) {
     isFetching: RmReportFetching,
   } = useRmReportQuery({
     branch: branch,
-    type: type,
+    // type: type,
     month: selectedMonth,
     type: SelectedType,
     value: value,
