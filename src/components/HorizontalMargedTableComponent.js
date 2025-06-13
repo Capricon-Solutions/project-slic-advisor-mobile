@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -96,7 +96,7 @@ const HorizontalMargedTableComponent = ({
               <Row
                 key={index}
                 data={rowData.map((cellData, cellIndex) => (
-                  <TouchableOpacity
+                  <View
                     key={cellIndex}
                     onPress={() => handleCellPress(cellData)}>
                     {cellIndex == 0 && (
@@ -109,8 +109,8 @@ const HorizontalMargedTableComponent = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData}
                           </Text>
@@ -134,8 +134,8 @@ const HorizontalMargedTableComponent = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData?.cash}
                           </Text>
@@ -152,15 +152,15 @@ const HorizontalMargedTableComponent = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData?.debit}
                           </Text>
                         </View>
                       </View>
                     )}
-                  </TouchableOpacity>
+                  </View>
                 ))}
                 widthArr={columnWidths}
                 style={[
@@ -170,8 +170,8 @@ const HorizontalMargedTableComponent = ({
                 textStyle={[
                   styles.text,
                   haveTotal &&
-                  index === tableData.length - 1 &&
-                  styles.boldText, // Apply boldText only if hasTotal is true
+                    index === tableData.length - 1 &&
+                    styles.boldText, // Apply boldText only if hasTotal is true
                 ]}
               />
             ))}
@@ -183,12 +183,12 @@ const HorizontalMargedTableComponent = ({
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  head: { backgroundColor: 'transparent' },
+  head: {backgroundColor: 'transparent'},
   headText: {
     margin: 6,
     fontWeight: 'bold',
@@ -217,9 +217,9 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: COLORS.textColor,
   },
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
-  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
+  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

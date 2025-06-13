@@ -17,9 +17,12 @@ export const eCornerSlice = baseApi.injectEndpoints({
       },
     }),
     getcommissionStatement: builder.mutation({
-      query: (selectedDate, selectedType, selectedCode) => {
+      query: ({selectedDate, selectedType, selectedCode}) => {
         const finalUrl = `print/getCommisionStatement/${selectedCode}?yearMonth=${selectedDate}&stype=${selectedType}`;
         console.log('Final URL:', finalUrl);
+        console.log('selectedCode', selectedCode);
+        console.log('selectedDate', selectedDate);
+        console.log('selectedType', selectedType);
         // console.log('Final body:', body);
 
         return {

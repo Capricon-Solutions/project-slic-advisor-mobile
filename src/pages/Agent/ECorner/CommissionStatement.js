@@ -86,11 +86,11 @@ export default function CommissionStatement({navigation}) {
   const handlegetCommission = async () => {
     try {
       console.log('test values', {selectedDate, selectedType, selectedCode});
-      const response = await GetCommissionStatement(
+      const response = await GetCommissionStatement({
         selectedDate,
         selectedType,
         selectedCode,
-      );
+      });
       console.log('response?.data?.success ', response);
       if (response?.data?.success == false) {
         // Alert.alert('Error', response?.data?.message || 'Something went wrong');
@@ -102,6 +102,7 @@ export default function CommissionStatement({navigation}) {
         return;
       } else {
         const url = response?.data?.data;
+        console.log('url', url);
         openDocument(url);
       }
       console.log('Activity Created:', response);
@@ -110,40 +111,152 @@ export default function CommissionStatement({navigation}) {
     }
   };
 
+  // const requestStoragePermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       if (Platform.Version < 29) {
+  //         // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //           {
+  //             title: 'Storage Permission Required',
+  //             message: 'This app needs access to storage to download files.',
+  //             buttonPositive: 'OK',
+  //             buttonNegative: 'Cancel',
+  //           },
+  //         );
+
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           console.log('Storage permission granted');
+  //           return true;
+  //         } else {
+  //           console.log('Storage permission denied');
+  //           return false;
+  //         }
+  //       } else {
+  //         console.log('No need to request storage permission on Android 13+');
+  //         return true;
+  //       }
+  //     } catch (err) {
+  //       console.warn(err);
+  //       return false;
+  //     }
+  //   }
+  //   return true; // iOS doesn't require storage permission for downloads
+  // };
+
+  // const openDocument = async url => {
+  //   if (!url) {
+  //     console.log('No document URL available');
+  //     return;
+  //   }
+
+  //   const fileName = url.split('/').pop(); // Extract file name from URL
+  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+  //   const hasPermission = await requestStoragePermission();
+  //   if (!hasPermission) {
+  //     Alert.alert(
+  //       'Permission Denied',
+  //       'Storage permission is required to download files.',
+  //     );
+  //     return;
+  //   } else {
+  //     setLoading(true);
+  //   }
+
+  //   RNFS.downloadFile({
+  //     fromUrl: url,
+  //     toFile: localFilePath,
+  //     progress: res => {
+  //       console.log(
+  //         `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
+  //       );
+  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
+  //       setProgress(progressPercent);
+  //     },
+  //   })
+  //     .promise.then(() => {
+  //       setLoading(false);
+  //       // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
+  //       ToastAndroid.show(
+  //         `Download Complete: File saved to ${localFilePath}`,
+  //         ToastAndroid.LONG,
+  //       );
+  //       console.log('urlurlurlurlurl', url);
+  //       Linking.openURL(url).catch(err =>
+  //         console.error("Couldn't open URL", err),
+  //       );
+  //     })
+  //     .catch(error => {
+  //       console.error('Download failed', error);
+  //       setLoading(false);
+  //       Alert.alert(
+  //         'Download Failed',
+  //         'There was an error downloading the file.',
+  //       );
+  //     });
+  // };
+  // const requestStoragePermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       if (Platform.Version < 29) {
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //           {
+  //             title: 'Storage Permission Required',
+  //             message: 'This app needs access to storage to download files.',
+  //             buttonPositive: 'OK',
+  //             buttonNegative: 'Cancel',
+  //           },
+  //         );
+
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           console.log('✅ Storage permission granted');
+  //           return true;
+  //         } else {
+  //           console.log('❌ Storage permission denied');
+  //           return false;
+  //         }
+  //       } else {
+  //         console.log('ℹ️ No storage permission needed on Android 10+');
+  //         return true;
+  //       }
+  //     } catch (err) {
+  //       console.warn('⚠️ Permission error:', err);
+  //       return false;
+  //     }
+  //   }
+  //   // iOS and other platforms
+  //   return true;
+  // };
+
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
       try {
-        if (Platform.Version < 33) {
-          // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
+        if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             {
               title: 'Storage Permission Required',
-              message: 'This app needs access to storage to download files.',
+              message: 'App needs access to your storage to download files.',
               buttonPositive: 'OK',
               buttonNegative: 'Cancel',
             },
           );
 
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Storage permission granted');
-            return true;
-          } else {
-            console.log('Storage permission denied');
-            return false;
-          }
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
         } else {
-          console.log('No need to request storage permission on Android 13+');
+          // From Android 10 onwards, writing to app's private folder doesn't need permission
           return true;
         }
       } catch (err) {
-        console.warn(err);
+        console.warn('Permission error:', err);
         return false;
       }
     }
-    return true; // iOS doesn't require storage permission for downloads
+    return true;
   };
-
   const openDocument = async url => {
     if (!url) {
       console.log('No document URL available');
@@ -196,6 +309,57 @@ export default function CommissionStatement({navigation}) {
         );
       });
   };
+  // const openDocument = async url => {
+  //   if (!url) {
+  //     console.log('❌ No document URL available');
+  //     return;
+  //   }
+
+  //   const fileName = url.split('/').pop(); // Extract file name
+  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+  //   const hasPermission = await requestStoragePermission();
+  //   if (!hasPermission) {
+  //     Alert.alert(
+  //       'Permission Denied',
+  //       'Storage permission is required to download files.',
+  //     );
+  //     return;
+  //   }
+
+  //   setLoading(true);
+
+  //   RNFS.downloadFile({
+  //     fromUrl: url,
+  //     toFile: localFilePath,
+  //     progress: res => {
+  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
+  //       console.log(`📥 Download progress: ${progressPercent.toFixed(2)}%`);
+  //       setProgress(progressPercent);
+  //     },
+  //   })
+  //     .promise.then(() => {
+  //       setLoading(false);
+  //       ToastAndroid.show(
+  //         `✅ Download Complete: File saved to ${localFilePath}`,
+  //         ToastAndroid.LONG,
+  //       );
+
+  //       // Try to open the downloaded file
+  //       Linking.openURL(`file://${localFilePath}`).catch(err => {
+  //         console.error("❌ Couldn't open file:", err);
+  //       });
+  //     })
+  //     .catch(error => {
+  //       console.error('❌ Download failed', error);
+  //       setLoading(false);
+  //       Alert.alert(
+  //         'Download Failed',
+  //         'There was an error downloading the file.',
+  //       );
+  //     });
+  // };
+
   useEffect(() => {
     console.log('selectedDate', selectedDate);
     const formattedYear = moment(selectedDate, 'YYYY/MM').format('YYYY');
