@@ -8,6 +8,8 @@ import {
   Linking,
   StyleSheet,
   ActivityIndicator,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -18,41 +20,124 @@ import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function EDocItems({item, navigation, onPress}) {
   const [downloadProgress, setDownloadProgress] = React.useState(0);
   const [isDownloading, setIsDownloading] = React.useState(false);
+  const token = useSelector(state => state.Profile.token);
 
+  // const downloadAndOpenPDF = async path => {
+  //   try {
+  //     setIsDownloading(true);
+  //     setDownloadProgress(0);
+
+  //     const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
+  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
+
+  //     const options = {
+  //       fromUrl: pdfUrl,
+  //       toFile: localFilePath,
+  //       headers: {
+  //         'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
+  //       },
+  //       progress: res => {
+  //         const progress = res.bytesWritten / res.contentLength;
+  //         setDownloadProgress(progress);
+  //       },
+  //     };
+
+  //     // Download the file
+  //     const download = RNFS.downloadFile(options);
+  //     await download.promise;
+
+  //     // Open the downloaded file
+  //     await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+  //     console.log('PDF opened successfully!');
+  //   } catch (error) {
+  //     console.error('Download/Open Error:', error);
+  //   } finally {
+  //     setIsDownloading(false);
+  //   }
+  // };
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      console.log('Requesting storage permission...');
+      try {
+        if (Platform.Version < 29) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'App needs access to your storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          // Android 10+ doesn't require explicit permission for private storage
+          return true;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true; // iOS or other platforms
+  };
+
+  // Download and open PDF
   const downloadAndOpenPDF = async path => {
     try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Permission Denied',
+          'Storage permission is required to download and view the file.',
+        );
+        return;
+      }
+
       setIsDownloading(true);
       setDownloadProgress(0);
 
       const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
 
-      const options = {
+      console.log('Starting download from:', pdfUrl);
+
+      const downloadOptions = {
         fromUrl: pdfUrl,
         toFile: localFilePath,
         headers: {
-          'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
+          Authorization: `Bearer ${token}`,
         },
         progress: res => {
           const progress = res.bytesWritten / res.contentLength;
           setDownloadProgress(progress);
         },
+        progressDivider: 10,
       };
 
-      // Download the file
-      const download = RNFS.downloadFile(options);
-      await download.promise;
+      const download = RNFS.downloadFile(downloadOptions);
+      const result = await download.promise;
 
-      // Open the downloaded file
-      await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-      console.log('PDF opened successfully!');
+      console.log('Download completed:', result);
+
+      if (result.statusCode === 200) {
+        ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        console.log('PDF opened successfully!');
+      } else {
+        throw new Error(
+          `Download failed with status code ${result.statusCode}`,
+        );
+      }
     } catch (error) {
-      console.error('Download/Open Error:', error);
+      console.error('Download/Open error:', error);
+      Alert.alert('Error', 'Failed to download or open the PDF file.');
     } finally {
       setIsDownloading(false);
     }

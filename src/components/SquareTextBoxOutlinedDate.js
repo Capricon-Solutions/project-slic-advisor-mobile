@@ -73,11 +73,13 @@ export default function SquareTextBoxOutlinedDate({
                 ? COLORS.errorBorder
                 : COLORS.borderColor,
               fontSize: 14,
+              color: COLORS.textColor,
               fontFamily: Fonts.Roboto.SemiBold,
             },
           ]}
-          placeholderTextColor={COLORS.textInputText}
+          placeholderTextColor={COLORS.textColor}
           placeholder="YYYY/MM/DD"
+          textColor={COLORS.textColor}
           value={inputValue}
           keyboardType="numeric"
           onChangeText={formatDate}

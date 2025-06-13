@@ -11,79 +11,101 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../theme/colors';
-import { Styles } from '../theme/Styles';
+import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 const window = Dimensions.get('window');
 
-export default function ELetterItems({ item, navigation }) {
+export default function ELetterItems({item, navigation}) {
   return (
-    <TouchableOpacity
-
-      style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{
-          fontFamily: Fonts.Roboto.SemiBold,
-          fontSize: 13,
-          color: COLORS.textColor
-        }}>{item?.customerName}</Text>
-        <TouchableOpacity style={{
-          backgroundColor: COLORS.grassGreen,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 6,
-          padding: 5
-        }}>
-          <Text style={{
-            color: COLORS.white, fontSize: 10,
-            fontFamily: Fonts.Roboto.Bold
-          }}>{item?.policyStatus}</Text>
+    <TouchableOpacity style={styles.container}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          style={{
+            fontFamily: Fonts.Roboto.SemiBold,
+            fontSize: 13,
+            color: COLORS.textColor,
+          }}>
+          {item?.customerName}
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: COLORS.grassGreen,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 6,
+            padding: 5,
+          }}>
+          <Text
+            style={{
+              color: COLORS.white,
+              fontSize: 10,
+              fontFamily: Fonts.Roboto.Bold,
+            }}>
+            {item?.policyStatus}
+          </Text>
         </TouchableOpacity>
       </View>
 
-
       <View>
         <View style={styles.subLine}>
-          <View style={{ flex: 0.7 }}>
-            <Text style={{
-              fontFamily: Fonts.Roboto.Regular,
-              fontSize: 13,
-              marginBottom: 2,
-              color: COLORS.textColor
-            }}>{item?.policyNo}</Text>
-            <Text style={{
-              fontFamily: Fonts.Roboto.Regular,
-              fontSize: 13,
-              marginVertical: 2,
-              color: COLORS.textColor
-            }}>{item?.vehicleNo}</Text>
-            <View style={styles.subDatamargin}>
-              <Text style={{
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 13,
-                color: COLORS.textColor
-              }}>Due date</Text>
-              <Text style={{
+          <View style={{flex: 0.7}}>
+            <Text
+              style={{
                 fontFamily: Fonts.Roboto.Regular,
                 fontSize: 13,
-                color: COLORS.textColor
-              }}>{item?.dueDate}</Text>
-            </View>
-            <View style={styles.subDatamargin}>
-              <Text style={{
-                fontFamily: Fonts.Roboto.Bold,
-                fontSize: 13,
-                color: COLORS.textColor
-              }}>Premium amount</Text>
-              <Text style={{
+                marginBottom: 2,
+                color: COLORS.textColor,
+              }}>
+              {item?.policyNo}
+            </Text>
+            <Text
+              style={{
                 fontFamily: Fonts.Roboto.Regular,
                 fontSize: 13,
-                color: COLORS.textColor
-              }}>{item?.premiumAmount}</Text>
+                marginVertical: 2,
+                color: COLORS.textColor,
+              }}>
+              {item?.vehicleNo}
+            </Text>
+            <View style={styles.subDatamargin}>
+              <Text
+                style={{
+                  fontFamily: Fonts.Roboto.Bold,
+                  fontSize: 13,
+                  color: COLORS.textColor,
+                }}>
+                Due date
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.Roboto.Regular,
+                  fontSize: 13,
+                  color: COLORS.textColor,
+                }}>
+                {item?.dueDate}
+              </Text>
             </View>
-
+            <View style={styles.subDatamargin}>
+              <Text
+                style={{
+                  fontFamily: Fonts.Roboto.Bold,
+                  fontSize: 13,
+                  color: COLORS.textColor,
+                }}>
+                Premium amount
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.Roboto.Regular,
+                  fontSize: 13,
+                  color: COLORS.textColor,
+                }}>
+                {item?.premiumAmount}
+              </Text>
+            </View>
           </View>
 
-          <View style={{ flex: 0.3, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          {/* <View style={{ flex: 0.3, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
             <View style={{
               height: 30, width: 30, borderRadius: 8,
               backgroundColor: COLORS.primary, justifyContent: 'center',
@@ -111,12 +133,9 @@ export default function ELetterItems({ item, navigation }) {
                 size={16}
               />
             </View>
-          </View>
-
+          </View> */}
         </View>
       </View>
-
-
     </TouchableOpacity>
   );
 }
@@ -141,12 +160,11 @@ const styles = StyleSheet.create({
   subLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 2
+    marginVertical: 2,
   },
   subDatamargin: {
     flexDirection: 'row',
     gap: 10,
-    marginVertical: 2
+    marginVertical: 2,
   },
-
 });

@@ -48,8 +48,8 @@ export default function Report({navigation, route}) {
   const regionName = profileResponse?.region;
   const {Title = ''} = route.params || {};
   const [value, setValue] = useState(null);
-  const [SelectedType, setSelectedType] = useState(1);
-  const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
+  const [SelectedType, setSelectedType] = useState('All');
+  const [selectedMonth, setSelectedmonth] = useState(0);
   const [type, setType] = useState();
   const [branch, setBranch] = useState(regionName);
 
@@ -74,10 +74,12 @@ export default function Report({navigation, route}) {
     isFetching: RmReportFetching,
   } = useRmReportQuery({
     branch: branch,
-    // type: type,
-    month: selectedMonth,
+    startMonth: selectedMonth === 0 ? 1 : selectedMonth,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth + 1,
+    year: new Date().getFullYear(),
     type: SelectedType,
     value: value,
+    region: regionName,
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
@@ -150,65 +152,61 @@ export default function Report({navigation, route}) {
           />
         )}
       </View>
-      {RmReport?.data.length > 0 ? (
-        <View>
-          <View
-            style={{
-              justifyContent:
-                isLandscape == false ? 'space-between' : 'flex-end',
-              width: '100%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 5,
-              paddingRight: 20,
-            }}>
-            {isLandscape == false && (
-              <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
-                <TouchableOpacity
-                  style={{flexDirection: 'row', gap: 5}}
-                  onPress={() => setModalVisible(true)}>
-                  <Text
-                    style={{
-                      color: COLORS.textColor,
-                      fontFamily: Fonts.Roboto.Bold,
-                      // fontSize: 13
-                    }}>
-                    Filter By
-                  </Text>
-                  <MaterialIcons
-                    name="filter-list"
-                    size={20}
-                    color={COLORS.primary}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-            <TouchableOpacity
-              onPress={toggleOrientation}
-              style={{flexDirection: 'row', gap: 5}}>
-              <Text
-                style={{
-                  color: COLORS.textColor,
-                  fontFamily: Fonts.Roboto.Bold,
-                }}>
-                {isLandscape ? 'List View' : 'Grid view'}
-              </Text>
-              {isLandscape ? (
-                <MaterialIcons
-                  color={COLORS.primary}
-                  name="list-alt"
-                  size={20}
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  color={COLORS.primary}
-                  name="view-grid-outline"
-                  size={20}
-                />
-              )}
-            </TouchableOpacity>
-          </View>
 
+      <View>
+        <View
+          style={{
+            justifyContent: isLandscape == false ? 'space-between' : 'flex-end',
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 5,
+            paddingRight: 20,
+          }}>
+          {isLandscape == false && (
+            <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+              <TouchableOpacity
+                style={{flexDirection: 'row', gap: 5}}
+                onPress={() => setModalVisible(true)}>
+                <Text
+                  style={{
+                    color: COLORS.textColor,
+                    fontFamily: Fonts.Roboto.Bold,
+                    // fontSize: 13
+                  }}>
+                  Filter By
+                </Text>
+                <MaterialIcons
+                  name="filter-list"
+                  size={20}
+                  color={COLORS.primary}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+          <TouchableOpacity
+            onPress={toggleOrientation}
+            style={{flexDirection: 'row', gap: 5}}>
+            <Text
+              style={{
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.Bold,
+              }}>
+              {isLandscape ? 'List View' : 'Grid view'}
+            </Text>
+            {isLandscape ? (
+              <MaterialIcons color={COLORS.primary} name="list-alt" size={20} />
+            ) : (
+              <MaterialCommunityIcons
+                color={COLORS.primary}
+                name="view-grid-outline"
+                size={20}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <View>
           {isLandscape == true ? (
             <ScrollView
               contentContainerStyle={{
@@ -229,16 +227,20 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'View Details'}
                     mode={'modal'}
-                    dropdownData={[{label: 'NOP', value: '1'}]}
+                    selectedValue={value}
+                    onValueChange={value => setValue(value)}
+                    dropdownData={[{label: 'NOP', value: 'n'}]}
                   />
                 </View>
                 <View style={{flex: 0.2, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Type'}
                     mode={'modal'}
+                    selectedValue={type}
+                    onValueChange={value => setType(value)}
                     dropdownData={[
-                      {label: 'General Cumulative', value: '1'},
-                      {label: 'Motor Monthly', value: '2'},
+                      {label: 'General Cumulative', value: 'G'},
+                      {label: 'Motor Monthly', value: 'M'},
                     ]}
                   />
                 </View>
@@ -270,6 +272,7 @@ export default function Report({navigation, route}) {
                     label={'Branch'}
                     mode={'modal'}
                     dropdownData={dropdownOptions}
+                    selectedValue={branch}
                     onValueChange={value => setBranch(value)} // ✅ Captures selection
                   />
                 </View>
@@ -277,13 +280,32 @@ export default function Report({navigation, route}) {
                   <Button Title={'Apply'} />
                 </View>
               </View>
-              <HorizontalReportTable
-                onPress={() => navigation.navigate('PolicyDetails')}
-                haveTotal={false}
-                tableHead={tableHead}
-                tableData={tableData}
-                columnWidths={columnWidths}
-              />
+              {RmReport?.data.length > 0 ? (
+                <HorizontalReportTable
+                  onPress={() => navigation.navigate('PolicyDetails')}
+                  haveTotal={false}
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  columnWidths={columnWidths}
+                />
+              ) : (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                  }}>
+                  <Text
+                    style={{
+                      marginTop: 20,
+                      fontSize: 16,
+                      color: COLORS.errorBorder,
+                      fontFamily: Fonts.Roboto.Bold,
+                    }}>
+                    Sorry, No Data Found
+                  </Text>
+                </View>
+              )}
             </ScrollView>
           ) : (
             <FlatList
@@ -291,6 +313,23 @@ export default function Report({navigation, route}) {
               initialNumToRender={2}
               keyExtractor={item => item.id}
               contentContainerStyle={{padding: 10}}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: window.height * 0.7,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: COLORS.errorBorder,
+                      fontFamily: Fonts.Roboto.SemiBold,
+                    }}>
+                    Sorry, No Data Found
+                  </Text>
+                </View>
+              }
               renderItem={({item}) => (
                 <View
                   style={{
@@ -417,18 +456,17 @@ export default function Report({navigation, route}) {
             />
           )}
         </View>
-      ) : (
-        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-          <Text
-            style={{
-              fontSize: 16,
-              color: COLORS.errorBorder,
-              fontFamily: Fonts.Roboto.Bold,
-            }}>
-            Sorry, No Data Found
-          </Text>
-        </View>
-      )}
+      </View>
     </View>
   );
 }
+<View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+  <Text
+    style={{
+      fontSize: 16,
+      color: COLORS.errorBorder,
+      fontFamily: Fonts.Roboto.Bold,
+    }}>
+    Sorry, No Data Found
+  </Text>
+</View>;

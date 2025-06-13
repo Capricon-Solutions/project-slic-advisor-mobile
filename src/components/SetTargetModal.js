@@ -29,6 +29,8 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [inputValue, setInputValue] = React.useState(null);
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
   const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
   // const handlePostRequest = () => {
@@ -45,10 +47,11 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
   const currentTargetDate = moment().format('YYYY/MMMM');
   console.log('userCode', userCode);
   const body = {
-    agentCode: userCode,
+    agentCode: usertype == 2 ? personalCode : userCode,
     yearMonth: yearMonth,
     target: inputValue,
   };
+  console.log('body', body);
   const handlePostRequest = async () => {
     if (!inputValue) {
       showToast({
@@ -61,12 +64,21 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
     try {
       const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
       setModalVisible(false);
-      console.log('Response:', response.Message); // Handle success response
-      showToast({
-        type: 'error',
-        text1: 'Unsuccessfull ',
-        text2: response.Message,
-      });
+      console.log('Response:', response.success); // Handle success response
+      if (response.success === true) {
+        showToast({
+          type: 'success',
+          text1: 'Successful',
+          text2: response.message,
+        });
+        setInputValue(null); // Clear input value after successful submission
+      } else {
+        showToast({
+          type: 'error',
+          text1: 'Unsuccesssfull ',
+          text2: response.message,
+        });
+      }
     } catch (err) {
       console.error('Error:', err); // Handle error response
       showToast({
