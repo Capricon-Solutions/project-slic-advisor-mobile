@@ -48,10 +48,15 @@ export default function PolicyFilter({
   const [MobileNumber, setMobile] = React.useState(initialValues.Mobile || '');
   const [NicNumber, setNic] = React.useState(initialValues.Nic || '');
   const [BusiRegNo, setBRegNo] = React.useState(initialValues.BRegNo || '');
-
+  const businessTypeRef = React.useRef();
+  const policyStatusRef = React.useRef();
+  const sDateRef = React.useRef();
+  const eDateRef = React.useRef();
   // Reset function to clear fields
   const clearFields = () => {
     setSelectedBType('');
+    businessTypeRef.current?.clear();
+    policyStatusRef.current?.clear();
     setStatus('');
     setPNumber('');
     setVNumber('');
@@ -150,7 +155,7 @@ export default function PolicyFilter({
         ]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+          contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
           style={styles.modalContainer}>
           <View
             style={{
@@ -186,13 +191,14 @@ export default function PolicyFilter({
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
+            ref={businessTypeRef}
             initialValue={BusinessType}
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
             dropdownData={[
-              { label: 'All', value: 'A' },
-              { label: 'Motor', value: 'M' },
-              { label: 'Non-Motor', value: 'G' },
+              {label: 'All', value: 'A'},
+              {label: 'Motor', value: 'M'},
+              {label: 'Non-Motor', value: 'G'},
             ]}
           />
           <Text
@@ -207,22 +213,26 @@ export default function PolicyFilter({
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
+            ref={policyStatusRef}
             placeholder="Select Policy Status"
+            initialValue={status}
             onSelect={value => setStatus(value)}
             dropdownData={[
-              { label: 'Premium Pending', value: 'P' },
-              { label: 'Debit Outstanding', value: 'D' },
-              { label: 'Claim Pending', value: 'C' },
-              { label: 'Reminders Set Policies', value: 'F' },
+              {label: 'Premium Pending', value: 'P'},
+              {label: 'Debit Outstanding', value: 'D'},
+              {label: 'Claim Pending', value: 'C'},
+              {label: 'Reminders Set Policies', value: 'F'},
             ]}
           />
           <SquareTextBoxOutlined
             Title={PolicyNumber}
             Label="Policy Number"
+            value={PolicyNumber}
             setValue={text => setPNumber(text)}
           />
           <SquareTextBoxOutlined
             Title={VehicleNumber}
+            value={VehicleNumber}
             Label="Vehicle Number"
             setValue={text => setVNumber(text)}
           />
@@ -232,22 +242,26 @@ export default function PolicyFilter({
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{ flex: 0.45 }}>
+            <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
-                Title={StartFromDt}
+                // Title={StartFromDt}
                 Label="Start Date"
+                ref={sDateRef}
                 setValue={text => setSDate(text)}
                 keyboardType="numeric"
+                value={StartFromDt}
               />
             </View>
 
-            <Text style={{ marginTop: 25 }}>To</Text>
-            <View style={{ flex: 0.45 }}>
+            <Text style={{marginTop: 25}}>To</Text>
+            <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
-                Title={StartToDt}
+                // Title={StartToDt}
+                ref={eDateRef}
                 Label="End Date"
                 setValue={text => setEDate(text)}
                 keyboardType="numeric"
+                value={StartToDt}
               />
             </View>
           </View>
@@ -256,16 +270,19 @@ export default function PolicyFilter({
             Title={MobileNumber}
             Label="Mobile Number"
             keyboardType={'phone-pad'}
+            value={MobileNumber}
             setValue={text => setMobile(text)}
           />
           <SquareTextBoxOutlined
             Title={NicNumber}
             Label="NIC Number"
+            value={NicNumber}
             setValue={text => setNic(text)}
           />
           <SquareTextBoxOutlined
             Title={BusiRegNo}
             Label="Business Reg. No"
+            value={BusiRegNo}
             setValue={text => setBRegNo(text)}
           />
 

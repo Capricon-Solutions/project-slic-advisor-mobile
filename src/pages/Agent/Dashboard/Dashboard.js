@@ -127,6 +127,7 @@ export default function Dashboard({navigation}) {
   }, [ProfilePic?.data?.urlPath]);
 
   async function fetchImage() {
+    dispatch(SetdefaultImageUrl(null));
     if (!ProfilePic?.data?.urlPath) return;
 
     // Append a timestamp to the URL to prevent caching
@@ -137,7 +138,8 @@ export default function Dashboard({navigation}) {
 
     console.log('Fetching new image...');
     try {
-      const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
+      // const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
+      const filePath = `${RNFS.CachesDirectoryPath}/profile_${userCode}.png`;
       console.log('Fetching from URL:', url);
 
       const response = await RNFS.downloadFile({
