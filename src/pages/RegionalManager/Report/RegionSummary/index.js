@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../../theme/Styles';
+import {Styles} from '../../../../theme/Styles';
 import HeaderBackground from '../../../../components/HeaderBackground';
 import Header from '../../../../components/Header';
 import COLORS from '../../../../theme/colors';
@@ -21,10 +21,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../../components/contactListItem';
 import DepartmentItem from '../../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoaderKit from 'react-native-loader-kit';
 
 import LoadingScreen from '../../../../components/LoadingScreen';
@@ -32,14 +32,14 @@ import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../../redux/services/contactSlice';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import TableComponent from '../../../../components/TableComponent';
 import RegionTableComponent from '../../../../components/RegionTableComponent';
-import { useRegionalSummeryQuery } from '../../../../redux/services/SummeryApiSlice';
+import {useRegionalSummeryQuery} from '../../../../redux/services/SummeryApiSlice';
 import moment from 'moment';
 const window = Dimensions.get('window');
 
-export default function RegionSummary({ navigation }) {
+export default function RegionSummary({navigation}) {
   const [selectedType, setSelectedType] = useState('monthly');
   const motorData = useSelector(state => state.DUES.motorData);
   const nonmotorData = useSelector(state => state.DUES.nonmotorData);
@@ -55,8 +55,6 @@ export default function RegionSummary({ navigation }) {
   ];
   const columnWidths = [130, 70, 70, 60, 70, 60];
 
-
-
   const {
     data: RegionalSummery,
     error: RegionalSummeryError,
@@ -65,7 +63,10 @@ export default function RegionSummary({ navigation }) {
   } = useRegionalSummeryQuery({
     month: currentMonthNumber,
   });
-  const DataSet = selectedType == "monthly" ? RegionalSummery?.data?.monthly : RegionalSummery?.data?.cumulative;
+  const DataSet =
+    selectedType == 'monthly'
+      ? RegionalSummery?.data?.monthly
+      : RegionalSummery?.data?.cumulative;
 
   const tableData = DataSet?.map(item => [
     item.rank?.toString() + '. ' + item.region?.toString(),
@@ -80,9 +81,7 @@ export default function RegionSummary({ navigation }) {
       <HeaderBackground />
       <Header Title="Region Summary" onPress={() => navigation.goBack()} />
 
-
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
-
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={{}}>
           <Text
             style={{
@@ -91,7 +90,8 @@ export default function RegionSummary({ navigation }) {
               fontSize: 15,
               marginBottom: 0,
             }}>
-            Compare this year’s sales with last year’s to track growth and trends.
+            Compare this year’s sales with last year’s to track growth and
+            trends.
           </Text>
 
           <View style={styles.mainWrap}>
@@ -108,7 +108,8 @@ export default function RegionSummary({ navigation }) {
               }}>
               <Text
                 style={{
-                  color: selectedType === 'monthly' ? COLORS.white : COLORS.black,
+                  color:
+                    selectedType === 'monthly' ? COLORS.white : COLORS.black,
                   fontFamily: Fonts.Roboto.SemiBold,
                 }}>
                 Monthly
@@ -127,7 +128,8 @@ export default function RegionSummary({ navigation }) {
               }}>
               <Text
                 style={{
-                  color: selectedType === 'cumulative' ? COLORS.white : COLORS.black,
+                  color:
+                    selectedType === 'cumulative' ? COLORS.white : COLORS.black,
                   fontFamily: Fonts.Roboto.SemiBold,
                 }}>
                 Cumulative
@@ -142,19 +144,25 @@ export default function RegionSummary({ navigation }) {
             navigation={navigation}
             touchable={true}
           />
-
         </View>
       </ScrollView>
-      {RegionalSummeryLoading &&
-
-        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
-
+      {RegionalSummeryLoading && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
           <LoaderKit
-            style={{ width: 50, height: 50 }}
+            style={{width: 50, height: 50}}
             name={'LineScalePulseOutRapid'} // Optional: see list of animations below
             color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
           />
-        </View>}
+        </View>
+      )}
     </View>
   );
 }

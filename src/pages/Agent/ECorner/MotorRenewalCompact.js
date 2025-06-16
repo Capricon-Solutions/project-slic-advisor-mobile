@@ -34,11 +34,13 @@ import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 const window = Dimensions.get('window');
 
 
 
 export default function MotorRenewalCompact({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const lastMonthStart = moment()
@@ -56,7 +58,7 @@ export default function MotorRenewalCompact({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

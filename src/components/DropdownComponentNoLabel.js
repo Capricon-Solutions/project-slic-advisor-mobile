@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -12,79 +12,81 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponentNoLabel = ({
-  dropdownData,
-  mode,
-  label,
-  initialValue,
-  placeholder,
-  onSelect,
-  BorderColor,
-}) => {
-  const [value, setValue] = useState(initialValue);
-  const [isFocus, setIsFocus] = useState(false);
-
-  return (
-    <View style={styles.container}>
-      <Dropdown
-        mode={mode == 'modal' ? 'modal' : 'auto'}
-        style={[
-          styles.dropdown,
-          {borderColor: BorderColor ? BorderColor : 'gray'},
-        ]}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        selectedStyle={{color: 'red'}}
-        itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
-        activeColor={COLORS.lightPrimary}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        containerStyle={{width: window.width * 0.5, fontSize: 12}}
-        data={dropdownData}
-        search
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? placeholder : '...'}
-        searchPlaceholder="Search..."
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-          if (onSelect) {
-            onSelect(item.value);
-          }
-        }}
-        renderLeftIcon={() => (
-          <MaterialCommunityIcons
-            style={styles.icon}
-            color={isFocus ? 'blue' : 'black'}
-            name="menu-down"
-            size={20}
-          />
-        )}
-        renderRightIcon={item => {
-          return (
-            <>
-              {value && (
-                <TouchableOpacity onPress={() => setValue(null)}>
-                  <MaterialCommunityIcons
-                    style={styles.icon}
-                    color={COLORS.primaryRed}
-                    name="close-thick"
-                    size={14}
-                  />
-                </TouchableOpacity>
-              )}
-            </>
-          );
-        }}
-      />
-    </View>
-  );
-};
+const DropdownComponentNoLabel = forwardRef(
+  (
+    {dropdownData, mode, initialValue, placeholder, onSelect, BorderColor},
+    ref,
+  ) => {
+    const [value, setValue] = useState(initialValue);
+    const [isFocus, setIsFocus] = useState(false);
+    useImperativeHandle(ref, () => ({
+      clear: () => {
+        setValue(null);
+        onSelect(null); // Notify parent
+      },
+    }));
+    return (
+      <View style={styles.container}>
+        <Dropdown
+          mode={mode == 'modal' ? 'modal' : 'auto'}
+          style={[
+            styles.dropdown,
+            {borderColor: BorderColor ? BorderColor : 'gray'},
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          selectedStyle={{color: 'red'}}
+          itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
+          activeColor={COLORS.lightPrimary}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          containerStyle={{width: window.width * 0.5, fontSize: 12}}
+          data={dropdownData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? placeholder : '...'}
+          searchPlaceholder="Search..."
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+            if (onSelect) {
+              onSelect(item.value);
+            }
+          }}
+          renderLeftIcon={() => (
+            <MaterialCommunityIcons
+              style={styles.icon}
+              color={isFocus ? 'blue' : 'black'}
+              name="menu-down"
+              size={20}
+            />
+          )}
+          renderRightIcon={item => {
+            return (
+              <>
+                {value && (
+                  <TouchableOpacity onPress={() => setValue(null)}>
+                    <MaterialCommunityIcons
+                      style={styles.icon}
+                      color={COLORS.primaryRed}
+                      name="close-thick"
+                      size={14}
+                    />
+                  </TouchableOpacity>
+                )}
+              </>
+            );
+          }}
+        />
+      </View>
+    );
+  },
+);
 
 export default DropdownComponentNoLabel;
 

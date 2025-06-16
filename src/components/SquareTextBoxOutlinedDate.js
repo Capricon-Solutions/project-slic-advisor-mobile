@@ -1,4 +1,9 @@
-import React, {useState} from 'react';
+import React, {
+  useState,
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+} from 'react';
 import {View, Text, Dimensions} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import COLORS from '../theme/colors';
@@ -7,82 +12,94 @@ import {Styles} from '../theme/Styles';
 
 const window = Dimensions.get('window');
 
-export default function SquareTextBoxOutlinedDate({
-  Label,
-  Title,
-  Secure,
-  value,
-  mediumFont,
-  keyboardType,
-  setValue,
-  errorBorder,
-  borderColor,
-}) {
-  const [inputValue, setInputValue] = useState(value || '');
+const SquareTextBoxOutlinedDate = forwardRef(
+  (
+    {
+      Label,
+      Title,
+      Secure,
+      value,
+      mediumFont,
+      keyboardType,
+      setValue,
+      errorBorder,
+      borderColor,
+    },
+    ref,
+  ) => {
+    const [inputValue, setInputValue] = useState(value || '');
 
-  const formatDate = text => {
-    // Remove all non-numeric characters
-    let cleaned = text.replace(/\D/g, '');
+    useEffect(() => {
+      setInputValue(value || '');
+    }, [value]);
 
-    // Format as YYYY/MM/DD
-    let formatted = '';
-    if (cleaned.length > 4) {
-      formatted = `${cleaned.slice(0, 4)}/${cleaned.slice(4, 6)}`;
-    } else {
-      formatted = cleaned;
-    }
-    if (cleaned.length > 6) {
-      formatted += `/${cleaned.slice(6, 8)}`;
-    }
+    const formatDate = text => {
+      let cleaned = text.replace(/\D/g, '');
+      let formatted = '';
+      if (cleaned.length > 4) {
+        formatted = `${cleaned.slice(0, 4)}/${cleaned.slice(4, 6)}`;
+      } else {
+        formatted = cleaned;
+      }
+      if (cleaned.length > 6) {
+        formatted += `/${cleaned.slice(6, 8)}`;
+      }
+      setInputValue(formatted);
+      setValue(formatted);
+    };
 
-    // Set formatted value
-    setInputValue(formatted);
-    setValue(formatted);
-  };
+    // Expose clear method to parent
+    useImperativeHandle(ref, () => ({
+      clear: () => {
+        setInputValue('');
+        setValue('');
+      },
+    }));
 
-  return (
-    <View style={{width: '100%', marginTop: window.height * 0.01}}>
-      {Label && (
-        <Text
-          style={{
-            marginBottom: 5,
-            fontSize: 12.5,
-            fontFamily: mediumFont ? Fonts.Roboto.Medium : Fonts.Roboto.Bold,
-            color: COLORS.ashBlue,
-          }}>
-          {Label}
-        </Text>
-      )}
-      <View style={{position: 'relative'}}>
-        <TextInput
-          mode={'outlined'}
-          outlineColor={
-            errorBorder
-              ? COLORS.errorBorder
-              : borderColor
-              ? borderColor
-              : COLORS.borderColor
-          }
-          outlineStyle={{borderRadius: 5, borderWidth: 1}}
-          style={[
-            Styles.textInput,
-            {
-              height: 38,
-              // paddingRight: window.width * 0.07 + 10,
-              borderColor: errorBorder
+    return (
+      <View style={{width: '100%', marginTop: window.height * 0.01}}>
+        {Label && (
+          <Text
+            style={{
+              marginBottom: 5,
+              fontSize: 12.5,
+              fontFamily: mediumFont ? Fonts.Roboto.Medium : Fonts.Roboto.Bold,
+              color: COLORS.ashBlue,
+            }}>
+            {Label}
+          </Text>
+        )}
+        <View style={{position: 'relative'}}>
+          <TextInput
+            mode="outlined"
+            outlineColor={
+              errorBorder
                 ? COLORS.errorBorder
-                : COLORS.borderColor,
-              fontSize: 14,
-              fontFamily: Fonts.Roboto.SemiBold,
-            },
-          ]}
-          placeholderTextColor={COLORS.textInputText}
-          placeholder="YYYY/MM/DD"
-          value={inputValue}
-          keyboardType="numeric"
-          onChangeText={formatDate}
-        />
+                : borderColor
+                ? borderColor
+                : COLORS.borderColor
+            }
+            outlineStyle={{borderRadius: 5, borderWidth: 1}}
+            style={[
+              Styles.textInput,
+              {
+                height: 38,
+                fontSize: 14,
+                color: COLORS.textColor,
+                fontFamily: Fonts.Roboto.SemiBold,
+              },
+            ]}
+            placeholderTextColor={COLORS.textColor}
+            placeholder="YYYY/MM/DD"
+            textColor={COLORS.textColor}
+            value={inputValue}
+            keyboardType="numeric"
+            onChangeText={formatDate}
+          />
+        </View>
       </View>
-    </View>
-  );
-}
+    );
+  },
+);
+
+export default SquareTextBoxOutlinedDate;

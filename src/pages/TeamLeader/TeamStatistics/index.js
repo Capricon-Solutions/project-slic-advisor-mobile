@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,30 +10,33 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
-import { useSelector } from 'react-redux';
-import { useGetteamPerfQuery } from '../../../redux/services/IndividualPerfSlice';
+import {useSelector} from 'react-redux';
+import {useGetteamPerfQuery} from '../../../redux/services/IndividualPerfSlice';
 import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
 
 import MonthYearPicker from '../../../components/MonthYearPicker';
 const window = Dimensions.get('window');
 
-export default function TeamStatistics({ navigation }) {
+export default function TeamStatistics({navigation}) {
+  const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
   const [selectedDate, setSelectedDate] = useState(null);
@@ -53,7 +56,7 @@ export default function TeamStatistics({ navigation }) {
     isFetching,
     refetch,
   } = useGetteamPerfQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
@@ -61,36 +64,36 @@ export default function TeamStatistics({ navigation }) {
 
   const tableData = [
     {
-      title: "Premium for " + monthNameFrench,
+      title: 'Premium for ' + monthNameFrench,
       renewal: individualPerf?.data?.monthly.premiumForRenewal,
-      new: individualPerf?.data.monthly.premiumForNew,
-      refund: individualPerf?.data.monthly.premiumForRefund,
+      new: individualPerf?.data?.monthly.premiumForNew,
+      refund: individualPerf?.data?.monthly.premiumForRefund,
       endorsement: individualPerf?.data.monthly.premiumForEndorsement,
-      total: individualPerf?.data.monthly.premiumForTotal,
+      total: individualPerf?.data?.monthly.premiumForTotal,
     },
     {
-      title: "Premium for 2024",
-      renewal: individualPerf?.data.yearly.premiumForRenewal,
-      new: individualPerf?.data.yearly.premiumForNew,
+      title: 'Premium for 2024',
+      renewal: individualPerf?.data?.yearly.premiumForRenewal,
+      new: individualPerf?.data?.yearly.premiumForNew,
       refund: individualPerf?.data.yearly.premiumForRefund,
-      endorsement: individualPerf?.data.yearly.premiumForEndorsement,
-      total: individualPerf?.data.yearly.premiumForTotal,
+      endorsement: individualPerf?.data?.yearly.premiumForEndorsement,
+      total: individualPerf?.data?.yearly.premiumForTotal,
     },
     {
-      title: "No. of Policies for " + monthNameFrench,
-      renewal: individualPerf?.data.monthly.noOfPoliciesForRenewal,
-      new: individualPerf?.data.monthly.noOfPoliciesForNew,
-      refund: individualPerf?.data.monthly.noOfPoliciesForRefund,
+      title: 'No. of Policies for ' + monthNameFrench,
+      renewal: individualPerf?.data?.monthly.noOfPoliciesForRenewal,
+      new: individualPerf?.data?.monthly.noOfPoliciesForNew,
+      refund: individualPerf?.data?.monthly.noOfPoliciesForRefund,
       endorsement: individualPerf?.data.monthly.noOfPoliciesForEndorsement,
-      total: individualPerf?.data.monthly.noOfPoliciesForTotal,
+      total: individualPerf?.data?.monthly.noOfPoliciesForTotal,
     },
     {
-      title: "No. of Policies for 2024",
-      renewal: individualPerf?.data.yearly.noOfPoliciesForRenewal,
-      new: individualPerf?.data.yearly.noOfPoliciesForNew,
-      refund: individualPerf?.data.yearly.noOfPoliciesForRefund,
+      title: 'No. of Policies for 2024',
+      renewal: individualPerf?.data?.yearly.noOfPoliciesForRenewal,
+      new: individualPerf?.data?.yearly.noOfPoliciesForNew,
+      refund: individualPerf?.data?.yearly.noOfPoliciesForRefund,
       endorsement: individualPerf?.data.yearly.noOfPoliciesForEndorsement,
-      total: individualPerf?.data.yearly.noOfPoliciesForTotal,
+      total: individualPerf?.data?.yearly.noOfPoliciesForTotal,
     },
   ];
 
@@ -104,9 +107,8 @@ export default function TeamStatistics({ navigation }) {
   ]);
 
   useEffect(() => {
-    console.log("individualPerf", individualPerf);
-  }, [individualPerf])
-
+    console.log('individualPerf', individualPerf);
+  }, [individualPerf]);
 
   return (
     <View style={Styles.container}>
@@ -117,9 +119,8 @@ export default function TeamStatistics({ navigation }) {
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
         onSelectText={v => setSelectedDate(v)}
-
       />
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader
           haveSearch={true}
           Title="Team Statistics"
@@ -154,14 +155,23 @@ export default function TeamStatistics({ navigation }) {
           columnWidths={columnWidths}
         />
       </ScrollView>
-      {isFetching && <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
-
-        <LoaderKit
-          style={{ width: 50, height: 50 }}
-          name={'LineScalePulseOutRapid'} // Optional: see list of animations below
-          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-        />
-      </View>}
+      {isFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+            color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+          />
+        </View>
+      )}
     </View>
   );
 }

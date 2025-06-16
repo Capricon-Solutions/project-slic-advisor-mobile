@@ -1,10 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  agentCode: 905717,
+  agentCode: null,
   defaultImageUrl: null,
   profile: null,
   token: null,
+  userCode: null,
+  personalCode: null,
   profileResponse: {
     data: {
       name: 'John Snow',
@@ -42,6 +44,15 @@ export const ProfileSlice = createSlice({
     GetAgentCode: (state, action) => {
       state.agentCode = action.payload;
     },
+    SetUserCode: (state, action) => {
+      state.userCode = action.payload;
+    },
+    SetUserCode: (state, action) => {
+      state.userCode = action.payload;
+    },
+    SetPersonalCode: (state, action) => {
+      state.personalCode = action.payload;
+    },
     SetdefaultImageUrl: (state, action) => {
       state.defaultImageUrl = action.payload;
     },
@@ -50,11 +61,18 @@ export const ProfileSlice = createSlice({
     },
     Settoken: (state, action) => {
       state.token = action.payload;
-    }
+    },
   },
 });
 
-export const { GetprofileResponse, SetdefaultImageUrl, GetAgentCode, Setprofile, Settoken } =
-  ProfileSlice.actions;
+export const {
+  GetprofileResponse,
+  SetdefaultImageUrl,
+  GetAgentCode,
+  Setprofile,
+  Settoken,
+  SetUserCode,
+  SetPersonalCode,
+} = ProfileSlice.actions;
 
 export default ProfileSlice.reducer;

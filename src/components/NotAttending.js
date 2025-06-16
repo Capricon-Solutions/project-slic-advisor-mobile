@@ -21,8 +21,10 @@ import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import { useNotAttendingMutation } from '../redux/services/trainingSlice';
 import { showToast, ToastMessage } from './ToastMessage';
+import { useSelector } from 'react-redux';
 
 export default function NotAttending({ modalVisible, setModalVisible, selectedId }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [reason, setReason] = React.useState('');
   const [additionalComments, setAdditionalComments] = React.useState('');
@@ -38,7 +40,7 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
       return;
     }
     const body = {
-      agentCode: 905717,
+      agentCode: userCode,
       trainId: selectedId,
       reason,
       additionalComments,

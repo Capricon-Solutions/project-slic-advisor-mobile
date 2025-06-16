@@ -4,24 +4,24 @@ export const trainingSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
 
     getTrainingList: builder.query({
-      query: type => {
+      query: ({ type, userCode }) => {
         console.log('Training Type:', type); // Log the type parameter
-        return `training/getTrainingList/905717?trainType=${type}`;
+        return `training/getTrainingList/${userCode}?trainType=${type}`;
       },
       providesTags: ['Trainings'],
     }),
     getTrainingListByDate: builder.query({
-      query: ({ fromDate, toDate }) => {
+      query: ({ fromDate, toDate, userCode }) => {
         console.log('fromDate:', fromDate); // Log the fromDate
         console.log('toDate:', toDate); // Log the toDate
-        return `training/getAgentTrainingsByDate/905717?fromDate=${fromDate}&toDate=${toDate}`;
+        return `training/getAgentTrainingsByDate/${userCode}?fromDate=${fromDate}&toDate=${toDate}`;
       },
     }),
 
     //approveTraining
     approveTraining: builder.mutation({
-      query: id => {
-        const finalUrl = `training/approveTrainingByAgent/905717?trainId=${id}`;
+      query: ({ id, userCode }) => {
+        const finalUrl = `training/approveTrainingByAgent/${userCode}?trainId=${id}`;
         console.log('id:', id);
         console.log('Final URL:', finalUrl);
         // console.log('Final body:', body);

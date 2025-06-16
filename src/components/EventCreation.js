@@ -28,12 +28,17 @@ import {useEventCreationMutation} from '../redux/services/plannerSlice';
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import {showToast, ToastMessage} from './ToastMessage';
+import {useSelector} from 'react-redux';
 
-export default function EventCreation({modalVisible, setModalVisible}) {
+export default function EventCreation({
+  modalVisible,
+  setModalVisible,
+  onEventCreated,
+}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [description, setDescription] = useState('');
 
@@ -55,8 +60,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
     hideDatePicker();
   };
-  const [EventCreate, {data: newEvent, isLoading, error}] =
-    useEventCreationMutation();
+  const [EventCreate, {data, isLoading, error}] = useEventCreationMutation();
 
   const validateForm = () => {
     if (!description || !selectedDate) {
@@ -74,10 +78,20 @@ export default function EventCreation({modalVisible, setModalVisible}) {
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await EventCreate(body);
+      console.log('Creating event with body:', body);
+      const response = await EventCreate({body, userCode});
 
-      setModalVisible(false);
-      console.log('Activity Created:', response);
+      console.log('Activity Created test', response);
+      showToast({
+        type: 'success',
+        text1: 'Event Created',
+        text2: 'Your event has been created successfully!',
+      });
+
+      setTimeout(() => {
+        onEventCreated(moment(selectedDate).format('YYYY-MM-DD'));
+        setModalVisible(false);
+      }, 1500);
     } catch (err) {
       console.error('Error creating activity:', err);
     }
@@ -158,7 +172,9 @@ export default function EventCreation({modalVisible, setModalVisible}) {
               <View style={{width: '100%', marginBottom: 15}}>
                 <Text style={styles.modalTitle}>Event Creation</Text>
               </View>
-              <View style={{flexDirection: 'row', position: 'relative'}}>
+              <TouchableOpacity
+                style={{flexDirection: 'row', position: 'relative'}}
+                onPress={() => showDatePicker(true)}>
                 <SquareTextBox
                   Label={'Date *'}
                   readOnly={true}
@@ -177,7 +193,7 @@ export default function EventCreation({modalVisible, setModalVisible}) {
                   ]}>
                   <Feather name="calendar" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
               <SquareTextBox
                 Label={'Event Description *'}
                 Title={'Description'}

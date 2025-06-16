@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,29 +10,33 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import LoaderKit from 'react-native-loader-kit';
 
 import HorizontalMargedTableComponent from '../../../components/HorizontalMargedTableComponent';
-import { useGetteamCurrentPerfMonthQuery, useGetteamCurrentPerfYearQuery } from '../../../redux/services/IndividualPerfSlice';
+import {
+  useGetteamCurrentPerfMonthQuery,
+  useGetteamCurrentPerfYearQuery,
+} from '../../../redux/services/IndividualPerfSlice';
 const window = Dimensions.get('window');
 
-export default function TeamPerformance({ navigation }) {
+export default function TeamPerformance({navigation}) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'New', 'Renewals', 'Total'];
   const columnWidths = [200, 160, 160, 160];
@@ -43,7 +47,7 @@ export default function TeamPerformance({ navigation }) {
     isFetching,
     refetch,
   } = useGetteamCurrentPerfMonthQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     //  fromDate: fromDate,
     //  toDate: toDate,
   });
@@ -51,18 +55,19 @@ export default function TeamPerformance({ navigation }) {
     data: CurrentPerformanceYear,
     error: yearError,
     isFetching: yearFetching,
-
   } = useGetteamCurrentPerfYearQuery({
-    id: 1715, // Dynamic ID
+    id: userCode, // Dynamic ID
     //  fromDate: fromDate,
     //  toDate: toDate,
   });
-  console.log("CurrentPerformanceMonth", CurrentPerformanceMonth);
+  console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const IndividualStatResponse = useSelector(
     state => state.teamStat.teamStatResponse.data,
   );
 
-  const tableData = (SelectedType == 1 ? CurrentPerformanceMonth : CurrentPerformanceYear)?.data?.map(item => [
+  const tableData = (
+    SelectedType == 1 ? CurrentPerformanceMonth : CurrentPerformanceYear
+  )?.data?.map(item => [
     item?.agentName?.toString() ?? '',
     {
       cash: item?.cashNewMotorPrm,
@@ -77,9 +82,9 @@ export default function TeamPerformance({ navigation }) {
       debit: item?.totDebitMotorPrm,
     },
   ]);
-  const renderItem = ({ item }) => <ContactListItem item={item} />;
+  const renderItem = ({item}) => <ContactListItem item={item} />;
 
-  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
+  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
 
   const handleLoad = (from, to) => {
     console.log('Selected From:', from);
@@ -90,7 +95,7 @@ export default function TeamPerformance({ navigation }) {
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader
           haveSearch={false}
           Title="Current Performance"
@@ -146,7 +151,6 @@ export default function TeamPerformance({ navigation }) {
           paddingVertical: 10,
         }}
         style={{}}>
-
         {tableData?.length > 0 && (
           <HorizontalMargedTableComponent
             onPress={() => navigation.navigate('PolicyDetails')}
@@ -157,10 +161,18 @@ export default function TeamPerformance({ navigation }) {
           />
         )}
       </ScrollView>
-      {isFetching && yearFetching && (
-        <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
+      {(isFetching || yearFetching) && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
           <LoaderKit
-            style={{ width: 50, height: 50 }}
+            style={{width: 50, height: 50}}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />

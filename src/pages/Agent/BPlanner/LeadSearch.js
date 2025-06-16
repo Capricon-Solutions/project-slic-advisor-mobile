@@ -26,25 +26,45 @@ import {
 } from '../../../redux/services/contactSlice';
 import LeadSearchItem from '../../../components/LeadSearchItem';
 import {useGetLeadsQuery} from '../../../redux/services/plannerSlice';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 export default function LeadSearch({navigation}) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const {data: branches, isLoading, error} = useGetBranchesQuery();
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
-  const {data: Leads} = useGetLeadsQuery({refetchOnMountOrArgChange: false});
+  const {data: Leads} = useGetLeadsQuery(
+    {userCode},
+    {
+      refetchOnMountOrArgChange: false,
+    },
+  );
   const [SelectedType, setSelectedType] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-
+  console.log('userCode', userCode);
   const SELF = Leads?.data?.filter(lead => lead.leadSource === 'BCON') || [];
   const SLIC = Leads?.data?.filter(lead => lead.leadSource === 'CAMP') || [];
 
   // Filter both SELF and SLIC based on searchQuery
-  const filteredSELF = SELF.filter(lead =>
-    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-  const filteredSLIC = SLIC.filter(lead =>
-    lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  // const filteredSELF = SELF.filter(lead =>
+  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  // );
+  // const filteredSLIC = SLIC.filter(lead =>
+  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  // );
+
+  const filteredSELF = searchQuery
+    ? SELF.filter(lead =>
+        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : SELF;
+
+  const filteredSLIC = searchQuery
+    ? SLIC.filter(lead =>
+        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : SLIC;
+  console.log('filteredSLIC', filteredSLIC);
 
   const renderDepartmentItem = ({item}) => (
     <LeadSearchItem

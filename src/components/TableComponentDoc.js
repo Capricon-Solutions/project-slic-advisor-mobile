@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 import TableComponent from './TableComponent';
@@ -66,7 +66,7 @@ const TableComponentDoc = ({
                     key={index}
                     data={rowData.map((cellData, cellIndex) => (
                       <View
-                        style={{ flex: 1, justifyContent: 'center' }}
+                        style={{flex: 1, justifyContent: 'center'}}
                         key={cellIndex}
                         onPress={() => handleCellPress(cellData)}>
                         {cellIndex == 0 && (
@@ -77,9 +77,8 @@ const TableComponentDoc = ({
                                 title: cellData,
                               })
                             }
-                            style={{ flex: 1 }}
-                          >
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                            style={{flex: 1}}>
+                            <View style={{flex: 1, justifyContent: 'center'}}>
                               <Text
                                 style={[
                                   styles.text,
@@ -87,8 +86,8 @@ const TableComponentDoc = ({
                                     ? styles.leftAlignedText
                                     : styles.centerAlignedText, // Align first column left
                                   haveTotal &&
-                                  index === tableData.length - 1 &&
-                                  styles.boldText,
+                                    index === tableData.length - 1 &&
+                                    styles.boldText,
                                 ]}>
                                 {cellData}
                               </Text>
@@ -96,40 +95,48 @@ const TableComponentDoc = ({
                           </TouchableOpacity>
                         )}
                         {cellIndex > 0 && (
-
-                          <View style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}>
-                            <View style={{
-                              width: 80, borderRadius: 100,
-                              backgroundColor: cellIndex === rowData.length - 1
-                                ? (cellData === 'Received' ? COLORS.lightGreen
-                                  : cellData === 'Pending' ? COLORS.pendingColor
-                                    : cellData === 'Reject' ? COLORS.tableRed
-                                      : 'transparent')
-                                : 'transparent'
-
+                          <View
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-
+                            <View
+                              style={{
+                                width: 80,
+                                borderRadius: 100,
+                                backgroundColor:
+                                  cellIndex === rowData.length - 1
+                                    ? cellData === 'Received'
+                                      ? COLORS.lightGreen
+                                      : cellData === 'Pending'
+                                      ? COLORS.pendingColor
+                                      : cellData === 'Reject'
+                                      ? COLORS.tableRed
+                                      : 'transparent'
+                                    : 'transparent',
+                              }}>
                               <Text
                                 style={[
-                                  styles.text, {
+                                  styles.text,
+                                  {
                                     fontFamily: Fonts.Roboto.Bold,
-                                    color: cellIndex === rowData.length - 1
-                                      ? (cellData === 'Received' ? COLORS.primaryGreen
-                                        : cellData === 'Pending' ? COLORS.tableOrange
-                                          : cellData === 'Reject' ? COLORS.primaryRed
-                                            : 'transparent')
-                                      : 'transparent'
-                                  }
+                                    color:
+                                      cellIndex === rowData.length - 1
+                                        ? cellData === 'Received'
+                                          ? COLORS.primaryGreen
+                                          : cellData === 'Pending'
+                                          ? COLORS.tableOrange
+                                          : cellData === 'Reject'
+                                          ? COLORS.primaryRed
+                                          : 'transparent'
+                                        : 'transparent',
+                                  },
                                 ]}>
                                 {cellData}
                               </Text>
                             </View>
                           </View>
-
                         )}
                       </View>
                     ))}
@@ -141,8 +148,8 @@ const TableComponentDoc = ({
                     textStyle={[
                       styles.text,
                       haveTotal &&
-                      index === tableData.length - 1 &&
-                      styles.boldText, // Apply boldText only if hasTotal is true
+                        index === tableData.length - 1 &&
+                        styles.boldText, // Apply boldText only if hasTotal is true
                     ]}
                   />
                 ))}
@@ -163,10 +170,11 @@ const TableComponentDoc = ({
           <Text
             style={{
               textAlign: 'center',
-              fontFamily: Fonts.Roboto.SemiBold,
+              fontFamily: Fonts.Roboto.Bold,
               color: COLORS.primaryRed,
+              fontSize: 16,
             }}>
-            Don't have any data yet
+            Sorry, No Dat found
           </Text>
         </View>
       ) : (
@@ -194,7 +202,7 @@ const TableComponentDoc = ({
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -229,9 +237,9 @@ const styles = StyleSheet.create({
     color: COLORS.ashBlue,
     fontSize: 13,
   },
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
-  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
+  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

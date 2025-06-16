@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import { Styles } from '../../../../theme/Styles';
-import { FlatList } from 'react-native';
-import { styles } from './styles';
-import { Dropdown } from 'react-native-element-dropdown';
-import { useSelector } from 'react-redux';
+import {Styles} from '../../../../theme/Styles';
+import {FlatList} from 'react-native';
+import {styles} from './styles';
+import {Dropdown} from 'react-native-element-dropdown';
+import {useSelector} from 'react-redux';
 import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
@@ -31,23 +31,26 @@ import OutlinedTextBox from '../../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../../components/LandscapeHeader';
 import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
-import { useAdvisorReportQuery, useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
+import {
+  useAdvisorReportQuery,
+  useRmReportQuery,
+} from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
 
 const window = Dimensions.get('window');
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
 ];
 
-export default function AdvisorReport({ navigation, route }) {
-  const { Title = "" } = route.params || {};
+export default function AdvisorReport({navigation, route}) {
+  const {Title = ''} = route.params || {};
 
   const [value, setValue] = useState(1);
   const [SelectedType, setSelectedType] = useState(1);
@@ -79,20 +82,30 @@ export default function AdvisorReport({ navigation, route }) {
     type: type,
     month: selectedMonth,
     // type: SelectedType,
-    value: value
+    value: value,
   });
-  console.log("AdvisorReport", AdvisorReport?.data);
+  console.log('AdvisorReport', AdvisorReport?.data);
   const tableData = AdvisorReport?.data?.map(item => [
     item?.agentName?.toString() ?? '',
 
-    value == 1 ? item?.renewalPremium?.toString() ?? '' : item?.nopRenewal?.toString() ?? '',
+    value == 1
+      ? item?.renewalPremium?.toString() ?? ''
+      : item?.nopRenewal?.toString() ?? '',
     item?.nb?.toString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: value == 1 ? item?.ppwAmount?.toString() ?? '' : item?.nopPpw?.toString() ?? '',
-      other: value == 1 ? item?.otherRefundAAmount?.toString() ?? '' : item?.nopOtherRefund?.toString() ?? ''
+      ppw:
+        value == 1
+          ? item?.ppwAmount?.toString() ?? ''
+          : item?.nopPpw?.toString() ?? '',
+      other:
+        value == 1
+          ? item?.otherRefundAAmount?.toString() ?? ''
+          : item?.nopOtherRefund?.toString() ?? '',
     },
-    value == 1 ? item?.endorsementsAmount?.toString() ?? '' : item?.nopEndorsements?.toString() ?? '',
+    value == 1
+      ? item?.endorsementsAmount?.toString() ?? ''
+      : item?.nopEndorsements?.toString() ?? '',
     item?.total?.toString() ?? '',
   ]);
 
@@ -105,20 +118,15 @@ export default function AdvisorReport({ navigation, route }) {
     setIsLandscape(!isLandscape);
   };
 
+  const advisorList =
+    AdvisorReport && AdvisorReport.data
+      ? AdvisorReport.data.map(item => ({
+          label: item.agentName,
+          value: item.agentCode,
+        }))
+      : [];
 
-
-  const advisorList = AdvisorReport && AdvisorReport.data
-    ? AdvisorReport.data.map(item => ({
-      label: item.agentName,
-      value: item.agentCode
-    }))
-    : [];
-
-  const dropdownOptions = [
-    { label: 'All', value: 'All' },
-    ...advisorList
-  ];
-
+  const dropdownOptions = [{label: 'All', value: 'All'}, ...advisorList];
 
   return (
     <View style={Styles.container}>
@@ -128,29 +136,29 @@ export default function AdvisorReport({ navigation, route }) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         dropdownOptions={dropdownOptions}
-        lastTitle={"Advisor"}
+        lastTitle={'Advisor'}
         onPressSearch={() => {
           // PolicyListResponse(searchData);
           setModalVisible(false);
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
-        onViewDetailsChange={(value) => setValue(value)}
-        onTypeChange={(value) => setSelectedType(value)}
-        onMonthChange={(value) => setSelectedmonth(value)}
-        onBranchChange={(value) => setBranch(value)}
+        onViewDetailsChange={value => setValue(value)}
+        onTypeChange={value => setSelectedType(value)}
+        onMonthChange={value => setSelectedmonth(value)}
+        onBranchChange={value => setBranch(value)}
       />
       {/* <HeaderBackground /> */}
-      <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
-            Title={Title + " Report"}
+            Title={Title + ' Report'}
             onPress={() => navigation.goBack()}
           />
         ) : (
           <Header
-            Title={Title + " Report"}
+            Title={Title + ' Report'}
             onPress={() => navigation.goBack()}
             haveFilters={false}
             haveWhatsapp={false}
@@ -168,22 +176,30 @@ export default function AdvisorReport({ navigation, route }) {
           gap: 5,
           paddingRight: 20,
         }}>
-        {isLandscape == false &&
-          <View style={{ alignItems: 'flex-end', marginHorizontal: 20 }}>
-            <TouchableOpacity style={{ flexDirection: 'row', gap: 5 }} onPress={() => setModalVisible(true)}>
-              <Text style={{
-                color: COLORS.textColor,
-                fontFamily: Fonts.Roboto.Bold,
-                // fontSize: 13
-              }}>Filter By</Text>
-              <MaterialIcons name="filter-list" size={20} color={COLORS.primary} />
-
+        {isLandscape == false && (
+          <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', gap: 5}}
+              onPress={() => setModalVisible(true)}>
+              <Text
+                style={{
+                  color: COLORS.textColor,
+                  fontFamily: Fonts.Roboto.Bold,
+                  // fontSize: 13
+                }}>
+                Filter By
+              </Text>
+              <MaterialIcons
+                name="filter-list"
+                size={20}
+                color={COLORS.primary}
+              />
             </TouchableOpacity>
           </View>
-        }
+        )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{ flexDirection: 'row', gap: 5 }}>
+          style={{flexDirection: 'row', gap: 5}}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -218,57 +234,59 @@ export default function AdvisorReport({ navigation, route }) {
               justifyContent: 'flex-end',
               marginVertical: 5,
             }}>
-            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
+            <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
-                dropdownData={[{ label: 'Value', value: '1' },
-                { label: 'NOP', value: '2' }]}
-                onValueChange={(value) => setValue(value)}
+                dropdownData={[
+                  {label: 'Value', value: '1'},
+                  {label: 'NOP', value: '2'},
+                ]}
+                onValueChange={value => setValue(value)}
               />
             </View>
-            <View style={{ flex: 0.2, marginHorizontal: 2 }}>
+            <View style={{flex: 0.2, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
                 dropdownData={[
-                  { label: 'General Cumulative', value: '1' },
-                  { label: 'Motor Monthly', value: '2' },
+                  {label: 'General Cumulative', value: '1'},
+                  {label: 'Motor Monthly', value: '2'},
                 ]}
               />
             </View>
-            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
+            <View style={{flex: 0.18, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
                 dropdownData={[
-                  { label: 'Cumulative', value: '0' },
-                  { label: 'January', value: '1' },
-                  { label: 'February', value: '2' },
-                  { label: 'March', value: '3' },
-                  { label: 'April', value: '4' },
-                  { label: 'May', value: '5' },
-                  { label: 'June', value: '6' },
-                  { label: 'July', value: '7' },
-                  { label: 'August', value: '8' },
-                  { label: 'September', value: '9' },
-                  { label: 'October', value: '10' },
-                  { label: 'November', value: '11' },
-                  { label: 'December', value: '12' },
+                  {label: 'Cumulative', value: '0'},
+                  {label: 'January', value: '1'},
+                  {label: 'February', value: '2'},
+                  {label: 'March', value: '3'},
+                  {label: 'April', value: '4'},
+                  {label: 'May', value: '5'},
+                  {label: 'June', value: '6'},
+                  {label: 'July', value: '7'},
+                  {label: 'August', value: '8'},
+                  {label: 'September', value: '9'},
+                  {label: 'October', value: '10'},
+                  {label: 'November', value: '11'},
+                  {label: 'December', value: '12'},
                 ]}
                 selectedValue={selectedMonth}
-                onValueChange={(value) => setSelectedmonth(value)}
+                onValueChange={value => setSelectedmonth(value)}
               />
             </View>
-            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
+            <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Advisor'}
                 mode={'modal'}
                 dropdownData={dropdownOptions}
-                onValueChange={(value) => setBranch(value)} // ✅ Captures selection
+                onValueChange={value => setBranch(value)} // ✅ Captures selection
               />
             </View>
-            <View style={{ flex: 0.13, marginHorizontal: 2 }}>
+            <View style={{flex: 0.13, marginHorizontal: 2}}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -285,8 +303,8 @@ export default function AdvisorReport({ navigation, route }) {
           data={AdvisorReport?.data}
           initialNumToRender={2}
           keyExtractor={item => item.id}
-          contentContainerStyle={{ padding: 10 }}
-          renderItem={({ item }) => (
+          contentContainerStyle={{padding: 10}}
+          renderItem={({item}) => (
             <View
               style={{
                 borderRadius: 15,
@@ -295,10 +313,10 @@ export default function AdvisorReport({ navigation, route }) {
                 margin: 10,
                 padding: 15,
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
-                  style={{ height: 17, width: 17 }}
+                  style={{height: 17, width: 17}}
                   source={Building}></Image>
                 <Text
                   style={{
@@ -319,28 +337,31 @@ export default function AdvisorReport({ navigation, route }) {
                   gap: 10,
                   width: '100%',
                 }}>
-                <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'Renewal'}
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox
+                    readOnly
+                    Title={'Renewal'}
                     value={
                       item?.renewal !== null && item?.renewal !== undefined
                         ? Number(item?.renewal).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : ''
                     }
                   />
                 </View>
 
-                <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'NB'}
-
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox
+                    Title={'NB'}
+                    readOnly
                     value={
                       item?.renewal !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : ''
                     }
                   />
@@ -348,29 +369,32 @@ export default function AdvisorReport({ navigation, route }) {
               </View>
 
               {/* Second Row */}
-              <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
-                <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'PPW'}
-
+              <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox
+                    readOnly
+                    Title={'PPW'}
                     value={
                       item.renewal !== null && item?.refundPpw !== undefined
                         ? Number(item.refundPpw).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : ''
                     }
                   />
                 </View>
 
-                <View style={{ flex: 1 }}>
-                  <OutlinedTextBox Title={'Others'}
+                <View style={{flex: 1}}>
+                  <OutlinedTextBox
+                    readOnly
+                    Title={'Others'}
                     value={
                       item?.renewal !== null && item?.refundOther !== undefined
                         ? Number(item.refundOther).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2
-                        })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : ''
                     }
                   />
@@ -380,28 +404,29 @@ export default function AdvisorReport({ navigation, route }) {
               {/* Third Row */}
               <View>
                 <OutlinedTextBox
+                  readOnly
                   Title={'Endorsement'}
-
-
                   value={
                     item.renewal !== null && item.endorsement !== undefined
                       ? Number(item?.endorsement)?.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
                       : ''
                   }
                 />
               </View>
 
               <View>
-                <OutlinedTextBox Title={'Total'}
+                <OutlinedTextBox
+                  readOnly
+                  Title={'Total'}
                   value={
                     item?.renewal !== null && item?.total !== undefined
                       ? Number(item.total)?.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
                       : ''
                   }
                 />

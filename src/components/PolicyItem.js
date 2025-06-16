@@ -11,16 +11,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
-import { Styles } from '../theme/Styles';
+import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import moment from 'moment';
 import motor from '../icons/motor.png'; // Replace with the actual logo path
-import { TextInput } from 'react-native-paper';
+import insurance from '../icons/insurance.png'; // Replace with the actual logo path
+
+import {TextInput} from 'react-native-paper';
 import Button from './Button';
 
-export default function PolicyItem({ item, navigation }) {
+export default function PolicyItem({item, navigation}) {
   const [visible, setVisible] = React.useState(false);
   const handleCall = phoneNumber => {
     // Open the phone dialer with the contact number
@@ -29,6 +31,7 @@ export default function PolicyItem({ item, navigation }) {
       console.error('Failed to make a call:', err),
     );
   };
+  // console.log('item', item);
   return (
     <View style={Styles.contactlistWrap}>
       <TouchableOpacity
@@ -40,10 +43,14 @@ export default function PolicyItem({ item, navigation }) {
           height: 55,
           width: '100%',
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View>
             {/* <Octicons name="search" color={COLORS.primary} size={20} /> */}
-            <FontAwesome5 name="car" color={COLORS.primary} size={24} />
+            <FontAwesome5
+              name={item.department == 'M' ? 'car' : 'shield-alt'}
+              color={COLORS.primary}
+              size={24}
+            />
           </View>
           <Text
             style={{
@@ -56,7 +63,7 @@ export default function PolicyItem({ item, navigation }) {
         </View>
         <TouchableOpacity
           onPress={() => setVisible(!visible)}
-          style={{ flexDirection: 'row', alignItems: 'center' }}>
+          style={{flexDirection: 'row', alignItems: 'center'}}>
           <Octicons
             name={visible == true ? 'chevron-up' : 'chevron-down'}
             color={COLORS.black}
@@ -76,10 +83,10 @@ export default function PolicyItem({ item, navigation }) {
             mode="outlined"
             label="Insured Name"
             readOnly
-            style={{ marginVertical: 3 }}
+            style={{marginVertical: 3}}
             theme={Styles.customTheme}
             textColor={COLORS.ashBlue}
-            outlineStyle={{ borderRadius: 10 }}
+            outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.customerName}
           />
@@ -89,9 +96,9 @@ export default function PolicyItem({ item, navigation }) {
             label="Policy Number"
             readOnly
             theme={Styles.customTheme}
-            style={{ marginVertical: 3 }}
+            style={{marginVertical: 3}}
             textColor={COLORS.ashBlue}
-            outlineStyle={{ borderRadius: 10 }}
+            outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.policyNo}
           />
@@ -101,9 +108,9 @@ export default function PolicyItem({ item, navigation }) {
             label="Vehicle Number"
             readOnly
             theme={Styles.customTheme}
-            style={{ marginVertical: 3 }}
+            style={{marginVertical: 3}}
             textColor={COLORS.ashBlue}
-            outlineStyle={{ borderRadius: 10 }}
+            outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.vehicleNo}
           />
@@ -114,28 +121,28 @@ export default function PolicyItem({ item, navigation }) {
               justifyContent: 'space-between',
               flex: 1,
             }}>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <TextInput
                 mode="outlined"
                 label="Start"
                 readOnly
                 theme={Styles.customTheme}
-                style={{ marginVertical: 3 }}
+                style={{marginVertical: 3}}
                 textColor={COLORS.ashBlue}
-                outlineStyle={{ borderRadius: 10 }}
+                outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
                 value={moment(item.startDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
               />
             </View>
-            <View style={{ flex: 0.48 }}>
+            <View style={{flex: 0.48}}>
               <TextInput
                 mode="outlined"
                 label="End"
                 readOnly
-                style={{ marginVertical: 3 }}
+                style={{marginVertical: 3}}
                 theme={Styles.customTheme}
                 textColor={COLORS.ashBlue}
-                outlineStyle={{ borderRadius: 10 }}
+                outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
                 value={moment(item.endDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
               />
@@ -204,7 +211,7 @@ export default function PolicyItem({ item, navigation }) {
               <MaterialCommunityIcons
                 name="phone-outline"
                 color={COLORS.primary}
-                style={{ transform: [{ rotate: '90deg' }] }} // Rotate 90 degrees
+                style={{transform: [{rotate: '90deg'}]}} // Rotate 90 degrees
                 size={22}
               />
             </TouchableOpacity>
@@ -220,7 +227,7 @@ export default function PolicyItem({ item, navigation }) {
                 alignItems: 'center',
               }}
               onPress={() =>
-                navigation.navigate('PolicyDetails', { policyNo: item.policyNo })
+                navigation.navigate('PolicyDetails', {policyNo: item.policyNo})
               }>
               <Text style={Styles.buttonText}>Go to Policy</Text>
             </TouchableOpacity>

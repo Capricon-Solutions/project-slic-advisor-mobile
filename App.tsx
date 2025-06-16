@@ -68,7 +68,7 @@ import AdvisorReport from './src/pages/RegionalManager/Report/Report/AdvisorRepo
 import DirectReport from './src/pages/RegionalManager/Report/Report/DirectReport';
 import MeReport from './src/pages/RegionalManager/Report/Report/MeReport';
 import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLeaderReport';
-
+import {navigationRef} from './src/navigation/RootNavigation';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
@@ -226,7 +226,7 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>

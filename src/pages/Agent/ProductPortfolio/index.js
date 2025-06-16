@@ -63,15 +63,15 @@ export default function ProductPortfolio({navigation}) {
     }
   }, [searchText]);
 
-  const handleSearch = () => {
+  const handleSearch = v => {
     setSearchText(searchText);
-    if (searchText === '') {
+    if (v === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
       console.log('searchText', searchText);
       // return;
       const filtered = products?.data?.filter(item =>
-        item.productName.toLowerCase().includes(searchText.toLowerCase()),
+        item.productName.toLowerCase().includes(v?.toLowerCase()),
       );
       setFilteredData(filtered);
     }
@@ -128,7 +128,9 @@ export default function ProductPortfolio({navigation}) {
         <View style={styles.searchWrap}>
           <TextInput
             style={styles.textInput}
-            onChangeText={v => setSearchText(v)}
+            onChangeText={v => {
+              setSearchText(v), handleSearch(v);
+            }}
             placeholder="Quick Search"
           />
           <TouchableOpacity

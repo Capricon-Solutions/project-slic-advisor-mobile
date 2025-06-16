@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -17,7 +17,7 @@ import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import LoaderKit from 'react-native-loader-kit';
-import { styles } from './styles';
+import {styles} from './styles';
 
 import {
   Calendar,
@@ -45,7 +45,8 @@ import {
 } from '../../../redux/services/plannerSlice';
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
-import { showToast } from '../../../components/ToastMessage';
+import {showToast} from '../../../components/ToastMessage';
+import {useSelector} from 'react-redux';
 
 const window = Dimensions.get('window');
 
@@ -93,7 +94,8 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-export default function BPlanner({ navigation }) {
+export default function BPlanner({navigation}) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [calenderVisible, setCalenderVisible] = useState(true);
@@ -131,15 +133,17 @@ export default function BPlanner({ navigation }) {
   });
 
   const date = selectedDate;
+  console.log('userCode1', userCode);
   const {
     data: PlannerActivities,
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({ date });
-  const { data: Leads } = useGetLeadsQuery(
-    { date },
-    { refetchOnMountOrArgChange: false },
+  } = useGetEventsAndActivitiessQuery({date, userCode});
+  console.log('PlannerActivities', PlannerActivities);
+  const {data: Leads} = useGetLeadsQuery(
+    {date, userCode},
+    {refetchOnMountOrArgChange: false},
   );
   useEffect(() => {
     refetch();
@@ -147,12 +151,12 @@ export default function BPlanner({ navigation }) {
 
   const [
     DeleteActivity,
-    { data: newActivity, isLoading: isDeleting, error: deleteError },
+    {data: newActivity, isLoading: isDeleting, error: deleteError},
   ] = useActivityDeleteMutation();
 
   const [
     DeleteEvent,
-    { data, isLoading: isEventDeleting, error: deleteEventError },
+    {data, isLoading: isEventDeleting, error: deleteEventError},
   ] = useEventDeleteMutation();
 
   const [LeadList, setLeadList] = useState([]);
@@ -179,12 +183,16 @@ export default function BPlanner({ navigation }) {
   });
   useEffect(() => {
     setActivities(updatedActivities);
+    console.log('Activities updated:', updatedActivities);
   }, [isFetching]);
   useEffect(() => {
-    console.log('Leads', Leads);
+    console.log('Leads:', Leads);
 
-    setLeadList(Leads?.data);
-    console.log('LeadList', LeadList);
+    if (Leads?.data && Array.isArray(Leads.data)) {
+      setLeadList(Leads.data);
+    } else {
+      setLeadList([]); // fallback to empty array if no data
+    }
   }, [Leads]);
 
   const openMenu = () => setVisible(true);
@@ -194,7 +202,7 @@ export default function BPlanner({ navigation }) {
     setActivities(prev =>
       prev.map(
         (item, i) =>
-          i === index ? { ...item, checked: true } : { ...item, checked: false }, // Uncheck all other items
+          i === index ? {...item, checked: true} : {...item, checked: false}, // Uncheck all other items
       ),
     );
   };
@@ -207,19 +215,43 @@ export default function BPlanner({ navigation }) {
         type: item.type,
       })); // Extract both activityId and type
 
-    console.log(checkedActivities);
+    console.log('checkedActivities', checkedActivities);
+    console.log(
+      'checkedActivities[0].activityId',
+      checkedActivities[0].activityId,
+    );
 
     try {
       if (checkedActivities[0].type == 'Event') {
-        const response = await DeleteEvent(checkedActivities[0].activityId);
-        showToast({
-          type: 'success',
-          text1: 'Deleted',
-          text2: 'Event deleted Successfully.',
+        const response = await DeleteEvent({
+          activityId: checkedActivities[0].activityId,
+          userCode: userCode,
         });
         console.log('Event Deleted:', response);
+        if (response?.data?.success === true) {
+          showToast({
+            type: 'success',
+            text1: 'Deleted',
+            text2: 'Event deleted Successfully.',
+          });
+        } else {
+          showToast({
+            type: 'error',
+            text1: 'Failed',
+            text2: 'Failed to delete item 🚨',
+          });
+        }
+        console.log('Event Deleted:', response);
       } else {
-        const response = await DeleteActivity(checkedActivities[0].activityId);
+        console.log('userCode2', userCode);
+        console.log(
+          'checkedActivities[0].activityId',
+          checkedActivities[0].activityId,
+        );
+        const response = await DeleteActivity({
+          activityId: checkedActivities[0].activityId,
+          userCode: userCode,
+        });
         showToast({
           type: 'success',
           text1: 'Deleted',
@@ -241,7 +273,7 @@ export default function BPlanner({ navigation }) {
       id: 1,
       title: 'Lead Creation',
       onPress: () =>
-        navigation.navigate('LeadCreation', { eventDate: selectedDate }),
+        navigation.navigate('LeadCreation', {eventDate: selectedDate}),
     },
     {
       id: 1,
@@ -267,13 +299,35 @@ export default function BPlanner({ navigation }) {
         <EventCreation
           modalVisible={eventModalVisible}
           setModalVisible={setEventModalVisible}
+          onEventCreated={date => {
+            setSelectedDate(date);
+            setSelected({
+              [date]: {
+                selected: true,
+                marked: true,
+                selectedColor: 'blue', // Change this color if needed
+              },
+            });
+            console.log('Event created for date:', date);
+          }}
         />
         <ActivityCreation
           modalVisible={activityModalVisible}
           setModalVisible={setActivityModalVisible}
           leadsData={LeadList}
+          onActivityCreated={date => {
+            setSelectedDate(date);
+            setSelected({
+              [date]: {
+                selected: true,
+                marked: true,
+                selectedColor: 'blue', // Change this color if needed
+              },
+            });
+            console.log('Event created for date:', date);
+          }}
         />
-        <View style={[Styles.container, { overflow: 'scroll' }]}>
+        <View style={[Styles.container, {overflow: 'scroll'}]}>
           <HeaderBackground />
           <Header
             haveFilters={true}
@@ -286,7 +340,7 @@ export default function BPlanner({ navigation }) {
           <ScrollView
             showsVerticalScrollIndicator={false}
             fadingEdgeLength={20}
-            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+            contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
             style={{}}>
             {calenderVisible && (
               <View
@@ -419,7 +473,7 @@ export default function BPlanner({ navigation }) {
                   justifyContent: 'center',
                 }}>
                 <LoaderKit
-                  style={{ width: 35, height: 35 }}
+                  style={{width: 35, height: 35}}
                   name={'BallPulse'} // Optional: see list of animations below
                   color={COLORS.warmGray} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
                 />
@@ -443,8 +497,16 @@ export default function BPlanner({ navigation }) {
                     ))}
                   </View>
                 ) : (
-                  <View style={{ alignItems: 'center', marginTop: 40 }}>
-                    <Text> Events and Activities not available</Text>
+                  <View style={{alignItems: 'center', marginTop: 40}}>
+                    <Text
+                      style={{
+                        color: COLORS.grayText,
+                        fontFamily: Fonts.Roboto.Regular,
+                        fontSize: 14,
+                      }}>
+                      {' '}
+                      Events and Activities not available
+                    </Text>
                   </View>
                 )}
               </View>

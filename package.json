@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-     "postinstall": "patch-package"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@nassim99/react-native-gauge": "^0.0.8",
@@ -32,6 +32,7 @@
     "react-native-date-picker": "^5.0.9",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-file-viewer": "^2.1.5",
+    "react-native-flipper": "^0.273.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-loader-kit": "^2.0.8",

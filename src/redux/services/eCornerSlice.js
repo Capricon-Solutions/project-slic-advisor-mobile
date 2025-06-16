@@ -1,25 +1,28 @@
-import { baseApi } from './api';
+import {baseApi} from './api';
 
 export const eCornerSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getGetGogreenDetailsAll: builder.query({
-      query: () => {
-        const url = `agent/GetGogreenDetailsAll/905717`;
-        console.log("Fetching URL test", url);
+      query: userCode => {
+        const url = `agent/GetGogreenDetailsAll/${userCode}`;
+        console.log('Fetching URL test', url);
         return url;
       },
     }),
     getEDocument: builder.query({
       query: () => {
         const url = `print/edocuments`;
-        console.log("Fetching URL test", url);
+        console.log('Fetching URL test', url);
         return url;
       },
     }),
     getcommissionStatement: builder.mutation({
-      query: (selectedDate, selectedType, selectedCode) => {
+      query: ({selectedDate, selectedType, selectedCode}) => {
         const finalUrl = `print/getCommisionStatement/${selectedCode}?yearMonth=${selectedDate}&stype=${selectedType}`;
         console.log('Final URL:', finalUrl);
+        console.log('selectedCode', selectedCode);
+        console.log('selectedDate', selectedDate);
+        console.log('selectedType', selectedType);
         // console.log('Final body:', body);
 
         return {
@@ -30,29 +33,6 @@ export const eCornerSlice = baseApi.injectEndpoints({
       },
       // invalidatesTags: ['Events'],
     }),
-
-    // getLeadById: builder.query({
-    //   query: id => `planner/GetPlannerLeadById?Id=${id}`,
-    // }),
-
-
-    // activityCreation: builder.mutation({
-    //   query: body => {
-    //     const finalUrl = `planner/addPlannerActivity/905717`;
-    //     console.log('Final URL:', finalUrl);
-    //     console.log('Final body:', body);
-
-    //     return {
-    //       url: finalUrl,
-    //       method: 'POST',
-    //       body: body,
-    //     };
-    //   },
-    //   invalidatesTags: ['Events'],
-    // }),
-
-
-
   }),
 });
 
@@ -60,5 +40,5 @@ export const eCornerSlice = baseApi.injectEndpoints({
 export const {
   useGetGetGogreenDetailsAllQuery,
   useGetcommissionStatementMutation,
-  useGetEDocumentQuery
+  useGetEDocumentQuery,
 } = eCornerSlice;

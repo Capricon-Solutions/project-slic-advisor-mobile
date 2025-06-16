@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,48 +9,73 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
-import { useDispatch } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
-import { Getpath } from '../../../redux/services/NavControllerSlice';
+import {useDispatch} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {Getpath} from '../../../redux/services/NavControllerSlice';
 const window = Dimensions.get('window');
 
-export default function Contacts({ navigation }) {
-  const { data: branches, isLoading, error } = useGetBranchesQuery();
-  const { data: departments, isDipLoading, diperror } = useGetDepartmentQuery();
-
+export default function Contacts({navigation}) {
+  const {data: branches, isLoading, error} = useGetBranchesQuery();
+  const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
   const [SelectedType, setSelectedType] = useState(1);
 
-  const renderItem = ({ item }) => <ContactListItem item={item} />;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredBranches, setFilteredBranches] = useState([]);
+  const [filteredDepartments, setFilteredDepartments] = useState([]);
 
-  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
+  const renderItem = ({item}) => <ContactListItem item={item} />;
+
+  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
   const dispatch = useDispatch();
 
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
-      console.log("test conact")
-    }, [])
+      console.log('test conact');
+    }, []),
   );
+
+  useEffect(() => {
+    if (branches?.data) {
+      const filtered = branches?.data?.filter(item =>
+        item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      console.log('filteredbranches', filtered);
+      setFilteredBranches(filtered);
+    }
+  }, [branches, searchQuery]);
+
+  useEffect(() => {
+    if (departments?.data) {
+      const filtered = departments?.data?.filter(item =>
+        item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      console.log('filtereddapartments', filtered);
+      console.log('departments', departments);
+      setFilteredDepartments(filtered);
+    }
+  }, [departments, searchQuery]);
+
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Contacts" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.mainWrap}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
@@ -92,8 +117,15 @@ export default function Contacts({ navigation }) {
         </View>
 
         <View style={styles.searchWrap}>
-          <TextInput style={styles.textInput} placeholder="Quick Search" />
-          <TouchableOpacity style={styles.searchButton}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Quick Search"
+            value={searchQuery}
+            onChangeText={text => setSearchQuery(text)}
+          />
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => setSearchQuery('')}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
@@ -103,7 +135,7 @@ export default function Contacts({ navigation }) {
           <View>
             {SelectedType == 1 ? (
               <FlatList
-                data={branches?.data}
+                data={filteredBranches}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   fadeDuration: 1000,
@@ -111,11 +143,11 @@ export default function Contacts({ navigation }) {
                   paddingBottom: window.height * 0.25,
                 }}
                 renderItem={renderItem}
-              // keyExtractor={item => item?.id?.toString()}
+                // keyExtractor={item => item?.id?.toString()}
               />
             ) : (
               <FlatList
-                data={departments?.data}
+                data={filteredDepartments}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   fadeDuration: 1000,
@@ -123,7 +155,7 @@ export default function Contacts({ navigation }) {
                   paddingBottom: window.height * 0.25,
                 }}
                 renderItem={renderDepartmentItem}
-              // keyExtractor={item => item.id.toString()}
+                // keyExtractor={item => item.id.toString()}
               />
             )}
           </View>

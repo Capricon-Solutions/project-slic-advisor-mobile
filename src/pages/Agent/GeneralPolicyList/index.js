@@ -27,11 +27,13 @@ import {
 import LoadingScreen from '../../../components/LoadingScreen';
 import {PaperProvider} from 'react-native-paper';
 import SearchParams from '../../../redux/SearchParams';
+import {useSelector} from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function GeneralPolicyList({navigation}) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchType, setSearchType] = useState('A');
   const [policyValues, setPolicyValues] = useState({
@@ -66,44 +68,72 @@ export default function GeneralPolicyList({navigation}) {
     StartToDt: policyValues.StartToDt,
     TodayReminders: policyValues.status === 'F' ? true : false,
     MobileNumber: policyValues.MobileNumber,
-    AgentCode: 905717,
+    AgentCode: userCode,
     NicNumber: policyValues.NicNumber,
     BusiRegNo: policyValues.BusiRegNo,
   };
 
+  const searchParamMap = {
+    A: SearchParams.AllSearch,
+    M: SearchParams.MotorSearch,
+    G: SearchParams.NonMotorSearch,
+    P: SearchParams.premiumPending,
+    D: SearchParams.debitOutstanding,
+    C: SearchParams.claimPending,
+    F: SearchParams.remindersSet,
+    Filter: searchData,
+  };
+
   useEffect(() => {
-    PolicyListResponse(
-      searchType === 'A'
-        ? SearchParams.AllSearch
-        : searchType === 'M'
-        ? SearchParams.MotorSearch
-        : searchType === 'G'
-        ? SearchParams.NonMotorSearch
-        : searchType === 'P'
-        ? SearchParams.premiumPending
-        : searchType === 'D'
-        ? SearchParams.debitOutstanding
-        : searchType === 'C'
-        ? SearchParams.claimPending
-        : searchType === 'F'
-        ? SearchParams.remindersSet
-        : searchType === 'Filter'
-        ? searchData
-        : SearchParams.AllSearch,
-    )
+    console.log('searchType', searchType);
+
+    const selectedSearchParam =
+      searchParamMap[searchType] || SearchParams.AllSearch;
+    console.log('selectedSearchParam', selectedSearchParam);
+    PolicyListResponse(selectedSearchParam)
       .then(response => {
-        // console.log('Response:', response);
+        console.log('Response:', response);
       })
       .catch(err => {
         console.log('Error:', err);
       });
-  }, [searchType]);
+  }, [searchType]); // include searchData if it's used in 'Filter'
+
+  // useEffect(() => {
+  //   console.log('searchType', searchType);
+  //   // return;
+  //   PolicyListResponse(
+  //     searchType === 'A'
+  //       ? SearchParams.AllSearch
+  //       : searchType === 'M'
+  //       ? SearchParams.MotorSearch
+  //       : searchType === 'G'
+  //       ? SearchParams.NonMotorSearch
+  //       : searchType === 'P'
+  //       ? SearchParams.premiumPending
+  //       : searchType === 'D'
+  //       ? SearchParams.debitOutstanding
+  //       : searchType === 'C'
+  //       ? SearchParams.claimPending
+  //       : searchType === 'F'
+  //       ? SearchParams.remindersSet
+  //       : searchType === 'Filter'
+  //       ? searchData
+  //       : SearchParams.AllSearch,
+  //   )
+  //     .then(response => {
+  //       console.log('Response:', response);
+  //     })
+  //     .catch(err => {
+  //       console.log('Error:', err);
+  //     });
+  // }, [searchType]);
 
   useEffect(() => {
     // console.log('policyValues', policyValues);
     // console.log('PolicyList', PolicyList);
     console.log('PolicyListResponse', PolicyListData);
-  }, [searchType]);
+  }, [searchType, PolicyListData]);
 
   const PolicyList = error ? [] : PolicyListData?.data;
   const renderPolicyItem = ({item}) => (
@@ -186,7 +216,7 @@ export default function GeneralPolicyList({navigation}) {
             </View>
           ) : (
             <View>
-              {PolicyList?.length !== 0 ? (
+              {PolicyList?.length > 0 ? (
                 <FlatList
                   data={PolicyList}
                   showsVerticalScrollIndicator={false}
@@ -203,12 +233,14 @@ export default function GeneralPolicyList({navigation}) {
               ) : (
                 <View
                   style={{
-                    height: window.height * 0.9,
+                    height: window.height * 0.85,
 
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text>policies not available</Text>
+                  <Text style={{color: COLORS.grayText}}>
+                    policies not available yet.!
+                  </Text>
                 </View>
               )}
             </View>

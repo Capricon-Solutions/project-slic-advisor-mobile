@@ -23,6 +23,7 @@ import { useGetNotificationsQuery } from '../../../redux/services/NotificationSl
 const window = Dimensions.get('window');
 
 export default function Notification({ navigation }) {
+  const userCode = useSelector(state => state.Profile.userCode);
   const notificationResponse = useSelector(
     state => state.Notifications.notificationsResponse,
   );
@@ -33,7 +34,7 @@ export default function Notification({ navigation }) {
     isLoading,
     isFetching,
   } = useGetNotificationsQuery({
-    id: 123456,
+    id: userCode,
   });
 
   const renderItem = ({ item }) => (

@@ -20,38 +20,65 @@ export default function OtherListItem({item, onPress}) {
   const [loading, setLoading] = useState(false);
   const [Progress, setProgress] = useState(0);
 
+  // const requestStoragePermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       if (Platform.Version < 33) {
+  //         // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //           {
+  //             title: 'Storage Permission Required',
+  //             message: 'This app needs access to storage to download files.',
+  //             buttonPositive: 'OK',
+  //             buttonNegative: 'Cancel',
+  //           },
+  //         );
+
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           console.log('Storage permission granted');
+  //           return true;
+  //         } else {
+  //           console.log('Storage permission denied');
+  //           return false;
+  //         }
+  //       } else {
+  //         console.log('No need to request storage permission on Android 13+');
+  //         return true;
+  //       }
+  //     } catch (err) {
+  //       console.warn(err);
+  //       return false;
+  //     }
+  //   }
+  //   return true; // iOS doesn't require storage permission for downloads
+  // };
+
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
       try {
-        if (Platform.Version < 33) {
-          // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
+        if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             {
               title: 'Storage Permission Required',
-              message: 'This app needs access to storage to download files.',
+              message: 'App needs access to your storage to download files.',
               buttonPositive: 'OK',
               buttonNegative: 'Cancel',
             },
           );
 
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Storage permission granted');
-            return true;
-          } else {
-            console.log('Storage permission denied');
-            return false;
-          }
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
         } else {
-          console.log('No need to request storage permission on Android 13+');
+          // From Android 10 onwards, writing to app's private folder doesn't need permission
           return true;
         }
       } catch (err) {
-        console.warn(err);
+        console.warn('Permission error:', err);
         return false;
       }
     }
-    return true; // iOS doesn't require storage permission for downloads
+    return true;
   };
 
   const openDocument = async url => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,16 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import LoaderKit from 'react-native-loader-kit';
@@ -31,8 +31,9 @@ import EconerItems from '../../../components/EconerItems';
 import EDocItems from '../../../components/EDocItems';
 import ELetterItems from '../../../components/ELetterItems';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import {useGetmotorRenewalsListQuery} from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
 const data = [
@@ -64,30 +65,30 @@ const data = [
     download: true,
     Share: true,
   },
-
 ];
 
-export default function MotorRenewalLetter({ navigation }) {
-  const renderLetterItems = ({ item }) => (
+export default function MotorRenewalLetter({navigation}) {
+  const renderLetterItems = ({item}) => (
     <ELetterItems item={item} navigation={navigation} />
   );
   const [searchText, setSearchText] = useState('');
-
+  const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
   const handleSearch = () => {
-    console.log("searchText", searchText);
-    const filtered = motorRenewalsList?.data.filter(item =>
-      item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase())
+    console.log('searchText', searchText);
+    const filtered = motorRenewalsList?.data.filter(
+      item =>
+        item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase()),
     );
-    console.log("filtered", filtered);
+    console.log('filtered', filtered);
     setFilteredData(filtered);
   };
   function handleClear(v) {
-    if (v == "") {
+    if (v == '') {
       setFilteredData(motorRenewalsList?.data);
     }
   }
@@ -107,17 +108,16 @@ export default function MotorRenewalLetter({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
 
-
   useEffect(() => {
-    refetch
+    refetch;
     setFilteredData(motorRenewalsList?.data);
-    console.log('motorRenewalsList?.data', motorRenewalsList?.data)
-  }, [motorRenewalsList])
+    console.log('motorRenewalsList?.data', motorRenewalsList?.data);
+  }, [motorRenewalsList]);
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -127,26 +127,31 @@ export default function MotorRenewalLetter({ navigation }) {
         onSelectText={v => setSelectedDate(v)}
       />
       <HeaderBackground />
-      <Header Title="Motor Renewal Letter" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 5 }}>
-        <View style={[styles.searchWrap, { marginHorizontal: 15, marginVertical: 3 }]}>
+      <Header
+        Title="Motor Renewal Letter"
+        onPress={() => navigation.goBack()}
+      />
+      <View style={{paddingHorizontal: 5}}>
+        <View
+          style={[
+            styles.searchWrap,
+            {marginHorizontal: 15, marginVertical: 3},
+          ]}>
           <TextInput
             style={styles.textInput}
             value={searchText}
             onChangeText={v => {
-              setSearchText(v)
-              handleClear(v)
-            }
-            }
+              setSearchText(v);
+              handleClear(v);
+            }}
             placeholder="Quick search"
           />
-          <TouchableOpacity
-            onPress={handleSearch}
-            style={styles.searchButton}>
+          <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
             <Feather name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
-        <View style={[styles.searchWrap, { marginHorizontal: 15, marginBottom: 3 }]}>
+        <View
+          style={[styles.searchWrap, {marginHorizontal: 15, marginBottom: 3}]}>
           <TextInput
             style={styles.textInput}
             value={fromDate + ' - ' + toDate}
@@ -162,51 +167,54 @@ export default function MotorRenewalLetter({ navigation }) {
 
         <View>
           {filteredData?.length < 1 ? (
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '80%'
-            }}>
-              <Text style={{
-                fontFamily: Fonts?.Roboto?.Bold,
-                fontSize: window.width * 0.04,
-                color: COLORS.grayText
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '80%',
               }}>
-                {"No letters available.!"}
+              <Text
+                style={{
+                  fontFamily: Fonts?.Roboto?.Bold,
+                  fontSize: window.width * 0.04,
+                  color: COLORS.grayText,
+                }}>
+                {'No letters available.!'}
               </Text>
             </View>
-
-
-          ) :
-            (
-
-
-              <FlatList
-                data={filteredData}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  fadeDuration: 1000,
-                  backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
-                  paddingHorizontal: 15,
-                }}
-                renderItem={renderLetterItems}
+          ) : (
+            <FlatList
+              data={filteredData}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                fadeDuration: 1000,
+                backgroundColor: 'transparent',
+                paddingBottom: window.height * 0.25,
+                paddingHorizontal: 15,
+              }}
+              renderItem={renderLetterItems}
               // keyExtractor={item => item.id.toString()}
-              />
-            )}
-
-
+            />
+          )}
         </View>
-
       </View>
-      {isFetching && <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '100%', height: '100%' }}>
-
-        <LoaderKit
-          style={{ width: 50, height: 50 }}
-          name={'LineScalePulseOutRapid'} // Optional: see list of animations below
-          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-        />
-      </View>}
+      {isFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'} // Optional: see list of animations below
+            color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+          />
+        </View>
+      )}
     </View>
   );
 }

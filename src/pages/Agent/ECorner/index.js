@@ -27,12 +27,13 @@ import {
 import EconerItems from '../../../components/EconerItems';
 import { useGetGetGogreenDetailsAllQuery } from '../../../redux/services/eCornerSlice';
 import { Commands } from 'react-native-webview/lib/RNCWebViewNativeComponent';
+import { useSelector } from 'react-redux';
 const window = Dimensions.get('window');
 
 
 export default function ECorner({ navigation }) {
-
-  const { data: GogreenDetailsAll } = useGetGetGogreenDetailsAllQuery();
+  const userCode = useSelector(state => state.Profile.userCode);
+  const { data: GogreenDetailsAll } = useGetGetGogreenDetailsAllQuery(userCode);
 
   useEffect(() => {
     console.log("GogreenDetailsAll", GogreenDetailsAll);
