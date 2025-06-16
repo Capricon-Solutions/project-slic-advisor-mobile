@@ -44,7 +44,8 @@ export default function ActivityCreation({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const userCode = useSelector(state => state.Profile.userCode);
-
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedLead, setSelectedLead] = useState();
   const [selectedType, setSelectedType] = useState('');
   const [description, setDescription] = useState('');
@@ -93,7 +94,10 @@ export default function ActivityCreation({
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      const response = await ActivityCreate({body, userCode});
+      const response = await ActivityCreate({
+        body,
+        userCode: usertype == 2 ? personalCode : userCode,
+      });
       showToast({
         type: 'success',
         text1: 'Activity Created',

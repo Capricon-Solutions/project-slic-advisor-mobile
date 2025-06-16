@@ -102,6 +102,8 @@ export default function BPlanner({navigation}) {
   const [rememberMe, setRememberMe] = useState(false);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [activityModalVisible, setActivityModalVisible] = useState(false);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'),
   );
@@ -134,15 +136,20 @@ export default function BPlanner({navigation}) {
 
   const date = selectedDate;
   console.log('userCode1', userCode);
+  console.log('usertype', usertype);
+  console.log('personalCode', personalCode);
   const {
     data: PlannerActivities,
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({date, userCode});
+  } = useGetEventsAndActivitiessQuery({
+    date,
+    userCode: usertype == 2 ? personalCode : userCode,
+  });
   console.log('PlannerActivities', PlannerActivities);
   const {data: Leads} = useGetLeadsQuery(
-    {date, userCode},
+    {date, userCode: usertype == 2 ? personalCode : userCode},
     {refetchOnMountOrArgChange: false},
   );
   useEffect(() => {

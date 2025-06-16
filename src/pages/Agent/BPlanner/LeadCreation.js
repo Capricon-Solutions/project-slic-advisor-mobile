@@ -34,13 +34,18 @@ export default function LeadCreation({navigation, route}) {
   const {eventDate} = route.params;
   const userCode = useSelector(state => state.Profile.userCode);
   const agentCode = useSelector(state => state.Profile.agentCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const date = eventDate;
   const {
     data: PlannerActivities,
     isFetching,
     refetch,
     error,
-  } = useGetEventsAndActivitiessQuery({date, userCode});
+  } = useGetEventsAndActivitiessQuery({
+    date,
+    userCode: usertype == 2 ? personalCode : userCode,
+  });
   const [dropdownData, setDropdownData] = useState([]);
   const dropdownArray = PlannerActivities?.data?.plannerEvents;
 

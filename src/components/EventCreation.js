@@ -41,7 +41,8 @@ export default function EventCreation({
   const userCode = useSelector(state => state.Profile.userCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [description, setDescription] = useState('');
-
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const body = {
     eventDesc: description,
     eventDate: selectedDate,
@@ -79,7 +80,10 @@ export default function EventCreation({
 
     try {
       console.log('Creating event with body:', body);
-      const response = await EventCreate({body, userCode});
+      const response = await EventCreate({
+        body,
+        userCode: usertype == 2 ? personalCode : userCode,
+      });
 
       console.log('Activity Created test', response);
       showToast({

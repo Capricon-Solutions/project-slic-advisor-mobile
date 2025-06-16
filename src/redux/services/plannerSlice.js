@@ -6,6 +6,7 @@ export const plannerSlice = baseApi.injectEndpoints({
       query: ({date, userCode}) => {
         const url = `planner/getEventsAndActivities/${userCode}?date=${date}`;
         console.log('Request URL:', url);
+        console.log('userCode gggggg', userCode);
         return url;
       },
       providesTags: ['Events'],
@@ -103,7 +104,7 @@ export const plannerSlice = baseApi.injectEndpoints({
         const finalUrl = `planner/AddPlannerEvent/${userCode}`;
         console.log('Final URL:', finalUrl);
         console.log('Final body:', body);
-        console.log('userCode :', userCode);
+        console.log('userCode ggg:', userCode);
 
         return {
           url: finalUrl,
