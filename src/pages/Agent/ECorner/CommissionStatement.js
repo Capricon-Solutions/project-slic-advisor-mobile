@@ -29,6 +29,8 @@ import MonthYearPicker from '../../../components/MonthYearPicker';
 import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import moment from 'moment';
 import {showToast} from '../../../components/ToastMessage';
+import {useSelector} from 'react-redux';
+import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
 const window = Dimensions.get('window');
 
 const data = [
@@ -69,6 +71,9 @@ export default function CommissionStatement({navigation}) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCode, setSelectedCode] = useState(null);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
+  const userCode = useSelector(state => state.Profile.userCode);
 
   const [
     GetCommissionStatement,
@@ -291,10 +296,10 @@ export default function CommissionStatement({navigation}) {
       .promise.then(() => {
         setLoading(false);
         // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
-        ToastAndroid.show(
-          `Download Complete: File saved to ${localFilePath}`,
-          ToastAndroid.LONG,
-        );
+        // ToastAndroid.show(
+        //   `Download Complete: File saved to ${localFilePath}`,
+        //   ToastAndroid.LONG,
+        // );
 
         Linking.openURL(url).catch(err =>
           console.error("Couldn't open URL", err),
@@ -303,10 +308,13 @@ export default function CommissionStatement({navigation}) {
       .catch(error => {
         console.error('Download failed', error);
         setLoading(false);
-        Alert.alert(
-          'Download Failed',
-          'There was an error downloading the file.',
+        Linking.openURL(url).catch(err =>
+          console.error("Couldn't open URL", err),
         );
+        // Alert.alert(
+        //   'Download Failed',
+        //   'There was an error downloading the file.',
+        // );
       });
   };
   // const openDocument = async url => {
@@ -377,7 +385,7 @@ export default function CommissionStatement({navigation}) {
         onPress={() => navigation.goBack()}
       />
 
-      <MonthYearPickerSingle
+      <MonthYearPickerSinglePast
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
@@ -496,8 +504,12 @@ export default function CommissionStatement({navigation}) {
           />
           <View style={{marginTop: 20}}>
             <AlertButton
-              disabledButton={loading}
-              disabledColor={loading}
+              disabledButton={
+                loading || !selectedDate || !selectedType || !selectedCode
+              }
+              disabledColor={
+                loading || !selectedDate || !selectedType || !selectedCode
+              }
               onPress={() => handlegetCommission()}
               Title={loading ? `${Progress.toFixed(0)}%` : 'Create'}
             />

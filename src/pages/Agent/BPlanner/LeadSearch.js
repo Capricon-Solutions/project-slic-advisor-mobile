@@ -31,10 +31,12 @@ const window = Dimensions.get('window');
 
 export default function LeadSearch({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const {data: branches, isLoading, error} = useGetBranchesQuery();
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
   const {data: Leads} = useGetLeadsQuery(
-    {userCode},
+    {userCode: usertype == 2 ? personalCode : userCode},
     {
       refetchOnMountOrArgChange: false,
     },

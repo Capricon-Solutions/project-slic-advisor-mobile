@@ -111,13 +111,13 @@ export default function LeadCreation({navigation, route}) {
         if (validateForm1()) {
           setCurrentStep(2);
         }
-      } else if (currentStep == 2) {
+      } else if (currentStep === 2) {
         console.log(currentStep);
-        if (!validateForm2()) {
+        if (validateForm2()) {
           console.log('trigger2');
           setCurrentStep(3);
         }
-      } else if (currentStep == 3) {
+      } else if (currentStep === 3) {
         console.log('sssef', currentStep);
         if (validateForm3()) {
           console.log('trigger');

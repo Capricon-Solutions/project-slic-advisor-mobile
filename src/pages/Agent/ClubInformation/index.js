@@ -217,6 +217,7 @@ export default function ClubInformation({navigation}) {
                     Title={
                       'Annual income up to ' + lastUpdatedDate?.toString() ?? ''
                     }
+                    readOnly={true}
                     value={tableData[0][1]}
                   />
                 )}

@@ -232,7 +232,7 @@ export default function BPlanner({navigation}) {
       if (checkedActivities[0].type == 'Event') {
         const response = await DeleteEvent({
           activityId: checkedActivities[0].activityId,
-          userCode: userCode,
+          userCode: usertype == 2 ? personalCode : userCode,
         });
         console.log('Event Deleted:', response);
         if (response?.data?.success === true) {
@@ -257,7 +257,7 @@ export default function BPlanner({navigation}) {
         );
         const response = await DeleteActivity({
           activityId: checkedActivities[0].activityId,
-          userCode: userCode,
+          userCode: usertype == 2 ? personalCode : userCode,
         });
         showToast({
           type: 'success',
