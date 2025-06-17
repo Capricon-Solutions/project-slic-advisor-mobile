@@ -319,7 +319,7 @@ export default function Dashboard({navigation}) {
           paddingBottom: 10,
           paddingTop: 30,
         }}>
-        <View style={styles.mainWrap}>
+        <View style={[styles.mainWrap, {justifyContent: 'flex-start'}]}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
             Title={'Sign In'}
