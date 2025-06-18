@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,23 +6,27 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { styles } from './styles';
+import {styles} from './styles';
 import TableComponent from '../../../components/TableComponent';
-import { useGetLeadActivitiesQuery, useGetLeadByIdQuery } from '../../../redux/services/plannerSlice';
+import {
+  useGetLeadActivitiesQuery,
+  useGetLeadByIdQuery,
+} from '../../../redux/services/plannerSlice';
 import moment from 'moment';
 import LoadingScreen from '../../../components/LoadingScreen';
+import {useSelector} from 'react-redux';
 
-export default function LeadInformation({ navigation, route }) {
+export default function LeadInformation({navigation, route}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const tableHead = ['Activity ID', 'Date and Time', 'Type', 'Description'];
-  const { item } = route.params;
+  const {item} = route.params;
 
   const {
     data: leadData,
@@ -36,18 +40,17 @@ export default function LeadInformation({ navigation, route }) {
     isLoading: LeadActivitieLoading,
     error: LeadActivitieError,
   } = useGetLeadActivitiesQuery(
-    { id: item?.leadId, userCode: userCode },  // Pass both parameters here
+    {id: item?.leadId, userCode: userCode}, // Pass both parameters here
     {
-      skip: !item?.leadId || !userCode,        // Skip if either is missing
-    }
+      skip: !item?.leadId || !userCode, // Skip if either is missing
+    },
   );
 
   const leadInfo = leadData?.data;
   console.log('leadInfo', leadInfo);
   console.log('LeadActivitie', LeadActivitie);
 
-
-  const test = LeadActivitie?.data
+  const test = LeadActivitie?.data;
 
   const tableData = LeadActivitie?.data.map(item => [
     item.activityId,
@@ -64,7 +67,7 @@ export default function LeadInformation({ navigation, route }) {
       <HeaderBackground />
       <Header Title="Lead Information" onPress={() => navigation.goBack()} />
       {isLoading ? (
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <LoadingScreen />
         </View>
       ) : (
@@ -98,7 +101,7 @@ export default function LeadInformation({ navigation, route }) {
               </Text>
               <View
                 // onPress={() => (expanded !== 1 ? setExpanded(1) : setExpanded(0))}
-                style={{ alignItems: 'center', padding: 3 }}>
+                style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 1 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -163,7 +166,7 @@ export default function LeadInformation({ navigation, route }) {
                 onPress={() =>
                   expanded !== 2 ? setExpanded(2) : setExpanded(0)
                 }
-                style={{ alignItems: 'center', padding: 3 }}>
+                style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 2 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -232,7 +235,7 @@ export default function LeadInformation({ navigation, route }) {
               </Text>
               <View
                 // onPress={() => (expanded !== 3 ? setExpanded(3) : setExpanded(0))}
-                style={{ alignItems: 'center', padding: 3 }}>
+                style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 3 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -316,7 +319,7 @@ export default function LeadInformation({ navigation, route }) {
                 }}>
                 policy Info
               </Text>
-              <View style={{ alignItems: 'center', padding: 3 }}>
+              <View style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 4 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -354,9 +357,9 @@ export default function LeadInformation({ navigation, route }) {
                   value={
                     leadInfo?.premium != null
                       ? new Intl.NumberFormat('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(leadInfo.premium)
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(leadInfo.premium)
                       : ''
                   }
                   borderColor={COLORS.warmGray}
@@ -405,7 +408,7 @@ export default function LeadInformation({ navigation, route }) {
               </Text>
               <View
                 // onPress={() => (expanded !== 5 ? setExpanded(5) : setExpanded(0))}
-                style={{ alignItems: 'center', padding: 3 }}>
+                style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 5 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -471,7 +474,7 @@ export default function LeadInformation({ navigation, route }) {
               </Text>
               <View
                 // onPress={() => (expanded !== 6 ? setExpanded(6) : setExpanded(0))}
-                style={{ alignItems: 'center', padding: 3 }}>
+                style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 6 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -480,7 +483,7 @@ export default function LeadInformation({ navigation, route }) {
               </View>
             </TouchableOpacity>
             {expanded == 6 && (
-              <View style={{ marginVertical: 5 }}>
+              <View style={{marginVertical: 5}}>
                 <TableComponent
                   haveTotal={true}
                   tableHead={tableHead}

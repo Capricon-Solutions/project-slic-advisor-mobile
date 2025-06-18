@@ -55,7 +55,7 @@ export default function Profile({navigation}) {
   const [imageUri, setImageUri] = useState(null);
   const [
     uploadImage,
-    {data: uploadedImage, error: uploadError, isLoading: isUploading},
+    {data: uploadedImage, error: uploadError, refetch, isLoading: isUploading},
   ] = useAddImageMutation();
 
   const handleUpload = async uri => {

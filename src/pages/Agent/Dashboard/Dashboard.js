@@ -141,14 +141,16 @@ export default function Dashboard({navigation}) {
       // const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
       const filePath = `${RNFS.CachesDirectoryPath}/profile_${userCode}.png`;
       console.log('Fetching from URL:', url);
+      dispatch(SetdefaultImageUrl(`file://${filePath}`));
 
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
         headers: {'x-api-key': apiKey},
       }).promise;
-
+      console.log('Download responsemmmmmmmmmmm:', response.statusCode);
       if (response.statusCode === 200) {
+        console.log('Image fetched successfully: cccccccccccccccc', filePath);
         dispatch(SetdefaultImageUrl(`file://${filePath}`));
         // setImageUri(`file://${filePath}`);
       } else {
