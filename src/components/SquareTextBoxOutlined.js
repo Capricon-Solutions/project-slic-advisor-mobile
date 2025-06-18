@@ -70,7 +70,14 @@ export default function SquareTextBoxOutlined({
           value={value}
           secureTextEntry={Secure && !showPassword}
           keyboardType={keyboardType}
-          onChangeText={setValue}
+          onChangeText={text => {
+            const sanitizedText = text.replace(
+              /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,
+              '',
+            );
+            setValue(sanitizedText);
+          }}
+          // onChangeText={setValue}
           right={
             Secure && (
               <TextInput.Icon

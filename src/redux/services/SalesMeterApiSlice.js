@@ -10,6 +10,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
         console.log('Fetching  from:', url);
         return url;
       },
+      providesTags: ['SetTarget'],
     }),
     // getAgentCurrentMonthAchievement
     getAgentCurrentMonthAchievement: builder.query({
@@ -32,7 +33,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getCurrentMonthRank: builder.query({
       query: ({id}) => {
         const url = `agent/getCurrentMonthRank/${id}`;
-        console.log('Fetching  from:', url);
+        console.log('Fetching  from: getCurrentMonthRank', url);
         return url;
       },
     }),
@@ -40,7 +41,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getRMSummery: builder.query({
       query: ({month, region}) => {
         const url = `general/getGeneralTotalRm/${region}?month=${month}`;
-        console.log('Fetching  from: ccccccc', url);
+        console.log('Fetching  from: getRMSummery', url);
         return url;
       },
     }),
@@ -54,6 +55,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
           body: body,
         };
       },
+      invalidatesTags: ['SetTarget'],
     }),
   }),
 });
