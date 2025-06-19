@@ -46,7 +46,7 @@ const data = [
 export default function TeamMemberGrid({navigation, route}) {
   const {Title = ''} = route.params || {};
   const userCode = useSelector(state => state.Profile.userCode);
-  console.log('userCode', userCode);
+
   const branchCode = useSelector(
     state => state.Profile.profile.user.branchCode,
   );
@@ -82,6 +82,7 @@ export default function TeamMemberGrid({navigation, route}) {
     endMonth: SelectedMonth == '00' ? '12' : SelectedMonth + 1,
     type: value,
   });
+  console.log('TeamLeaderReport', TeamLeaderReport);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamLeader?.toString() ?? '',
 

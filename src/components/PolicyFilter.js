@@ -191,6 +191,7 @@ export default function PolicyFilter({
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
+            search={false}
             ref={businessTypeRef}
             initialValue={BusinessType}
             placeholder="Select Business Type"
@@ -214,6 +215,7 @@ export default function PolicyFilter({
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
             ref={policyStatusRef}
+            search={false}
             placeholder="Select Policy Status"
             initialValue={status}
             onSelect={value => setStatus(value)}
@@ -226,12 +228,14 @@ export default function PolicyFilter({
           />
           <SquareTextBoxOutlined
             Title={PolicyNumber}
+            maxLength={25}
             Label="Policy Number"
             value={PolicyNumber}
             setValue={text => setPNumber(text)}
           />
           <SquareTextBoxOutlined
             Title={VehicleNumber}
+            maxLength={10}
             value={VehicleNumber}
             Label="Vehicle Number"
             setValue={text => setVNumber(text)}
@@ -270,12 +274,15 @@ export default function PolicyFilter({
             Title={MobileNumber}
             Label="Mobile Number"
             keyboardType={'phone-pad'}
+            maxLength={12}
             value={MobileNumber}
             setValue={text => setMobile(text)}
           />
           <SquareTextBoxOutlined
             Title={NicNumber}
             Label="NIC Number"
+            maxLength={12}
+            nic={true}
             value={NicNumber}
             setValue={text => setNic(text)}
           />
@@ -283,6 +290,7 @@ export default function PolicyFilter({
             Title={BusiRegNo}
             Label="Business Reg. No"
             value={BusiRegNo}
+            maxLength={12}
             setValue={text => setBRegNo(text)}
           />
 

@@ -17,7 +17,7 @@ const window = Dimensions.get('window');
 
 export default function ELetterItems({item, navigation}) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <View style={styles.container}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
           style={{
@@ -27,7 +27,7 @@ export default function ELetterItems({item, navigation}) {
           }}>
           {item?.customerName}
         </Text>
-        <TouchableOpacity
+        <View
           style={{
             backgroundColor: COLORS.grassGreen,
             justifyContent: 'center',
@@ -43,7 +43,7 @@ export default function ELetterItems({item, navigation}) {
             }}>
             {item?.policyStatus}
           </Text>
-        </TouchableOpacity>
+        </View>
       </View>
 
       <View>
@@ -136,7 +136,7 @@ export default function ELetterItems({item, navigation}) {
           </View> */}
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 

@@ -58,8 +58,7 @@ const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect}) => {
           <View style={styles.header}>
             <TouchableOpacity
               onPress={() => setSelectedYear(prev => prev - 1)}
-              disabled={selectedYear <= 2000} // ✅ Block going before 2000
-            >
+              disabled={selectedYear <= new Date().getFullYear() - 10}>
               <MaterialCommunityIcons
                 name="chevron-left"
                 color={selectedYear <= 2000 ? COLORS.warmGray : COLORS.black}

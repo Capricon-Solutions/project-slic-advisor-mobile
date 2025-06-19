@@ -21,6 +21,8 @@ export default function SquareTextBoxOutlined({
   errorBorder,
   borderColor,
   readOnly,
+  maxLength,
+  nic,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -43,6 +45,7 @@ export default function SquareTextBoxOutlined({
         <TextInput
           mode={'outlined'}
           readOnly={readOnly}
+          maxLength={maxLength}
           outlineColor={
             errorBorder
               ? COLORS.errorBorder
@@ -70,11 +73,31 @@ export default function SquareTextBoxOutlined({
           value={value}
           secureTextEntry={Secure && !showPassword}
           keyboardType={keyboardType}
+          // onChangeText={text => {
+          //   const sanitizedText = text.replace(
+          //     /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,
+          //     '',
+          //   );
+          //   setValue(sanitizedText);
+          // }}
           onChangeText={text => {
-            const sanitizedText = text.replace(
+            let sanitizedText = text;
+
+            // Step 1: Remove emojis
+            sanitizedText = sanitizedText.replace(
               /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,
               '',
             );
+
+            // Step 2: Apply NIC-specific validation if nic prop is true
+            if (nic) {
+              // Allow only digits and V/X (for old NICs like 831234567V)
+              sanitizedText = sanitizedText
+                .toUpperCase()
+                .replace(/[^0-9VX]/g, '');
+            }
+
+            // No need to manually limit length — TextInput handles it via maxLength prop
             setValue(sanitizedText);
           }}
           // onChangeText={setValue}

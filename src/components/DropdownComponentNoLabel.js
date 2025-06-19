@@ -14,7 +14,15 @@ const window = Dimensions.get('window');
 
 const DropdownComponentNoLabel = forwardRef(
   (
-    {dropdownData, mode, initialValue, placeholder, onSelect, BorderColor},
+    {
+      dropdownData,
+      mode,
+      initialValue,
+      placeholder,
+      search,
+      onSelect,
+      BorderColor,
+    },
     ref,
   ) => {
     const [value, setValue] = useState(initialValue);
@@ -42,7 +50,7 @@ const DropdownComponentNoLabel = forwardRef(
           iconStyle={styles.iconStyle}
           containerStyle={{width: window.width * 0.5, fontSize: 12}}
           data={dropdownData}
-          search
+          search={search === undefined ? true : search}
           maxHeight={300}
           labelField="label"
           valueField="value"

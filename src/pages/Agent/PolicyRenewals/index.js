@@ -34,6 +34,8 @@ const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [SelectedType, setSelectedType] = useState(1);
   // const [loading, setLoading] = useState(false); // Loading state
 
@@ -76,7 +78,7 @@ export default function PolicyRenewals({navigation}) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
@@ -87,7 +89,7 @@ export default function PolicyRenewals({navigation}) {
     isFetching: isFetchingN,
     refetch: refetchN,
   } = useGetnonMotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

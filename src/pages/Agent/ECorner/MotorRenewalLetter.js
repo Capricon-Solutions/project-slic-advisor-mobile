@@ -73,12 +73,14 @@ export default function MotorRenewalLetter({navigation}) {
   );
   const [searchText, setSearchText] = useState('');
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
   const handleSearch = () => {
     console.log('searchText', searchText);
-    const filtered = motorRenewalsList?.data.filter(
+    const filtered = motorRenewalsList?.data?.filter(
       item =>
         item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
         item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -108,7 +110,7 @@ export default function MotorRenewalLetter({navigation}) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });

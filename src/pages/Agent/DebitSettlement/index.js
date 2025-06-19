@@ -43,10 +43,7 @@ export default function DebitSettlement({navigation, route}) {
   const {policyNo} = route.params;
   const {phone} = route.params;
   const [mobileNo, setMobileNo] = useState(null);
-
-  useEffect(() => {
-    if (phone) setMobileNo(phone);
-  }, [phone]);
+  const [amount, setAmount] = useState(null);
 
   const {
     data: DebitSettlement,
@@ -57,6 +54,13 @@ export default function DebitSettlement({navigation, route}) {
     id: policyNo,
     // id: "VM6125002610000185",
   });
+
+  useEffect(() => {
+    if (phone) setMobileNo(phone);
+    if (DebitSettlement?.data?.premiumNetValue)
+      setAmount(DebitSettlement.data.premiumNetValue);
+  }, [phone, DebitSettlement?.data?.premiumNetValue]);
+
   const [selectedItem, setSelectedItem] = useState('');
 
   const [debitSettlementSms, {isLoading, error}] =
@@ -70,12 +74,10 @@ export default function DebitSettlement({navigation, route}) {
     );
   }, [DebitSettlement]);
 
-  console.log('policyNo', policyNo);
-
   const handleSubmit = async () => {
     const body = {
       policyNumber: policyNo,
-      amount: DebitSettlement?.data?.premiumNetValue || 0,
+      amount: amount || 0,
       mobileNo: mobileNo,
     };
 
@@ -101,8 +103,6 @@ export default function DebitSettlement({navigation, route}) {
       });
     }
   };
-
-  console.log('selectedItemaa,', selectedItem);
 
   return (
     <View style={Styles.container}>
@@ -168,9 +168,12 @@ export default function DebitSettlement({navigation, route}) {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`}
+            // value={amount}
+            setValue={text => setAmount(text)}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
           <SquareTextBox
+            readOnly={true}
             Title={moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD')}
             Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
           />

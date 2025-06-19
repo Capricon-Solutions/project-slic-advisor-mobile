@@ -102,7 +102,7 @@ export default function Profile({navigation}) {
   const nic = profileResponse?.nic;
   const email = profileResponse?.email;
   const phone = profileResponse?.mobileNumber;
-  const contact = profileResponse?.phoneNumber;
+  const contact = profileResponse?.residentNumber;
   // const totalNumberofBranches = profileResponse?.Summery.totalNumberofBranches;
   const status = profileResponse?.status;
   const agentCode = profileResponse?.userCode;
