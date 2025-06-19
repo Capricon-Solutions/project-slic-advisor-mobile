@@ -34,6 +34,8 @@ const window = Dimensions.get('window');
 
 export default function GeneralPolicyList({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchType, setSearchType] = useState('A');
   const [policyValues, setPolicyValues] = useState({
@@ -68,7 +70,7 @@ export default function GeneralPolicyList({navigation}) {
     StartToDt: policyValues.StartToDt,
     TodayReminders: policyValues.status === 'F' ? true : false,
     MobileNumber: policyValues.MobileNumber,
-    AgentCode: userCode,
+    AgentCode: usertype == 2 ? personalCode : userCode,
     NicNumber: policyValues.NicNumber,
     BusiRegNo: policyValues.BusiRegNo,
   };
@@ -87,8 +89,10 @@ export default function GeneralPolicyList({navigation}) {
   useEffect(() => {
     console.log('searchType', searchType);
 
-    const selectedSearchParam =
-      searchParamMap[searchType] || SearchParams.AllSearch;
+    const selectedSearchParam = {
+      ...(searchParamMap[searchType] || SearchParams.AllSearch),
+      AgentCode: usertype == 2 ? personalCode : userCode, // override AgentCode
+    };
     console.log('selectedSearchParam', selectedSearchParam);
     PolicyListResponse(selectedSearchParam)
       .then(response => {
