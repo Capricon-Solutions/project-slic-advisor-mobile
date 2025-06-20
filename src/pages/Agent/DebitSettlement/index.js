@@ -33,6 +33,7 @@ import {
 import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
 import {showToast} from '../../../components/ToastMessage';
+import SquareTextBoxOutlinedDate from '../../../components/SquareTextBoxOutlinedDate';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -44,7 +45,6 @@ export default function DebitSettlement({navigation, route}) {
   const {phone} = route.params;
   const [mobileNo, setMobileNo] = useState(null);
   const [amount, setAmount] = useState(null);
-
   const {
     data: DebitSettlement,
     error: DebitSettlementError,
@@ -54,6 +54,9 @@ export default function DebitSettlement({navigation, route}) {
     id: policyNo,
     // id: "VM6125002610000185",
   });
+  const [date, setDate] = useState(
+    moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD'),
+  );
 
   useEffect(() => {
     if (phone) setMobileNo(phone);
@@ -172,10 +175,18 @@ export default function DebitSettlement({navigation, route}) {
             setValue={text => setAmount(text)}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
-          <SquareTextBox
+          {/* <SquareTextBox
             readOnly={true}
             Title={moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD')}
             Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
+          /> */}
+          <SquareTextBoxOutlinedDate
+            readOnly={true}
+            // Title={StartToDt}
+            Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
+            setValue={text => setDate(text)}
+            keyboardType="numeric"
+            value={date}
           />
           <View style={{marginTop: 15}}>
             <Button

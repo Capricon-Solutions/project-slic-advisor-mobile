@@ -38,13 +38,15 @@ export default function PolicyDetails({navigation, route}) {
   } = useGetPolicyDetailsQuery({
     id: policyNo, // Dynamic ID
   });
-
+  console.log('PolicyDetails', PolicyDetails);
   const policyDetailsResponse = PolicyDetails?.data;
 
   const id = policyDetailsResponse?.id;
   const policyNumber = policyDetailsResponse?.policyNumber;
   const insName = policyDetailsResponse?.insuredName;
-  const Address = policyDetailsResponse?.address;
+  const Address = (policyDetailsResponse?.address || [])
+    .filter(line => line.trim() !== '')
+    .join('\n');
   const phone = policyDetailsResponse?.mobileNumber;
   const startDate = policyDetailsResponse?.startDate;
   const endDate = policyDetailsResponse?.endDate;
