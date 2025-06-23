@@ -249,8 +249,8 @@ export default function LeadCreation({navigation, route}) {
     // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
     if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
       showToast({
-        type: 'error',
-        text1: 'Validation Error',
+        type: 'error', 
+        text1: 'Validation Error', 
         text2: 'Please fill in all required fields. 🚨',
       });
       return false;
@@ -467,7 +467,7 @@ export default function LeadCreation({navigation, route}) {
               borderColor={COLORS.warmGray}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
-                setMobileNumber(formatted);
+                setHomeNumber(formatted);
               }}
             />
             <SquareTextBoxOutlined
@@ -485,7 +485,10 @@ export default function LeadCreation({navigation, route}) {
               Label={'Work Number *'}
               value={workNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setWorkNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                setWorkNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
@@ -496,7 +499,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Address'}
+              Label={'Address *'}
               value={address1}
               borderColor={COLORS.warmGray}
               setValue={text => setAddress1(text)}
