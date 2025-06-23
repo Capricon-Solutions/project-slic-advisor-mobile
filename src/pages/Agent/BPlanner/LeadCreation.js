@@ -231,7 +231,7 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const validateForm2 = () => {
-    if (!vehicleNo || !vehicleType || !vehicleValue) {
+    if (!vehicleNo || !vehicleType || !vehicleValue || !yom) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -424,7 +424,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Year of manufacture'}
+              Label={'Year of manufacture *'}
               value={yom}
               borderColor={COLORS.warmGray}
               setValue={text => {
