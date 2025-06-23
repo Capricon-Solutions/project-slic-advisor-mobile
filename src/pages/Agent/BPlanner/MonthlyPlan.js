@@ -175,10 +175,11 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Meetings *'}
             placeholder={'000000'}
-            value={String(meetings)}
+            value={String(meetings)}ඩ්
             keyboardType={'number-pad'}
             setValue={text => {
-              setmeetings(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setmeetings(filteredText);
               setFormError({...formError, meetings: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -192,7 +193,8 @@ export default function MonthlyPlan({navigation}) {
             value={String(presentations)}
             keyboardType={'number-pad'}
             setValue={text => {
-              setPresentations(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setPresentations(filteredText);
               setFormError({...formError, presentations: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -206,7 +208,8 @@ export default function MonthlyPlan({navigation}) {
             value={String(quotations)}
             keyboardType={'number-pad'}
             setValue={text => {
-              setQuotations(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setQuotations(filteredText);
               setFormError({...formError, quotations: ''});
             }}
             borderColor={COLORS.warmGray}

@@ -48,6 +48,7 @@ export default function SquareTextBoxOutlined({
           mode={'outlined'}
           readOnly={readOnly}
           maxLength={maxLength}
+      
           outlineColor={
             errorBorder
               ? COLORS.errorBorder
@@ -58,6 +59,7 @@ export default function SquareTextBoxOutlined({
           outlineStyle={{borderRadius: 5, borderWidth: 1}}
           style={[
             Styles.textInput,
+
             {
               height: 38,
               // paddingRight: window.width * 0.07 + 10, // Adjust for icon size and padding
@@ -67,9 +69,10 @@ export default function SquareTextBoxOutlined({
               fontSize: 13,
               color: COLORS.textColor,
               fontFamily: Fonts.Roboto.SemiBold,
+              
             },
           ]}
-          placeholderTextColor={COLORS.textColor}
+          placeholderTextColor={COLORS.grayPlaceholder}
           placeholder={placeholder}
           textColor={COLORS.textColor}
           value={value}
