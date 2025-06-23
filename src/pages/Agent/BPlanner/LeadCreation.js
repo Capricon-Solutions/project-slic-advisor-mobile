@@ -123,10 +123,14 @@ export default function LeadCreation({navigation, route}) {
           console.log('trigger');
           setCurrentStep(4);
         }
-      }
+      } 
 
       // setCurrentStep(prevStep => prevStep + 1);
     } else {
+
+   
+      
+ 
       handleLeadCreate();
     }
   };
@@ -197,6 +201,13 @@ export default function LeadCreation({navigation, route}) {
     Address4: null,
     RefNo: refNo,
     AgentCode: agentCode,
+
+    
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const validateForm1 = () => {
@@ -265,6 +276,15 @@ export default function LeadCreation({navigation, route}) {
         type: 'error',
         text1: 'Validation Error',
         text2: 'Please fill in all required fields. 🚨',
+      });
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid Email',
+        text2: 'Please enter a valid email address. 📧',
       });
       return;
     }
