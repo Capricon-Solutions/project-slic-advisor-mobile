@@ -22,6 +22,8 @@ export default function SquareTextBoxOutlined({
   borderColor,
   readOnly,
   maxLength,
+  placeholder,
+  errorMessage,
   nic,
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +70,7 @@ export default function SquareTextBoxOutlined({
             },
           ]}
           placeholderTextColor={COLORS.textColor}
-          placeholder={Title}
+          placeholder={placeholder}
           textColor={COLORS.textColor}
           value={value}
           secureTextEntry={Secure && !showPassword}
@@ -94,8 +96,9 @@ export default function SquareTextBoxOutlined({
               // Allow only digits and V/X (for old NICs like 831234567V)
               sanitizedText = sanitizedText
                 .toUpperCase()
-                .replace(/[^0-9VX]/g, '');
+                .replace(/[^0-9VX]/g, '').slice(0, 12);
             }
+            
 
             // No need to manually limit length — TextInput handles it via maxLength prop
             setValue(sanitizedText);
@@ -111,6 +114,18 @@ export default function SquareTextBoxOutlined({
             )
           }></TextInput>
       </View>
+      {errorMessage && (
+        <Text
+          style={{
+            color: COLORS.errorBorder,
+            fontSize: 12,
+            fontFamily: Fonts.Roboto.Regular,
+            marginTop: 5,
+            fontWeight: 'bold',
+          }}>
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 }

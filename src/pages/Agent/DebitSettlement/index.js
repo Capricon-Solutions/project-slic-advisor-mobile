@@ -78,11 +78,22 @@ export default function DebitSettlement({navigation, route}) {
   }, [DebitSettlement]);
 
   const handleSubmit = async () => {
+
+    if(mobileNo === null || mobileNo === '') {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter the contact number. 🚨',
+      });
+      return;
+    }
     const body = {
       policyNumber: policyNo,
       amount: amount || 0,
       mobileNo: mobileNo,
     };
+
+
 
     try {
       const response = await debitSettlementSms(body).unwrap();
@@ -106,6 +117,44 @@ export default function DebitSettlement({navigation, route}) {
       });
     }
   };
+
+  const validateForm = () => {
+
+    if (!selectedItem || selectedItem === '') {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+
+    if (!amount || amount === '') {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return false;
+    }
+
+    // if (!date || date === '') {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Validation Error',
+    //     text2: 'Please fill in all required fields. 🚨',
+    //   });
+    //   return false;
+    // }
+
+
+    return true;
+  };
+
+  const handleSendPaymentLink = () => {
+    if (!validateForm()) return;
+    setModalVisible(true)
+  }
 
   return (
     <View style={Styles.container}>
@@ -190,7 +239,7 @@ export default function DebitSettlement({navigation, route}) {
           />
           <View style={{marginTop: 15}}>
             <Button
-              onPress={() => setModalVisible(true)}
+              onPress={handleSendPaymentLink}
               Title={'Send Payment Link'}
             />
           </View>

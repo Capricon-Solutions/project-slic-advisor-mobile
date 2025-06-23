@@ -123,10 +123,14 @@ export default function LeadCreation({navigation, route}) {
           console.log('trigger');
           setCurrentStep(4);
         }
-      }
+      } 
 
       // setCurrentStep(prevStep => prevStep + 1);
     } else {
+
+   
+      
+ 
       handleLeadCreate();
     }
   };
@@ -197,6 +201,13 @@ export default function LeadCreation({navigation, route}) {
     Address4: null,
     RefNo: refNo,
     AgentCode: agentCode,
+
+    
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const validateForm1 = () => {
@@ -220,7 +231,7 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const validateForm2 = () => {
-    if (!vehicleNo || !vehicleType || !vehicleValue) {
+    if (!vehicleNo || !vehicleType || !vehicleValue || !yom) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -230,24 +241,24 @@ export default function LeadCreation({navigation, route}) {
     }
     return true;
   };
+
   const validateForm3 = () => {
     if (
       !customerName
-      // || !nic || !selectedDate2 || !occupation
+      || !nic || !selectedDate2 || !occupation
     ) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Customer Name is mandatory. 🚨',
+        text2: 'Please fill in all required fields. 🚨',
       });
       return false;
     }
     return true;
   };
   const validateForm4 = () => {
-    console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
+    // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
     if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
-      console.log('work this');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -258,14 +269,26 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
   const handleLeadCreate = async () => {
-    if (!validateForm4())
+    if (!validateForm4()) {
       // Stop if validation fails
       console.log('work');
-    showToast({
-      type: 'error',
-      text1: 'Validation Error',
-      text2: 'Please fill in all required fields. 🚨',
-    });
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid Email',
+        text2: 'Please enter a valid email address. 📧',
+      });
+      return;
+    }
+
     try {
       const response = await leadCreate(body);
       // setModalVisible(false);
@@ -298,7 +321,7 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type
+              Lead Type *
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
@@ -319,7 +342,10 @@ export default function LeadCreation({navigation, route}) {
               Label={'Insurance Company'}
               value={insCom}
               borderColor={COLORS.warmGray}
-              setValue={text => setInsCom(text)}
+              setValue={text => {
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setInsCom(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
@@ -361,31 +387,52 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Number'}
+              Label={'Vehicle Number *'}
+              ඩ්
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => setVehicleNo(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text
+                  .replace(/[^A-Za-z0-9-]/g, '')
+                  .slice(0, 15);
+                setVehicleNo(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Type'}
+              Label={'Vehicle Type *'}
               value={vehicleType}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleType(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setVehicleType(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Value'}
+              Label={'Vehicle Value *'}
               value={vehicleValue}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleValue(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                if (numericText.length <= 10) {
+                  setVehicleValue(numericText);
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Year of manufacture'}
+              Label={'Year of manufacture *'}
               value={yom}
               borderColor={COLORS.warmGray}
-              setValue={text => setYom(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                if (numericText.length <= 4) {
+                  setYom(numericText);
+                }
+              }}
             />
           </View>
         );
@@ -399,6 +446,10 @@ export default function LeadCreation({navigation, route}) {
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm2}
               onCancel={hideDatePicker2}
+              minimumDate={new Date(1900, 0, 1)}
+              maximumDate={
+                new Date(new Date().setDate(new Date().getDate() - 1))
+              }
             />
             {/* <DateTimePickerModal
               isVisible={isDatePickerVisible2}
@@ -410,22 +461,31 @@ export default function LeadCreation({navigation, route}) {
             /> */}
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Customer Name'}
+              Label={'Customer Name *'}
               borderColor={COLORS.warmGray}
               value={customerName}
-              setValue={text => setCustomerName(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setCustomerName(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'NIC Number'}
+              Label={'NIC Number *'}
               borderColor={COLORS.warmGray}
               value={nic}
-              setValue={text => setNic(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9vVxX]/g, '');
+                if (numericText.length <= 12) {
+                  setNic(numericText);
+                }
+              }}
             />
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
-                Label={'Date Of Birth'}
+                Label={'Date Of Birth *'}
                 readOnly={true}
                 value={selectedDate2}
                 borderColor={COLORS.warmGray}
@@ -442,7 +502,7 @@ export default function LeadCreation({navigation, route}) {
             </View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Occupation'}
+              Label={'Occupation *'}
               borderColor={COLORS.warmGray}
               value={occupation}
               setValue={text => setOccupation(text)}
@@ -454,35 +514,44 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Home Number'}
+              Label={'Home Number *'}
               value={homeNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setHomeNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                setHomeNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Mobile Number'}
+              Label={'Mobile Number *'}
               value={mobileNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setMobileNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                setMobileNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Work Number'}
+              Label={'Work Number *'}
               value={workNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setWorkNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                setWorkNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Email'}
+              Label={'Email *'}
               value={email}
               borderColor={COLORS.warmGray}
               setValue={text => setEmail(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Address'}
+              Label={'Address *'}
               value={address1}
               borderColor={COLORS.warmGray}
               setValue={text => setAddress1(text)}
