@@ -258,8 +258,7 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
   const handleLeadCreate = async () => {
-    if (!validateForm4()){
-
+    if (!validateForm4()) {
       // Stop if validation fails
       console.log('work');
       showToast({
@@ -424,7 +423,12 @@ export default function LeadCreation({navigation, route}) {
               Label={'NIC Number'}
               borderColor={COLORS.warmGray}
               value={nic}
-              setValue={text => setNic(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9vVxX]/g, '');
+                if (numericText.length <= 12) {
+                  setNic(numericText);
+                }
+              }}
             />
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
@@ -461,14 +465,20 @@ export default function LeadCreation({navigation, route}) {
               Label={'Home Number *'}
               value={homeNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setHomeNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                setMobileNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Mobile Number *'}
               value={mobileNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setMobileNumber(text)}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                setMobileNumber(formatted);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
@@ -486,7 +496,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Address *'}
+              Label={'Address'}
               value={address1}
               borderColor={COLORS.warmGray}
               setValue={text => setAddress1(text)}

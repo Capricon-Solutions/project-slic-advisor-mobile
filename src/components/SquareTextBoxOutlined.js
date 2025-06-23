@@ -96,8 +96,9 @@ export default function SquareTextBoxOutlined({
               // Allow only digits and V/X (for old NICs like 831234567V)
               sanitizedText = sanitizedText
                 .toUpperCase()
-                .replace(/[^0-9VX]/g, '');
+                .replace(/[^0-9VX]/g, '').slice(0, 12);
             }
+            
 
             // No need to manually limit length — TextInput handles it via maxLength prop
             setValue(sanitizedText);
