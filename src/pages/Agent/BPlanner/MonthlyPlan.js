@@ -25,6 +25,7 @@ import {
   useMonthlyCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
@@ -118,6 +119,11 @@ export default function MonthlyPlan({navigation}) {
     try {
       const response = await MonthlyCreate({body, userCode});
       console.log('Activity Created:', response?.error?.status);
+      Toast.show({
+        type: 'success',
+        text1: 'Activity Created',
+        text2: 'Activity Created Successfully',
+      });
       if (response?.error?.status == '500') {
         console.log('something went wrong');
         Alert.alert('something went wrong', 'Unsuccessfull');
