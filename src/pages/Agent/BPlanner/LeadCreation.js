@@ -249,8 +249,8 @@ export default function LeadCreation({navigation, route}) {
     // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
     if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
       showToast({
-        type: 'error', 
-        text1: 'Validation Error', 
+        type: 'error',
+        text1: 'Validation Error',
         text2: 'Please fill in all required fields. 🚨',
       });
       return false;
@@ -364,12 +364,15 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Number *'}ඩ්
+              Label={'Vehicle Number *'}
+              ඩ්
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={(text) => {
+              setValue={text => {
                 // Allow only letters and numbers
-                const cleanedText = text.replace(/[^A-Za-z0-9-]/g, '').slice(0 , 15);
+                const cleanedText = text
+                  .replace(/[^A-Za-z0-9-]/g, '')
+                  .slice(0, 15);
                 setVehicleNo(cleanedText);
               }}
             />
@@ -378,9 +381,9 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Type *'}
               value={vehicleType}
               borderColor={COLORS.warmGray}
-              setValue={(text) => {
+              setValue={text => {
                 // Allow only letters and numbers
-                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '')
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
                 setVehicleType(cleanedText);
               }}
             />
@@ -420,6 +423,10 @@ export default function LeadCreation({navigation, route}) {
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm2}
               onCancel={hideDatePicker2}
+              minimumDate={new Date(1900, 0, 1)}
+              maximumDate={
+                new Date(new Date().setDate(new Date().getDate() - 1))
+              }
             />
             {/* <DateTimePickerModal
               isVisible={isDatePickerVisible2}
@@ -434,7 +441,11 @@ export default function LeadCreation({navigation, route}) {
               Label={'Customer Name *'}
               borderColor={COLORS.warmGray}
               value={customerName}
-              setValue={text => setCustomerName(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setCustomerName(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
@@ -484,7 +495,7 @@ export default function LeadCreation({navigation, route}) {
               value={homeNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
                 setHomeNumber(formatted);
               }}
             />
@@ -494,7 +505,7 @@ export default function LeadCreation({navigation, route}) {
               value={mobileNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
                 setMobileNumber(formatted);
               }}
             />
@@ -504,7 +515,7 @@ export default function LeadCreation({navigation, route}) {
               value={workNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0 , 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
                 setWorkNumber(formatted);
               }}
             />
