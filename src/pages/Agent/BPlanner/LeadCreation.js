@@ -342,7 +342,10 @@ export default function LeadCreation({navigation, route}) {
               Label={'Insurance Company'}
               value={insCom}
               borderColor={COLORS.warmGray}
-              setValue={text => setInsCom(text)}
+              setValue={text => {
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setInsCom(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
