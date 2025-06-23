@@ -302,7 +302,7 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type
+              Lead Type *
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
@@ -365,21 +365,21 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Number'}
+              Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
               setValue={text => setVehicleNo(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Type'}
+              Label={'Vehicle Type *'}
               value={vehicleType}
               borderColor={COLORS.warmGray}
               setValue={text => setVehicleType(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Value'}
+              Label={'Vehicle Value *'}
               value={vehicleValue}
               borderColor={COLORS.warmGray}
               setValue={text => setVehicleValue(text)}
@@ -414,7 +414,7 @@ export default function LeadCreation({navigation, route}) {
             /> */}
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Customer Name'}
+              Label={'Customer Name *'}
               borderColor={COLORS.warmGray}
               value={customerName}
               setValue={text => setCustomerName(text)}
@@ -458,35 +458,35 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Home Number'}
+              Label={'Home Number *'}
               value={homeNumber}
               borderColor={COLORS.warmGray}
               setValue={text => setHomeNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Mobile Number'}
+              Label={'Mobile Number *'}
               value={mobileNumber}
               borderColor={COLORS.warmGray}
               setValue={text => setMobileNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Work Number'}
+              Label={'Work Number *'}
               value={workNumber}
               borderColor={COLORS.warmGray}
               setValue={text => setWorkNumber(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Email'}
+              Label={'Email *'}
               value={email}
               borderColor={COLORS.warmGray}
               setValue={text => setEmail(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Address'}
+              Label={'Address *'}
               value={address1}
               borderColor={COLORS.warmGray}
               setValue={text => setAddress1(text)}
