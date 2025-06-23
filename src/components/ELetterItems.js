@@ -101,7 +101,10 @@ export default function ELetterItems({item, navigation}) {
                   fontSize: 13,
                   color: COLORS.textColor,
                 }}>
-                {item?.premiumAmount}
+                {Number(item?.premiumAmount || 0).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </Text>
             </View>
           </View>

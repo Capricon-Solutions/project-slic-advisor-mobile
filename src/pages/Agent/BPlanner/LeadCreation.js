@@ -534,7 +534,7 @@ export default function LeadCreation({navigation, route}) {
             paddingVertical: 6,
             elevation: 10,
           }}>
-          <Text style={{}}>Select Event</Text>
+          <Text style={{color: COLORS.textColor}}>Select Event</Text>
           <View
             style={{
               flexDirection: 'row',

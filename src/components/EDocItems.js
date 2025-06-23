@@ -99,19 +99,17 @@ export default function EDocItems({item, navigation, onPress}) {
         );
         return;
       }
-
       setIsDownloading(true);
       setDownloadProgress(0);
-
       const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-
       console.log('Starting download from:', pdfUrl);
-
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
       const downloadOptions = {
         fromUrl: pdfUrl,
         toFile: localFilePath,
         headers: {
+          'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         },
         progress: res => {
@@ -122,12 +120,13 @@ export default function EDocItems({item, navigation, onPress}) {
       };
 
       const download = RNFS.downloadFile(downloadOptions);
+      console.log('Download started:', download);
       const result = await download.promise;
-
-      console.log('Download completed:', result);
+      // Linking.openURL(localFilePath).catch();
+      console.log('Download completed:', result.statusCode);
 
       if (result.statusCode === 200) {
-        ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
         await FileViewer.open(localFilePath, {showOpenWithDialog: true});
         console.log('PDF opened successfully!');
       } else {
