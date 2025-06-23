@@ -97,6 +97,8 @@ export default function ActivityCreation({
       const response = await ActivityCreate({
         body,
         userCode: usertype == 2 ? personalCode : userCode,
+      }).then(res => {
+        console.log('res', res);
       });
       showToast({
         type: 'success',
@@ -106,7 +108,7 @@ export default function ActivityCreation({
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
         setModalVisible(false);
-      }, 1500);
+      },900);
       console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
