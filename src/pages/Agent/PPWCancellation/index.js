@@ -185,7 +185,7 @@ export default function PPWCancellation({navigation}) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={[styles.searchWrap, {flex: 0.6}]}>
+          <View style={[styles.searchWrap, {flex: 0.59}]}>
             <TextInput
               value={fromDate + ' - ' + toDate}
               readOnly
@@ -197,7 +197,7 @@ export default function PPWCancellation({navigation}) {
               <Feather name="calendar" color={COLORS.white} size={20} />
             </TouchableOpacity>
           </View>
-          <View style={{flex: 0.4, padding: 2}}>
+          <View style={{flex: 0.41, paddingLeft: 2}}>
             {/* <AutocompleteDropdown
               clearOnFocus={true}
               closeOnBlur={true}
@@ -215,6 +215,7 @@ export default function PPWCancellation({navigation}) {
             /> */}
             <DropdownFilled
               Color={COLORS.white}
+              search={false}
               placeholder={'Select Type'}
               onSelect={handleSelect} // Pass the handleSelect function as a prop
               dropdownData={[

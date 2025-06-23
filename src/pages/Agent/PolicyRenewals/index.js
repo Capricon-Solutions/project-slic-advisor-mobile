@@ -60,8 +60,8 @@ export default function PolicyRenewals({navigation}) {
     'Policy Status',
   ];
 
-  const columnWidths = [110, 190, 100, 200, 90, 110, 110, 110];
-  const columnWidths2 = [110, 190, 200, 90, 110, 110, 110];
+  const columnWidths = [110, 190, 100, 200, 90, 130, 120, 110];
+  const columnWidths2 = [110, 190, 200, 90, 130, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonthStart = moment()
     .subtract(3, 'month')
@@ -104,8 +104,18 @@ export default function PolicyRenewals({navigation}) {
     item?.vehicleNo.toString() ?? '',
     item?.policyNo.toString() ?? '',
     item?.ncbPerc.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.premiumAmount.toString() ?? '',
+    item?.sumInsured != null
+      ? Number(item.sumInsured).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '',
+    item?.premiumAmount != null
+      ? Number(item.premiumAmount).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '',
     item?.policyStatus.toString() ?? '',
   ]);
 
@@ -114,8 +124,14 @@ export default function PolicyRenewals({navigation}) {
     item?.customerName.toString() ?? '',
     item?.policyNumber.toString() ?? '',
     item?.policyType.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.totalAmount.toString() ?? '',
+    item?.sumInsured?.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) ?? '',
+    item?.totalAmount?.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) ?? '',
     item?.isPaid.toString() ?? '',
   ]);
   return (

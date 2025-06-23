@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 
@@ -18,6 +18,7 @@ const DropdownFilled = ({
   label,
   placeholder,
   Color,
+  search,
   onSelect,
 }) => {
   const [value, setValue] = useState(null);
@@ -29,19 +30,19 @@ const DropdownFilled = ({
         mode={mode == 'modal' ? 'modal' : 'auto'}
         style={[
           styles.dropdown,
-          isFocus && { borderColor: 'blue' },
-          { backgroundColor: Color ? Color : COLORS.lightBorder },
+          isFocus && {borderColor: 'blue'},
+          {backgroundColor: Color ? Color : COLORS.lightBorder},
         ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        selectedStyle={{ color: 'red' }}
-        itemTextStyle={{ color: COLORS.textColor, fontSize: 14 }}
+        selectedStyle={{color: 'red'}}
+        itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        containerStyle={{ fontSize: 12 }}
+        containerStyle={{fontSize: 12}}
         data={dropdownData}
-        search
+        search={search === undefined ? true : search}
         maxHeight={300}
         labelField="label"
         valueField="value"
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     color: COLORS.textColor,
   },
   selectedTextStyle: {
-    fontSize: 15,
+    fontSize: 12,
     color: COLORS.textColor,
   },
   iconStyle: {

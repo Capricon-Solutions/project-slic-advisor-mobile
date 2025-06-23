@@ -54,6 +54,7 @@ const TableComponent = ({
                         </TouchableOpacity>
                       ) : (
                         <Text
+                          numberOfLines={2}
                           key={cellIndex}
                           style={[
                             styles.text,
