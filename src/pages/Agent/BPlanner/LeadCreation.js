@@ -245,12 +245,12 @@ export default function LeadCreation({navigation, route}) {
   const validateForm3 = () => {
     if (
       !customerName
-      // || !nic || !selectedDate2 || !occupation
+      || !nic || !selectedDate2 || !occupation
     ) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Customer Name is mandatory. 🚨',
+        text2: 'Please fill in all required fields. 🚨',
       });
       return false;
     }
@@ -472,7 +472,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'NIC Number'}
+              Label={'NIC Number *'}
               borderColor={COLORS.warmGray}
               value={nic}
               setValue={text => {
@@ -485,7 +485,7 @@ export default function LeadCreation({navigation, route}) {
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
-                Label={'Date Of Birth'}
+                Label={'Date Of Birth *'}
                 readOnly={true}
                 value={selectedDate2}
                 borderColor={COLORS.warmGray}
@@ -502,7 +502,7 @@ export default function LeadCreation({navigation, route}) {
             </View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Occupation'}
+              Label={'Occupation *'}
               borderColor={COLORS.warmGray}
               value={occupation}
               setValue={text => setOccupation(text)}
