@@ -22,6 +22,8 @@ export default function SquareTextBoxOutlined({
   borderColor,
   readOnly,
   maxLength,
+  placeholder,
+  errorMessage,
   nic,
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +70,7 @@ export default function SquareTextBoxOutlined({
             },
           ]}
           placeholderTextColor={COLORS.textColor}
-          placeholder={Title}
+          placeholder={placeholder}
           textColor={COLORS.textColor}
           value={value}
           secureTextEntry={Secure && !showPassword}
@@ -111,6 +113,18 @@ export default function SquareTextBoxOutlined({
             )
           }></TextInput>
       </View>
+      {errorMessage && (
+        <Text
+          style={{
+            color: COLORS.errorBorder,
+            fontSize: 12,
+            fontFamily: Fonts.Roboto.Regular,
+            marginTop: 5,
+            fontWeight: 'bold',
+          }}>
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 }
