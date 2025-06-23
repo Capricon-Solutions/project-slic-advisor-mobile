@@ -189,6 +189,7 @@ export default function ActivityCreation({
             mode="date"
             style={{backgroundColor: 'red'}}
             datePickerModeAndorid={'spinner'}
+            minimumDate={new Date()}
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />

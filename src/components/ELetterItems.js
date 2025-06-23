@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,7 +18,7 @@ const window = Dimensions.get('window');
 
 export default function ELetterItems({item, navigation}) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
           style={{
@@ -136,7 +137,7 @@ export default function ELetterItems({item, navigation}) {
           </View> */}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

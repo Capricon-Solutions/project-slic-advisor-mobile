@@ -154,6 +154,7 @@ export default function EventCreation({
             style={{backgroundColor: 'red'}}
             datePickerModeAndorid={'spinner'}
             onConfirm={handleConfirm}
+            minimumDate={new Date()}
             onCancel={hideDatePicker}
           />
           {/* <MonthYearPicker

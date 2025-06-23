@@ -140,7 +140,7 @@ export default function PPWCancellation({navigation}) {
         onSelect={v => setSelectedDate(v)}
       />
       <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+        <View style={[styles.mainWrap, {marginTop: 5}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -185,7 +185,7 @@ export default function PPWCancellation({navigation}) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={[styles.searchWrap, {flex: 0.59}]}>
+          <View style={[styles.searchWrap, {flex: 0.59, marginVertical: 12}]}>
             <TextInput
               value={fromDate + ' - ' + toDate}
               readOnly

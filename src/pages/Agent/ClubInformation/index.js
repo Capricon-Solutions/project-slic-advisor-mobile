@@ -53,7 +53,7 @@ export default function ClubInformation({navigation}) {
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
   // );
-  console.log('nextClubInfo', nextClubInfo);
+  console.log('nextClubInfo 333', nextClubInfo);
   // const nextClubTable = nextClubInfo?.data[0]?.last5Years;
   const nextClubTable = nextClubInfo?.data?.[0]?.last5Years;
   const tableHead = ['Income Year', 'Comm. Income'];
@@ -62,29 +62,43 @@ export default function ClubInformation({navigation}) {
   console.log('nextClubTable', nextClubInfo?.data?.[0]?.last5Years);
   const tableData = nextClubTable?.map(item => [
     item?.year?.toString() ?? '',
-    item?.amount?.toString() ?? '',
+    item?.amount != null
+      ? Number(item.amount).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '0.00',
   ]);
   // console.log("clubInfoResponse", clubInfoResponse);
 
   // API Binds
 
-  const currentClub = clubInfoResponse?.currentClub;
-  const clubYear = clubInfoResponse?.clubYear;
-  const currentClublimit = clubInfoResponse?.currentLimit;
-  const generalAppointmentDate = clubInfoResponse?.genAppointDate;
-  const generalPersistency = clubInfoResponse?.genPersistancy;
+  const currentClub = clubInfoResponse?.currentClub || 'Unavailable';
+  const clubYear = clubInfoResponse?.clubYear || 'Unavailable';
+  const currentClublimit = clubInfoResponse?.currentLimit || 'Unavailable';
+  const generalAppointmentDate =
+    clubInfoResponse?.genAppointDate || 'Unavailable';
+  const generalPersistency = clubInfoResponse?.genPersistancy || 'Unavailable';
   const last5YearAverage = clubInfoResponse?.last5YearAvg
     ? Number(clubInfoResponse.last5YearAvg).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })
     : '0.00';
-  const nextClub = clubInfoResponse?.nextClub;
-  const platinumClub = clubInfoResponse?.platinumClub;
-  const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate;
-  const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo;
-  const nextLimit = clubInfoResponse?.nextLimit;
-  console.log('tableData', tableData);
+  const nextClub = clubInfoResponse?.nextClub || 'Unavailable';
+  const platinumClub = clubInfoResponse?.platinumClub || 'Unavailable';
+  const lastUpdatedDate = clubInfoResponse?.lastUpdatedDate || 'Unavailable';
+  const annualIncomeUpTo = clubInfoResponse?.annualIncomeUpTo || 'Unavailable';
+  const nextLimit =
+    clubInfoResponse?.nextLimit != null
+      ? Number(clubInfoResponse.nextLimit).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : 'Unavailable';
+
+  const annualIncomeUpto = tableData?.[0]?.[1] || '0.00';
+  console.log('clubInfoResponse', clubInfoResponse);
   return (
     <View style={[Styles.container, {paddingHorizontal: 10}]}>
       <HeaderBackground />
@@ -215,10 +229,10 @@ export default function ClubInformation({navigation}) {
                 {tableData && (
                   <OutlinedTextBox
                     Title={
-                      'Annual income up to ' + lastUpdatedDate?.toString() ?? ''
+                      'Annual income upto ' + lastUpdatedDate?.toString() ?? ''
                     }
                     readOnly={true}
-                    value={tableData[0][1]}
+                    value={annualIncomeUpto?.toString() ?? ''}
                   />
                 )}
               </View>

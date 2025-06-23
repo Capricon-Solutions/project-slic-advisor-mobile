@@ -64,11 +64,12 @@ export default function ProductPortfolio({navigation}) {
   }, [searchText]);
 
   const handleSearch = v => {
-    setSearchText(searchText);
+    // return;
+    // setSearchText(searchText);
     if (v === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      console.log('searchText', searchText);
+      // console.log('searchText', searchText);
       // return;
       const filtered = products?.data?.filter(item =>
         item.productName.toLowerCase().includes(v?.toLowerCase()),
@@ -76,7 +77,20 @@ export default function ProductPortfolio({navigation}) {
       setFilteredData(filtered);
     }
   };
-
+  const handleSearch2 = () => {
+    // setSearchText(searchText);
+    console.log('searchText', searchText);
+    if (searchText === '') {
+      setFilteredData(products?.data || []); // Reset to show all products
+    } else {
+      console.log('searchText', searchText);
+      // return;
+      const filtered = products?.data?.filter(item =>
+        item.productName.toLowerCase().includes(searchText?.toLowerCase()),
+      );
+      setFilteredData(filtered);
+    }
+  };
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
   console.log('res', products);
@@ -84,8 +98,8 @@ export default function ProductPortfolio({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 10}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -125,7 +139,7 @@ export default function ProductPortfolio({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
             onChangeText={v => {
@@ -134,7 +148,7 @@ export default function ProductPortfolio({navigation}) {
             placeholder="Quick Search"
           />
           <TouchableOpacity
-            onPress={() => handleSearch()}
+            onPress={() => handleSearch2()}
             style={styles.searchButton}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
@@ -151,7 +165,7 @@ export default function ProductPortfolio({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderItem}
                 // keyExtractor={item => item.id.toString()}
@@ -171,7 +185,7 @@ export default function ProductPortfolio({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }

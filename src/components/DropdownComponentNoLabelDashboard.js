@@ -135,5 +135,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 10,
+    color: COLORS.textColor,
   },
 });

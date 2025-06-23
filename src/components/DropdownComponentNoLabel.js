@@ -52,6 +52,7 @@ const DropdownComponentNoLabel = forwardRef(
           data={dropdownData}
           search={search === undefined ? true : search}
           maxHeight={300}
+          searchPlaceholderTextColor={COLORS.textColor}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? placeholder : '...'}
@@ -137,5 +138,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: COLORS.textColor,
   },
 });

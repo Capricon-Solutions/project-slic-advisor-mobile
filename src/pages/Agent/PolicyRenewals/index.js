@@ -144,8 +144,8 @@ export default function PolicyRenewals({navigation}) {
       />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 5}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -185,7 +185,7 @@ export default function PolicyRenewals({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             value={fromDate + ' - ' + toDate}
             readOnly
@@ -210,7 +210,7 @@ export default function PolicyRenewals({navigation}) {
         </View>
 
         {SelectedType == 1 ? (
-          <View>
+          <ScrollView>
             {isFetching == true ? (
               <LoadingScreen />
             ) : (
@@ -223,9 +223,9 @@ export default function PolicyRenewals({navigation}) {
                 haveTotal={false}
               />
             )}
-          </View>
+          </ScrollView>
         ) : (
-          <View>
+          <ScrollView>
             {isFetchingN == true ? (
               <LoadingScreen />
             ) : (
@@ -238,11 +238,11 @@ export default function PolicyRenewals({navigation}) {
                 haveTotal={false}
               />
             )}
-          </View>
+          </ScrollView>
         )}
 
         {/* )} */}
-      </ScrollView>
+      </View>
     </View>
   );
 }

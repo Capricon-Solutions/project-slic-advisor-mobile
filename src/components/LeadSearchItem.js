@@ -29,7 +29,7 @@ export default function LeadSearchItem({item, onPress}) {
           justifyContent: 'space-between',
           flex: 1,
           width: '100%',
-          paddingVertical: 15,
+          paddingVertical: 10,
           paddingLeft: 10,
         }}>
         <View

@@ -205,15 +205,27 @@ export default function BPlanner({navigation}) {
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
+  // const handleCheckboxToggle = index => {
+  //   setActivities(prev =>
+  //     prev.map(
+  //       (item, i) =>
+  //         i === index ? {...item, checked: true} : {...item, checked: false}, // Uncheck all other items
+  //     ),
+  //   );
+  // };
   const handleCheckboxToggle = index => {
     setActivities(prev =>
-      prev.map(
-        (item, i) =>
-          i === index ? {...item, checked: true} : {...item, checked: false}, // Uncheck all other items
-      ),
+      prev.map((item, i) => {
+        if (i === index) {
+          // Toggle the clicked item
+          return {...item, checked: !item.checked};
+        } else {
+          // Uncheck all other items
+          return {...item, checked: false};
+        }
+      }),
     );
   };
-
   const handleActivityDelete = async () => {
     const checkedActivities = activities
       .filter(item => item.checked) // Get items where checked is true

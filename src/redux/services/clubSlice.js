@@ -1,26 +1,19 @@
-import { baseApi } from './api';
+import {baseApi} from './api';
 
 export const clubSlice = baseApi.injectEndpoints({
-
-
   endpoints: builder => ({
     getClub: builder.query({
-      query: (userCode) => {
+      query: userCode => {
         const url = `club/GetTheClubSelection/${userCode}`;
-        console.log('Fetching URL:', url);
+        console.log('Fetching URL hhhhh:', url);
         return url;
       },
     }),
     getNextClub: builder.query({
-      query: (userCode) => `club/GetNextClubYearDetails/${userCode}`,
+      query: userCode => `club/GetNextClubYearDetails/${userCode}`,
     }),
-
-
   }),
 });
 
 // Export hooks
-export const {
-  useGetNextClubQuery,
-  useGetClubQuery
-} = clubSlice;
+export const {useGetNextClubQuery, useGetClubQuery} = clubSlice;

@@ -79,8 +79,8 @@ export default function LeadSearch({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Lead Search" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 10}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -120,7 +120,7 @@ export default function LeadSearch({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
             placeholder="Quick Search"
@@ -142,7 +142,7 @@ export default function LeadSearch({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -154,7 +154,7 @@ export default function LeadSearch({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -162,7 +162,7 @@ export default function LeadSearch({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }

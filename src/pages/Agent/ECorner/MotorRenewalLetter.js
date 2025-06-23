@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -121,7 +122,7 @@ export default function MotorRenewalLetter({navigation}) {
     console.log('motorRenewalsList?.data', motorRenewalsList?.data);
   }, [motorRenewalsList]);
   return (
-    <View style={Styles.container}>
+    <SafeAreaView style={Styles.container}>
       <MonthYearPicker
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
@@ -191,9 +192,10 @@ export default function MotorRenewalLetter({navigation}) {
               contentContainerStyle={{
                 fadeDuration: 1000,
                 backgroundColor: 'transparent',
-                paddingBottom: window.height * 0.25,
+                paddingBottom: window.height * 0.5,
                 paddingHorizontal: 15,
               }}
+              // ListFooterComponent={<View style={{height: 80}} />}
               renderItem={renderLetterItems}
               // keyExtractor={item => item.id.toString()}
             />
@@ -217,6 +219,6 @@ export default function MotorRenewalLetter({navigation}) {
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
