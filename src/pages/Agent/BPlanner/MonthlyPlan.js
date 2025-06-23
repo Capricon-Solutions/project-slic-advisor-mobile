@@ -30,7 +30,7 @@ import Toast from 'react-native-toast-message';
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
+  const [MonthlyCreate, {data: newActivity, isLoading, error,}] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -121,8 +121,8 @@ export default function MonthlyPlan({navigation}) {
       console.log('Activity Created:', response?.error?.status);
       Toast.show({
         type: 'success',
-        text1: 'Activity Created',
-        text2: 'Activity Created Successfully',
+        text1: 'Monthly Plan Created',
+        text2: 'Monthly Plan Created Successfully',
       });
       if (response?.error?.status == '500') {
         console.log('something went wrong');
@@ -181,7 +181,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Meetings *'}
             placeholder={'000000'}
-            value={String(meetings)}ඩ්
+            value={String(meetings)}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
