@@ -230,6 +230,7 @@ export default function LeadCreation({navigation, route}) {
     }
     return true;
   };
+
   const validateForm3 = () => {
     if (
       !customerName
@@ -245,9 +246,8 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
   const validateForm4 = () => {
-    console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
+    // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
     if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
-      console.log('work this');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -258,14 +258,18 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
   const handleLeadCreate = async () => {
-    if (!validateForm4())
+    if (!validateForm4()){
+
       // Stop if validation fails
       console.log('work');
-    showToast({
-      type: 'error',
-      text1: 'Validation Error',
-      text2: 'Please fill in all required fields. 🚨',
-    });
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields. 🚨',
+      });
+      return;
+    }
+
     try {
       const response = await leadCreate(body);
       // setModalVisible(false);
