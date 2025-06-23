@@ -364,31 +364,49 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Number *'}
+              Label={'Vehicle Number *'}ඩ්
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => setVehicleNo(text)}
+              setValue={(text) => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9-]/g, '').slice(0 , 15);
+                setVehicleNo(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Type *'}
               value={vehicleType}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleType(text)}
+              setValue={(text) => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '')
+                setVehicleType(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value *'}
               value={vehicleValue}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleValue(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                if (numericText.length <= 10) {
+                  setVehicleValue(numericText);
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Year of manufacture'}
               value={yom}
               borderColor={COLORS.warmGray}
-              setValue={text => setYom(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                if (numericText.length <= 4) {
+                  setYom(numericText);
+                }
+              }}
             />
           </View>
         );
