@@ -173,7 +173,7 @@ export default function MonthlyPlan({navigation}) {
         <View>
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Meetings'}
+            Label={'Meetings *'}
             placeholder={'000000'}
             value={String(meetings)}
             keyboardType={'number-pad'}
@@ -187,7 +187,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Presentation'}
+            Label={'Presentation *'}
             placeholder={'000000'}
             value={String(presentations)}
             keyboardType={'number-pad'}
@@ -201,7 +201,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Quotations'}
+            Label={'Quotations *'}
             placeholder={'000000'}
             value={String(quotations)}
             keyboardType={'number-pad'}
@@ -216,7 +216,7 @@ export default function MonthlyPlan({navigation}) {
 
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Proposals'}
+            Label={'Proposals *'}
             placeholder={'000000'}
             value={String(proposals)}
             keyboardType={'number-pad'}
@@ -230,7 +230,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Closed'}
+            Label={'Closed *'}
             placeholder={'000000'}
             value={String(closed)}
             keyboardType={'number-pad'}
@@ -244,7 +244,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Leads'}
+            Label={'Leads *'}
             placeholder={'000000'}
             value={String(leads)}
             keyboardType={'number-pad'}
