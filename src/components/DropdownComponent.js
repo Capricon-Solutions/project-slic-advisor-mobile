@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     color: COLORS.textColor,
   },
   selectedTextStyle: {
-    fontSize: 15,
+    fontSize: 12,
     color: COLORS.textColor,
   },
   iconStyle: {

@@ -83,18 +83,25 @@ export default function TeamMemberGrid({navigation, route}) {
     type: value,
   });
   console.log('TeamLeaderReport', TeamLeaderReport);
+
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamLeader?.toString() ?? '',
 
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+    item?.renewal?.toLocaleString() ?? '0.00',
+    item?.nb?.toLocaleString() ?? '0.00',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw: item?.refundPpw?.toLocaleString() ?? '0.00',
+      other: item?.refundOther?.toLocaleString() ?? '0.00',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    item?.endorsement?.toLocaleString() ?? '0.00',
+    (
+      item?.renewal +
+      item?.nb +
+      item?.refundPpw +
+      item?.refundOther +
+      item?.endorsement
+    ).toLocaleString() ?? '0.00',
   ]);
 
   const toggleOrientation = () => {
@@ -397,7 +404,7 @@ export default function TeamMemberGrid({navigation, route}) {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
-                      : ''
+                      : '0.00'
                   }
                 />
               </View>
