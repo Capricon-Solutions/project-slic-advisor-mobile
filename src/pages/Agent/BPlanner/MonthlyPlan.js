@@ -67,15 +67,25 @@ export default function MonthlyPlan({navigation}) {
     }
   }, [planData]);
 
+  // const body = {
+  //   noOfMeetings: meetings,
+  //   noOfPresents: presentations,
+  //   noOfQuots: quotations,
+  //   noOfProposals: proposals,
+  //   noOfClosed: closed,
+  //   noOfLeads: leads,
+  //   monthDate: moment().format('YYYY/MM'),
+  // };
+
   const body = {
-    noOfMeetings: meetings,
-    noOfPresents: presentations,
-    noOfQuots: quotations,
-    noOfProposals: proposals,
-    noOfClosed: closed,
-    noOfLeads: leads,
+    numberOfMeetings: meetings,
+    numberOfPresents: presentations,
+    numberOfQuotations: quotations,
+    numberOfProposals: proposals,
+    numberOfClosed: closed,
+    numberOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
-  };
+  };
  
   const validateForm = () => {
 
@@ -181,7 +191,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Meetings *'}
             placeholder={'000000'}
-            value={String(meetings)}
+            value={String(meetings || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
@@ -196,7 +206,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Presentation *'}
             placeholder={'000000'}
-            value={String(presentations)}
+            value={String(presentations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
@@ -211,7 +221,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Quotations *'}
             placeholder={'000000'}
-            value={String(quotations)}
+            value={String(quotations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
@@ -227,7 +237,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Proposals *'}
             placeholder={'000000'}
-            value={String(proposals)}
+            value={String(proposals || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setProposals(text);
@@ -241,7 +251,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Closed *'}
             placeholder={'000000'}
-            value={String(closed)}
+            value={String(closed || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setClosed(text);
@@ -255,7 +265,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Leads *'}
             placeholder={'000000'}
-            value={String(leads)}
+            value={String(leads || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setLeads(text);
