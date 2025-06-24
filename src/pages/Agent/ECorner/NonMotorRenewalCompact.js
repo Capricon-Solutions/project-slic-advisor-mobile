@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,16 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -32,16 +32,17 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import { useGetnonMotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import {useGetnonMotorRenewalsListQuery} from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
 import TableComponentPR from '../../../components/TableComponentPR';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
-
-
-export default function NonMotorRenewalCompact({ navigation }) {
+export default function NonMotorRenewalCompact({navigation}) {
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const lastMonthStart = moment()
     .subtract(3, 'month')
     .startOf('month')
@@ -57,16 +58,22 @@ export default function NonMotorRenewalCompact({ navigation }) {
     isFetching,
     refetch,
   } = useGetnonMotorRenewalsListQuery({
-    id: 905717, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
   const motorRenewalsResponse = motorRenewalsList?.data;
-  console.log("motorRenewalsResponse", motorRenewalsResponse);
-  const tableHead = ['Due Date', 'Customer Name', 'Policy No',
+  console.log('motorRenewalsResponse', motorRenewalsResponse);
+  const tableHead = [
+    'Due Date',
+    'Customer Name',
+    'Policy No',
     // 'NCB Perc',
     'Policy Type',
-    'Sum Insured', 'Premium Amt', 'Policy Status'];
+    'Sum Insured',
+    'Premium Amt',
+    'Policy Status',
+  ];
 
   const tableData = motorRenewalsResponse?.map(item => [
     item?.policyEndDate?.toString() ?? '',
@@ -90,12 +97,16 @@ export default function NonMotorRenewalCompact({ navigation }) {
         onSelectText={v => setSelectedDate(v)}
       />
       <HeaderBackground />
-      <Header titleFontSize={16} Title="Non-Motor Renewal Compact" onPress={() => navigation.goBack()} />
+      <Header
+        titleFontSize={16}
+        Title="Non-Motor Renewal Compact"
+        onPress={() => navigation.goBack()}
+      />
 
       <ScrollView>
-        <View style={{ paddingHorizontal: 20 }}>
-
-          <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
+        <View style={{paddingHorizontal: 20}}>
+          <View
+            style={[styles.searchWrap, {marginHorizontal: 0, marginBottom: 3}]}>
             <TextInput
               style={styles.textInput}
               value={fromDate + ' - ' + toDate}
@@ -109,12 +120,15 @@ export default function NonMotorRenewalCompact({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          <Text style={{
-            fontFamily: Fonts.Roboto.Regular,
-            fontSize: 14,
-            marginVertical: 20,
-            color: COLORS.borderColor
-          }}>(Click on policy Number to view details)</Text>
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Regular,
+              fontSize: 14,
+              marginVertical: 20,
+              color: COLORS.borderColor,
+            }}>
+            (Click on policy Number to view details)
+          </Text>
           {isFetching == true ? (
             <LoadingScreen />
           ) : (
@@ -129,7 +143,6 @@ export default function NonMotorRenewalCompact({ navigation }) {
           )}
         </View>
       </ScrollView>
-
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,16 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
+import {styles} from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -32,15 +32,15 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
+import {useGetmotorRenewalsListQuery} from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 const window = Dimensions.get('window');
 
-
-
-export default function MotorRenewalCompact({ navigation }) {
+export default function MotorRenewalCompact({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const lastMonthStart = moment()
@@ -58,25 +58,113 @@ export default function MotorRenewalCompact({ navigation }) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
   const motorRenewalsResponse = motorRenewalsList?.data;
 
-
-  const tableHead = ['Due Date', 'Customer Name', 'Vehicle No', 'Policy No', 'NCB Perc', 'Sum Insured', 'Premium Amt', 'Policy Status'];
+  const tableHead = [
+    'Due Date',
+    'Customer Name',
+    'Vehicle No',
+    'Policy No',
+    'NCB Perc',
+    'Sum Insured',
+    'Premium Amt',
+    'Policy Status',
+  ];
   const Data = [
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Renewed' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Due' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-    { dueDate: '01/12/2024', name: 'H G R L K RANAVIRA', vehicleNo: 'K L W 4578', policyNo: 'VM11112777666009', NCB: '60', sumInsured: '1,135,750', premium: '1,135,750', status: 'Expired' },
-
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Renewed',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Renewed',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Renewed',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Due',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Due',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Due',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Expired',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Expired',
+    },
+    {
+      dueDate: '01/12/2024',
+      name: 'H G R L K RANAVIRA',
+      vehicleNo: 'K L W 4578',
+      policyNo: 'VM11112777666009',
+      NCB: '60',
+      sumInsured: '1,135,750',
+      premium: '1,135,750',
+      status: 'Expired',
+    },
   ];
   const tableData = motorRenewalsResponse?.map(item => [
     item?.dueDate?.toString() ?? '',
@@ -90,7 +178,6 @@ export default function MotorRenewalCompact({ navigation }) {
   ]);
   const columnWidths = [100, 140, 100, 200, 70, 100, 100, 100];
 
-
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -100,11 +187,14 @@ export default function MotorRenewalCompact({ navigation }) {
         onSelectText={v => setSelectedDate(v)}
       />
       <HeaderBackground />
-      <Header Title="Motor Renewal Compact" onPress={() => navigation.goBack()} />
+      <Header
+        Title="Motor Renewal Compact"
+        onPress={() => navigation.goBack()}
+      />
       <ScrollView>
-        <View style={{ paddingHorizontal: 20 }}>
-
-          <View style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
+        <View style={{paddingHorizontal: 20}}>
+          <View
+            style={[styles.searchWrap, {marginHorizontal: 0, marginBottom: 3}]}>
             <TextInput
               style={styles.textInput}
               value={fromDate + ' - ' + toDate}
@@ -118,13 +208,15 @@ export default function MotorRenewalCompact({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          <Text style={{
-            fontFamily: Fonts.Roboto.Regular,
-            fontSize: 14,
-            marginVertical: 20,
-            color: COLORS.borderColor
-          }}>(Click on policy Number to view details)</Text>
-
+          <Text
+            style={{
+              fontFamily: Fonts.Roboto.Regular,
+              fontSize: 14,
+              marginVertical: 20,
+              color: COLORS.borderColor,
+            }}>
+            (Click on policy Number to view details)
+          </Text>
 
           {isFetching == true ? (
             <LoadingScreen />
@@ -138,9 +230,7 @@ export default function MotorRenewalCompact({ navigation }) {
               columnWidths={columnWidths}
             />
           )}
-
         </View>
-
       </ScrollView>
     </View>
   );

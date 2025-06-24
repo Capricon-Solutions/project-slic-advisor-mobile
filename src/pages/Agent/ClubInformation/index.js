@@ -40,6 +40,8 @@ const window = Dimensions.get('window');
 
 export default function ClubInformation({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const {data: clubInfo, isFetching, error} = useGetClubQuery(userCode);
@@ -47,7 +49,7 @@ export default function ClubInformation({navigation}) {
     data: nextClubInfo,
     isFetching: isNextFetching,
     error: nextError,
-  } = useGetNextClubQuery(userCode);
+  } = useGetNextClubQuery(usertype == 2 ? personalCode : userCode);
   console.log('userCode', userCode);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(

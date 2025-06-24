@@ -33,7 +33,7 @@ export default function Contacts({navigation}) {
   const {data: branches, isLoading, error} = useGetBranchesQuery();
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
   const [SelectedType, setSelectedType] = useState(1);
-
+  const [search, setSearch] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBranches, setFilteredBranches] = useState([]);
   const [filteredDepartments, setFilteredDepartments] = useState([]);
@@ -50,26 +50,75 @@ export default function Contacts({navigation}) {
     }, []),
   );
 
+  // useEffect(() => {
+  //   if (branches?.data) {
+  //     const filtered = branches?.data?.filter(item =>
+  //       item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //     console.log('filteredbranches', filtered);
+  //     setFilteredBranches(filtered);
+  //   }
+  // }, [branches, searchQuery, search]);
   useEffect(() => {
     if (branches?.data) {
-      const filtered = branches?.data?.filter(item =>
-        item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
+      const filtered = branches?.data
+        ?.filter(item =>
+          item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        ?.sort((a, b) => {
+          const aName = a?.name?.toLowerCase();
+          const bName = b?.name?.toLowerCase();
+          const query = searchQuery.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical
+        });
+
       console.log('filteredbranches', filtered);
       setFilteredBranches(filtered);
     }
-  }, [branches, searchQuery]);
+  }, [branches, searchQuery, search]);
 
+  // useEffect(() => {
+  //   if (departments?.data) {
+  //     const filtered = departments?.data?.filter(item =>
+  //       item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //     console.log('filtereddapartments', filtered);
+  //     console.log('departments', departments);
+  //     setFilteredDepartments(filtered);
+  //   }
+  // }, [departments, searchQuery, search]);
   useEffect(() => {
     if (departments?.data) {
-      const filtered = departments?.data?.filter(item =>
-        item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
+      const filtered = departments?.data
+        ?.filter(item =>
+          item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        ?.sort((a, b) => {
+          const aName = a?.contactName?.toLowerCase();
+          const bName = b?.contactName?.toLowerCase();
+          const query = searchQuery.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical sort
+        });
+
       console.log('filtereddapartments', filtered);
       console.log('departments', departments);
       setFilteredDepartments(filtered);
     }
-  }, [departments, searchQuery]);
+  }, [departments, searchQuery, search]);
 
   return (
     <View style={Styles.container}>
@@ -125,7 +174,7 @@ export default function Contacts({navigation}) {
           />
           <TouchableOpacity
             style={styles.searchButton}
-            onPress={() => setSearchQuery('')}>
+            onPress={() => setSearch(!search)}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
