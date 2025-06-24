@@ -25,11 +25,12 @@ import {
   useMonthlyCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
+  const [MonthlyCreate, {data: newActivity, isLoading, error,}] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -66,15 +67,25 @@ export default function MonthlyPlan({navigation}) {
     }
   }, [planData]);
 
+  // const body = {
+  //   noOfMeetings: meetings,
+  //   noOfPresents: presentations,
+  //   noOfQuots: quotations,
+  //   noOfProposals: proposals,
+  //   noOfClosed: closed,
+  //   noOfLeads: leads,
+  //   monthDate: moment().format('YYYY/MM'),
+  // };
+
   const body = {
-    noOfMeetings: meetings,
-    noOfPresents: presentations,
-    noOfQuots: quotations,
-    noOfProposals: proposals,
-    noOfClosed: closed,
-    noOfLeads: leads,
+    numberOfMeetings: meetings,
+    numberOfPresents: presentations,
+    numberOfQuotations: quotations,
+    numberOfProposals: proposals,
+    numberOfClosed: closed,
+    numberOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
-  };
+  };
  
   const validateForm = () => {
 
@@ -118,6 +129,11 @@ export default function MonthlyPlan({navigation}) {
     try {
       const response = await MonthlyCreate({body, userCode});
       console.log('Activity Created:', response?.error?.status);
+      Toast.show({
+        type: 'success',
+        text1: 'Monthly Plan Created',
+        text2: 'Monthly Plan Created Successfully',
+      });
       if (response?.error?.status == '500') {
         console.log('something went wrong');
         Alert.alert('something went wrong', 'Unsuccessfull');
@@ -175,10 +191,11 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Meetings *'}
             placeholder={'000000'}
-            value={String(meetings)}
+            value={String(meetings || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setmeetings(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setmeetings(filteredText);
               setFormError({...formError, meetings: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -189,10 +206,11 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Presentation *'}
             placeholder={'000000'}
-            value={String(presentations)}
+            value={String(presentations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setPresentations(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setPresentations(filteredText);
               setFormError({...formError, presentations: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -203,10 +221,11 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Quotations *'}
             placeholder={'000000'}
-            value={String(quotations)}
+            value={String(quotations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setQuotations(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setQuotations(filteredText);
               setFormError({...formError, quotations: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -218,7 +237,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Proposals *'}
             placeholder={'000000'}
-            value={String(proposals)}
+            value={String(proposals || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setProposals(text);
@@ -232,7 +251,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Closed *'}
             placeholder={'000000'}
-            value={String(closed)}
+            value={String(closed || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setClosed(text);
@@ -246,7 +265,7 @@ export default function MonthlyPlan({navigation}) {
             mediumFont={true}
             Label={'Leads *'}
             placeholder={'000000'}
-            value={String(leads)}
+            value={String(leads || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               setLeads(text);
