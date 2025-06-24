@@ -96,7 +96,7 @@ export default function ClaimHistory({navigation, route}) {
   const Card = ({item}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('ClaimDetails')}
+        onPress={() => navigation.navigate('ClaimDetails', {claimId: item.claimId})}
         style={styles.card}>
         <View>
           <Text

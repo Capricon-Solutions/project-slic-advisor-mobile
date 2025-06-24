@@ -22,8 +22,23 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentDoc from '../../../components/TableComponentDoc';
+import { useClaimDetailsQuery } from '../../../redux/services/policyDetailsSlice';
 
-export default function ClaimDetails({ navigation }) {
+export default function ClaimDetails({ navigation, route }) {
+
+  const { claimId } = route.params;
+
+  console.log('claimId', claimId);
+
+  const {
+    data: ClaimDetails,
+    error,
+    isFetching,
+  } = useClaimDetailsQuery({
+    id: claimId, // Dynamic ID
+  });
+
+  console.log('ClaimDetails', ClaimDetails);
 
 
   const tableHead = ['Document', 'Status'];

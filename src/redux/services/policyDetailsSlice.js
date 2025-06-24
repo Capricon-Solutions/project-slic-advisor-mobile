@@ -79,6 +79,13 @@ export const policyDetailsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    claimDetails: builder.query({
+      query: ({ id }) => {
+        console.log('url:', id);
+        const url = `motor/getMotorClaimsDocuments?claimId=${id}`;
+        return url;
+      },
+    }),
   }),
 });
 
@@ -89,5 +96,6 @@ export const {
   useGetPremiumHistoryQuery,
   useDebitSettlementQuery,
   useGetPendingHistoryQuery,
-  useDebitSettlementSmsMutation
+  useDebitSettlementSmsMutation,
+  useClaimDetailsQuery,
 } = policyDetailsApi;
