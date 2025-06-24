@@ -69,6 +69,7 @@ export default function LeadCreation({navigation, route}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
   console.log('eventDate', eventDate);
+  const [event, setEvent] = useState(null);
   const [leadType, setLeadType] = useState(null);
   const [policyNo, setPolicyNo] = useState(null);
   const [insCom, setInsCom] = useState(null);
@@ -90,7 +91,7 @@ export default function LeadCreation({navigation, route}) {
   const [address1, setAddress1] = useState(null);
   const [address2, setAddress2] = useState(null);
   const [address3, setAddress3] = useState(null);
-
+  const eventRef = React.useRef();
   useEffect(() => {
     refetch();
   }, [date]);
@@ -123,14 +124,10 @@ export default function LeadCreation({navigation, route}) {
           console.log('trigger');
           setCurrentStep(4);
         }
-      } 
+      }
 
       // setCurrentStep(prevStep => prevStep + 1);
     } else {
-
-   
-      
- 
       handleLeadCreate();
     }
   };
@@ -157,6 +154,10 @@ export default function LeadCreation({navigation, route}) {
     hideDatePicker2();
   };
 
+  const clearEvents = () => {
+    eventRef.current?.clear();
+  };
+
   const hideDatePicker2 = () => {
     setDatePickerVisibility2(false);
   };
@@ -172,7 +173,7 @@ export default function LeadCreation({navigation, route}) {
 
   const body = {
     LeadId: 0,
-    EventId: -1,
+    EventId: event,
     LeadType: leadType,
     CustomerName: customerName,
     CustomerName2: null,
@@ -201,11 +202,9 @@ export default function LeadCreation({navigation, route}) {
     Address4: null,
     RefNo: refNo,
     AgentCode: agentCode,
-
-    
   };
 
-  const isValidEmail = (email) => {
+  const isValidEmail = email => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -243,10 +242,7 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const validateForm3 = () => {
-    if (
-      !customerName
-      || !nic || !selectedDate2 || !occupation
-    ) {
+    if (!customerName || !nic || !selectedDate2 || !occupation) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -388,7 +384,6 @@ export default function LeadCreation({navigation, route}) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Number *'}
-              ඩ්
               borderColor={COLORS.warmGray}
               value={vehicleNo}
               setValue={text => {
@@ -612,12 +607,19 @@ export default function LeadCreation({navigation, route}) {
             }}>
             <View style={{flex: 0.63}}>
               <DropdownComponentNoLabel
+                ref={eventRef}
                 label="Select Event"
+                onSelect={value => setEvent(value)}
                 dropdownData={dropdownData}
               />
             </View>
             <View style={{flex: 0.35}}>
-              <SmallButton Title={'Set as Default'} />
+              <SmallButton
+                disabledButton={event ? false : true}
+                disabledColor={event ? false : true}
+                onPress={() => clearEvents()}
+                Title={'Set as Default'}
+              />
             </View>
           </View>
         </View>

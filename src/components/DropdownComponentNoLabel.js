@@ -79,7 +79,13 @@ const DropdownComponentNoLabel = forwardRef(
             return (
               <>
                 {value && (
-                  <TouchableOpacity onPress={() => setValue(null)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setValue(null);
+                      if (onSelect) {
+                        onSelect(null); // Notify parent
+                      }
+                    }}>
                     <MaterialCommunityIcons
                       style={styles.icon}
                       color={COLORS.primaryRed}

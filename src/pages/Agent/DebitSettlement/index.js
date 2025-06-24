@@ -78,8 +78,7 @@ export default function DebitSettlement({navigation, route}) {
   }, [DebitSettlement]);
 
   const handleSubmit = async () => {
-
-    if(mobileNo === null || mobileNo === '') {
+    if (mobileNo === null || mobileNo === '') {
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -92,8 +91,6 @@ export default function DebitSettlement({navigation, route}) {
       amount: amount || 0,
       mobileNo: mobileNo,
     };
-
-
 
     try {
       const response = await debitSettlementSms(body).unwrap();
@@ -119,7 +116,6 @@ export default function DebitSettlement({navigation, route}) {
   };
 
   const validateForm = () => {
-
     if (!selectedItem || selectedItem === '') {
       showToast({
         type: 'error',
@@ -147,14 +143,13 @@ export default function DebitSettlement({navigation, route}) {
     //   return false;
     // }
 
-
     return true;
   };
 
   const handleSendPaymentLink = () => {
     if (!validateForm()) return;
-    setModalVisible(true)
-  }
+    setModalVisible(true);
+  };
 
   return (
     <View style={Styles.container}>
@@ -191,6 +186,7 @@ export default function DebitSettlement({navigation, route}) {
             clearOnFocus={true}
             closeOnBlur={true}
             showClear={false}
+            useFilter={false}
             style={{}}
             textInputProps={{
               autoCorrect: false,
