@@ -234,7 +234,8 @@ export default function MonthlyPlan({navigation}) {
             value={String(proposals || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setProposals(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setProposals(filteredText);
               setFormError({...formError, proposals: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -248,7 +249,8 @@ export default function MonthlyPlan({navigation}) {
             value={String(closed || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setClosed(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setClosed(filteredText);
               setFormError({...formError, closed: ''});
             }}
             borderColor={COLORS.warmGray}
@@ -262,7 +264,8 @@ export default function MonthlyPlan({navigation}) {
             value={String(leads || '')}
             keyboardType={'number-pad'}
             setValue={text => {
-              setLeads(text);
+              let filteredText = text.replace(/[^0-9]/g, '');
+              setLeads(filteredText);
               setFormError({...formError, leads: ''});
             }}
             borderColor={COLORS.warmGray}
