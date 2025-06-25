@@ -242,7 +242,7 @@ export default function MotorRenewal({navigation}) {
             keyExtractor={item => item.id}
             renderItem={({item}) => <ECMotorRenewal item={item} />}
             contentContainerStyle={{
-              paddingBottom: window.height * 0.25,
+              paddingBottom: 250,
             }}
             showsVerticalScrollIndicator={false}
           />
