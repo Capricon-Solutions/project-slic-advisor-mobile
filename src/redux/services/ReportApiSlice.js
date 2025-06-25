@@ -44,7 +44,7 @@ export const ReportApi = baseApi.injectEndpoints({
     // DirectReport
     DirectReport: builder.query({
       query: ({branch, month, type}) => {
-        const url = `report/directReport?category=%7Bcategoty%7D&reportType=%7BreportType%7D&month=${month}Bmonth%7D`;
+        const url = `report/directReport?category=%7Bcategoty%7D&reportType%7D&month=${month}`;
         console.log('Fetching Report from:', url);
         return url;
       },
