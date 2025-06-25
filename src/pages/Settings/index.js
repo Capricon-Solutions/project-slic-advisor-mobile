@@ -176,7 +176,11 @@ export default function Settings({navigation}) {
           <SquareTextBox
             Title={'Enter your current password'}
             Secure={!showCurrentPassword}
-            setValue={text => setCurrentPassword(text)}
+            value={currentPassword}
+            setValue={text => {
+              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              setCurrentPassword(newText);
+            }}
             RightIcon={
               <TouchableOpacity
                 onPress={() => setShowCurrentPassword(!showCurrentPassword)}>
@@ -199,7 +203,11 @@ export default function Settings({navigation}) {
           <SquareTextBox
             Title={'Enter your new password'}
             Secure={!showNewPassword}
-            setValue={text => setNewPassword(text)}
+            value={newPassword}
+            setValue={text => {
+              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              setNewPassword(newText);
+            }}
             RightIcon={
               <TouchableOpacity
                 onPress={() => setShowNewPassword(!showNewPassword)}>
@@ -245,7 +253,11 @@ export default function Settings({navigation}) {
           <SquareTextBox
             Title={'Enter Confirm Password'}
             Secure={!showConfirmPassword}
-            setValue={text => setConfirmPassword(text)}
+            value={confirmPassword}
+            setValue={text => {
+              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              setConfirmPassword(newText);
+            }}
             RightIcon={
               <TouchableOpacity
                 onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
