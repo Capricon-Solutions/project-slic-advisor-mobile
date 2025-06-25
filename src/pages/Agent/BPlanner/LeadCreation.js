@@ -354,6 +354,7 @@ export default function LeadCreation({navigation, route}) {
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
+              value={leadType}
               dropdownData={[
                 {label: 'Motor', value: 'M'},
                 {label: 'Non-Motor', value: 'G'},
@@ -494,7 +495,7 @@ export default function LeadCreation({navigation, route}) {
               value={customerName}
               setValue={text => {
                 // Allow only letters and numbers
-                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                const cleanedText = text.replace(/[^A-Za-z0-9 ]/g, '');
                 setCustomerName(cleanedText);
               }}
             />
@@ -546,7 +547,7 @@ export default function LeadCreation({navigation, route}) {
               value={homeNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setHomeNumber(formatted);
               }}
             />
@@ -556,7 +557,7 @@ export default function LeadCreation({navigation, route}) {
               value={mobileNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setMobileNumber(formatted);
               }}
             />
@@ -566,7 +567,7 @@ export default function LeadCreation({navigation, route}) {
               value={workNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 15);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setWorkNumber(formatted);
               }}
             />
