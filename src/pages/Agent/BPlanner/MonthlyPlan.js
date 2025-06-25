@@ -30,7 +30,7 @@ import Toast from 'react-native-toast-message';
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, {data: newActivity, isLoading, error,}] =
+  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -38,7 +38,7 @@ export default function MonthlyPlan({navigation}) {
   const [proposals, setProposals] = useState('');
   const [closed, setClosed] = useState('');
   const [leads, setLeads] = useState('');
- 
+
   const [formError, setFormError] = useState({
     meetings: '',
     presentations: '',
@@ -47,7 +47,6 @@ export default function MonthlyPlan({navigation}) {
     closed: '',
     leads: '',
   });
-
 
   const {
     data: planData,
@@ -67,28 +66,27 @@ export default function MonthlyPlan({navigation}) {
     }
   }, [planData]);
 
-  // const body = {
-  //   noOfMeetings: meetings,
-  //   noOfPresents: presentations,
-  //   noOfQuots: quotations,
-  //   noOfProposals: proposals,
-  //   noOfClosed: closed,
-  //   noOfLeads: leads,
-  //   monthDate: moment().format('YYYY/MM'),
-  // };
-
   const body = {
-    numberOfMeetings: meetings,
-    numberOfPresents: presentations,
-    numberOfQuotations: quotations,
-    numberOfProposals: proposals,
-    numberOfClosed: closed,
-    numberOfLeads: leads,
+    noOfMeetings: meetings,
+    noOfPresents: presentations,
+    noOfQuots: quotations,
+    noOfProposals: proposals,
+    noOfClosed: closed,
+    noOfLeads: leads,
     monthDate: moment().format('YYYY/MM'),
-  };
- 
-  const validateForm = () => {
+  };
 
+  //   const body = {
+  //     numberOfMeetings: meetings,
+  //     numberOfPresents: presentations,
+  //     numberOfQuotations: quotations,
+  //     numberOfProposals: proposals,
+  //     numberOfClosed: closed,
+  //     numberOfLeads: leads,
+  //     monthDate: moment().format('YYYY/MM'),
+  //   };
+
+  const validateForm = () => {
     const newErrors = {};
 
     if (!meetings || meetings === '') {
@@ -115,10 +113,8 @@ export default function MonthlyPlan({navigation}) {
       setFormError({...formError, leads: 'Leads is required'});
       newErrors.leads = 'Leads is required';
     }
- 
 
     return Object.keys(newErrors).length === 0;
-
   };
 
   const handleActivityCreate = async () => {
@@ -144,8 +140,6 @@ export default function MonthlyPlan({navigation}) {
       console.error('Error creating activity:', err);
     }
   };
-
- 
 
   const StepperItems = [
     {id: 1, Title: 'Policy Info'},

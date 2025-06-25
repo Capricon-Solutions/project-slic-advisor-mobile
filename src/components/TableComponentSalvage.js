@@ -13,7 +13,7 @@ import Fonts from '../theme/Fonts';
 import TableComponent from './TableComponent';
 const window = Dimensions.get('window');
 
-const TableComponentDoc = ({
+const TableComponentSalvage = ({
   tableHead,
   tableData,
   columnWidths,
@@ -108,11 +108,11 @@ const TableComponentDoc = ({
                                 paddingHorizontal: 10,
                                 backgroundColor:
                                   cellIndex === rowData.length - 1
-                                    ? cellData === 'Document Received'
+                                    ? cellData === 'Item Received'
                                       ? COLORS.lightGreen
-                                      : cellData === 'Document Pending'
+                                      : cellData === 'Item Pending'
                                       ? COLORS.backcard
-                                      : cellData === 'Document Rejected'
+                                      : cellData === 'Item Rejected'
                                       ? COLORS.tableRed
                                       : 'transparent'
                                     : 'transparent',
@@ -124,11 +124,11 @@ const TableComponentDoc = ({
                                     fontFamily: Fonts.Roboto.Bold,
                                     color:
                                       cellIndex === rowData.length - 1
-                                        ? cellData === 'Document Received'
+                                        ? cellData === 'Item Received'
                                           ? COLORS.primaryGreen
-                                          : cellData === 'Document Pending'
+                                          : cellData === 'Item Pending'
                                           ? COLORS.tableOrange
-                                          : cellData === 'Document Rejected'
+                                          : cellData === 'Item Rejected'
                                           ? COLORS.primaryRed
                                           : 'transparent'
                                         : 'transparent',
@@ -248,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TableComponentDoc;
+export default TableComponentSalvage;

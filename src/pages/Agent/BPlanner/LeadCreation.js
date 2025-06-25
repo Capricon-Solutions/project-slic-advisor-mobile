@@ -213,7 +213,7 @@ export default function LeadCreation({navigation, route}) {
     LeadSource: null,
     Address4: null,
     RefNo: refNo,
-    AgentCode: agentCode,
+    AgentCode: usertype == 2 ? personalCode : userCode,
   };
 
   const isValidEmail = email => {
@@ -305,10 +305,24 @@ export default function LeadCreation({navigation, route}) {
     // }
 
     try {
+      console.log('body', body);
       const response = await leadCreate(body);
       // setModalVisible(false);
-      console.log('Activity Created:', response);
-      navigation.navigate('BPlanner');
+      console.log('lead Created:', response);
+      if (response?.data?.success == true) {
+        showToast({
+          type: 'success',
+          text1: 'Lead Created Successfully',
+          text2: response?.data?.message,
+        });
+        navigation.navigate('BPlanner');
+      } else {
+        showToast({
+          type: 'error',
+          text1: 'Lead Creation Failed',
+          text2: response?.data?.message || 'Please try again later. 🚨',
+        });
+      }
     } catch (err) {
       console.error('Error creating activity:', err);
     }
