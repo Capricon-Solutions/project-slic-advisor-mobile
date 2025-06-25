@@ -365,6 +365,7 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextBox
                         Title={'Renewal'}
+                        readOnly={true}
                         value={
                           item.renewal !== null && item.renewal !== undefined
                             ? Number(item.renewal).toLocaleString('en-US', {
@@ -379,6 +380,7 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextBox
                         Title={'NB'}
+                        readOnly={true}
                         value={
                           item.renewal !== null && item.nb !== undefined
                             ? Number(item.nb).toLocaleString('en-US', {
@@ -396,6 +398,7 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextBox
                         Title={'PPW'}
+                        readOnly={true}
                         value={
                           item.renewal !== null && item.refundPpw !== undefined
                             ? Number(item.refundPpw).toLocaleString('en-US', {
@@ -410,6 +413,7 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextBox
                         Title={'Others'}
+                        readOnly={true}
                         value={
                           item.renewal !== null &&
                           item.refundOther !== undefined
@@ -427,6 +431,7 @@ export default function Report({navigation, route}) {
                   <View>
                     <OutlinedTextBox
                       Title={'Endorsement'}
+                      readOnly={true}
                       value={
                         item.renewal !== null && item.endorsement !== undefined
                           ? Number(item.endorsement).toLocaleString('en-US', {
@@ -441,6 +446,7 @@ export default function Report({navigation, route}) {
                   <View>
                     <OutlinedTextBox
                       Title={'Total'}
+                      readOnly={true}
                       value={
                         item.renewal !== null && item.total !== undefined
                           ? Number(item.total).toLocaleString('en-US', {
