@@ -143,8 +143,10 @@ export default function ProductPortfolio({navigation}) {
           <TextInput
             style={styles.textInput}
             onChangeText={v => {
-              setSearchText(v), handleSearch(v);
+              const searchText = v.replace(/[^a-zA-Z]/g, '');
+              setSearchText(searchText), handleSearch(searchText);
             }}
+            value={searchText}
             placeholder="Quick Search"
           />
           <TouchableOpacity
