@@ -117,7 +117,18 @@ export default function ClaimHistory({navigation, route}) {
         <DetailLine Title={'Reg Date'} detail={item.regDate} />
         <DetailLine Title={'Payment Type'} detail={item.payTyp} />
         <DetailLine Title={'Voucher Status'} detail={item.vouSts} />
-        <DetailLine Title={'Paid amount'} detail={'LKR ' + item.padAmount} />
+        <DetailLine
+          Title={'Paid amount'}
+          detail={
+            'LKR ' +
+            (item?.padAmount != null
+              ? Number(item.padAmount).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : '0.00')
+          }
+        />
         <DetailLine Title={'Paid Date'} detail={item.payDate} />
         <DetailLine Title={'Voucher No'} detail={item.vouNo} />
         <DetailLine Title={'Status'} detail={item.status} />
