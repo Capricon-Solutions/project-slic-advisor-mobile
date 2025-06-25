@@ -74,19 +74,28 @@ export default function NonMotorRenewalCompact({navigation}) {
     'Premium Amt',
     'Policy Status',
   ];
-
   const tableData = motorRenewalsResponse?.map(item => [
     item?.policyEndDate?.toString() ?? '',
     item?.customerName?.toString() ?? '',
-    // item?.vehicleNo.toString() ?? '',
+    // item?.vehicleNo?.toString() ?? '',
     item?.policyNumber?.toString() ?? '',
-    item?.policyType.toString() ?? '',
+    item?.policyType?.toString() ?? '',
     // item?.ncbPerc?.toString() ?? '',
-    item?.sumInsured?.toString() ?? '',
-    item?.totalAmount?.toString() ?? '',
+    item?.sumInsured != null
+      ? Number(item.sumInsured).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '0.00',
+    item?.totalAmount != null
+      ? Number(item.totalAmount).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '0.00',
     item?.isPaid?.toString() ?? '',
   ]);
-  const columnWidths = [100, 175, 200, 70, 100, 100, 100];
+  const columnWidths = [100, 175, 200, 70, 130, 130, 100];
   const [isPickerVisible, setPickerVisible] = useState(false);
   return (
     <View style={Styles.container}>

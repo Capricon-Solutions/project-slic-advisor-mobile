@@ -128,7 +128,18 @@ export default function PolicyDetails({navigation, route}) {
             <DetailLine Title={'Mobile No.'} detail={phone} />
             <DetailLine Title={'Started Date'} detail={startDate} />
             <DetailLine Title={'End Date'} detail={endDate} />
-            <DetailLine Title={'Sum Insured'} detail={sumInsured} />
+            <DetailLine
+              Title="Sum Insured"
+              detail={
+                'LKR ' +
+                (sumInsured != null
+                  ? Number(sumInsured).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : '0.00')
+              }
+            />
             <DetailLine Title={'CDM Ref. No.'} detail={refNo} />
             <DetailLine
               Title={'Add. Covers'}
