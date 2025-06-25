@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -22,6 +22,7 @@ const DropdownComponentNoLabel = forwardRef(
       search,
       onSelect,
       BorderColor,
+      value: valueFromParent,
     },
     ref,
   ) => {
@@ -33,6 +34,11 @@ const DropdownComponentNoLabel = forwardRef(
         onSelect(null); // Notify parent
       },
     }));
+
+    useEffect(() => {
+      setValue(valueFromParent);
+    }, [valueFromParent]);
+
     return (
       <View style={styles.container}>
         <Dropdown
@@ -41,6 +47,7 @@ const DropdownComponentNoLabel = forwardRef(
             styles.dropdown,
             {borderColor: BorderColor ? BorderColor : 'gray'},
           ]}
+
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           selectedStyle={{color: 'red'}}
