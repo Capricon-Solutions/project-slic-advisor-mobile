@@ -109,8 +109,16 @@ export default function LeadCreation({navigation, route}) {
       console.log(currentStep);
 
       if (currentStep === 1) {
-        if (validateForm1()) {
-          setCurrentStep(2);
+        if (leadType === 'G') {
+          setVehicleNo(null);
+          setVehicleType(null);
+          setVehicleValue(null);
+          setYom(null);
+          setCurrentStep(3);
+        } else {
+          if (validateForm1()) {
+            setCurrentStep(2);
+          }
         }
       } else if (currentStep === 2) {
         console.log(currentStep);
@@ -133,8 +141,12 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(prevStep => prevStep - 1);
+    if (leadType === 'G' && currentStep === 3) {
+      setCurrentStep(1);
+    } else {
+      if (currentStep > 1) {
+        setCurrentStep(prevStep => prevStep - 1);
+      }
     }
   };
 
@@ -242,11 +254,14 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const validateForm3 = () => {
-    if (!customerName || !nic || !selectedDate2 || !occupation) {
+    if (
+      !customerName
+      // || !nic || !selectedDate2 || !occupation
+    ) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Customer name is required. 🚨',
       });
       return false;
     }
@@ -254,11 +269,15 @@ export default function LeadCreation({navigation, route}) {
   };
   const validateForm4 = () => {
     // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
-    if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
+    if (
+      // !homeNumber ||
+      !mobileNumber
+      // || !workNumber || !email || !address1
+    ) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Mobile number is required. 🚨',
       });
       return false;
     }
@@ -268,22 +287,22 @@ export default function LeadCreation({navigation, route}) {
     if (!validateForm4()) {
       // Stop if validation fails
       console.log('work');
-      showToast({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
-      });
+      // showToast({
+      //   type: 'error',
+      //   text1: 'Validation Error',
+      //   text2: 'Please fill in all required fields. 🚨',
+      // });
       return;
     }
 
-    if (!isValidEmail(email)) {
-      showToast({
-        type: 'error',
-        text1: 'Invalid Email',
-        text2: 'Please enter a valid email address. 📧',
-      });
-      return;
-    }
+    // if (!isValidEmail(email)) {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Invalid Email',
+    //     text2: 'Please enter a valid email address. 📧',
+    //   });
+    //   return;
+    // }
 
     try {
       const response = await leadCreate(body);
@@ -467,7 +486,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'NIC Number *'}
+              Label={'NIC Number'}
               borderColor={COLORS.warmGray}
               value={nic}
               setValue={text => {
@@ -480,7 +499,7 @@ export default function LeadCreation({navigation, route}) {
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
-                Label={'Date Of Birth *'}
+                Label={'Date Of Birth'}
                 readOnly={true}
                 value={selectedDate2}
                 borderColor={COLORS.warmGray}
@@ -497,7 +516,7 @@ export default function LeadCreation({navigation, route}) {
             </View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Occupation *'}
+              Label={'Occupation'}
               borderColor={COLORS.warmGray}
               value={occupation}
               setValue={text => setOccupation(text)}
@@ -509,7 +528,7 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Home Number *'}
+              Label={'Home Number'}
               value={homeNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
@@ -529,7 +548,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Work Number *'}
+              Label={'Work Number'}
               value={workNumber}
               borderColor={COLORS.warmGray}
               setValue={text => {
@@ -539,14 +558,14 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Email *'}
+              Label={'Email'}
               value={email}
               borderColor={COLORS.warmGray}
               setValue={text => setEmail(text)}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Address *'}
+              Label={'Address'}
               value={address1}
               borderColor={COLORS.warmGray}
               setValue={text => setAddress1(text)}
@@ -633,7 +652,11 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Bold,
                 color: COLORS.grayText,
               }}>
-              {currentStep}/{StepperItems.length}
+              {leadType === 'G' && currentStep === 3
+                ? currentStep - 1
+                : currentStep}
+              /
+              {leadType === 'G' ? StepperItems.length - 1 : StepperItems.length}
             </Text>
             <Text
               style={{
@@ -662,6 +685,7 @@ export default function LeadCreation({navigation, route}) {
                       ? COLORS.primaryGreen
                       : COLORS.warmGray,
                   borderRadius: 20,
+                  display: leadType === 'G' && index === 1 ? 'none' : 'flex',
                 }}
               />
             ))}
