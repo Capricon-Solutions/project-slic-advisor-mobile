@@ -124,8 +124,8 @@ export default function Contacts({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Contacts" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 5}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -165,7 +165,7 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
             placeholder="Quick Search"
@@ -209,7 +209,7 @@ export default function Contacts({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }
