@@ -652,7 +652,7 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Bold,
                 color: COLORS.grayText,
               }}>
-              {leadType === 'G' && currentStep === 3
+              {leadType === 'G' && currentStep > 2
                 ? currentStep - 1
                 : currentStep}
               /
