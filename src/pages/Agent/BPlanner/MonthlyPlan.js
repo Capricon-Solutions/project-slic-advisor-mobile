@@ -67,12 +67,12 @@ export default function MonthlyPlan({navigation}) {
   }, [planData]);
 
   const body = {
-    noOfMeetings: meetings,
-    noOfPresents: presentations,
-    noOfQuots: quotations,
-    noOfProposals: proposals,
-    noOfClosed: closed,
-    noOfLeads: leads,
+    noOfMeetings: meetings || 0,
+    noOfPresents: presentations || 0,
+    noOfQuots: quotations || 0,
+    noOfProposals: proposals || 0,
+    noOfClosed: closed || 0,
+    noOfLeads: leads || 0,
     monthDate: moment().format('YYYY/MM'),
   };
 
@@ -118,9 +118,18 @@ export default function MonthlyPlan({navigation}) {
   };
 
   const handleActivityCreate = async () => {
-    if (!validateForm()) return; // Stop if validation fails
+    // if (!validateForm()) return; // Stop if validation fails
 
     // console.log('body');
+
+    if (!meetings && !presentations && !quotations && !proposals && !closed && !leads) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter any one field',
+        text2: 'Please enter any one field',
+      });
+      return;
+    }
 
     try {
       const response = await MonthlyCreate({body, userCode});
