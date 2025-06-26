@@ -210,6 +210,7 @@ export default function DebitSettlement({navigation, route}) {
           />
           {/* <Text>{selectedItem}</Text> */}
           <SquareTextBox
+            keyboardType={'numeric'}
             Title={`LKR ${Number(
               DebitSettlement?.data?.premiumNetValue || 0,
             ).toLocaleString('en-US', {
