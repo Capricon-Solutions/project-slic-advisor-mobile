@@ -28,39 +28,6 @@ export default function EDocItems({item, navigation, onPress}) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   const token = useSelector(state => state.Profile.token);
 
-  // const downloadAndOpenPDF = async path => {
-  //   try {
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-
-  //     const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-
-  //     const options = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         setDownloadProgress(progress);
-  //       },
-  //     };
-
-  //     // Download the file
-  //     const download = RNFS.downloadFile(options);
-  //     await download.promise;
-
-  //     // Open the downloaded file
-  //     await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-  //     console.log('PDF opened successfully!');
-  //   } catch (error) {
-  //     console.error('Download/Open Error:', error);
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
       console.log('Requesting storage permission...');
