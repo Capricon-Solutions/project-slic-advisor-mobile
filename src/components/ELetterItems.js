@@ -13,10 +13,103 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 import Fonts from '../theme/Fonts';
+import {useSelector} from 'react-redux';
+
 const window = Dimensions.get('window');
 
 export default function ELetterItems({item, navigation}) {
+  const [downloadProgress, setDownloadProgress] = React.useState(0);
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const token = useSelector(state => state.Profile.token);
+
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      console.log('Requesting storage permission...');
+      try {
+        if (Platform.Version < 29) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'App needs access to your storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          // Android 10+ doesn't require explicit permission for private storage
+          return true;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true; // iOS or other platforms
+  };
+
+  // Download and open PDF
+  const downloadAndOpenPDF = async path => {
+    if (!path) {
+      console.warn('No path provided for PDF download');
+      return;
+    }
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Permission Denied',
+          'Storage permission is required to download and view the file.',
+        );
+        return;
+      }
+      setIsDownloading(true);
+      setDownloadProgress(0);
+      const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
+      console.log('Starting download from:', pdfUrl);
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+      const downloadOptions = {
+        fromUrl: pdfUrl,
+        toFile: localFilePath,
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
+        progress: res => {
+          const progress = res.bytesWritten / res.contentLength;
+          setDownloadProgress(progress);
+        },
+        progressDivider: 10,
+      };
+
+      const download = RNFS.downloadFile(downloadOptions);
+      console.log('Download started:', download);
+      const result = await download.promise;
+      // Linking.openURL(localFilePath).catch();
+      console.log('Download completed:', result.statusCode);
+
+      if (result.statusCode === 200) {
+        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        console.log('PDF opened successfully!');
+      } else {
+        throw new Error(
+          `Download failed with status code ${result.statusCode}`,
+        );
+      }
+    } catch (error) {
+      console.error('Download/Open error:', error);
+      Alert.alert('Error', 'Failed to download or open the PDF file.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -109,35 +202,49 @@ export default function ELetterItems({item, navigation}) {
             </View>
           </View>
 
-          {/* <View style={{ flex: 0.3, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <View style={{
-              height: 30, width: 30, borderRadius: 8,
-              backgroundColor: COLORS.primary, justifyContent: 'center',
+          <View
+            style={{
+              flex: 0.3,
               alignItems: 'center',
-              borderWidth: 1,
-              borderColor: COLORS.white
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
             }}>
-              <Feather
-                name="download"
-                color={COLORS.black}
-                size={17}
-              />
-            </View>
-
-            <View style={{
-              height: 30, width: 30, borderRadius: 8,
-              backgroundColor: COLORS.primary, justifyContent: 'center',
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: COLORS.white
-            }}>
-              <Ionicons
-                name="share-social-sharp"
-                color={COLORS.black}
-                size={16}
-              />
-            </View>
-          </View> */}
+            {item?.path && (
+              <TouchableOpacity
+                onPress={() => downloadAndOpenPDF(item?.path)}
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 8,
+                  backgroundColor: COLORS.primary,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}>
+                <Feather name="download" color={COLORS.black} size={17} />
+              </TouchableOpacity>
+            )}
+            {item?.path && (
+              <TouchableOpacity
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 8,
+                  backgroundColor: COLORS.primary,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}>
+                <Ionicons
+                  name="share-social-sharp"
+                  color={COLORS.black}
+                  size={16}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </View>
     </SafeAreaView>
