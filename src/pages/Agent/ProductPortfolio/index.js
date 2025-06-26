@@ -63,31 +63,66 @@ export default function ProductPortfolio({navigation}) {
     }
   }, [searchText]);
 
+  // const handleSearch = v => {
+  //   // return;
+  //   // setSearchText(searchText);
+  //   if (v === '') {
+  //     setFilteredData(products?.data || []); // Reset to show all products
+  //   } else {
+  //     // console.log('searchText', searchText);
+  //     // return;
+  //     const filtered = products?.data?.filter(item =>
+  //       item.productName.toLowerCase().includes(v?.toLowerCase()),
+  //     );
+  //     setFilteredData(filtered);
+  //   }
+  // };
   const handleSearch = v => {
-    // return;
-    // setSearchText(searchText);
     if (v === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      // console.log('searchText', searchText);
-      // return;
-      const filtered = products?.data?.filter(item =>
-        item.productName.toLowerCase().includes(v?.toLowerCase()),
-      );
+      const query = v.toLowerCase();
+      const filtered = products?.data
+        ?.filter(item => item?.productName?.toLowerCase().includes(query))
+        ?.sort((a, b) => {
+          const aName = a?.productName?.toLowerCase();
+          const bName = b?.productName?.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical
+        });
+
       setFilteredData(filtered);
     }
   };
   const handleSearch2 = () => {
-    // setSearchText(searchText);
     console.log('searchText', searchText);
+
     if (searchText === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      console.log('searchText', searchText);
-      // return;
-      const filtered = products?.data?.filter(item =>
-        item.productName.toLowerCase().includes(searchText?.toLowerCase()),
-      );
+      const query = searchText.toLowerCase();
+
+      const filtered = products?.data
+        ?.filter(item => item?.productName?.toLowerCase().includes(query))
+        ?.sort((a, b) => {
+          const aName = a?.productName?.toLowerCase();
+          const bName = b?.productName?.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical
+        });
+
       setFilteredData(filtered);
     }
   };
