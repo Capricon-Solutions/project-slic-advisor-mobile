@@ -20,10 +20,15 @@ import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 
-export default function SendPaymentLink({ modalVisible, setModalVisible, handleSubmit, loading, phone, setPhone }) {
+export default function SendPaymentLink({
+  modalVisible,
+  setModalVisible,
+  handleSubmit,
+  loading,
+  phone,
+  setPhone,
+}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
-
-
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -56,10 +61,12 @@ export default function SendPaymentLink({ modalVisible, setModalVisible, handleS
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity onPress={() => {
-        setModalVisible(false);
-
-      }} activeOpacity={1} style={{ flex: 1 }}>
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisible(false);
+        }}
+        activeOpacity={1}
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -78,16 +85,28 @@ export default function SendPaymentLink({ modalVisible, setModalVisible, handleS
                 size={24}
               />
             </TouchableOpacity>
-            <View style={{ width: '100%', marginBottom: 15 }}>
+            <View style={{width: '100%', marginBottom: 15}}>
               <Text style={styles.modalTitle}>Send Payment Link</Text>
             </View>
 
             {/* <SquareTextBox Label={'Contact Number'} Title={phone} /> */}
-            <SquareTextBox
+            {/* <SquareTextBox
               Label={'Contact Number'}
               Title={'Enter phone number'} // placeholder
               value={phone}                // value to display
               setValue={setPhone}          // updater function to allow editing
+              keyboardType="phone-pad"
+            /> */}
+            <SquareTextBox
+              Label={'Contact Number'}
+              Title={'Enter phone number'}
+              value={phone}
+              setValue={v => {
+                const cleaned = v.replace(/[^0-9]/g, ''); // Remove non-digit characters
+                if (cleaned.length <= 12) {
+                  setPhone(cleaned);
+                }
+              }}
               keyboardType="phone-pad"
             />
             <View
@@ -100,8 +119,12 @@ export default function SendPaymentLink({ modalVisible, setModalVisible, handleS
               {/* <View style={{ flex: 0.35 }}>
                 <AlertButtonWhite Title={'Update'} />
               </View> */}
-              <View style={{ flex: 0.35 }}>
-                <AlertButton isLoading={loading} Title={'Confirm'} onPress={handleSubmit} />
+              <View style={{flex: 0.35}}>
+                <AlertButton
+                  isLoading={loading}
+                  Title={'Confirm'}
+                  onPress={handleSubmit}
+                />
               </View>
             </View>
           </View>

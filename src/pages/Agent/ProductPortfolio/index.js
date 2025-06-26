@@ -177,9 +177,12 @@ export default function ProductPortfolio({navigation}) {
         <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
+            // onChangeText={v => {
+            //   const searchText = v.replace(/[^a-zA-Z]/g, '');
+            //   setSearchText(searchText), handleSearch(searchText);
+            // }}
             onChangeText={v => {
-              const searchText = v.replace(/[^a-zA-Z]/g, '');
-              setSearchText(searchText), handleSearch(searchText);
+              setSearchText(v), handleSearch(v);
             }}
             value={searchText}
             placeholder="Quick Search"

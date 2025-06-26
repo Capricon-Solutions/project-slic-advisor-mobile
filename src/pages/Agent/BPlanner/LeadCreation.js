@@ -214,6 +214,7 @@ export default function LeadCreation({navigation, route}) {
     Address4: null,
     RefNo: refNo,
     AgentCode: usertype == 2 ? personalCode : userCode,
+    VehicleManuf: yom,
   };
 
   const isValidEmail = email => {
