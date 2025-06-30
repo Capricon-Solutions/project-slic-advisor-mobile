@@ -74,7 +74,7 @@ export default function NonMotorRenewalCompact({navigation}) {
     'Premium Amt',
     'Policy Status',
   ];
-  const tableData = motorRenewalsResponse?.map(item => [
+  const tableData = motorRenewalsResponse?.nonMotorRenewals?.map(item => [
     item?.policyEndDate?.toString() ?? '',
     item?.customerName?.toString() ?? '',
     // item?.vehicleNo?.toString() ?? '',

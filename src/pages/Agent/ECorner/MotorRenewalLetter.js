@@ -87,12 +87,12 @@ export default function MotorRenewalLetter({navigation}) {
         item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
         item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase()),
     );
-    console.log('filtered', filtered);
+    console.log('motorRenewalsList', motorRenewalsList);
     setFilteredData(filtered);
   };
   function handleClear(v) {
     if (v == '') {
-      setFilteredData(motorRenewalsList?.data);
+      setFilteredData(motorRenewalsList?.data.motorRenewals);
     }
   }
   // const currentYear = new Date().getFullYear();
@@ -118,8 +118,11 @@ export default function MotorRenewalLetter({navigation}) {
 
   useEffect(() => {
     refetch;
-    setFilteredData(motorRenewalsList?.data);
-    console.log('motorRenewalsList?.data', motorRenewalsList?.data);
+    setFilteredData(motorRenewalsList?.data?.motorRenewals);
+    console.log(
+      'motorRenewalsList?.data',
+      motorRenewalsList?.data?.motorRenewals,
+    );
   }, [motorRenewalsList]);
   return (
     <SafeAreaView style={Styles.container}>

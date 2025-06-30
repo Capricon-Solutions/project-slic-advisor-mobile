@@ -75,7 +75,7 @@ export default function MotorRenewalCompact({navigation}) {
     'Policy Status',
   ];
 
-  const tableData = motorRenewalsResponse?.map(item => [
+  const tableData = motorRenewalsResponse?.motorRenewals?.map(item => [
     item?.dueDate?.toString() ?? '',
     item?.customerName?.toString() ?? '',
     item?.vehicleNo?.toString() ?? '',

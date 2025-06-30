@@ -238,7 +238,7 @@ export default function MotorRenewal({navigation}) {
           </View>
         ) : (
           <FlatList
-            data={motorRenewalsList?.data}
+            data={motorRenewalsList?.data?.motorRenewals}
             keyExtractor={item => item.id}
             renderItem={({item}) => <ECMotorRenewal item={item} />}
             contentContainerStyle={{

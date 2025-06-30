@@ -8,6 +8,9 @@ import {
   Linking,
   StyleSheet,
   SafeAreaView,
+  Alert,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,6 +20,7 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Fonts from '../theme/Fonts';
 import {useSelector} from 'react-redux';
+import {showToast} from './ToastMessage';
 
 const window = Dimensions.get('window');
 
@@ -54,6 +58,7 @@ export default function ELetterItems({item, navigation}) {
 
   // Download and open PDF
   const downloadAndOpenPDF = async path => {
+    console.log('Downloading PDF from path:', path);
     if (!path) {
       console.warn('No path provided for PDF download');
       return;
@@ -61,15 +66,22 @@ export default function ELetterItems({item, navigation}) {
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
-        Alert.alert(
-          'Permission Denied',
-          'Storage permission is required to download and view the file.',
-        );
+        // Alert.alert(
+        //   'Permission Denied',
+        //   'Storage permission is required to download and view the file.',
+        // );
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
         return;
       }
       setIsDownloading(true);
       setDownloadProgress(0);
-      const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
+      // const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
+      const pdfUrl = path;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
       console.log('Starting download from:', pdfUrl);
       const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
@@ -104,7 +116,12 @@ export default function ELetterItems({item, navigation}) {
       }
     } catch (error) {
       console.error('Download/Open error:', error);
-      Alert.alert('Error', 'Failed to download or open the PDF file.');
+      // Alert.alert('Error', 'Failed to download or open the PDF file.');
+      showToast({
+        type: 'error',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
+      });
     } finally {
       setIsDownloading(false);
     }
@@ -246,6 +263,21 @@ export default function ELetterItems({item, navigation}) {
             )}
           </View>
         </View>
+        {isDownloading && (
+          <View style={{width: '100%', marginTop: 5}}>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  {width: `${downloadProgress * 100}%`},
+                ]}
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {Math.round(downloadProgress * 100)}% Downloaded
+            </Text>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -277,5 +309,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     marginVertical: 2,
+  },
+  progressBarContainer: {
+    height: 5,
+    width: '100%',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 3,
+    marginTop: -3,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.primary,
+  },
+  progressText: {
+    fontSize: 12,
+    color: COLORS.textColor,
+    fontFamily: Fonts.Roboto.Regular,
   },
 });

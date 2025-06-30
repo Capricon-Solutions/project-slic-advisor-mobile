@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -21,6 +22,7 @@ import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 import {useSelector} from 'react-redux';
+import {showToast} from './ToastMessage';
 const window = Dimensions.get('window');
 
 export default function EDocItems({item, navigation, onPress}) {
@@ -60,10 +62,16 @@ export default function EDocItems({item, navigation, onPress}) {
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
-        Alert.alert(
-          'Permission Denied',
-          'Storage permission is required to download and view the file.',
-        );
+        // Alert.alert(
+        //   'Permission Denied',
+        //   'Storage permission is required to download and view the file.',
+        // );
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
         return;
       }
       setIsDownloading(true);
@@ -103,7 +111,12 @@ export default function EDocItems({item, navigation, onPress}) {
       }
     } catch (error) {
       console.error('Download/Open error:', error);
-      Alert.alert('Error', 'Failed to download or open the PDF file.');
+      showToast({
+        type: 'error',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
+      });
+      // Alert.alert('Error', 'Failed to download or open the PDF file.');
     } finally {
       setIsDownloading(false);
     }
