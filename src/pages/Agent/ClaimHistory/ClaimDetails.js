@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -27,6 +28,8 @@ import {
   useGetClaimDetailsQuery,
 } from '../../../redux/services/policyDetailsSlice';
 import TableComponentSalvage from '../../../components/TableComponentSalvage';
+import LoadingScreen from '../../../components/LoadingScreen';
+const window = Dimensions.get('window');
 
 export default function ClaimDetails({navigation, route}) {
   const {claimId} = route.params;
@@ -68,7 +71,11 @@ export default function ClaimDetails({navigation, route}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Claim Details" onPress={() => navigation.goBack()} />
-      {isEmpty ? (
+      {isFetching ? (
+        <View style={{height: window.height * 0.7}}>
+          <LoadingScreen />
+        </View>
+      ) : isEmpty ? (
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
           <Text
             style={{

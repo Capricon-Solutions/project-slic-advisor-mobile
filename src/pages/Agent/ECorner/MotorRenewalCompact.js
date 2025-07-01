@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -63,6 +63,12 @@ export default function MotorRenewalCompact({navigation}) {
     toDate: toDate,
   });
   const motorRenewalsResponse = motorRenewalsList?.data;
+  useEffect(() => {
+    console.log('test');
+  }, [motorRenewalsList]);
+  useEffect(() => {
+    console.log('test isFetching');
+  }, [isFetching]);
 
   const tableHead = [
     'Due Date',
@@ -75,7 +81,7 @@ export default function MotorRenewalCompact({navigation}) {
     'Policy Status',
   ];
 
-  const tableData = motorRenewalsResponse?.motorRenewals?.map(item => [
+  const tableData = motorRenewalsResponse?.map(item => [
     item?.dueDate?.toString() ?? '',
     item?.customerName?.toString() ?? '',
     item?.vehicleNo?.toString() ?? '',

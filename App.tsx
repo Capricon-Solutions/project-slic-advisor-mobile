@@ -231,7 +231,7 @@ function App(): React.JSX.Element {
           <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>
       </NavigationContainer>
-      <Toast />
+      <Toast visibilityTime={2000} />
     </Provider>
   );
 }

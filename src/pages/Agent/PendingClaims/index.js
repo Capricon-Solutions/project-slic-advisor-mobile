@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,43 +13,42 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
-import { useSelector } from 'react-redux';
-import { useGetClaimHistoryQuery, useGetPendingHistoryQuery, useGetPremiumHistoryQuery } from '../../../redux/services/policyDetailsSlice';
+import {styles} from './styles';
+import {useSelector} from 'react-redux';
+import {
+  useGetClaimHistoryQuery,
+  useGetPendingHistoryQuery,
+  useGetPremiumHistoryQuery,
+} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponentDoc from '../../../components/TableComponentDoc';
 import moment from 'moment';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
-export default function PendingClaims({ navigation, route }) {
+export default function PendingClaims({navigation, route}) {
   const tableHead = ['Document', 'Status'];
   const Data = [
     {
       id: 1,
       documentName: 'RHS Headlight Cowling',
-      status: 'Received'
+      status: 'Received',
     },
     {
       id: 2,
       documentName: 'Headlight',
-      status: 'Received'
+      status: 'Received',
     },
-
-  ]
+  ];
   const columnWidths = [160, 160];
-  const tableData = Data?.map(item => [
-    item.documentName,
-    item.status,
-
-  ]);
+  const tableData = Data?.map(item => [item.documentName, item.status]);
   // const claimHistoryResponse = useSelector(
   //   state => state.claimHistory.claimHistoryResponse.data,
   // );
-  const { policyNo } = route.params;
+  const {policyNo} = route.params;
   // const {
   //   data: ClaimHistory,
 
@@ -65,11 +64,9 @@ export default function PendingClaims({ navigation, route }) {
   });
   const claimHistoryResponse = ClaimHistory?.data;
 
+  console.log('PendingClaims test', ClaimHistory);
 
-
-  console.log('PendingClaims', ClaimHistory);
-
-  const DetailLine = ({ Title, detail }) => {
+  const DetailLine = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -87,13 +84,13 @@ export default function PendingClaims({ navigation, route }) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
     );
   };
-  const DetailLineBold = ({ Title, detail }) => {
+  const DetailLineBold = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -111,18 +108,25 @@ export default function PendingClaims({ navigation, route }) {
           <Text style={styles.detailTextBold}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailTextBold}>{detail}</Text>
         </View>
       </View>
     );
   };
 
-  const Card = ({ item }) => {
+  const Card = ({item}) => {
     const [expanded, setExpanded] = useState(false);
     return (
-      <TouchableOpacity onPress={() => setExpanded(!expanded)} style={styles.card}>
-        <View style={{ backgroundColor: COLORS.TopBackColor, borderRadius: 100, alignItems: 'center' }}>
+      <TouchableOpacity
+        onPress={() => setExpanded(!expanded)}
+        style={styles.card}>
+        <View
+          style={{
+            backgroundColor: COLORS.TopBackColor,
+            borderRadius: 100,
+            alignItems: 'center',
+          }}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.Bold,
@@ -139,34 +143,52 @@ export default function PendingClaims({ navigation, route }) {
         <DetailLine Title={'Ins. Name'} detail={item.name} />
         <DetailLine
           Title={'Date Of Loss'}
-          detail={item.dateOfLoss ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') : 'N/A'}
+          detail={
+            item.dateOfLoss
+              ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format(
+                  'DD MMM YYYY',
+                )
+              : 'N/A'
+          }
         />
         <DetailLine
           Title={'Date Of Intimation'}
-          detail={item.dateOfIntimation ?
-            moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') :
-            'N/A'}
+          detail={
+            item.dateOfIntimation
+              ? moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format(
+                  'DD MMM YYYY',
+                )
+              : 'N/A'
+          }
         />
         <DetailLine
           Title={'Date Of Register'}
-          detail={item.dateOfRegister ?
-            moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format('DD MMM YYYY') :
-            'N/A'}
+          detail={
+            item.dateOfRegister
+              ? moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format(
+                  'DD MMM YYYY',
+                )
+              : 'N/A'
+          }
         />
-        <DetailLine Title={'Estimated liability'} detail={'LKR ' + Number(item.estimatedLiability).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })} />
-        {expanded &&
+        <DetailLine
+          Title={'Estimated liability'}
+          detail={
+            'LKR ' +
+            Number(item.estimatedLiability).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+        />
+        {expanded && (
           <TableComponentDoc
             haveTotal={false}
             tableHead={tableHead}
             tableData={tableData}
             columnWidths={columnWidths}
           />
-
-
-        }
+        )}
       </TouchableOpacity>
     );
   };
@@ -190,7 +212,7 @@ export default function PendingClaims({ navigation, route }) {
             fontFamily: Fonts.Roboto.Bold,
             fontSize: 16,
             marginVertical: 10,
-            marginHorizontal: 20
+            marginHorizontal: 20,
           }}>
           Claim Details of - {policyNo}
         </Text>
@@ -198,10 +220,9 @@ export default function PendingClaims({ navigation, route }) {
 
       <ScrollView
         fadingEdgeLength={20}
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
-
+        contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
         {isFetching ? (
-          <View style={{ height: window.height * 0.7 }}>
+          <View style={{height: window.height * 0.7}}>
             <LoadingScreen />
           </View>
         ) : (
@@ -210,9 +231,9 @@ export default function PendingClaims({ navigation, route }) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 7 }}
-                renderItem={({ item }) => <Card item={item} />}
-              // keyExtractor={item => item.id.toString()}
+                contentContainerStyle={{paddingHorizontal: 7}}
+                renderItem={({item}) => <Card item={item} />}
+                // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <View
@@ -234,7 +255,6 @@ export default function PendingClaims({ navigation, route }) {
           </View>
         )}
       </ScrollView>
-
     </View>
   );
 }
