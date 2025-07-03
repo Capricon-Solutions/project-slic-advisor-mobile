@@ -217,8 +217,11 @@ export default function DebitSettlement({navigation, route}) {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`}
-            // value={amount}
-            setValue={text => setAmount(text)}
+            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            setValue={text => {
+              const raw = text.replace(/[^0-9]/g, ''); // remove commas
+              setAmount(raw);
+            }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
           {/* <SquareTextBox

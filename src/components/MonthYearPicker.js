@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -31,7 +31,7 @@ const months = [
   'December',
 ];
 
-const MonthYearPicker = ({ visible, onClose, onSelect }) => {
+const MonthYearPicker = ({visible, onClose, onSelect}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [startDate, setStartDate] = useState(null);
@@ -92,7 +92,7 @@ const MonthYearPicker = ({ visible, onClose, onSelect }) => {
             keyExtractor={(item, index) => index.toString()}
             numColumns={4}
             contentContainerStyle={styles.monthGrid}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               const selectedDate = moment(
                 `${selectedYear}-${index + 1}-01`,
                 'YYYY-MM-DD',
@@ -121,13 +121,28 @@ const MonthYearPicker = ({ visible, onClose, onSelect }) => {
               );
             }}
           />
-
+          <Text
+            style={{
+              color: !(startDate && endDate) ? COLORS.warmGray : 'transparent',
+              marginBottom: 10,
+            }}>
+            Please select a start and end month.
+          </Text>
           {/* Footer Buttons */}
           <View style={styles.footer}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
+            {/* <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
+              <Text style={styles.doneText}>Done</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              style={[
+                styles.doneButton,
+                !(startDate && endDate) && styles.disabledButton,
+              ]}
+              onPress={handleDone}
+              disabled={!(startDate && endDate)}>
               <Text style={styles.doneText}>Done</Text>
             </TouchableOpacity>
           </View>
@@ -160,11 +175,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '85%',
   },
-  yearText: { fontSize: 20, fontWeight: 'bold', color: COLORS.textColor },
+  yearText: {fontSize: 20, fontWeight: 'bold', color: COLORS.textColor},
   monthGrid: {
-    marginVertical: 20, paddingHorizontal: 5, justifyContent: 'space-evenly',
+    marginTop: 20,
+    paddingHorizontal: 5,
+    justifyContent: 'space-evenly',
     // width: '80%',
-
   },
   monthButton: {
     marginHorizontal: 5,
@@ -176,13 +192,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
   },
-  selectedMonth: { borderColor: '#00AEEF', backgroundColor: '#E0F7FA' },
+  selectedMonth: {borderColor: '#00AEEF', backgroundColor: '#E0F7FA'},
   monthText: {
     fontSize: 11,
     fontFamily: Fonts.Roboto.Medium,
     color: COLORS.textColor,
   },
-  selectedMonthText: { color: '#00AEEF', fontWeight: 'bold' },
+  selectedMonthText: {color: '#00AEEF', fontWeight: 'bold'},
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -202,6 +218,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: COLORS.primaryGreen,
   },
-  closeText: { color: '#555' },
-  doneText: { color: '#fff', fontWeight: 'bold' },
+  disabledButton: {
+    backgroundColor: '#ccc',
+  },
+  closeText: {color: '#555'},
+  doneText: {color: '#fff', fontWeight: 'bold'},
 });
