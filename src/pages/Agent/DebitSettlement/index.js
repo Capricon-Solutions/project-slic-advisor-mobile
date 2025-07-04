@@ -107,10 +107,11 @@ export default function DebitSettlement({navigation, route}) {
         }, 800);
       }
     } catch (err) {
+      console.log('err', err);
       showToast({
         type: 'error',
         text1: 'Failed',
-        text2: err?.data?.Message || 'Something went wrong.',
+        text2: err?.data?.Message || 'Enter valid contact number.',
       });
     }
   };

@@ -217,6 +217,7 @@ export default function TrainingCalender({navigation}) {
                 Color={COLORS.white}
                 BorderColor={COLORS.textColor}
                 initialValue={type}
+                search={false}
                 placeholder="Select Training Type"
                 onSelect={value => setType(value)}
                 dropdownData={[
