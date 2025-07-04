@@ -193,7 +193,7 @@ const LoginScreen = ({navigation}) => {
       </Text>
       {/* <Text>{username}</Text> */}
       <View style={{marginVertical: 5, width: '100%'}}>
-        <SquareTextBox
+        {/* <SquareTextBox
           Title={'Username'}
           value={username}
           errorBorder={errorShow}
@@ -201,7 +201,18 @@ const LoginScreen = ({navigation}) => {
             setUsername(text);
 
             setErrorShow(false);
-          }}></SquareTextBox>
+          }}></SquareTextBox> */}
+        <SquareTextBox
+          Title={'Username'}
+          value={username}
+          errorBorder={errorShow}
+          setValue={text => {
+            if (text.length <= 15) {
+              setUsername(text);
+              setErrorShow(false);
+            }
+          }}
+        />
       </View>
 
       <View style={{marginVertical: 5, width: '100%'}}>
@@ -211,8 +222,10 @@ const LoginScreen = ({navigation}) => {
           value={password}
           errorBorder={errorShow}
           setValue={text => {
-            setPassword(text);
-            setErrorShow(false);
+            if (text.length <= 15) {
+              setPassword(text);
+              setErrorShow(false);
+            }
           }}></SquareTextBox>
       </View>
 

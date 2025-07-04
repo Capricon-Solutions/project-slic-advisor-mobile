@@ -37,16 +37,38 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  // const handleMonthSelection = monthIndex => {
+  //   const selectedDate = moment(
+  //     `${selectedYear}-${monthIndex + 1}-01`,
+  //     'YYYY-MM-DD',
+  //   );
+  //   if (!startDate || (startDate && endDate)) {
+  //     setStartDate(selectedDate);
+  //     setEndDate(null);
+  //   } else if (startDate && !endDate) {
+
+  //     if (selectedDate.isBefore(startDate)) {
+  //       setStartDate(selectedDate);
+  //     } else {
+  //       setEndDate(selectedDate);
+  //     }
+  //   }
+  // };
+
   const handleMonthSelection = monthIndex => {
     const selectedDate = moment(
       `${selectedYear}-${monthIndex + 1}-01`,
       'YYYY-MM-DD',
     );
+
     if (!startDate || (startDate && endDate)) {
       setStartDate(selectedDate);
       setEndDate(null);
     } else if (startDate && !endDate) {
-      if (selectedDate.isBefore(startDate)) {
+      // If same month selected again, reset selection
+      if (selectedDate.isSame(startDate, 'month')) {
+        setStartDate(null);
+      } else if (selectedDate.isBefore(startDate)) {
         setStartDate(selectedDate);
       } else {
         setEndDate(selectedDate);
