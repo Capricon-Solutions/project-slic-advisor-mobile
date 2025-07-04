@@ -9,7 +9,8 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
-  ActivityIndicator, // Added for the loading animation
+  ActivityIndicator,
+  SafeAreaView, // Added for the loading animation
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -135,7 +136,7 @@ export default function PolicyRenewals({navigation}) {
     item?.isPaid.toString() ?? '',
   ]);
   return (
-    <View style={Styles.container}>
+    <SafeAreaView style={Styles.container}>
       <MonthYearPicker
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
@@ -208,41 +209,42 @@ export default function PolicyRenewals({navigation}) {
             (Click on policy Number to view details)
           </Text>
         </View>
-
-        {SelectedType == 1 ? (
-          <ScrollView>
-            {isFetching == true ? (
-              <LoadingScreen />
-            ) : (
-              <TableComponentPR
-                tableHead={tableHead}
-                tableData={tableData}
-                navigation={navigation}
-                clickableColumns={[3]}
-                columnWidths={columnWidths}
-                haveTotal={false}
-              />
-            )}
-          </ScrollView>
-        ) : (
-          <ScrollView>
-            {isFetchingN == true ? (
-              <LoadingScreen />
-            ) : (
-              <TableComponentPR
-                tableHead={tableHead2}
-                tableData={tableData2}
-                navigation={navigation}
-                clickableColumns={[2]}
-                columnWidths={columnWidths2}
-                haveTotal={false}
-              />
-            )}
-          </ScrollView>
-        )}
-
+        <ScrollView
+          contentContainerStyle={{paddingBottom: window.height * 0.5}}>
+          {SelectedType == 1 ? (
+            <View>
+              {isFetching == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponentPR
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  navigation={navigation}
+                  clickableColumns={[3]}
+                  columnWidths={columnWidths}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          ) : (
+            <View>
+              {isFetchingN == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponentPR
+                  tableHead={tableHead2}
+                  tableData={tableData2}
+                  navigation={navigation}
+                  clickableColumns={[2]}
+                  columnWidths={columnWidths2}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          )}
+        </ScrollView>
         {/* )} */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

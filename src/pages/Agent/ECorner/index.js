@@ -71,8 +71,8 @@ export default function ECorner({navigation}) {
       type: 'Motor renewal letter',
       page: 'MotorRenewalLetter',
       conunt: '0',
-      download: false,
-      Share: false,
+      download: true,
+      Share: true,
     },
     {
       id: 5,

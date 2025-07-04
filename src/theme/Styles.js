@@ -50,7 +50,6 @@ export const Styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.textColor,
     height: 48,
-    
   },
   topBackground: {
     position: 'absolute',

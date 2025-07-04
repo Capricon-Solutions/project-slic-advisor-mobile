@@ -447,7 +447,7 @@ export default function LeadInformation({navigation, route}) {
                   readOnly={true}
                   value={
                     leadInfo?.vehicleManuf
-                      ? moment(leadInfo.vehicleManuf).format('YYYY/MM/DD')
+                      ? moment(leadInfo.vehicleManuf).format('YYYY')
                       : 'Unavailable'
                   }
                   borderColor={COLORS.warmGray}

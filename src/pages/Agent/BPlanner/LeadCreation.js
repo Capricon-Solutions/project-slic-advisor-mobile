@@ -424,7 +424,7 @@ export default function LeadCreation({navigation, route}) {
               setValue={text => {
                 // Allow only letters and numbers
                 const cleanedText = text
-                  .replace(/[^A-Za-z0-9-]/g, '')
+                  .replace(/[^A-Za-z0-9\- ]/g, '')
                   .slice(0, 15);
                 setVehicleNo(cleanedText);
               }}
@@ -443,7 +443,7 @@ export default function LeadCreation({navigation, route}) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value *'}
-              value={vehicleValue}
+              value={vehicleValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               borderColor={COLORS.warmGray}
               setValue={text => {
                 const numericText = text.replace(/[^0-9]/g, '');
