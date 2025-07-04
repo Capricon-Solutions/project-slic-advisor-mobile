@@ -188,13 +188,13 @@ export default function ClaimDetails({navigation, route}) {
               )}
             </View>
           )}
-
+          {/* expanded !== 1 ? setExpanded(1) : setExpanded(0) */}
           {/* policy Info */}
           {salvageItems?.length > 0 && (
             <View style={styles.leadInfoCard}>
               <TouchableOpacity
                 onPress={() =>
-                  expanded !== 4 ? setExpanded(3) : setExpanded(0)
+                  expanded !== 3 ? setExpanded(3) : setExpanded(0)
                 }
                 style={{
                   flexDirection: 'row',
