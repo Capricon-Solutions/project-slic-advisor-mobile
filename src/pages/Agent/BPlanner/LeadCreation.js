@@ -91,6 +91,7 @@ export default function LeadCreation({navigation, route}) {
   const [address1, setAddress1] = useState(null);
   const [address2, setAddress2] = useState(null);
   const [address3, setAddress3] = useState(null);
+  const [formError, setFormError] = useState({});
   const eventRef = React.useRef();
   useEffect(() => {
     refetch();
@@ -219,7 +220,9 @@ export default function LeadCreation({navigation, route}) {
 
   const isValidEmail = email => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+
+    const hasCapitalLetter = /[A-Z]/.test(email);
+    return emailRegex.test(email) && !hasCapitalLetter;
   };
 
   const validateForm1 = () => {
@@ -239,6 +242,7 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
+   
     return true;
   };
 
@@ -251,6 +255,21 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
+    if (vehicleNo.length < 5 && vehicleNo.length > 0) {
+      setFormError({
+        vehicleNo: 'Vehicle number must be between 5 and 8 characters. 🚨',
+      });
+      return false;
+    }
+    if(yom && yom.length != 4){
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Year of manufacture must be 4 digits. 🚨',
+      });
+      return false;
+    }
+    setFormError({});
     return true;
   };
 
@@ -263,6 +282,14 @@ export default function LeadCreation({navigation, route}) {
         type: 'error',
         text1: 'Validation Error',
         text2: 'Customer name is required. 🚨',
+      });
+      return false;
+    }
+    if (nic && !/^(\d{9}[vxVX]|\d{12})$/.test(nic)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid NIC number format. 🚨',
       });
       return false;
     }
@@ -296,14 +323,14 @@ export default function LeadCreation({navigation, route}) {
       return;
     }
 
-    // if (!isValidEmail(email)) {
-    //   showToast({
-    //     type: 'error',
-    //     text1: 'Invalid Email',
-    //     text2: 'Please enter a valid email address. 📧',
-    //   });
-    //   return;
-    // }
+    if (!isValidEmail(email)) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid Email',
+        text2: 'Please enter a valid email address. 📧',
+      });
+      return;
+    }
 
     try {
       console.log('body', body);
@@ -381,10 +408,13 @@ export default function LeadCreation({navigation, route}) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'premium'}
-              value={premium}
+              value={premium ? Number(premium)?.toLocaleString() : ''}
               borderColor={COLORS.warmGray}
               keyboardType={'number-pad'}
-              setValue={text => setPremium(text)}
+              setValue={text =>{
+                const numericText = text.replace(/[^0-9]/g, '');
+                setPremium(numericText);
+              }}
             />
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
@@ -421,14 +451,33 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => {
-                // Allow only letters and numbers
-                const cleanedText = text
-                  .replace(/[^A-Za-z0-9\- ]/g, '')
-                  .slice(0, 15);
-                setVehicleNo(cleanedText);
+              setValue={text => {54
+                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '');
+
+                if (cleanedText.length >= 5 && cleanedText.length <= 8) {
+                  setVehicleNo(cleanedText);
+                  setFormError({});
+                } else if (cleanedText.length > 8) {52
+                  setVehicleNo(cleanedText.slice(0, 8));
+                 
+                } else if (cleanedText.length < 5 && cleanedText.length > 0) {
+                  setVehicleNo(cleanedText);
+                  setFormError({
+                    vehicleNo: 'Vehicle number must be between 5 and 8 characters. 🚨',
+                  });1
+                } else {
+                  setVehicleNo('');
+                }
               }}
             />
+            {formError.vehicleNo && (
+              <Text style={{color: 'red'}}>{formError.vehicleNo}</Text>
+            )}
+            {/* {(vehicleNo.length < 5 && vehicleNo.length > 0) && (
+              <Text style={{color: 'red'}}>
+                Vehicle number must be between 5 and 8 characters
+              </Text>
+            )} */}
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Type *'}
@@ -440,6 +489,7 @@ export default function LeadCreation({navigation, route}) {
                 setVehicleType(cleanedText);
               }}
             />
+           
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value *'}
