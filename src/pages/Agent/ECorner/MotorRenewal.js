@@ -8,6 +8,8 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -19,7 +21,8 @@ import * as Progress from 'react-native-progress';
 import DuesSummery from '../../../icons/DuesSummery.png'; // Replace with the actual logo path
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 import Feather from 'react-native-vector-icons/Feather';
 import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
@@ -44,6 +47,8 @@ import {
   useGetprintMotorRenewalsListQuery,
 } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
+import {downloadFile} from 'react-native-fs';
+import {showToast} from '../../../components/ToastMessage';
 const window = Dimensions.get('window');
 
 export default function MotorRenewal({navigation}) {
@@ -105,6 +110,114 @@ export default function MotorRenewal({navigation}) {
     {id: '5', name: 'Renewal Item 5'},
   ];
 
+  const [downloadProgress, setDownloadProgress] = React.useState(0);
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const token = useSelector(state => state.Profile.token);
+
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      console.log('Requesting storage permission...');
+      try {
+        if (Platform.Version < 29) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'App needs access to your storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          // Android 10+ doesn't require explicit permission for private storage
+          return true;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true; // iOS or other platforms
+  };
+
+  // Download and open PDF
+  const downloadAndOpenPDF = async path => {
+    console.log('test');
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
+        return;
+      }
+      showToast({
+        type: 'success',
+        text1: 'Download Started',
+        text2: 'Please wait until download and open the file.',
+      });
+      setIsDownloading(true);
+      setDownloadProgress(0);
+      const pdfUrl = motorRenewalsList?.data?.path;
+      let fileName = pdfUrl.split('/').pop();
+
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+      console.log('Starting download from:', pdfUrl);
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      const downloadOptions = {
+        fromUrl: pdfUrl,
+        toFile: localFilePath,
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
+        progress: res => {
+          const progress = res.bytesWritten / res.contentLength;
+          setDownloadProgress(progress);
+        },
+        progressDivider: 10,
+      };
+
+      const download = RNFS.downloadFile(downloadOptions);
+      console.log('Download started:', download);
+      const result = await download.promise;
+      // Linking.openURL(localFilePath).catch();
+      console.log('Download completed:', result.statusCode);
+
+      if (result.statusCode === 200) {
+        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        await FileViewer.open(localFilePath, {
+          showOpenWithDialog: true,
+          displayName: 'Your PDF Report',
+          mimeType: 'application/pdf',
+        });
+        console.log('PDF opened successfully!');
+      } else {
+        throw new Error(
+          `Download failed with status code ${result.statusCode}`,
+        );
+      }
+    } catch (error) {
+      console.error('Download/Open error:', error);
+      showToast({
+        type: 'error',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
+      });
+      // Alert.alert('Error', 'Failed to download or open the PDF file.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <View style={Styles.container}>
       <MonthYearPicker
@@ -114,7 +227,12 @@ export default function MotorRenewal({navigation}) {
         onSelectText={v => setSelectedDate(v)}
       />
       <HeaderBackground />
-      <Header Title="Motor Renewal" onPress={() => navigation.goBack()} />
+      <Header
+        Title="Motor Renewal"
+        onPress={() => navigation.goBack()}
+        havePdf={true}
+        onPDF={() => downloadAndOpenPDF()}
+      />
       <View style={{paddingHorizontal: 15}}>
         <View style={styles.searchWrap}>
           <TextInput
