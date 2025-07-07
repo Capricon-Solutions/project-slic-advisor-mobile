@@ -12,7 +12,13 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponent = ({dropdownData, mode, label, onValueChange}) => {
+const DropdownComponent = ({
+  dropdownData,
+  mode,
+  label,
+  onValueChange,
+  onSelect,
+}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -29,6 +35,9 @@ const DropdownComponent = ({dropdownData, mode, label, onValueChange}) => {
     setIsFocus(false);
     if (onValueChange) {
       onValueChange(item.value); // 🔥 Send selected value to parent
+    }
+    if (onSelect) {
+      onSelect(null); // Notify parent
     }
   };
 

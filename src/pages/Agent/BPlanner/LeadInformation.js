@@ -192,11 +192,17 @@ export default function LeadInformation({navigation, route}) {
                   value={String(leadInfo?.nicNumber ?? 'Unavailable')}
                   borderColor={COLORS.warmGray}
                 />
+
                 <SquareTextBoxOutlined
                   mediumFont={true}
                   Label={'Date Of Birth'}
                   readOnly={true}
-                  value={String(leadInfo?.dateOfBirth ?? 'Unavailable')}
+                  // value={String(leadInfo?.dateOfBirth ?? 'Unavailable')}
+                  value={
+                    leadInfo?.dateOfBirth
+                      ? moment(leadInfo.dateOfBirth).format('YYYY/MM/DD')
+                      : 'Unavailable'
+                  }
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined
