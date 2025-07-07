@@ -246,6 +246,9 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
 
+  const currentYear = new Date().getFullYear();
+
+
   const validateForm2 = () => {
     if (!vehicleNo || !vehicleType || !vehicleValue || !yom) {
       showToast({
@@ -262,10 +265,21 @@ export default function LeadCreation({navigation, route}) {
       return false;
     }
     if(yom && yom.length != 4){
-      showToast({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Year of manufacture must be 4 digits. 🚨',
+      console.log('yom', yom.length);
+      setFormError({
+        yom: 'Year of manufacture must be 4 digits. 🚨',
+      });
+      return false
+    }
+    if(yom && yom.length == 4 && yom < 1900){
+      setFormError({
+        yom: 'Year of manufacture must be greater than 1900. 🚨',
+      });
+      return false;
+    }
+    if(yom && yom.length == 4 && yom > currentYear){
+      setFormError({
+        yom: `Year of manufacture cannot be in the future (${currentYear}). 🚨`,
       });
       return false;
     }
@@ -511,9 +525,14 @@ export default function LeadCreation({navigation, route}) {
                 const numericText = text.replace(/[^0-9]/g, '');
                 if (numericText.length <= 4) {
                   setYom(numericText);
+                  setFormError({});
                 }
+
               }}
             />
+            {formError.yom && (
+              <Text style={{color: 'red'}}>{formError.yom}</Text>
+            )}
           </View>
         );
       case 3:
