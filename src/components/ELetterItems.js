@@ -29,111 +29,39 @@ export default function ELetterItems({item, navigation}) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   const token = useSelector(state => state.Profile.token);
 
-  // const requestStoragePermission = async () => {
-  //   if (Platform.OS === 'android') {
-  //     console.log('Requesting storage permission...');
-  //     try {
-  //       if (Platform.Version < 29) {
-  //         const granted = await PermissionsAndroid.request(
-  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-  //           {
-  //             title: 'Storage Permission Required',
-  //             message: 'App needs access to your storage to download files.',
-  //             buttonPositive: 'OK',
-  //             buttonNegative: 'Cancel',
-  //           },
-  //         );
-  //         return granted === PermissionsAndroid.RESULTS.GRANTED;
-  //       } else {
-  //         // Android 10+ doesn't require explicit permission for private storage
-  //         return true;
-  //       }
-  //     } catch (err) {
-  //       console.warn('Permission error:', err);
-  //       return false;
-  //     }
-  //   }
-  //   return true; // iOS or other platforms
-  // };
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      console.log('Requesting storage permission...');
+      try {
+        if (Platform.Version < 29) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'App needs access to your storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          // Android 10+ doesn't require explicit permission for private storage
+          return true;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true; // iOS or other platforms
+  };
 
   // Download and open PDF
-  // const downloadAndOpenPDF = async path => {
-  //   console.log('Downloading PDF from path:', path);
-  //   if (!path) {
-  //     console.warn('No path provided for PDF download');
-  //     return;
-  //   }
-  //   try {
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       // Alert.alert(
-  //       //   'Permission Denied',
-  //       //   'Storage permission is required to download and view the file.',
-  //       // );
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Permission Denied',
-  //         text2:
-  //           'Storage permission is required to download and view the file.',
-  //       });
-  //       return;
-  //     }
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-  //     // const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-  //     const pdfUrl = path;
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-  //     console.log('Starting download from:', pdfUrl);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
-  //     const downloadOptions = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         setDownloadProgress(progress);
-  //       },
-  //       progressDivider: 10,
-  //     };
-
-  //     const download = RNFS.downloadFile(downloadOptions);
-  //     console.log('Download started:', download);
-  //     const result = await download.promise;
-  //     // Linking.openURL(localFilePath).catch();
-  //     console.log('Download completed:', result.statusCode);
-
-  //     if (result.statusCode === 200) {
-  //       // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-  //       await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-  //       console.log('PDF opened successfully!');
-  //     } else {
-  //       throw new Error(
-  //         `Download failed with status code ${result.statusCode}`,
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Download/Open error:', error);
-  //     // Alert.alert('Error', 'Failed to download or open the PDF file.');
-  //     showToast({
-  //       type: 'error',
-  //       text1: 'Download Error',
-  //       text2: 'Failed to download or open the PDF file.',
-  //     });
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const downloadAndOpenPDF = async path => {
+    console.log('test');
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
-        // Alert.alert(
-        //   'Permission Denied',
-        //   'Storage permission is required to download and view the file.',
-        // );
         showToast({
           type: 'error',
           text1: 'Permission Denied',
@@ -142,13 +70,22 @@ export default function ELetterItems({item, navigation}) {
         });
         return;
       }
+      showToast({
+        type: 'success',
+        text1: 'Download Started',
+        text2: 'Please wait until download and open the file.',
+      });
       setIsDownloading(true);
       setDownloadProgress(0);
-      // const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-      const pdfUrl = `${path}`;
-      const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
+      const pdfUrl = path;
+      let fileName = pdfUrl.split('/').pop();
+
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
       console.log('Starting download from:', pdfUrl);
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
       const downloadOptions = {
         fromUrl: pdfUrl,
         toFile: localFilePath,
@@ -171,7 +108,12 @@ export default function ELetterItems({item, navigation}) {
 
       if (result.statusCode === 200) {
         // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-        await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        await FileViewer.open(localFilePath, {
+          showOpenWithDialog: true,
+          displayName: 'Your PDF Report',
+          mimeType: 'application/pdf',
+        });
         console.log('PDF opened successfully!');
       } else {
         throw new Error(
