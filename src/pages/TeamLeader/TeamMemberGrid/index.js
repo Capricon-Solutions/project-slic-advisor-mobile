@@ -75,11 +75,17 @@ export default function TeamMemberGrid({navigation, route}) {
     isLoading: TeamLeaderReportLoading,
     isFetching: TeamLeaderReportFetching,
   } = useTeamLeaderReportQuery({
+    // branch: 26,
     branch: branchCode,
     year: new Date().getFullYear(),
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
-    endMonth: SelectedMonth == '00' ? '12' : SelectedMonth + 1,
+    endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
+    // endMonth:
+    //   SelectedMonth == '00'
+    //     ? '12'
+    //     : String(parseInt(SelectedMonth, 10) + 1).padStart(2, '0'),
+
     type: value,
   });
   console.log('TeamLeaderReport', TeamLeaderReport);

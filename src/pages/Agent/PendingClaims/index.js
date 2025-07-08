@@ -227,7 +227,7 @@ export default function PendingClaims({navigation, route}) {
           </View>
         ) : (
           <View>
-            {claimHistoryResponse ? (
+            {claimHistoryResponse && claimHistoryResponse.length > 0 ? (
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}

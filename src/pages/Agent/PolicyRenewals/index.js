@@ -96,8 +96,8 @@ export default function PolicyRenewals({navigation}) {
   });
 
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const nonMotorRenewalsResponse = nonmotorRenewalsList?.data;
-  const motorRenewalsResponse = motorRenewalsList?.data;
+  const nonMotorRenewalsResponse = nonmotorRenewalsList?.data?.nonMotorRenewals;
+  const motorRenewalsResponse = motorRenewalsList?.data?.motorRenewals;
 
   const tableData = motorRenewalsResponse?.map(item => [
     item?.dueDate.toString() ?? '',

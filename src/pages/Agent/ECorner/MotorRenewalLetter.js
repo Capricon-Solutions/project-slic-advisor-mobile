@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   SafeAreaView,
+  Share,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
