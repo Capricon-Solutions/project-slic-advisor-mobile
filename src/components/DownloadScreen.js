@@ -32,48 +32,50 @@ export default function DownloadScreen({isDownloading, downloadProgress}) {
         height: '100%',
         width: '100%',
       }}>
-      <LoaderKit
-        style={{width: 65, height: 65, marginBottom: 30}}
-        animationSpeedMultiplier={0.5}
-        name={'BallClipRotateMultiple'} // Optional: see list of animations below
-        color={COLORS.textColor} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-      />
-      <View style={{width: '100%'}}>
-        <View style={styles.fullprogressBarContainer}>
-          <View
-            style={[
-              styles.fullprogressBar,
-              {width: `${downloadProgress * 100}%`},
-            ]}
-          />
+      {downloadProgress == 0 ? (
+        <LoaderKit
+          style={{width: 65, height: 65, marginBottom: 30}}
+          animationSpeedMultiplier={0.6}
+          name={'BallSpinFadeLoader'} // Optional: see list of animations below
+          color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+        />
+      ) : (
+        <View style={{width: '100%'}}>
+          <View style={styles.fullprogressBarContainer}>
+            <View
+              style={[
+                styles.fullprogressBar,
+                {width: `${downloadProgress * 100}%`},
+              ]}
+            />
+          </View>
+          <Text style={styles.fullprogressText}>
+            {Math.round(downloadProgress * 100)}% Downloaded
+          </Text>
         </View>
-        <Text style={styles.fullprogressText}>
-          {Math.round(downloadProgress * 100)}% Downloaded
-        </Text>
-      </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   fullprogressBarContainer: {
-    height: 6,
+    height: 8,
     width: '100%',
     backgroundColor: COLORS.lightGray,
     borderRadius: 5,
     overflow: 'hidden',
     marginBottom: 3,
-    marginTop: -3,
   },
   fullprogressBar: {
     height: '100%',
     backgroundColor: COLORS.primary,
   },
   fullprogressText: {
-    fontSize: 13,
+    fontSize: 14,
     alignSelf: 'center',
     color: COLORS.textColor,
     marginTop: 3,
-    fontFamily: Fonts.Roboto.SemiBold,
+    fontFamily: Fonts.Roboto.Bold,
   },
 });

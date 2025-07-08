@@ -112,7 +112,7 @@ export default function MotorRenewal({navigation}) {
   ];
 
   const [downloadProgress, setDownloadProgress] = React.useState(0);
-  const [isDownloading, setIsDownloading] = React.useState(true);
+  const [isDownloading, setIsDownloading] = React.useState(false);
   const token = useSelector(state => state.Profile.token);
 
   const requestStoragePermission = async () => {
