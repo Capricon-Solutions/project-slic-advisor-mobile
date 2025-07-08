@@ -32,28 +32,34 @@ export default function EDocItems({item, navigation, onPress}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      console.log('Requesting storage permission...');
       try {
-        if (Platform.Version < 29) {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            {
-              title: 'Storage Permission Required',
-              message: 'App needs access to your storage to download files.',
-              buttonPositive: 'OK',
-              buttonNegative: 'Cancel',
-            },
-          );
-          return granted === PermissionsAndroid.RESULTS.GRANTED;
-        } else {
-          // Android 10+ doesn't require explicit permission for private storage
+        const apiLevel = Platform.Version;
+
+        if (apiLevel >= 29) {
+          // Scoped storage — permission not required
+          console.log('API 29+ detected. Skipping storage permission.');
           return true;
         }
+
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message: 'App needs access to your storage to download files.',
+            buttonPositive: 'OK',
+            buttonNegative: 'Cancel',
+          },
+        );
+
+        console.log('Permission result:', granted);
+
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
         console.warn('Permission error:', err);
         return false;
       }
     }
+
     return true; // iOS or other platforms
   };
 
