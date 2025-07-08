@@ -43,8 +43,8 @@ export default function PendingClaims({navigation, route}) {
       status: 'Received',
     },
   ];
-  const columnWidths = [160, 160];
-  const tableData = Data?.map(item => [item.documentName, item.status]);
+  const columnWidths = [138, 138];
+
   // const claimHistoryResponse = useSelector(
   //   state => state.claimHistory.claimHistoryResponse.data,
   // );
@@ -117,70 +117,77 @@ export default function PendingClaims({navigation, route}) {
 
   const Card = ({item}) => {
     const [expanded, setExpanded] = useState(false);
+    const tableData = item?.claimDocuments?.map(item => [
+      item.documentTypeName,
+      item.documentStatus,
+    ]);
     return (
-      <TouchableOpacity
-        onPress={() => setExpanded(!expanded)}
-        style={styles.card}>
-        <View
-          style={{
-            backgroundColor: COLORS.TopBackColor,
-            borderRadius: 100,
-            alignItems: 'center',
-          }}>
-          <Text
+      <View style={styles.card}>
+        <TouchableOpacity
+          style={{marginBottom: 2}}
+          // onPress={() => setExpanded(!expanded)}
+          onPress={() => setExpanded(!expanded)}>
+          <View
             style={{
-              fontFamily: Fonts.Roboto.Bold,
-              fontSize: 17,
-              marginBottom: 3,
-              color: COLORS.tableOrange,
+              backgroundColor: COLORS.TopBackColor,
+              borderRadius: 100,
+              alignItems: 'center',
             }}>
-            Pending
-          </Text>
-        </View>
-        <DetailLine Title={'Policy Number'} detail={item.policyNo} />
-        <DetailLine Title={'Intimation No.'} detail={item.intimationNo} />
-        <DetailLineBold Title={'Job No.'} detail={item.jobNo} />
-        <DetailLine Title={'Ins. Name'} detail={item.name} />
-        <DetailLine
-          Title={'Date Of Loss'}
-          detail={
-            item.dateOfLoss
-              ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format(
-                  'DD MMM YYYY',
-                )
-              : 'N/A'
-          }
-        />
-        <DetailLine
-          Title={'Date Of Intimation'}
-          detail={
-            item.dateOfIntimation
-              ? moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format(
-                  'DD MMM YYYY',
-                )
-              : 'N/A'
-          }
-        />
-        <DetailLine
-          Title={'Date Of Register'}
-          detail={
-            item.dateOfRegister
-              ? moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format(
-                  'DD MMM YYYY',
-                )
-              : 'N/A'
-          }
-        />
-        <DetailLine
-          Title={'Estimated liability'}
-          detail={
-            'LKR ' +
-            Number(item.estimatedLiability).toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          }
-        />
+            <Text
+              style={{
+                fontFamily: Fonts.Roboto.Bold,
+                fontSize: 17,
+                marginBottom: 3,
+                color: COLORS.tableOrange,
+              }}>
+              Pending
+            </Text>
+          </View>
+          <DetailLine Title={'Policy Number'} detail={item.policyNo} />
+          <DetailLine Title={'Intimation No.'} detail={item.intimationNo} />
+          <DetailLineBold Title={'Job No.'} detail={item.jobNo} />
+          <DetailLine Title={'Ins. Name'} detail={item.name} />
+          <DetailLine
+            Title={'Date Of Loss'}
+            detail={
+              item.dateOfLoss
+                ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format(
+                    'DD MMM YYYY',
+                  )
+                : 'N/A'
+            }
+          />
+          <DetailLine
+            Title={'Date Of Intimation'}
+            detail={
+              item.dateOfIntimation
+                ? moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format(
+                    'DD MMM YYYY',
+                  )
+                : 'N/A'
+            }
+          />
+          <DetailLine
+            Title={'Date Of Register'}
+            detail={
+              item.dateOfRegister
+                ? moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format(
+                    'DD MMM YYYY',
+                  )
+                : 'N/A'
+            }
+          />
+          <DetailLine
+            Title={'Estimated liability'}
+            detail={
+              'LKR ' +
+              Number(item.estimatedLiability).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+            }
+          />
+        </TouchableOpacity>
         {expanded && (
           <TableComponentDoc
             haveTotal={false}
@@ -189,7 +196,7 @@ export default function PendingClaims({navigation, route}) {
             columnWidths={columnWidths}
           />
         )}
-      </TouchableOpacity>
+      </View>
     );
   };
 

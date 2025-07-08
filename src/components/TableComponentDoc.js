@@ -224,13 +224,13 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     // marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 11,
     color: COLORS.textColor,
   },
   leftAlignedText: {
     textAlign: 'left',
     paddingLeft: 10, // Ensure proper spacing
-    fontSize: 13,
+    fontSize: 12,
     //  color: 'red',
   },
   centerAlignedText: {
