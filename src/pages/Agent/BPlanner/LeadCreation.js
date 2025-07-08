@@ -92,6 +92,11 @@ export default function LeadCreation({navigation, route}) {
   const [address2, setAddress2] = useState(null);
   const [address3, setAddress3] = useState(null);
   const [formError, setFormError] = useState({});
+  const [mobileNumberError, setMobileNumberError] = useState('');
+  const [homeNumberError, setHomeNumberError] = useState('');
+  const [workNumberError, setWorkNumberError] = useState('');
+  const [yomError, setYomError] = useState('');
+
   const eventRef = React.useRef();
   useEffect(() => {
     refetch();
@@ -103,7 +108,42 @@ export default function LeadCreation({navigation, route}) {
     {id: 3, Title: 'Customer Basic Info'},
     {id: 4, Title: 'Customer Contact Info'},
   ];
+  // const isValidSriLankanNumber = number => {
+  //   const cleaned = number.replace(/[^0-9]/g, '');
 
+  //   // Accept either 10-digit local format or international format with +94
+  //   const localPattern = /^(07\d{8}|0\d{9})$/;
+  //   const intlPattern = /^94\d{9}$/;
+
+  //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
+  // };
+  const validateYOM = yearString => {
+    const year = parseInt(yearString, 10);
+    const currentYear = new Date().getFullYear();
+
+    if (!yearString || yearString.length !== 4 || isNaN(year)) {
+      return 'Year must be a 4-digit number.';
+    }
+
+    if (year > currentYear) {
+      return `Year cannot be in the future (>${currentYear}).`;
+    }
+
+    return null; // valid
+  };
+
+  const isValidSriLankanNumber = number => {
+    const cleaned = number.replace(/[^0-9]/g, '');
+
+    // If it's empty, skip validation (considered optional)
+    if (cleaned.length === 0) return true;
+
+    // Must be either valid local or international format
+    const localPattern = /^(07\d{8}|0\d{9})$/;
+    const intlPattern = /^94\d{9}$/;
+
+    return localPattern.test(cleaned) || intlPattern.test(cleaned);
+  };
   const handleNext = () => {
     // return;
     if (currentStep < StepperItems.length) {
@@ -242,44 +282,43 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
-   
+
     return true;
   };
 
   const currentYear = new Date().getFullYear();
-
 
   const validateForm2 = () => {
     if (!vehicleNo || !vehicleType || !vehicleValue || !yom) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Please fill in all required fields. ',
       });
       return false;
     }
     if (vehicleNo.length < 5 && vehicleNo.length > 0) {
       setFormError({
-        vehicleNo: 'Vehicle number must be between 5 and 8 characters. 🚨',
+        vehicleNo: 'Vehicle number must be between 5 and 8 characters.',
       });
       return false;
     }
-    if(yom && yom.length != 4){
+    if (yom && yom.length != 4) {
       console.log('yom', yom.length);
       setFormError({
-        yom: 'Year of manufacture must be 4 digits. 🚨',
-      });
-      return false
-    }
-    if(yom && yom.length == 4 && yom < 1900){
-      setFormError({
-        yom: 'Year of manufacture must be greater than 1900. 🚨',
+        yom: 'Year of manufacture must be 4 digits.',
       });
       return false;
     }
-    if(yom && yom.length == 4 && yom > currentYear){
+    if (yom && yom.length == 4 && yom < 1900) {
       setFormError({
-        yom: `Year of manufacture cannot be in the future (${currentYear}). 🚨`,
+        yom: 'Year of manufacture must be greater than 1900.',
+      });
+      return false;
+    }
+    if (yom && yom.length == 4 && yom > currentYear) {
+      setFormError({
+        yom: `Year of manufacture cannot be in the future (${currentYear}).`,
       });
       return false;
     }
@@ -311,15 +350,35 @@ export default function LeadCreation({navigation, route}) {
   };
   const validateForm4 = () => {
     // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
-    if (
-      // !homeNumber ||
-      !mobileNumber
-      // || !workNumber || !email || !address1
-    ) {
+    if (!mobileNumber) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
         text2: 'Mobile number is required. 🚨',
+      });
+      return false;
+    }
+    if (!isValidSriLankanNumber(mobileNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid mobile number format. 📱',
+      });
+      return false;
+    }
+    if (homeNumber && !isValidSriLankanNumber(homeNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid home number format. ☎️',
+      });
+      return false;
+    }
+    if (workNumber && !isValidSriLankanNumber(workNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid work number format. 🏢',
       });
       return false;
     }
@@ -425,7 +484,7 @@ export default function LeadCreation({navigation, route}) {
               value={premium ? Number(premium)?.toLocaleString() : ''}
               borderColor={COLORS.warmGray}
               keyboardType={'number-pad'}
-              setValue={text =>{
+              setValue={text => {
                 const numericText = text.replace(/[^0-9]/g, '');
                 setPremium(numericText);
               }}
@@ -465,20 +524,23 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => {54
+              setValue={text => {
+                54;
                 const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '');
 
                 if (cleanedText.length >= 5 && cleanedText.length <= 8) {
                   setVehicleNo(cleanedText);
                   setFormError({});
-                } else if (cleanedText.length > 8) {52
+                } else if (cleanedText.length > 8) {
+                  52;
                   setVehicleNo(cleanedText.slice(0, 8));
-                 
                 } else if (cleanedText.length < 5 && cleanedText.length > 0) {
                   setVehicleNo(cleanedText);
                   setFormError({
-                    vehicleNo: 'Vehicle number must be between 5 and 8 characters. 🚨',
-                  });1
+                    vehicleNo:
+                      'Vehicle number must be between 5 and 8 characters.',
+                  });
+                  1;
                 } else {
                   setVehicleNo('');
                 }
@@ -503,7 +565,7 @@ export default function LeadCreation({navigation, route}) {
                 setVehicleType(cleanedText);
               }}
             />
-           
+
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value *'}
@@ -520,19 +582,42 @@ export default function LeadCreation({navigation, route}) {
               mediumFont={true}
               Label={'Year of manufacture *'}
               value={yom}
+              errorMessage={yomError + '\n' + (formError.yom || '')}
               borderColor={COLORS.warmGray}
+              // setValue={text => {
+              //   const numericText = text.replace(/[^0-9]/g, '');
+              //   if (numericText.length <= 4) {
+              //     setYom(numericText);
+              //     setFormError({});
+              //   }
+              // }}
               setValue={text => {
-                const numericText = text.replace(/[^0-9]/g, '');
-                if (numericText.length <= 4) {
-                  setYom(numericText);
-                  setFormError({});
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                // if (formatted.length <= 4) {
+                setYom(formatted);
+                // }
+                if (
+                  // formatted.length >= 9 &&
+                  validateYOM(formatted)
+                ) {
+                  setYomError('Invalid Manufacture Year');
+                } else {
+                  setYomError('');
                 }
-
+                if (formatted && formatted.length != 4) {
+                  setFormError({
+                    yom: 'Year of manufacture must be 4 digits.',
+                  });
+                } else {
+                  setFormError({
+                    yom: '',
+                  });
+                }
               }}
             />
-            {formError.yom && (
+            {/* {formError.yom && (
               <Text style={{color: 'red'}}>{formError.yom}</Text>
-            )}
+            )} */}
           </View>
         );
       case 3:
@@ -615,10 +700,23 @@ export default function LeadCreation({navigation, route}) {
               mediumFont={true}
               Label={'Home Number'}
               value={homeNumber}
+              errorMessage={homeNumberError}
               borderColor={COLORS.warmGray}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setHomeNumber(formatted);
+              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setHomeNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setHomeNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setHomeNumberError('');
+                }
               }}
             />
             <SquareTextBoxOutlined
@@ -626,19 +724,45 @@ export default function LeadCreation({navigation, route}) {
               Label={'Mobile Number *'}
               value={mobileNumber}
               borderColor={COLORS.warmGray}
+              errorMessage={mobileNumberError}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setMobileNumber(formatted);
+              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setMobileNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setMobileNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setMobileNumberError('');
+                }
               }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Work Number'}
               value={workNumber}
+              errorMessage={workNumberError}
               borderColor={COLORS.warmGray}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setWorkNumber(formatted);
+              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setWorkNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setWorkNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setWorkNumberError('');
+                }
               }}
             />
             <SquareTextBoxOutlined
