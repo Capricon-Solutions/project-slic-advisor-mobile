@@ -39,6 +39,7 @@ import {useGetmotorRenewalsListQuery} from '../../../redux/services/policyRenewa
 import moment from 'moment';
 import {useSelector} from 'react-redux';
 import {showToast} from '../../../components/ToastMessage';
+import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
 export default function MotorRenewalCompact({navigation}) {
@@ -271,6 +272,10 @@ export default function MotorRenewalCompact({navigation}) {
           )}
         </View>
       </ScrollView>
+      <DownloadScreen
+        isDownloading={isDownloading}
+        downloadProgress={downloadProgress}
+      />
     </View>
   );
 }

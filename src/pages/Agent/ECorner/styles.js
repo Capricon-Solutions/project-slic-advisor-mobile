@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: COLORS.white,
     marginTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   searchWrap: {
     flexDirection: 'row',
@@ -27,18 +27,17 @@ export const styles = StyleSheet.create({
   motorRenewalCardItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 3
+    marginVertical: 3,
   },
   motorRenewalCardItemLeft: {
-
     fontFamily: Fonts.Roboto.Bold,
     color: COLORS.textColor,
-    fontSize: 12
+    fontSize: 12,
   },
   motorRenewalCardItemRight: {
     fontFamily: Fonts.Roboto.Regular,
     color: COLORS.textColor,
-    fontSize: 12
+    fontSize: 12,
   },
   textInput: {
     flex: 1,
@@ -54,5 +53,25 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  fullprogressBarContainer: {
+    height: 6,
+    width: '100%',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 3,
+    marginTop: -3,
+  },
+  fullprogressBar: {
+    height: '100%',
+    backgroundColor: COLORS.primary,
+  },
+  fullprogressText: {
+    fontSize: 13,
+    alignSelf: 'center',
+    color: COLORS.textColor,
+    marginTop: 3,
+    fontFamily: Fonts.Roboto.SemiBold,
   },
 });

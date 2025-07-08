@@ -40,6 +40,7 @@ import moment from 'moment';
 import TableComponentPR from '../../../components/TableComponentPR';
 import {useSelector} from 'react-redux';
 import {showToast} from '../../../components/ToastMessage';
+import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
 export default function NonMotorRenewalCompact({navigation}) {
@@ -267,6 +268,10 @@ export default function NonMotorRenewalCompact({navigation}) {
           )}
         </View>
       </ScrollView>
+      <DownloadScreen
+        isDownloading={isDownloading}
+        downloadProgress={downloadProgress}
+      />
     </View>
   );
 }

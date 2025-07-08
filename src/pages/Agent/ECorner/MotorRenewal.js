@@ -49,6 +49,7 @@ import {
 import moment from 'moment';
 import {downloadFile} from 'react-native-fs';
 import {showToast} from '../../../components/ToastMessage';
+import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
 export default function MotorRenewal({navigation}) {
@@ -111,7 +112,7 @@ export default function MotorRenewal({navigation}) {
   ];
 
   const [downloadProgress, setDownloadProgress] = React.useState(0);
-  const [isDownloading, setIsDownloading] = React.useState(false);
+  const [isDownloading, setIsDownloading] = React.useState(true);
   const token = useSelector(state => state.Profile.token);
 
   const requestStoragePermission = async () => {
@@ -180,6 +181,7 @@ export default function MotorRenewal({navigation}) {
         },
         progress: res => {
           const progress = res.bytesWritten / res.contentLength;
+          console.log('progress', progress);
           setDownloadProgress(progress);
         },
         progressDivider: 10,
@@ -233,6 +235,7 @@ export default function MotorRenewal({navigation}) {
         havePdf={true}
         onPDF={() => downloadAndOpenPDF()}
       />
+
       <View style={{paddingHorizontal: 15}}>
         <View style={styles.searchWrap}>
           <TextInput
@@ -366,6 +369,10 @@ export default function MotorRenewal({navigation}) {
           />
         )}
       </View>
+      <DownloadScreen
+        isDownloading={isDownloading}
+        downloadProgress={downloadProgress}
+      />
     </View>
   );
 }
