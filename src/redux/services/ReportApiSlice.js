@@ -40,6 +40,15 @@ export const ReportApi = baseApi.injectEndpoints({
         return url;
       },
     }),
+    // TeamMemberReport
+    TeamMemberReport: builder.query({
+      query: ({year, dept, startMonth, endMonth, type, userCode}) => {
+        const url = `agent/GetTMReport?agentCode=${userCode}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${dept}&reportType=${type}`;
+        //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
+        console.log('Fetching Report from:', url);
+        return url;
+      },
+    }),
 
     // DirectReport
     DirectReport: builder.query({
@@ -59,4 +68,5 @@ export const {
   useDirectReportQuery,
   useTeamLeaderReportQuery,
   useAdvisorReportQuery,
+  useTeamMemberReportQuery,
 } = ReportApi;

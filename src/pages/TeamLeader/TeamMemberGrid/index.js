@@ -27,6 +27,7 @@ import HorizontalReportTable from '../../../components/HorizontalReportTable';
 import {
   useRmReportQuery,
   useTeamLeaderReportQuery,
+  useTeamMemberReportQuery,
 } from '../../../redux/services/ReportApiSlice';
 import DropdownComponent from '../../../components/DropdownComponent';
 import LoaderKit from 'react-native-loader-kit';
@@ -65,7 +66,6 @@ export default function TeamMemberGrid({navigation, route}) {
   ];
   const columnWidths = [150, 120, 120, 160, 120, 120];
   const [isLandscape, setIsLandscape] = useState(false);
-
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
@@ -74,9 +74,9 @@ export default function TeamMemberGrid({navigation, route}) {
     error: TeamLeaderReportError,
     isLoading: TeamLeaderReportLoading,
     isFetching: TeamLeaderReportFetching,
-  } = useTeamLeaderReportQuery({
+  } = useTeamMemberReportQuery({
     // branch: 26,
-    branch: branchCode,
+    userCode: userCode,
     year: new Date().getFullYear(),
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
@@ -405,12 +405,13 @@ export default function TeamMemberGrid({navigation, route}) {
                 <OutlinedTextBox
                   Title={'Total'}
                   value={
-                    item?.renewal !== null && item?.total !== undefined
-                      ? Number(item.total)?.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : '0.00'
+                    (
+                      item?.renewal +
+                      item?.nb +
+                      item?.refundPpw +
+                      item?.refundOther +
+                      item?.endorsement
+                    ).toLocaleString() ?? '0.00'
                   }
                 />
               </View>
