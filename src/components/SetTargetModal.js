@@ -175,9 +175,23 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 textColor={COLORS.textColor}
                 value={inputValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 onChangeText={text => {
-                  const raw = text.replace(/[^0-9]/g, ''); // remove commas
-                  setInputValue(raw);
+                  let sanitizedText = text.replace(/[^0-9.]/g, '');
+
+                  // Ensure only one decimal point is allowed
+                  const parts = sanitizedText.split('.');
+                  if (parts.length > 2) {
+                    sanitizedText = parts[0] + '.' + parts.slice(1).join('');
+                  }
+
+                  setInputValue(sanitizedText);
                 }}
+                //         onChangeText={text => {
+                //   const sanitizedText = text.replace(
+                //     /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,
+                //     '',
+                //   );
+                //   setInputValue(sanitizedText);
+                // }}
                 style={{
                   backgroundColor: COLORS.lightBorder,
                   marginBottom: 15,
