@@ -444,7 +444,15 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Vehicle Value'}
                   readOnly={true}
-                  value={String(leadInfo?.vehicleValue ?? 'Unavailable')}
+                  // value={String(leadInfo?.vehicleValue ?? 'Unavailable')}
+                  value={
+                    leadInfo?.vehicleValue != null
+                      ? leadInfo.vehicleValue.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      : 'Unavailable'
+                  }
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined

@@ -206,11 +206,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Meetings *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(meetings || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setmeetings(filteredText);
               setFormError({...formError, meetings: ''});
             }}
@@ -221,11 +224,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Presentation *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(presentations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setPresentations(filteredText);
               setFormError({...formError, presentations: ''});
             }}
@@ -236,11 +242,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Quotations *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(quotations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setQuotations(filteredText);
               setFormError({...formError, quotations: ''});
             }}
@@ -252,11 +261,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Proposals *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(proposals || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setProposals(filteredText);
               setFormError({...formError, proposals: ''});
             }}
@@ -267,11 +279,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Closed *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(closed || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setClosed(filteredText);
               setFormError({...formError, closed: ''});
             }}
@@ -282,11 +297,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Leads *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(leads || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setLeads(filteredText);
               setFormError({...formError, leads: ''});
             }}

@@ -82,7 +82,7 @@ export default function MotorRenewalLetter({navigation}) {
   const [filteredData, setFilteredData] = useState(data);
   const handleSearch = () => {
     console.log('searchText', searchText);
-    const filtered = motorRenewalsList?.data?.filter(
+    const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
       item =>
         item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
         item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||

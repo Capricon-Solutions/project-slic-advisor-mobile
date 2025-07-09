@@ -77,7 +77,15 @@ export default function ClubInformation({navigation}) {
 
   const currentClub = clubInfoResponse?.currentClub || 'Unavailable';
   const clubYear = clubInfoResponse?.clubYear || 'Unavailable';
-  const currentClublimit = clubInfoResponse?.currentLimit || 'Unavailable';
+  const currentClublimit =
+    clubInfoResponse?.currentLimit != null
+      ? Number(clubInfoResponse.currentLimit).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : 'Unavailable';
+
+  // clubInfoResponse?.currentLimit || 'Unavailable';
   const generalAppointmentDate =
     clubInfoResponse?.genAppointDate || 'Unavailable';
   const generalPersistency = clubInfoResponse?.genPersistancy || 'Unavailable';

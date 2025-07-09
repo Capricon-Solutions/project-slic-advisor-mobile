@@ -388,15 +388,19 @@ export default function LeadCreation({navigation, route}) {
     if (!validateForm4()) {
       // Stop if validation fails
       console.log('work');
-      // showToast({
-      //   type: 'error',
-      //   text1: 'Validation Error',
-      //   text2: 'Please fill in all required fields. 🚨',
-      // });
+
       return;
     }
 
-    if (!isValidEmail(email)) {
+    // if (!isValidEmail(email)) {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Invalid Email',
+    //     text2: 'Please enter a valid email address. 📧',
+    //   });
+    //   return;
+    // }
+    if (email && !isValidEmail(email)) {
       showToast({
         type: 'error',
         text1: 'Invalid Email',
@@ -416,7 +420,8 @@ export default function LeadCreation({navigation, route}) {
           text1: 'Lead Created Successfully',
           text2: response?.data?.message,
         });
-        navigation.navigate('BPlanner');
+        // navigation.navigate('BPlanner');
+        navigation.goBack();
       } else {
         showToast({
           type: 'error',
