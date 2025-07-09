@@ -122,7 +122,14 @@ export default function MonthlyPlan({navigation}) {
 
     // console.log('body');
 
-    if (!meetings && !presentations && !quotations && !proposals && !closed && !leads) {
+    if (
+      !meetings &&
+      !presentations &&
+      !quotations &&
+      !proposals &&
+      !closed &&
+      !leads
+    ) {
       Toast.show({
         type: 'error',
         text1: 'Please enter any one field',
@@ -133,16 +140,22 @@ export default function MonthlyPlan({navigation}) {
 
     try {
       const response = await MonthlyCreate({body, userCode});
-      console.log('Activity Created:', response?.error?.status);
-      Toast.show({
-        type: 'success',
-        text1: 'Monthly Plan Created',
-        text2: 'Monthly Plan Created Successfully',
-      });
+      console.log('Activity Created:', response);
+
       if (response?.error?.status == '500') {
-        console.log('something went wrong');
-        Alert.alert('something went wrong', 'Unsuccessfull');
+        console.log('something went wrong', response?.error);
+        Toast.show({
+          type: 'error',
+          text1: 'Monthly Plan Not Created',
+          text2: response?.error?.data?.message || 'Something went wrong',
+        });
+        // Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
+        Toast.show({
+          type: 'success',
+          text1: 'Monthly Plan Created',
+          text2: 'Monthly Plan Created Successfully',
+        });
         navigation.goBack();
       }
     } catch (err) {
