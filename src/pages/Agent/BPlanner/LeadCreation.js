@@ -69,7 +69,7 @@ export default function LeadCreation({navigation, route}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
   console.log('eventDate', eventDate);
-  const [event, setEvent] = useState(null);
+  const [event, setEvent] = useState(-1);
   const [leadType, setLeadType] = useState(null);
   const [policyNo, setPolicyNo] = useState(null);
   const [insCom, setInsCom] = useState(null);
@@ -209,6 +209,7 @@ export default function LeadCreation({navigation, route}) {
 
   const clearEvents = () => {
     eventRef.current?.clear();
+    setEvent(-1);
   };
 
   const hideDatePicker2 = () => {
@@ -226,7 +227,7 @@ export default function LeadCreation({navigation, route}) {
 
   const body = {
     LeadId: 0,
-    EventId: event,
+    EventId: event || -1,
     LeadType: leadType,
     CustomerName: customerName,
     CustomerName2: null,
