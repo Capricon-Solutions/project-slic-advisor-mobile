@@ -225,11 +225,7 @@ export default function DebitSettlement({navigation, route}) {
             }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
-          {/* <SquareTextBox
-            readOnly={true}
-            Title={moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD')}
-            Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
-          /> */}
+
           <SquareTextBoxOutlinedDate
             readOnly={true}
             // Title={StartToDt}

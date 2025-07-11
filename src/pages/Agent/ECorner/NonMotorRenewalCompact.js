@@ -224,7 +224,7 @@ export default function NonMotorRenewalCompact({navigation}) {
         titleFontSize={16}
         Title="Non-Motor Renewal Compact"
         onPress={() => navigation.goBack()}
-        havePdf={true}
+        havePdf={isFetching == false ? true : false}
         onPDF={() => downloadAndOpenPDF()}
       />
 

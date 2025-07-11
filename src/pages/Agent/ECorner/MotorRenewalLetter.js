@@ -80,20 +80,27 @@ export default function MotorRenewalLetter({navigation}) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
-  const handleSearch = () => {
-    console.log('searchText', searchText);
+  const handleSearch = v => {
+    const query = v.toLowerCase();
+
     const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
       item =>
-        item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase()),
+        item.policyNo?.toLowerCase().includes(query) ||
+        item.customerName
+          ?.toLowerCase()
+          .split(/\W+/)
+          .some(word => word.startsWith(query)) ||
+        item.vehicleNo?.toLowerCase().includes(query),
     );
-    console.log('motorRenewalsList', motorRenewalsList);
+
     setFilteredData(filtered);
   };
+
   function handleClear(v) {
-    if (v == '') {
+    if (v === '') {
       setFilteredData(motorRenewalsList?.data.motorRenewals);
+    } else {
+      handleSearch(v);
     }
   }
   // const currentYear = new Date().getFullYear();
@@ -149,11 +156,13 @@ export default function MotorRenewalLetter({navigation}) {
             value={searchText}
             onChangeText={v => {
               setSearchText(v);
-              handleClear(v);
+              handleClear(v); // Now works with latest value
             }}
             placeholder="Quick search"
           />
-          <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
+          <TouchableOpacity
+            onPress={() => handleSearch(searchText)}
+            style={styles.searchButton}>
             <Feather name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>

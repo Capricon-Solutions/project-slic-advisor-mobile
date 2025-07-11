@@ -72,8 +72,8 @@ export default function TeamMemberGrid({navigation, route}) {
   const {
     data: TeamLeaderReport,
     error: TeamLeaderReportError,
-    isLoading: TeamLeaderReportLoading,
-    isFetching: TeamLeaderReportFetching,
+    // isLoading: TeamLeaderReportLoading,
+    isFetching: TeamLeaderReportLoading,
   } = useTeamMemberReportQuery({
     // branch: 26,
     userCode: userCode,
@@ -91,7 +91,7 @@ export default function TeamMemberGrid({navigation, route}) {
   console.log('TeamLeaderReport', TeamLeaderReport);
 
   const tableData = TeamLeaderReport?.data?.map(item => [
-    item?.teamLeader?.toString() ?? '',
+    item?.teamMember?.toString() ?? '',
 
     item?.renewal?.toLocaleString() ?? '0.00',
     item?.nb?.toLocaleString() ?? '0.00',
@@ -279,9 +279,13 @@ export default function TeamMemberGrid({navigation, route}) {
       ) : (
         <FlatList
           data={TeamLeaderReport?.data}
-          initialNumToRender={2}
+          initialNumToRender={4}
+          renderToHardwareTextureAndroid={true}
           keyExtractor={item => item.id}
-          contentContainerStyle={{padding: 10}}
+          contentContainerStyle={{
+            padding: 10,
+            paddingBottom: window.height * 0.25,
+          }}
           ListEmptyComponent={
             <View
               style={{
@@ -290,7 +294,9 @@ export default function TeamMemberGrid({navigation, route}) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={Styles.errorText}>Sorry, No Data found</Text>
+              {!TeamLeaderReportLoading && (
+                <Text style={Styles.errorText}>Sorry, No Data found</Text>
+              )}
             </View>
           }
           renderItem={({item}) => (
@@ -314,7 +320,7 @@ export default function TeamMemberGrid({navigation, route}) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item?.teamLeader?.toString() ?? ''}
+                  {item?.teamMember?.toString() ?? ''}
                 </Text>
               </View>
 
@@ -329,6 +335,7 @@ export default function TeamMemberGrid({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Renewal'}
+                    readOnly={true}
                     value={
                       item?.renewal !== null && item?.renewal !== undefined
                         ? Number(item?.renewal).toLocaleString('en-US', {
@@ -343,6 +350,7 @@ export default function TeamMemberGrid({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'NB'}
+                    readOnly={true}
                     value={
                       item?.renewal !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
@@ -360,6 +368,7 @@ export default function TeamMemberGrid({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'PPW'}
+                    readOnly={true}
                     value={
                       item.renewal !== null && item?.refundPpw !== undefined
                         ? Number(item.refundPpw).toLocaleString('en-US', {
@@ -374,6 +383,7 @@ export default function TeamMemberGrid({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextBox
                     Title={'Others'}
+                    readOnly={true}
                     value={
                       item?.renewal !== null && item?.refundOther !== undefined
                         ? Number(item.refundOther).toLocaleString('en-US', {
@@ -390,6 +400,7 @@ export default function TeamMemberGrid({navigation, route}) {
               <View>
                 <OutlinedTextBox
                   Title={'Endorsement'}
+                  readOnly={true}
                   value={
                     item.renewal !== null && item.endorsement !== undefined
                       ? Number(item?.endorsement)?.toLocaleString('en-US', {
@@ -404,6 +415,7 @@ export default function TeamMemberGrid({navigation, route}) {
               <View>
                 <OutlinedTextBox
                   Title={'Total'}
+                  readOnly={true}
                   value={
                     (
                       item?.renewal +

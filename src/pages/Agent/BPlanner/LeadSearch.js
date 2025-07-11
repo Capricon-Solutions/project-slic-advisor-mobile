@@ -55,15 +55,33 @@ export default function LeadSearch({navigation}) {
   //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
   // );
 
+  // const filteredSELF = searchQuery
+  //   ? SELF.filter(lead =>
+  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     )
+  //   : SELF;
+
   const filteredSELF = searchQuery
     ? SELF.filter(lead =>
-        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+        lead.customerName
+          .toLowerCase()
+          .split(' ')
+          .some(word => word.startsWith(searchQuery.toLowerCase())),
       )
     : SELF;
 
+  // const filteredSLIC = searchQuery
+  //   ? SLIC.filter(lead =>
+  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     )
+  //   : SLIC;
+
   const filteredSLIC = searchQuery
     ? SLIC.filter(lead =>
-        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+        lead.customerName
+          .toLowerCase()
+          .split(' ')
+          .some(word => word.startsWith(searchQuery.toLowerCase())),
       )
     : SLIC;
   console.log('filteredSLIC', filteredSLIC);

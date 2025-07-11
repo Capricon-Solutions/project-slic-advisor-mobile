@@ -232,7 +232,7 @@ export default function MotorRenewal({navigation}) {
       <Header
         Title="Motor Renewal"
         onPress={() => navigation.goBack()}
-        havePdf={true}
+        havePdf={isFetching == false ? true : false}
         onPDF={() => downloadAndOpenPDF()}
       />
 
@@ -366,6 +366,24 @@ export default function MotorRenewal({navigation}) {
               paddingBottom: 250,
             }}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                  height: window.height * 0.7,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.Bold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              </View>
+            }
           />
         )}
       </View>

@@ -228,7 +228,7 @@ export default function MotorRenewalCompact({navigation}) {
       <Header
         Title="Motor Renewal Compact"
         onPress={() => navigation.goBack()}
-        havePdf={true}
+        havePdf={isFetching == false ? true : false}
         onPDF={() => downloadAndOpenPDF()}
       />
       <ScrollView>

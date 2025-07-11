@@ -301,7 +301,7 @@ export default function CommissionStatement({navigation}) {
         //   ToastAndroid.LONG,
         // );
 
-        Linking.openURL(url).catch(err =>
+        Linking.openURL(localFilePath).catch(err =>
           console.error("Couldn't open URL", err),
         );
       })

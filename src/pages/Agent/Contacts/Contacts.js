@@ -224,10 +224,11 @@ export default function Contacts({navigation}) {
               <FlatList
                 data={filteredBranches}
                 showsVerticalScrollIndicator={false}
+                scrollToOverflowEnabled={true}
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderItem}
                 // keyExtractor={item => item?.id?.toString()}
@@ -239,7 +240,7 @@ export default function Contacts({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}

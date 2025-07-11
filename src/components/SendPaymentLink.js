@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   Animated,
@@ -29,6 +29,41 @@ export default function SendPaymentLink({
   setPhone,
 }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
+  const [mobileNumberError, setMobileNumberError] = useState('');
+
+  // const isValidSriLankanNumber = number => {
+  //   const cleaned = number.replace(/[^0-9]/g, '');
+
+  //   // If it's empty, skip validation (considered optional)
+  //   if (cleaned.length === 0) return true;
+
+  //   // Must be either valid local or international format
+  //   const localPattern = /^(07\d{8}|0\d{9})$/;
+  //   const intlPattern = /^94\d{9}$/;
+
+  //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
+  // };
+
+  const isValidSriLankanNumber = number => {
+    const cleaned = number.replace(/[^0-9+]/g, '');
+
+    // Normalize to numeric-only without + sign
+    let normalized = cleaned;
+    if (normalized.startsWith('+94')) {
+      normalized = normalized.replace('+94', '94');
+    } else if (normalized.startsWith('0')) {
+      normalized = '94' + normalized.substring(1);
+    } else if (/^[7|1|2]\d{8}$/.test(normalized)) {
+      // If it's missing leading 0 but starts with valid digit
+      normalized = '94' + normalized;
+    }
+
+    // Patterns
+    const mobilePattern = /^947[0-9]{8}$/;
+    const landlinePattern = /^94(1\d{8}|2\d{8})$/; // landlines like 011xxxxxxx or 021xxxxxxx
+
+    return mobilePattern.test(normalized) || landlinePattern.test(normalized);
+  };
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -62,9 +97,9 @@ export default function SendPaymentLink({
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <TouchableOpacity
-        onPress={() => {
-          setModalVisible(false);
-        }}
+        // onPress={() => {
+        //   setModalVisible(false);
+        // }}
         activeOpacity={1}
         style={{flex: 1}}>
         <Animated.View
@@ -101,10 +136,23 @@ export default function SendPaymentLink({
               Label={'Contact Number'}
               Title={'Enter phone number'}
               value={phone}
-              setValue={v => {
-                const cleaned = v.replace(/[^0-9]/g, ''); // Remove non-digit characters
-                if (cleaned.length <= 12) {
-                  setPhone(cleaned);
+              errorBorder={mobileNumberError}
+              // setValue={v => {
+              //   const cleaned = v.replace(/[^0-9]/g, ''); // Remove non-digit characters
+              //   if (cleaned.length <= 12) {
+              //     setPhone(cleaned);
+              //   }
+              // }}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                setPhone(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setMobileNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setMobileNumberError('');
                 }
               }}
               keyboardType="phone-pad"
@@ -122,6 +170,8 @@ export default function SendPaymentLink({
               <View style={{flex: 0.35}}>
                 <AlertButton
                   isLoading={loading}
+                  disabledColor={mobileNumberError ? true : false}
+                  disabledButton={mobileNumberError ? true : false}
                   Title={'Confirm'}
                   onPress={handleSubmit}
                 />

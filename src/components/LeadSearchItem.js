@@ -40,10 +40,12 @@ export default function LeadSearchItem({item, onPress}) {
             height: '100%',
           }}>
           <Text
+            numberOfLines={1}
             style={{
               fontFamily: Fonts.Roboto.Bold,
               color: COLORS.black,
               fontSize: 15,
+              marginRight: 5,
             }}>
             {item?.customerName}
           </Text>

@@ -44,13 +44,19 @@ export default function ClubInformation({navigation}) {
   const personalCode = useSelector(state => state.Profile.personalCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const {data: clubInfo, isFetching, error} = useGetClubQuery(userCode);
+  const {
+    data: clubInfo,
+    isFetching,
+    error,
+  } = useGetClubQuery(usertype == 2 ? personalCode : userCode);
   const {
     data: nextClubInfo,
     isFetching: isNextFetching,
     error: nextError,
   } = useGetNextClubQuery(usertype == 2 ? personalCode : userCode);
   console.log('userCode', userCode);
+  console.log('userCodebbbbbbb', usertype == 2 ? personalCode : userCode);
+  console.log('usertype', usertype);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
