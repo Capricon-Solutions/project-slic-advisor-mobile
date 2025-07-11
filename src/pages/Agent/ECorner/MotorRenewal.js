@@ -190,12 +190,9 @@ export default function MotorRenewal({navigation}) {
       const download = RNFS.downloadFile(downloadOptions);
       console.log('Download started:', download);
       const result = await download.promise;
-      // Linking.openURL(localFilePath).catch();
       console.log('Download completed:', result.statusCode);
 
       if (result.statusCode === 200) {
-        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
         await FileViewer.open(localFilePath, {
           showOpenWithDialog: true,
           displayName: 'Your PDF Report',
@@ -214,7 +211,6 @@ export default function MotorRenewal({navigation}) {
         text1: 'Download Error',
         text2: 'Failed to download or open the PDF file.',
       });
-      // Alert.alert('Error', 'Failed to download or open the PDF file.');
     } finally {
       setIsDownloading(false);
     }
