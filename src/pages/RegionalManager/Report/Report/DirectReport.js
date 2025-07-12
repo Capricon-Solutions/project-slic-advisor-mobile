@@ -36,6 +36,8 @@ import {
   useRmReportQuery,
 } from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
+import LoaderKit from 'react-native-loader-kit';
+import OutlinedTextView from '../../../../components/OutlinedTextView';
 
 const window = Dimensions.get('window');
 const data = [
@@ -301,6 +303,25 @@ export default function DirectReport({navigation, route}) {
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{padding: 10}}
+          ListEmptyComponent={
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: window.height * 0.7,
+              }}>
+              {!RmReportFetching && (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.SemiBold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              )}
+            </View>
+          }
           renderItem={({item}) => (
             <View
               style={{
@@ -335,7 +356,7 @@ export default function DirectReport({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'Renewal'}
                     value={
                       item.renewal !== null && item.renewal !== undefined
@@ -349,7 +370,7 @@ export default function DirectReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'NB'}
                     value={
                       item.renewal !== null && item.nb !== undefined
@@ -366,7 +387,7 @@ export default function DirectReport({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'PPW'}
                     value={
                       item.renewal !== null && item.refundPpw !== undefined
@@ -380,7 +401,7 @@ export default function DirectReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'Others'}
                     value={
                       item.renewal !== null && item.refundOther !== undefined
@@ -396,7 +417,7 @@ export default function DirectReport({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   Title={'Endorsement'}
                   value={
                     item.renewal !== null && item.endorsement !== undefined
@@ -410,7 +431,7 @@ export default function DirectReport({navigation, route}) {
               </View>
 
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   Title={'Total'}
                   value={
                     item.renewal !== null && item.total !== undefined
@@ -425,6 +446,23 @@ export default function DirectReport({navigation, route}) {
             </View>
           )}
         />
+      )}
+      {RmReportFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
       )}
     </View>
   );

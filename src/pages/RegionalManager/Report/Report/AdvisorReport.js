@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -35,7 +35,10 @@ import {
   useAdvisorReportQuery,
   useRmReportQuery,
 } from '../../../../redux/services/ReportApiSlice';
+import LoaderKit from 'react-native-loader-kit';
+
 import ReportFilter from '../../../../components/ReportFilter';
+import OutlinedTextView from '../../../../components/OutlinedTextView';
 
 const window = Dimensions.get('window');
 const data = [
@@ -109,8 +112,17 @@ export default function AdvisorReport({navigation, route}) {
     item?.total?.toString() ?? '',
   ]);
 
+  // useEffect(() => {
+  //   Orientation.lockToPortrait();
+  //   console.log('run here');
+  //   // console.log("Orientation",Orientation)
+  // }, []);
+
   const toggleOrientation = () => {
+    console.log('runhere');
     if (isLandscape) {
+      console.log('runhere');
+
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
       Orientation.lockToLandscape(); // Lock screen to landscape mode
@@ -304,6 +316,25 @@ export default function AdvisorReport({navigation, route}) {
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{padding: 10}}
+          ListEmptyComponent={
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: window.height * 0.7,
+              }}>
+              {!AdvisorReportFetching && (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.SemiBold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              )}
+            </View>
+          }
           renderItem={({item}) => (
             <View
               style={{
@@ -338,7 +369,7 @@ export default function AdvisorReport({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     readOnly
                     Title={'Renewal'}
                     value={
@@ -353,7 +384,7 @@ export default function AdvisorReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'NB'}
                     readOnly
                     value={
@@ -371,7 +402,7 @@ export default function AdvisorReport({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     readOnly
                     Title={'PPW'}
                     value={
@@ -386,7 +417,7 @@ export default function AdvisorReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     readOnly
                     Title={'Others'}
                     value={
@@ -403,7 +434,7 @@ export default function AdvisorReport({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   readOnly
                   Title={'Endorsement'}
                   value={
@@ -418,7 +449,7 @@ export default function AdvisorReport({navigation, route}) {
               </View>
 
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   readOnly
                   Title={'Total'}
                   value={
@@ -434,6 +465,23 @@ export default function AdvisorReport({navigation, route}) {
             </View>
           )}
         />
+      )}
+      {AdvisorReportFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
       )}
     </View>
   );

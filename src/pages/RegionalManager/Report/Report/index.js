@@ -29,6 +29,8 @@ import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
 import {useRmReportQuery} from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
+import OutlinedTextView from '../../../../components/OutlinedTextView';
+import LoaderKit from 'react-native-loader-kit';
 
 const window = Dimensions.get('window');
 const data = [
@@ -312,7 +314,10 @@ export default function Report({navigation, route}) {
               data={RmReport?.data}
               initialNumToRender={2}
               keyExtractor={item => item.id}
-              contentContainerStyle={{padding: 10}}
+              contentContainerStyle={{
+                padding: 10,
+                paddingBottom: window.height * 0.5, // Adjusted for footer space
+              }}
               ListEmptyComponent={
                 <View
                   style={{
@@ -320,14 +325,16 @@ export default function Report({navigation, route}) {
                     alignItems: 'center',
                     height: window.height * 0.7,
                   }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: COLORS.errorBorder,
-                      fontFamily: Fonts.Roboto.SemiBold,
-                    }}>
-                    Sorry, No Data Found
-                  </Text>
+                  {!RmReportFetching && (
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: COLORS.errorBorder,
+                        fontFamily: Fonts.Roboto.SemiBold,
+                      }}>
+                      Sorry, No Data Found
+                    </Text>
+                  )}
                 </View>
               }
               renderItem={({item}) => (
@@ -363,9 +370,9 @@ export default function Report({navigation, route}) {
                       width: '100%',
                     }}>
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'Renewal'}
-                        readOnly={true}
+                        // readOnly={true}
                         value={
                           item.renewal !== null && item.renewal !== undefined
                             ? Number(item.renewal).toLocaleString('en-US', {
@@ -378,9 +385,9 @@ export default function Report({navigation, route}) {
                     </View>
 
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'NB'}
-                        readOnly={true}
+                        // readOnly={true}
                         value={
                           item.renewal !== null && item.nb !== undefined
                             ? Number(item.nb).toLocaleString('en-US', {
@@ -396,9 +403,9 @@ export default function Report({navigation, route}) {
                   {/* Second Row */}
                   <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'PPW'}
-                        readOnly={true}
+                        // readOnly={true}
                         value={
                           item.renewal !== null && item.refundPpw !== undefined
                             ? Number(item.refundPpw).toLocaleString('en-US', {
@@ -411,9 +418,9 @@ export default function Report({navigation, route}) {
                     </View>
 
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'Others'}
-                        readOnly={true}
+                        // readOnly={true}
                         value={
                           item.renewal !== null &&
                           item.refundOther !== undefined
@@ -429,9 +436,9 @@ export default function Report({navigation, route}) {
 
                   {/* Third Row */}
                   <View>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={'Endorsement'}
-                      readOnly={true}
+                      // readOnly={true}
                       value={
                         item.renewal !== null && item.endorsement !== undefined
                           ? Number(item.endorsement).toLocaleString('en-US', {
@@ -444,16 +451,16 @@ export default function Report({navigation, route}) {
                   </View>
 
                   <View>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={'Total'}
-                      readOnly={true}
+                      // readOnly={true}
                       value={
                         item.renewal !== null && item.total !== undefined
                           ? Number(item.total).toLocaleString('en-US', {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })
-                          : ''
+                          : '0.00'
                       }
                     />
                   </View>
@@ -463,10 +470,28 @@ export default function Report({navigation, route}) {
           )}
         </View>
       </View>
+      {RmReportFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
+      )}
     </View>
   );
 }
-<View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+{
+  /* <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
   <Text
     style={{
       fontSize: 16,
@@ -475,4 +500,5 @@ export default function Report({navigation, route}) {
     }}>
     Sorry, No Data Found
   </Text>
-</View>;
+</View> */
+}
