@@ -130,6 +130,7 @@ const HorizontalReportTable = ({
                             flex: 0.5,
                           }}>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.text,
                               cellIndex === 0
@@ -148,6 +149,7 @@ const HorizontalReportTable = ({
                             flex: 0.5,
                           }}>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.text,
                               cellIndex === 0

@@ -53,10 +53,12 @@ const data = [
 
 export default function DirectReport({navigation, route}) {
   const {Title = ''} = route.params || {};
-
-  const [value, setValue] = useState(null);
-  const [SelectedType, setSelectedType] = useState(1);
-  const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
+  const profile = useSelector(state => state.Profile.profile);
+  const profileResponse = profile?.user;
+  const regionName = profileResponse?.branchCode;
+  const [value, setValue] = useState(1);
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [selectedMonth, setSelectedmonth] = useState(0);
   const [type, setType] = useState();
   const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -81,31 +83,70 @@ export default function DirectReport({navigation, route}) {
     isLoading: RmReportLoading,
     isFetching: RmReportFetching,
   } = useDirectReportQuery({
-    branch: branch,
-    type: type,
-    month: selectedMonth,
+    branch: regionName,
+    startMonth: selectedMonth === 0 ? 1 : selectedMonth,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth,
+    year: new Date().getFullYear(),
     type: SelectedType,
     value: value,
   });
-  const tableData = RmReport?.data?.map(item => [
-    item?.branch?.toString() ?? '',
+  // const tableData = RmReport?.data?.map(item => [
+  //   item?.branch?.toString() ?? '',
 
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+  //   item?.renewal?.toString() ?? '',
+  //   item?.nb?.toString() ?? '',
+  //   // item?.refundPpw?.toString() ?? '',
+  //   {
+  //     ppw: item?.refundPpw?.toString() ?? '',
+  //     other: item?.refundOther?.toString() ?? '',
+  //   },
+  //   item?.endorsement?.toString() ?? '',
+  //   item?.total?.toString() ?? '',
+  // ]);
+
+  const tableData = RmReport?.data?.map(item => [
+    item?.direct?.toString() ?? '',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nb +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
   ]);
 
   const branchList =
     RmReport && RmReport.data
       ? RmReport.data.map(item => ({
-          label: item.branch,
-          value: item.branch,
+          label: item.direct,
+          value: item.direct,
         }))
       : [];
 
@@ -343,7 +384,7 @@ export default function DirectReport({navigation, route}) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item.branch.toString() ?? ''}
+                  {item?.direct?.toString() ?? ''}
                 </Text>
               </View>
 
@@ -357,13 +398,21 @@ export default function DirectReport({navigation, route}) {
                 }}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'Renewal'}
                     value={
-                      item.renewal !== null && item.renewal !== undefined
-                        ? Number(item.renewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                      value == 1
+                        ? item?.renewal != null
+                          ? Number(item.renewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : item?.nopRenewal != null
+                          ? Number(item.nopRenewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
                         : ''
                     }
                   />
@@ -372,9 +421,10 @@ export default function DirectReport({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextView
                     Title={'NB'}
+                    readOnly
                     value={
-                      item.renewal !== null && item.nb !== undefined
-                        ? Number(item.nb).toLocaleString('en-US', {
+                      item?.renewal !== null && item?.nb !== undefined
+                        ? Number(item?.nb).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -388,9 +438,10 @@ export default function DirectReport({navigation, route}) {
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'PPW'}
                     value={
-                      item.renewal !== null && item.refundPpw !== undefined
+                      item.renewal !== null && item?.refundPpw !== undefined
                         ? Number(item.refundPpw).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -402,9 +453,10 @@ export default function DirectReport({navigation, route}) {
 
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'Others'}
                     value={
-                      item.renewal !== null && item.refundOther !== undefined
+                      item?.renewal !== null && item?.refundOther !== undefined
                         ? Number(item.refundOther).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -418,10 +470,11 @@ export default function DirectReport({navigation, route}) {
               {/* Third Row */}
               <View>
                 <OutlinedTextView
+                  readOnly
                   Title={'Endorsement'}
                   value={
                     item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item.endorsement).toLocaleString('en-US', {
+                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -432,14 +485,24 @@ export default function DirectReport({navigation, route}) {
 
               <View>
                 <OutlinedTextView
+                  readOnly
                   Title={'Total'}
                   value={
-                    item.renewal !== null && item.total !== undefined
-                      ? Number(item.total).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : ''
+                    value == 1
+                      ? (
+                          item?.renewal +
+                          item?.refundPpw +
+                          item?.nb +
+                          item?.refundOther +
+                          item?.endorsement
+                        ).toLocaleString() ?? ''
+                      : (
+                          item?.nopRenewal +
+                          item?.nopPpw +
+                          item?.nb +
+                          item?.nopOtherRefund +
+                          item?.nopEndorsements
+                        ).toLocaleString() ?? ''
                   }
                 />
               </View>

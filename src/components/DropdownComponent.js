@@ -18,6 +18,7 @@ const DropdownComponent = ({
   label,
   onValueChange,
   onSelect,
+  nonClearable,
 }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -78,20 +79,23 @@ const DropdownComponent = ({
           return (
             <>
               {value && (
-                <TouchableOpacity
-                  onPress={() => {
-                    setValue(null);
-                    if (onSelect) {
-                      onSelect(null); // Notify parent
-                    }
-                  }}>
-                  <MaterialCommunityIcons
-                    style={styles.icon}
-                    color={COLORS.primaryRed}
-                    name="close-thick"
-                    size={14}
-                  />
-                </TouchableOpacity>
+                <View>
+                  {nonClearable ? null : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setValue(null);
+
+                        if (onValueChange) onValueChange(null); // ← Clear in parent
+                      }}>
+                      <MaterialCommunityIcons
+                        style={styles.icon}
+                        color={COLORS.primaryRed}
+                        name="close-thick"
+                        size={14}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
             </>
           );

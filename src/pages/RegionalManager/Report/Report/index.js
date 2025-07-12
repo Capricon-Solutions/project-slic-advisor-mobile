@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -31,6 +31,7 @@ import {useRmReportQuery} from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
 import OutlinedTextView from '../../../../components/OutlinedTextView';
 import LoaderKit from 'react-native-loader-kit';
+import {useFocusEffect} from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const data = [
@@ -77,7 +78,7 @@ export default function Report({navigation, route}) {
   } = useRmReportQuery({
     branch: branch,
     startMonth: selectedMonth === 0 ? 1 : selectedMonth,
-    endMonth: selectedMonth === 0 ? 12 : selectedMonth + 1,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth,
     year: new Date().getFullYear(),
     type: SelectedType,
     value: value,
@@ -106,6 +107,19 @@ export default function Report({navigation, route}) {
   const dropdownOptions = [{label: 'All', value: ''}, ...branchList];
 
   console.log('RmReport', RmReport);
+  useFocusEffect(
+    React.useCallback(() => {
+      // When screen is focused
+      Orientation.lockToPortrait();
+      setIsLandscape(false);
+
+      return () => {
+        // Optional: Reset on blur
+        Orientation.lockToPortrait(); // ensure cleanup just in case
+        setIsLandscape(false);
+      };
+    }, []),
+  );
 
   const toggleOrientation = () => {
     if (isLandscape) {

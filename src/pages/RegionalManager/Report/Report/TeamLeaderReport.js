@@ -38,6 +38,7 @@ import {
 import ReportFilter from '../../../../components/ReportFilter';
 import LoaderKit from 'react-native-loader-kit';
 import OutlinedTextView from '../../../../components/OutlinedTextView';
+import {useFocusEffect} from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const data = [
@@ -54,13 +55,15 @@ const data = [
 export default function TeamLeaderReport({navigation, route}) {
   const {Title = ''} = route.params || {};
 
-  const [value, setValue] = useState(null);
-  const [SelectedType, setSelectedType] = useState(1);
-  const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
+  const [value, setValue] = useState(1);
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [selectedMonth, setSelectedmonth] = useState(0);
   const [type, setType] = useState();
   const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
+  const profile = useSelector(state => state.Profile.profile);
+  const profileResponse = profile?.user;
+  const regionName = profileResponse?.branchCode;
   const tableHead = [
     'Team Leader',
     'Renewal',
@@ -81,25 +84,77 @@ export default function TeamLeaderReport({navigation, route}) {
     isLoading: TeamLeaderReportLoading,
     isFetching: TeamLeaderReportFetching,
   } = useTeamLeaderReportQuery({
-    branch: branch,
-    type: type,
-    month: selectedMonth,
+    branch: regionName,
+    startMonth: selectedMonth === 0 ? 1 : selectedMonth,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth,
+    year: new Date().getFullYear(),
     type: SelectedType,
     value: value,
   });
-  const tableData = TeamLeaderReport?.data?.map(item => [
-    item?.direct?.toString() ?? '',
+  console.log('TeamLeaderReport', TeamLeaderReport);
+  // const tableData = TeamLeaderReport?.data?.map(item => [
+  //   item?.teamLeader?.toString() ?? '',
 
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+  //   item?.renewal?.toString() ?? '',
+  //   item?.nb?.toString() ?? '',
+  //   // item?.refundPpw?.toString() ?? '',
+  //   {
+  //     ppw: item?.refundPpw?.toString() ?? '',
+  //     other: item?.refundOther?.toString() ?? '',
+  //   },
+  //   item?.endorsement?.toString() ?? '',
+  //   item?.total?.toString() ?? '',
+  // ]);
+  const tableData = TeamLeaderReport?.data?.map(item => [
+    item?.teamLeader?.toString() ?? '',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nb +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
   ]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // When screen is focused
+      Orientation.lockToPortrait();
+      setIsLandscape(false);
+
+      return () => {
+        // Optional: Reset on blur
+        Orientation.lockToPortrait(); // ensure cleanup just in case
+        setIsLandscape(false);
+      };
+    }, []),
+  );
 
   const toggleOrientation = () => {
     if (isLandscape) {
@@ -113,8 +168,8 @@ export default function TeamLeaderReport({navigation, route}) {
   const agentList =
     TeamLeaderReport && TeamLeaderReport.data
       ? TeamLeaderReport.data.map(item => ({
-          label: item.direct,
-          value: item.direct,
+          label: item.teamLeader,
+          value: item.teamLeader,
         }))
       : [];
 
@@ -230,7 +285,12 @@ export default function TeamLeaderReport({navigation, route}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
-                dropdownData={[{label: 'NOP', value: '1'}]}
+                nonClearable={true}
+                dropdownData={[
+                  {label: 'Value', value: '1'},
+                  {label: 'NOP', value: '2'},
+                ]}
+                onValueChange={value => setValue(value)}
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
@@ -238,9 +298,12 @@ export default function TeamLeaderReport({navigation, route}) {
                 label={'Type'}
                 mode={'modal'}
                 dropdownData={[
-                  {label: 'General Cumulative', value: '1'},
-                  {label: 'Motor Monthly', value: '2'},
+                  {label: 'General Cumulative', value: 'G'},
+                  {label: 'Motor Monthly', value: 'M'},
                 ]}
+                onValueChange={value => {
+                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                }}
               />
             </View>
             <View style={{flex: 0.18, marginHorizontal: 2}}>
@@ -332,7 +395,7 @@ export default function TeamLeaderReport({navigation, route}) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item?.direct?.toString() ?? ''}
+                  {item?.teamLeader?.toString() ?? ''}
                 </Text>
               </View>
 
@@ -346,13 +409,21 @@ export default function TeamLeaderReport({navigation, route}) {
                 }}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'Renewal'}
                     value={
-                      item?.renewal !== null && item?.renewal !== undefined
-                        ? Number(item?.renewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                      value == 1
+                        ? item?.renewal != null
+                          ? Number(item.renewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : item?.nopRenewal != null
+                          ? Number(item.nopRenewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
                         : ''
                     }
                   />
@@ -361,6 +432,7 @@ export default function TeamLeaderReport({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextView
                     Title={'NB'}
+                    readOnly
                     value={
                       item?.renewal !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
@@ -377,6 +449,7 @@ export default function TeamLeaderReport({navigation, route}) {
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'PPW'}
                     value={
                       item.renewal !== null && item?.refundPpw !== undefined
@@ -391,6 +464,7 @@ export default function TeamLeaderReport({navigation, route}) {
 
                 <View style={{flex: 1}}>
                   <OutlinedTextView
+                    readOnly
                     Title={'Others'}
                     value={
                       item?.renewal !== null && item?.refundOther !== undefined
@@ -407,6 +481,7 @@ export default function TeamLeaderReport({navigation, route}) {
               {/* Third Row */}
               <View>
                 <OutlinedTextView
+                  readOnly
                   Title={'Endorsement'}
                   value={
                     item.renewal !== null && item.endorsement !== undefined
@@ -421,14 +496,24 @@ export default function TeamLeaderReport({navigation, route}) {
 
               <View>
                 <OutlinedTextView
+                  readOnly
                   Title={'Total'}
                   value={
-                    item?.renewal !== null && item?.total !== undefined
-                      ? Number(item.total)?.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : ''
+                    value == 1
+                      ? (
+                          item?.renewal +
+                          item?.refundPpw +
+                          item?.nb +
+                          item?.refundOther +
+                          item?.endorsement
+                        ).toLocaleString() ?? ''
+                      : (
+                          item?.nopRenewal +
+                          item?.nopPpw +
+                          item?.nb +
+                          item?.nopOtherRefund +
+                          item?.nopEndorsements
+                        ).toLocaleString() ?? ''
                   }
                 />
               </View>
