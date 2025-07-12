@@ -31,6 +31,7 @@ import {
 } from '../../../redux/services/ReportApiSlice';
 import DropdownComponent from '../../../components/DropdownComponent';
 import LoaderKit from 'react-native-loader-kit';
+import OutlinedTextView from '../../../components/OutlinedTextView';
 
 const window = Dimensions.get('window');
 const data = [
@@ -333,9 +334,20 @@ export default function TeamMemberGrid({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  {/* <OutlinedTextBox
                     Title={'Renewal'}
                     readOnly={true}
+                    value={
+                      item?.renewal !== null && item?.renewal !== undefined
+                        ? Number(item?.renewal).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                    }
+                  /> */}
+                  <OutlinedTextView
+                    Title={'Renewal'}
                     value={
                       item?.renewal !== null && item?.renewal !== undefined
                         ? Number(item?.renewal).toLocaleString('en-US', {
@@ -348,9 +360,20 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  {/* <OutlinedTextBox
                     Title={'NB'}
                     readOnly={true}
+                    value={
+                      item?.renewal !== null && item?.nb !== undefined
+                        ? Number(item?.nb).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                    }
+                  /> */}
+                  <OutlinedTextView
+                    Title={'NB'}
                     value={
                       item?.renewal !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
@@ -366,9 +389,20 @@ export default function TeamMemberGrid({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  {/* <OutlinedTextBox
                     Title={'PPW'}
                     readOnly={true}
+                    value={
+                      item.renewal !== null && item?.refundPpw !== undefined
+                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                    }
+                  /> */}
+                  <OutlinedTextView
+                    Title={'PPW'}
                     value={
                       item.renewal !== null && item?.refundPpw !== undefined
                         ? Number(item.refundPpw).toLocaleString('en-US', {
@@ -381,9 +415,20 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  {/* <OutlinedTextBox
                     Title={'Others'}
                     readOnly={true}
+                    value={
+                      item?.renewal !== null && item?.refundOther !== undefined
+                        ? Number(item.refundOther).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                    }
+                  /> */}
+                  <OutlinedTextView
+                    Title={'Others'}
                     value={
                       item?.renewal !== null && item?.refundOther !== undefined
                         ? Number(item.refundOther).toLocaleString('en-US', {
@@ -398,7 +443,7 @@ export default function TeamMemberGrid({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                <OutlinedTextBox
+                {/* <OutlinedTextBox
                   Title={'Endorsement'}
                   readOnly={true}
                   value={
@@ -409,13 +454,69 @@ export default function TeamMemberGrid({navigation, route}) {
                         })
                       : ''
                   }
+                /> */}
+                {/* <View style={{marginTop: 10}}>
+                  <View
+                    style={{
+                      height: 47,
+                      borderColor: COLORS.warmGray,
+                      borderWidth: 1,
+
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      paddingLeft: 10,
+                    }}>
+                    <Text style={{color: COLORS.ashBlue}}>
+                      {item.renewal !== null && item.endorsement !== undefined
+                        ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''}
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      color: COLORS.ashBlue,
+                      fontSize: 12,
+                      position: 'absolute',
+                      top: -10,
+                      paddingHorizontal: 5,
+                      backgroundColor: COLORS.white,
+                      left: 10,
+                    }}>
+                    Endorsement
+                  </Text>
+                </View> */}
+                <OutlinedTextView
+                  Title={'Endorsement'}
+                  value={
+                    item.renewal !== null && item?.endorsement !== undefined
+                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      : ''
+                  }
                 />
               </View>
 
               <View>
-                <OutlinedTextBox
+                {/* <OutlinedTextBox
                   Title={'Total'}
                   readOnly={true}
+                  value={
+                    (
+                      item?.renewal +
+                      item?.nb +
+                      item?.refundPpw +
+                      item?.refundOther +
+                      item?.endorsement
+                    ).toLocaleString() ?? '0.00'
+                  }
+                /> */}
+                <OutlinedTextView
+                  Title={'Total'}
                   value={
                     (
                       item?.renewal +
