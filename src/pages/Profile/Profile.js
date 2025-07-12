@@ -230,7 +230,7 @@ export default function Profile({navigation}) {
                 ? 'Branch Code'
                 : 'Agent Code'
             }
-            value={agentCode?.toString() ?? 'Unavailable'}
+            value={agentCode?.toString() || 'Unavailable'}
             readOnly={true}
           />
           {usertype !== 4 && (
@@ -238,30 +238,30 @@ export default function Profile({navigation}) {
               Label={'Personal Code'}
               readOnly={true}
               value={
-                personalCode?.toString() ?? 'Unavailable'
+                personalCode?.toString() || 'Unavailable'
               }></SquareTextBoxOutlined>
           )}
 
           <SquareTextBoxOutlined
             Label={'NIC Number'}
             readOnly={true}
-            value={nic?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={nic?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'E-mail Address'}
             readOnly={true}
-            value={email?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={email?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Mobile Number'}
             readOnly={true}
-            value={phone?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={phone?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Contact Number'}
             readOnly={true}
             value={
-              contact?.toString() ?? 'Unavailable'
+              contact?.toString() || 'Unavailable'
             }></SquareTextBoxOutlined>
         </View>
 
