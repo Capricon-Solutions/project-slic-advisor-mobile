@@ -60,9 +60,8 @@ export default function Dashboard({navigation}) {
   const path = useSelector(state => state.NavController.path);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
+  const token = useSelector(state => state.Profile.token);
 
-  console.log('userType', usertype);
-  console.log('path', path);
   const profile = useSelector(state => state.Profile.profile);
   const profileResponse = profile?.user;
 
@@ -73,11 +72,9 @@ export default function Dashboard({navigation}) {
       } else {
         setgeneraModalVisible(false);
       }
-      console.log('path', path);
     }, [path]),
   );
-  console.log('profile', profile);
-  console.log('usertypess', usertype);
+
   const {
     data: CurrentMonthRank,
     error: achiveError,
@@ -97,9 +94,6 @@ export default function Dashboard({navigation}) {
     month: new Date().getMonth() + 1,
     region: regionName,
   });
-  console.log('CurrentMonthRank', CurrentMonthRank);
-  console.log('RMSummeryData', RMSummeryData);
-  console.log('RMSummeryError', RMSummeryError);
 
   // API Binds
   const name = profileResponse?.firstName;
@@ -112,7 +106,6 @@ export default function Dashboard({navigation}) {
   const totalNumberofRegions = CurrentMonthRank?.data?.regionalTotal;
   const branchRank = CurrentMonthRank?.data?.branchRank;
   const totalNumberofBranches = CurrentMonthRank?.data?.branchTotal;
-  console.log('name', name);
 
   const {
     data: ProfilePic,
@@ -123,38 +116,39 @@ export default function Dashboard({navigation}) {
   });
 
   useEffect(() => {
-    fetchImage();
+    if (ProfilePic?.data?.urlPath) {
+      fetchImage(ProfilePic?.data?.urlPath);
+    }
   }, [ProfilePic?.data?.urlPath]);
 
-  async function fetchImage() {
+  async function fetchImage(urlPath) {
     dispatch(SetdefaultImageUrl(null));
     if (!ProfilePic?.data?.urlPath) return;
-
-    // Append a timestamp to the URL to prevent caching
-    const url = `https://gisalesappapi.slicgeneral.com${
-      ProfilePic.data.urlPath
-    }?t=${new Date().getTime()}`;
+    const url = `https://gisalesappapi.slicgeneral.com${urlPath}`;
     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
 
-    console.log('Fetching new image...');
     try {
-      // const filePath = `${RNFS.CachesDirectoryPath}/profile.png`;
-      const filePath = `${RNFS.CachesDirectoryPath}/profile_${userCode}.png`;
-      console.log('Fetching from URL:', url);
-      dispatch(SetdefaultImageUrl(`file://${filePath}`));
+      // const filePath = `${RNFS.DocumentDirectoryPath}/profile.png`;
+      const timestamp = Date.now(); // current time in ms
+      const filePath = `${RNFS.CachesDirectoryPath}/profile_${timestamp}.png`;
+      // const filePath = `${RNFS.CachesDirectoryPath}/profile_${userCode}.png`;
 
+      // dispatch(SetdefaultImageUrl(`file://${filePath}`));
+
+      console.log('url', url);
+      console.log('filePath', filePath);
+      console.log('token', token);
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
-        headers: {'x-api-key': apiKey},
+        headers: {'x-api-key': apiKey, Authorization: `Bearer ${token}`},
       }).promise;
-      console.log('Download responsemmmmmmmmmmm:', response.statusCode);
+      console.log('work here');
       if (response.statusCode === 200) {
-        console.log('Image fetched successfully: cccccccccccccccc', filePath);
         dispatch(SetdefaultImageUrl(`file://${filePath}`));
         // setImageUri(`file://${filePath}`);
       } else {
-        console.error('Failed to fetch image');
+        console.log('Failed to fetch image', response.statusCode);
       }
     } catch (error) {
       console.error('Error fetching image:', error);
@@ -243,7 +237,6 @@ export default function Dashboard({navigation}) {
                 onPress: () => {
                   setModalVisible(false);
                   navigation.navigate('TeamPerformance');
-                  console.log('test');
                 },
               },
             ],
