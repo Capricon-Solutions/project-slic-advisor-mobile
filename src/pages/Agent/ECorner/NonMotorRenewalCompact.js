@@ -252,7 +252,7 @@ export default function NonMotorRenewalCompact({navigation}) {
               marginVertical: 20,
               color: COLORS.borderColor,
             }}>
-            (Click on policy Number to view details)
+            (Click on Policy Number to View Details)
           </Text>
           {isFetching == true ? (
             <LoadingScreen />

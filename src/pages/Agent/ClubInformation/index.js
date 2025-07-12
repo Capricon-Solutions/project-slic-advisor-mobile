@@ -126,7 +126,7 @@ export default function ClubInformation({navigation}) {
       />
 
       <Header
-        Title="Club information"
+        Title="Club Information"
         onPress={() => navigation.goBack()}
         haveFilters={false}
         haveWhatsapp={false}
@@ -226,7 +226,7 @@ export default function ClubInformation({navigation}) {
                 </View>
 
                 <OutlinedTextView
-                  Title={'Last 5 year avg. '}
+                  Title={'Last 5 Years Avg.'}
                   // readOnly={true}
                   value={last5YearAverage?.toString() ?? ''}
                 />
@@ -262,7 +262,7 @@ export default function ClubInformation({navigation}) {
                 {tableData && (
                   <OutlinedTextView
                     Title={
-                      'Annual income upto ' + lastUpdatedDate?.toString() ?? ''
+                      'Annual Income Upto ' + lastUpdatedDate?.toString() ?? ''
                     }
                     // readOnly={true}
                     value={annualIncomeUpto?.toString() ?? ''}

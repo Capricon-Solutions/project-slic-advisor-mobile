@@ -234,7 +234,7 @@ export default function CommissionStatement({navigation}) {
               fontFamily: Fonts.Roboto.Medium,
               color: COLORS.grayText,
             }}>
-            Select the month and year
+            Select the Month and Year
           </Text>
           <TouchableOpacity
             onPress={() => setPickerVisible(true)}
@@ -297,7 +297,7 @@ export default function CommissionStatement({navigation}) {
               fontFamily: Fonts.Roboto.Medium,
               color: COLORS.grayText,
             }}>
-            statement for
+            Statement For
           </Text>
           <DropdownFilled
             placeholder={'Select'}
@@ -318,7 +318,7 @@ export default function CommissionStatement({navigation}) {
               fontFamily: Fonts.Roboto.Medium,
               color: COLORS.grayText,
             }}>
-            Select the document type
+            Select the Document Type
           </Text>
           <DropdownFilled
             placeholder={'Select'}

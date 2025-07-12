@@ -175,7 +175,7 @@ const TableComponentDoc = ({
               color: COLORS.primaryRed,
               fontSize: 16,
             }}>
-            Sorry, No Dat found
+            Sorry, No Data found
           </Text>
         </View>
       ) : (

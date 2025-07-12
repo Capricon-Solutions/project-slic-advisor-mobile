@@ -68,7 +68,9 @@ export default function ECMotorRenewal({item, navigation}) {
           <Text style={styles.motorRenewalCardItemLeft}>Policy No</Text>
         </View>
         <View style={{flex: 0.7}}>
-          <Text style={styles.motorRenewalCardItemRight}>{item?.policyNo}</Text>
+          <Text style={styles.motorRenewalCardItemRight}>
+            {item?.policyNo || 'Unavailable'}
+          </Text>
         </View>
       </View>
 
@@ -78,8 +80,7 @@ export default function ECMotorRenewal({item, navigation}) {
         </View>
         <View style={{flex: 0.7}}>
           <Text style={styles.motorRenewalCardItemRight}>
-            {' '}
-            {item?.vehicleNo}
+            {item?.vehicleNo || 'Unavailable'}
           </Text>
         </View>
       </View>
@@ -99,7 +100,7 @@ export default function ECMotorRenewal({item, navigation}) {
       </View>
       <View style={styles.motorRenewalCardItem}>
         <View style={{flex: 0.3}}>
-          <Text style={styles.motorRenewalCardItemLeft}>Total paid claims</Text>
+          <Text style={styles.motorRenewalCardItemLeft}>Total Paid Claims</Text>
         </View>
         <View style={{flex: 0.7}}>
           <Text style={styles.motorRenewalCardItemRight}>
@@ -115,19 +116,27 @@ export default function ECMotorRenewal({item, navigation}) {
           <Text style={styles.motorRenewalCardItemLeft}>Due Date</Text>
         </View>
         <View style={{flex: 0.7}}>
-          <Text style={styles.motorRenewalCardItemRight}>{item?.dueDate}</Text>
+          <Text style={styles.motorRenewalCardItemRight}>
+            {item?.dueDate || 'Unavailable'}
+          </Text>
         </View>
       </View>
 
       {expanded && (
         <View>
+          <View
+            style={{
+              borderWidth: 0.5,
+              borderColor: COLORS.lightBorder,
+              marginVertical: 2,
+            }}></View>
           <View style={styles.motorRenewalCardItem}>
             <View style={{flex: 0.3}}>
               <Text style={styles.motorRenewalCardItemLeft}>Name </Text>
             </View>
             <View style={{flex: 0.7}}>
               <Text style={styles.motorRenewalCardItemRight}>
-                {item?.customerName}
+                {item?.customerName || 'Unavailable'}
               </Text>
             </View>
           </View>
@@ -137,18 +146,17 @@ export default function ECMotorRenewal({item, navigation}) {
             </View>
             <View style={{flex: 0.7}}>
               <Text style={styles.motorRenewalCardItemRight}>
-                {item?.address}
+                {item?.address || 'Unavailable'}
               </Text>
             </View>
           </View>
           <View style={styles.motorRenewalCardItem}>
             <View style={{flex: 0.3}}>
-              <Text style={styles.motorRenewalCardItemLeft}>contacts Tel</Text>
+              <Text style={styles.motorRenewalCardItemLeft}>Contacts Tel</Text>
             </View>
             <View style={{flex: 0.7}}>
               <Text style={styles.motorRenewalCardItemRight}>
-                {' '}
-                {item?.mobileNo}
+                {item?.mobileNo || 'Unavailable'}
               </Text>
             </View>
           </View>

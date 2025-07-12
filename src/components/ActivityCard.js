@@ -76,18 +76,22 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
         </View>
         {activity?.type == 'Activity' && (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Feather name="clock" color={COLORS.grayText} size={16} />
-            <Text
-              style={{
-                color: COLORS.textColor,
-                fontFamily: Fonts.Roboto.Medium,
-                fontSize: 13,
-                marginLeft: 5,
-              }}>
-              {activity?.type == 'Event'
-                ? moment(activity.eventDate).format('hh:mm A')
-                : moment(activity.activityDate).format('hh:mm A')}
-            </Text>
+            {activity?.activityTime && (
+              <View>
+                <Feather name="clock" color={COLORS.grayText} size={16} />
+                <Text
+                  style={{
+                    color: COLORS.textColor,
+                    fontFamily: Fonts.Roboto.Medium,
+                    fontSize: 13,
+                    marginLeft: 5,
+                  }}>
+                  {activity?.type == 'Event'
+                    ? moment(activity.eventTime).format('hh:mm A')
+                    : moment(activity.activityTime).format('hh:mm A')}
+                </Text>
+              </View>
+            )}
           </View>
         )}
       </View>

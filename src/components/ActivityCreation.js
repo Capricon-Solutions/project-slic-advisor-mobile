@@ -105,10 +105,13 @@ export default function ActivityCreation({
         text1: 'Activity Created',
         text2: 'Your activity has been created successfully!',
       });
+      setDescription('');
+      setMeetWith('');
+      setSelectedDate(null);
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
         setModalVisible(false);
-      },900);
+      }, 900);
       console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
@@ -283,14 +286,16 @@ export default function ActivityCreation({
               </View>
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
-                Label={'Event Description *'}
+                Label={'Action Description *'}
                 Title={'Description'}
+                value={description}
                 setValue={text => setDescription(text)}
               />
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
                 Label={'Meeting With *'}
                 Title={'Meeting With'}
+                value={meetWith}
                 setValue={text => setMeetWith(text)}
               />
               <TouchableOpacity

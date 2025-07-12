@@ -26,6 +26,7 @@ import {
 } from '../../../redux/services/plannerSlice';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {showToast} from '../../../components/ToastMessage';
 
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
@@ -121,19 +122,26 @@ export default function MonthlyPlan({navigation}) {
     // if (!validateForm()) return; // Stop if validation fails
 
     // console.log('body');
+    console.log('proposals', proposals);
 
     if (
-      !meetings &&
-      !presentations &&
-      !quotations &&
-      !proposals &&
-      !closed &&
-      !leads
+      !meetings ||
+      meetings === '' ||
+      !presentations ||
+      presentations === '' ||
+      !quotations ||
+      quotations === '' ||
+      !proposals ||
+      proposals === '' ||
+      !closed ||
+      closed === '' ||
+      !leads ||
+      leads === ''
     ) {
-      Toast.show({
+      showToast({
         type: 'error',
-        text1: 'Please enter any one field',
-        text2: 'Please enter any one field',
+        text1: 'Please enter a valid value for all fields',
+        text2: 'Fields cannot be empty',
       });
       return;
     }
@@ -144,14 +152,14 @@ export default function MonthlyPlan({navigation}) {
 
       if (response?.error?.status == '500') {
         console.log('something went wrong', response?.error);
-        Toast.show({
+        showToast({
           type: 'error',
           text1: 'Monthly Plan Not Created',
           text2: response?.error?.data?.message || 'Something went wrong',
         });
         // Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
-        Toast.show({
+        showToast({
           type: 'success',
           text1: 'Monthly Plan Created',
           text2: 'Monthly Plan Created Successfully',

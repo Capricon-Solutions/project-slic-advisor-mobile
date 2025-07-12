@@ -93,7 +93,7 @@ const SalesTableComponent = ({
         ) : (
           // tableData?.length == 0 ?
           <View style={styles.emptyContainer}>
-            <Text style={styles.errorText}>Sorry, No Dat found</Text>
+            <Text style={styles.errorText}>Sorry, No Data found</Text>
           </View>
         )
         //  : (

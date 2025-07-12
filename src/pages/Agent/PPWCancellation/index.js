@@ -101,6 +101,7 @@ export default function PPWCancellation({navigation}) {
     fromDate: fromDate,
     toDate: toDate,
   });
+  console.log('PPWReminderList', PPWReminderList);
   const handleSelect = value => {
     setSelectedValue(value);
   };
@@ -233,7 +234,7 @@ export default function PPWCancellation({navigation}) {
               marginBottom: 10,
               color: COLORS.borderColor,
             }}>
-            (Click on policy Number to view details)
+            (Click on Policy Number to View Details)
           </Text>
         </View>
         <View>

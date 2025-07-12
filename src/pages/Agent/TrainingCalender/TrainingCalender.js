@@ -90,6 +90,8 @@ LocaleConfig.defaultLocale = 'fr';
 
 export default function TrainingCalender({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [trainingType, setTrainingType] = useState();
@@ -112,7 +114,10 @@ export default function TrainingCalender({navigation}) {
     isFetching,
     refetch,
     error,
-  } = useGetTrainingListQuery({type, userCode});
+  } = useGetTrainingListQuery({
+    type,
+    userCode: usertype == 2 ? personalCode : userCode,
+  });
 
   const [approveTraining, {isLoading: isApproving, error: approveError}] =
     useApproveTrainingMutation();

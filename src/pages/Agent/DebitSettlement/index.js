@@ -111,7 +111,7 @@ export default function DebitSettlement({navigation, route}) {
       showToast({
         type: 'error',
         text1: 'Failed',
-        text2: err?.data?.Message || 'Enter valid contact number.',
+        text2: err?.data?.message,
       });
     }
   };

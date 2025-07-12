@@ -19,23 +19,30 @@ import SquareTextBox from './SquareTextBox';
 import Button from './Button';
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
-import { useNotAttendingMutation } from '../redux/services/trainingSlice';
-import { showToast, ToastMessage } from './ToastMessage';
-import { useSelector } from 'react-redux';
+import {useNotAttendingMutation} from '../redux/services/trainingSlice';
+import {showToast, ToastMessage} from './ToastMessage';
+import {useSelector} from 'react-redux';
 
-export default function NotAttending({ modalVisible, setModalVisible, selectedId }) {
+export default function NotAttending({
+  modalVisible,
+  setModalVisible,
+  selectedId,
+}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [reason, setReason] = React.useState('');
   const [additionalComments, setAdditionalComments] = React.useState('');
-  const [notAttending, { isLoading: notAttendingLoading, error: notAttendingError }] = useNotAttendingMutation();
+  const [
+    notAttending,
+    {isLoading: notAttendingLoading, error: notAttendingError},
+  ] = useNotAttendingMutation();
 
   function notAttendingApi() {
     if (!reason.trim()) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Please fill in all required fields. ',
       });
       return;
     }
@@ -50,17 +57,23 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
       .unwrap()
       .then(() => {
         // Success - close the modal
+        showToast({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Your response has been recorded.',
+        });
         setReason('');
         setAdditionalComments('');
-        hide();
 
+        setTimeout(() => {
+          hide();
+        }, 500);
       })
-      .catch((err) => {
+      .catch(err => {
         // Handle error if needed
         console.error('Not attending error:', err);
       });
   }
-
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -93,9 +106,12 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity onPress={() => {
-        hide();
-      }} activeOpacity={1} style={{ flex: 1 }}>
+      <TouchableOpacity
+        onPress={() => {
+          hide();
+        }}
+        activeOpacity={1}
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -106,7 +122,6 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
               }),
             },
           ]}>
-
           <View style={styles.modalContainer}>
             <TouchableOpacity onPress={() => hide()} style={styles.closeButton}>
               <MaterialCommunityIcons
@@ -115,16 +130,15 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
                 size={24}
               />
             </TouchableOpacity>
-            <View style={{ width: '100%', marginBottom: 15 }}>
+            <View style={{width: '100%', marginBottom: 15}}>
               <Text style={styles.modalTitle}>Reason for Not Attending?</Text>
             </View>
 
             <SquareTextBox
               Label={'Reasons *'}
-              Title={'What is the reasons'}
+              Title={'What Are the Reasons'}
               value={reason}
               error={!reason.trim()}
-
               setValue={text => setReason(text)}
             />
 
@@ -142,8 +156,12 @@ export default function NotAttending({ modalVisible, setModalVisible, selectedId
                 marginTop: 15,
                 justifyContent: 'space-evenly',
               }}>
-              <View style={{ flex: 0.35 }}>
-                <AlertButton Title={'Confirm'} isLoading={notAttendingLoading} onPress={() => notAttendingApi()} />
+              <View style={{flex: 0.35}}>
+                <AlertButton
+                  Title={'Confirm'}
+                  isLoading={notAttendingLoading}
+                  onPress={() => notAttendingApi()}
+                />
               </View>
             </View>
           </View>

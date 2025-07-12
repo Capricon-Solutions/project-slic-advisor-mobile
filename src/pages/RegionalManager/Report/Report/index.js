@@ -86,14 +86,20 @@ export default function Report({navigation, route}) {
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+    item?.renewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw: item?.refundPpw?.toLocaleString() ?? '',
+      other: item?.refundOther?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    item?.endorsement?.toLocaleString() ?? '',
+    item?.renewal +
+      item?.nb +
+      item?.refundPpw +
+      item?.refundOther +
+      item?.endorsement.toLocaleString() ?? '',
+
+    // item?.total?.toLocaleString() ?? '',
   ]);
 
   const branchList =
@@ -469,12 +475,11 @@ export default function Report({navigation, route}) {
                       Title={'Total'}
                       // readOnly={true}
                       value={
-                        item.renewal !== null && item.total !== undefined
-                          ? Number(item.total).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : '0.00'
+                        item?.renewal +
+                          item?.nb +
+                          item?.refundPpw +
+                          item?.refundOther +
+                          item?.endorsement.toLocaleString() ?? ''
                       }
                     />
                   </View>

@@ -206,7 +206,7 @@ export default function PolicyRenewals({navigation}) {
               marginBottom: 10,
               color: COLORS.borderColor,
             }}>
-            (Click on policy Number to view details)
+            (Click on Policy Number to View Details)
           </Text>
         </View>
         <ScrollView

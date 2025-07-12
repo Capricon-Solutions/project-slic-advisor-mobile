@@ -325,7 +325,7 @@ export default function LeadInformation({navigation, route}) {
                   fontSize: 16,
                   color: COLORS.textColor,
                 }}>
-                policy Info
+                Policy Info
               </Text>
               <View style={{alignItems: 'center', padding: 3}}>
                 <Octicons
@@ -360,7 +360,7 @@ export default function LeadInformation({navigation, route}) {
                 />
                 <SquareTextBoxOutlined
                   mediumFont={true}
-                  Label={'premium'}
+                  Label={'Premium'}
                   readOnly={true}
                   value={
                     leadInfo?.premium != null

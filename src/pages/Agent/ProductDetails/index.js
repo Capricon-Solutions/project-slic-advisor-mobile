@@ -81,7 +81,7 @@ export default function ProductDetails({navigation, route}) {
   return (
     <View style={Styles.container}>
       <HeaderBackground />
-      <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
+      <Header Title="Product Portfolio" onPress={() => navigation.goBack()} />
       <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={{alignItems: 'center', marginVertical: 10}}>
           <Image
