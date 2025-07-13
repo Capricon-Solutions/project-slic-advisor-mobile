@@ -486,7 +486,7 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'premium'}
+              Label={'Premium'}
               value={premium ? Number(premium)?.toLocaleString() : ''}
               borderColor={COLORS.warmGray}
               keyboardType={'number-pad'}
@@ -575,6 +575,7 @@ export default function LeadCreation({navigation, route}) {
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Value *'}
+              keyboardType={'number-pad'}
               value={vehicleValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               borderColor={COLORS.warmGray}
               setValue={text => {
@@ -586,8 +587,9 @@ export default function LeadCreation({navigation, route}) {
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Year of manufacture *'}
+              Label={'Year of Manufacture *'}
               value={yom}
+              keyboardType={'number-pad'}
               errorMessage={yomError + '\n' + (formError.yom || '')}
               borderColor={COLORS.warmGray}
               // setValue={text => {
@@ -598,7 +600,7 @@ export default function LeadCreation({navigation, route}) {
               //   }
               // }}
               setValue={text => {
-                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
                 // if (formatted.length <= 4) {
                 setYom(formatted);
                 // }
@@ -776,7 +778,7 @@ export default function LeadCreation({navigation, route}) {
               Label={'Email'}
               value={email}
               borderColor={COLORS.warmGray}
-              setValue={text => setEmail(text)}
+              setValue={text => setEmail(text.toLowerCase())}
             />
             <SquareTextBoxOutlined
               mediumFont={true}

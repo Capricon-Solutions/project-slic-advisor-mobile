@@ -42,7 +42,7 @@ export default function ProductDetails({navigation, route}) {
   const renderItem = ({item}) => <ProductListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <OtherListItem item={item} />;
-
+  console.log('item?.imageUrl', item?.imageUrl);
   useEffect(() => {
     // When the component mounts or when products are fetched, show all data initially
     setFilteredData(products?.data || []);
@@ -91,7 +91,7 @@ export default function ProductDetails({navigation, route}) {
               borderRadius: 17,
               objectFit: 'contain',
             }}
-            source={{uri: item?.imageUrl}}></Image>
+            source={item?.imageUrl ? {uri: item.imageUrl} : Logo}></Image>
         </View>
 
         <View
@@ -99,7 +99,7 @@ export default function ProductDetails({navigation, route}) {
             borderRadius: 5,
             backgroundColor: COLORS.primary,
             width: '100%',
-            height: 34,
+            // height: 34,
             justifyContent: 'center',
             paddingHorizontal: 13,
             marginTop: 20,

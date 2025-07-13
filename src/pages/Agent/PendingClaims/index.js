@@ -178,7 +178,7 @@ export default function PendingClaims({navigation, route}) {
             }
           />
           <DetailLine
-            Title={'Estimated liability'}
+            Title={'Estimated Liability'}
             detail={
               'LKR ' +
               Number(item.estimatedLiability).toLocaleString('en-US', {

@@ -53,10 +53,10 @@ export default function TeamMemberGrid({navigation, route}) {
     state => state.Profile.profile.user.branchCode,
   );
   console.log('branchCode', branchCode);
-  const [value, setValue] = useState('nop');
+  const [value, setValue] = useState(1);
   const [isFocus, setIsFocus] = useState(false);
-  const [SelectedType, setSelectedType] = useState('G');
-  const [SelectedMonth, setSelectedMonth] = useState(0);
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [SelectedMonth, setSelectedMonth] = useState('00');
   const tableHead = [
     'Team Member',
     'Renewal',
@@ -94,21 +94,40 @@ export default function TeamMemberGrid({navigation, route}) {
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
-    item?.renewal?.toLocaleString() ?? '0.00',
-    item?.nb?.toLocaleString() ?? '0.00',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toLocaleString() ?? '0.00',
-      other: item?.refundOther?.toLocaleString() ?? '0.00',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toLocaleString() ?? '0.00',
-    (
-      item?.renewal +
-      item?.nb +
-      item?.refundPpw +
-      item?.refundOther +
-      item?.endorsement
-    ).toLocaleString() ?? '0.00',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nb +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
   ]);
 
   const toggleOrientation = () => {
@@ -202,15 +221,24 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
+                value={value}
+                search={false}
+                nonClearable={true}
                 onValueChange={setValue}
-                dropdownData={[{label: 'NOP', value: '1'}]}
+                dropdownData={[
+                  {label: 'Value', value: 1},
+                  {label: 'NOP', value: 2},
+                ]}
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
-                onValueChange={setSelectedType}
+                search={false}
+                onValueChange={value => {
+                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
                   {label: 'Motor Monthly', value: 'M'},
@@ -221,7 +249,12 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
-                onValueChange={setSelectedMonth}
+                value={SelectedMonth}
+                nonClearable={true}
+                // onValueChange={setSelectedMonth}
+                onValueChange={value => {
+                  setSelectedMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
                   {label: 'Cumulative', value: '00'},
                   {label: 'January', value: '01'},

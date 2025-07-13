@@ -57,7 +57,7 @@ export default function MeReport({navigation, route}) {
 
   const [value, setValue] = useState(1);
   const [SelectedType, setSelectedType] = useState('ALL');
-  const [selectedMonth, setSelectedmonth] = useState(0);
+  const [selectedMonth, setSelectedmonth] = useState('00');
   const [type, setType] = useState();
   const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -291,48 +291,55 @@ export default function MeReport({navigation, route}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
+                value={value}
+                search={false}
                 nonClearable={true}
+                onValueChange={setValue}
                 dropdownData={[
-                  {label: 'Value', value: '1'},
-                  {label: 'NOP', value: '2'},
+                  {label: 'Value', value: 1},
+                  {label: 'NOP', value: 2},
                 ]}
-                onValueChange={value => setValue(value)}
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
+                search={false}
+                onValueChange={value => {
+                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
                   {label: 'Motor Monthly', value: 'M'},
                 ]}
-                onValueChange={value => {
-                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
-                }}
               />
             </View>
             <View style={{flex: 0.18, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
+                value={selectedMonth}
+                nonClearable={true}
+                // onValueChange={setSelectedMonth}
+                onValueChange={value => {
+                  setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
-                  {label: 'Cumulative', value: '0'},
-                  {label: 'January', value: '1'},
-                  {label: 'February', value: '2'},
-                  {label: 'March', value: '3'},
-                  {label: 'April', value: '4'},
-                  {label: 'May', value: '5'},
-                  {label: 'June', value: '6'},
-                  {label: 'July', value: '7'},
-                  {label: 'August', value: '8'},
-                  {label: 'September', value: '9'},
+                  {label: 'Cumulative', value: '00'},
+                  {label: 'January', value: '01'},
+                  {label: 'February', value: '02'},
+                  {label: 'March', value: '03'},
+                  {label: 'April', value: '04'},
+                  {label: 'May', value: '05'},
+                  {label: 'June', value: '06'},
+                  {label: 'July', value: '07'},
+                  {label: 'August', value: '08'},
+                  {label: 'September', value: '09'},
                   {label: 'October', value: '10'},
                   {label: 'November', value: '11'},
                   {label: 'December', value: '12'},
                 ]}
-                selectedValue={selectedMonth}
-                onValueChange={value => setSelectedmonth(value)}
               />
             </View>
             <View style={{flex: 0.19, marginHorizontal: 2}}>

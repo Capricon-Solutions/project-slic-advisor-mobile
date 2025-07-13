@@ -209,7 +209,7 @@ export default function SalesMeter({navigation}) {
 
         <View>
           <Header
-            Title="Sales meter"
+            Title="Sales Meter"
             onPress={() => navigation.goBack()}
             haveButton={true}
             ButtonTitle={'Set Target'}
