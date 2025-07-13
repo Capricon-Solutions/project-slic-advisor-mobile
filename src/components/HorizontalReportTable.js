@@ -92,10 +92,10 @@ const HorizontalReportTable = ({
               textStyle={styles.headText}
             />
             {/* Table Rows with Alternating Colors */}
-            {tableData?.map((rowData, index) => (
+            {/* {tableData?.map((rowData, index) => (
               <Row
                 key={index}
-                data={rowData.map((cellData, cellIndex) => (
+                data={rowData?.map((cellData, cellIndex) => (
                   <TouchableOpacity
                     disabled
                     key={cellIndex}
@@ -178,7 +178,83 @@ const HorizontalReportTable = ({
                     styles.boldText, // Apply boldText only if hasTotal is true
                 ]}
               />
-            ))}
+            ))} */}
+            {Array.isArray(tableData) && tableData.length > 0 ? (
+              tableData.map((rowData, index) => (
+                <Row
+                  key={index}
+                  data={rowData?.map((cellData, cellIndex) => (
+                    <TouchableOpacity
+                      disabled
+                      key={cellIndex}
+                      onPress={() => handleCellPress(cellData)}>
+                      {cellIndex !== 3 ? (
+                        <View>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText,
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData}
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.ppw}
+                            </Text>
+                          </View>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.other}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                  widthArr={columnWidths}
+                  style={[
+                    styles.row,
+                    index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                  ]}
+                  textStyle={[
+                    styles.text,
+                    haveTotal &&
+                      index === tableData.length - 1 &&
+                      styles.boldText,
+                  ]}
+                />
+              ))
+            ) : (
+              <Text>No data available</Text>
+            )}
           </Table>
         </View>
       </View>
