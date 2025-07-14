@@ -193,6 +193,7 @@ export default function PolicyFilter({
             BorderColor={COLORS.textColor}
             search={false}
             ref={businessTypeRef}
+            value={BusinessType}
             initialValue={BusinessType}
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
@@ -216,6 +217,7 @@ export default function PolicyFilter({
             BorderColor={COLORS.textColor}
             ref={policyStatusRef}
             search={false}
+            value={status}
             placeholder="Select Policy Status"
             initialValue={status}
             onSelect={value => setStatus(value)}

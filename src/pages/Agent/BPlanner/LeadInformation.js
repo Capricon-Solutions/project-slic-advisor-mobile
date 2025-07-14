@@ -30,6 +30,11 @@ export default function LeadInformation({navigation, route}) {
   const tableHead = ['Activity ID', 'Date and Time', 'Type', 'Description'];
   const {item} = route.params;
 
+  const leadTypeMap = {
+    M: 'Motor',
+    G: 'Non-Motor',
+  };
+
   const {
     data: leadData,
     isLoading,
@@ -131,7 +136,9 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Lead Type'}
                   readOnly={true}
-                  value={String(leadInfo?.leadType ?? 'Unavailable')}
+                  value={String(
+                    leadTypeMap[leadInfo?.leadType] ?? 'Unavailable',
+                  )}
                   // value={leadInfo?.leadType}
                   borderColor={COLORS.warmGray}
                 />
@@ -341,7 +348,9 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Lead Type'}
                   readOnly={true}
-                  value={String(leadInfo?.leadType ?? 'Unavailable')}
+                  value={String(
+                    leadTypeMap[leadInfo?.leadType] ?? 'Unavailable',
+                  )}
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined

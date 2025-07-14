@@ -132,6 +132,11 @@ export default function MotorRenewalLetter({navigation}) {
       motorRenewalsList?.data?.motorRenewals,
     );
   }, [motorRenewalsList]);
+
+  useEffect(() => {
+    setSearchText('');
+  }, [isFetching]);
+
   return (
     <SafeAreaView style={Styles.container}>
       <MonthYearPicker
@@ -146,6 +151,22 @@ export default function MotorRenewalLetter({navigation}) {
         onPress={() => navigation.goBack()}
       />
       <View style={{paddingHorizontal: 5}}>
+        <View
+          style={[styles.searchWrap, {marginHorizontal: 15, marginBottom: 3}]}>
+          <TextInput
+            readOnly={true}
+            style={styles.textInput}
+            value={fromDate + ' - ' + toDate}
+            // onChangeText={v => setSearchText(v)}
+            placeholder="11/2024"
+          />
+          <TouchableOpacity
+            onPress={() => setPickerVisible(true)}
+            style={styles.searchButton}>
+            <Feather name="calendar" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+
         <View
           style={[
             styles.searchWrap,
@@ -164,20 +185,6 @@ export default function MotorRenewalLetter({navigation}) {
             onPress={() => handleSearch(searchText)}
             style={styles.searchButton}>
             <Feather name="search" color={COLORS.white} size={20} />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={[styles.searchWrap, {marginHorizontal: 15, marginBottom: 3}]}>
-          <TextInput
-            style={styles.textInput}
-            value={fromDate + ' - ' + toDate}
-            // onChangeText={v => setSearchText(v)}
-            placeholder="11/2024"
-          />
-          <TouchableOpacity
-            onPress={() => setPickerVisible(true)}
-            style={styles.searchButton}>
-            <Feather name="calendar" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
 

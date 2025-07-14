@@ -42,6 +42,11 @@ export default function ActivityDetails({navigation, route}) {
     C: 'Closed',
     R: 'Reject',
   };
+
+  const leadTypeMap = {
+    M: 'Motor',
+    G: 'Non-Motor',
+  };
   const {item} = route.params;
   const {
     data: leadData,
@@ -70,6 +75,7 @@ export default function ActivityDetails({navigation, route}) {
   //   }
   // };
 
+  console.log('leadInfo', leadInfo);
   const DetailLine = ({Title, detail}) => {
     return (
       <View
@@ -201,7 +207,7 @@ export default function ActivityDetails({navigation, route}) {
                 </Text>
                 <DetailLine
                   Title={'Lead Type'}
-                  detail={activityTypeMap[leadInfo?.leadType] || 'Unknown'}
+                  detail={leadTypeMap[leadInfo?.leadType] || 'Unknown'}
                 />
                 <DetailLine Title={'Name'} detail={leadInfo?.customerName} />
                 <DetailLine Title={'Contact'} detail={leadInfo?.mobileNumber} />
