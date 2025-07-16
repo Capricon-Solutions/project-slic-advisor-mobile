@@ -84,7 +84,7 @@ const DropdownFilled = ({
         renderRightIcon={() =>
           value ? (
             <View>
-              {cancelable && (
+              {!cancelable && (
                 <TouchableOpacity
                   onPress={() => {
                     setValue(null);

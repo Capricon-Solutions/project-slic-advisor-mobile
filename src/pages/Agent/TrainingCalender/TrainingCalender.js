@@ -223,7 +223,7 @@ export default function TrainingCalender({navigation}) {
                 BorderColor={COLORS.textColor}
                 initialValue={type}
                 search={false}
-                cancelable={type === 'A' ? false : true}
+                cancelable={type === 'A' ? true : false}
                 value={type}
                 placeholder="Select Training Type"
                 onSelect={value => {
