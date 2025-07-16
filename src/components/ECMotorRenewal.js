@@ -17,7 +17,8 @@ import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function ECMotorRenewal({item, navigation}) {
+// export default function ECMotorRenewal({item, navigation}) {
+const ECMotorRenewal = React.memo(({item, navigation}) => {
   const [expanded, setExpanded] = React.useState(false);
 
   return (
@@ -164,8 +165,8 @@ export default function ECMotorRenewal({item, navigation}) {
       )}
     </TouchableOpacity>
   );
-}
-
+});
+export default ECMotorRenewal;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.background,

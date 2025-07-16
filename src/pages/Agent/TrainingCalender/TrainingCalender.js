@@ -223,8 +223,13 @@ export default function TrainingCalender({navigation}) {
                 BorderColor={COLORS.textColor}
                 initialValue={type}
                 search={false}
+                cancelable={type === 'A' ? false : true}
+                value={type}
                 placeholder="Select Training Type"
-                onSelect={value => setType(value)}
+                onSelect={value => {
+                  value ? setType(value) : setType('A');
+                  console.log('Selected Type:', value);
+                }}
                 dropdownData={[
                   {label: 'All', value: 'A'},
                   {label: 'Motor', value: 'M'},

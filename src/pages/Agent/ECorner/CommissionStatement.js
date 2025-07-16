@@ -119,84 +119,155 @@ export default function CommissionStatement({navigation}) {
   };
 
   const openDocument = async url => {
-    console.log('Opening document from URL:', url);
-    if (!url) {
-      console.log('No document URL available');
-      return;
-    }
+    try {
+      console.log('Opening document from URL:', url);
+      if (!url) return;
 
-    let fileName = url.split('/').pop();
+      // ── Build file path ────────────────────────────────────────────────
+      let fileName = url.split('/').pop() || 'document.pdf';
+      if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
-    if (!fileName.endsWith('.pdf')) {
-      fileName += '.pdf';
-    }
-    console.log('test');
-    const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-    console.log('fileName', fileName);
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      Alert.alert(
-        'Permission Denied',
-        'Storage permission is required to download files.',
-      );
-
-      return;
-    } else {
-      // console.log('Storage permission granted');
-      setLoading(true);
-    }
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-    RNFS.downloadFile({
-      fromUrl: url,
-      // fromUrl:
-      //   'https://gisalesappapi.slicgeneral.com/uploads/3c88cbe6-0d3f-4081-bcf3-d08b9667bbe1.jpg?t=1752254670832',
-      toFile: localFilePath,
-      headers: {
-        'x-api-key': apiKey,
-        Authorization: `Bearer ${token}`,
-      },
-      progress: res => {
-        console.log('work heer');
-        console.log(
-          `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
+      // ── Check / request storage permission (Android ≤ 10) ─────────────
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Permission Denied',
+          'Storage permission is required to download files.',
         );
-        const progressPercent = (res.bytesWritten / res.contentLength) * 100;
-        setProgress(progressPercent);
-      },
-    })
-      .promise.then(response => {
-        console.log('Download success:', response);
-        setLoading(false);
+        return;
+      }
 
-        FileViewer.open(localFilePath, {
-          showOpenWithDialog: true,
-          displayName: 'Your PDF Report',
-          mimeType: 'application/pdf',
-        })
-          .then(() => {
-            console.log('File opened successfully');
-          })
-          .catch(viewError => {
-            console.error('Error opening file:', viewError);
-            showToast({
-              type: 'error',
-              text1: 'Open File Error',
-              text2: 'Cannot open the downloaded file.',
-            });
-          });
-      })
-      .catch(error => {
-        console.error('Download failed', error);
-        setLoading(false);
+      // ── Start download ────────────────────────────────────────────────
+      setLoading(true);
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
 
+      const downloadJob = RNFS.downloadFile({
+        fromUrl: url,
+        toFile: localFilePath,
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
+        progress: res => {
+          const percent = (res.bytesWritten / res.contentLength) * 100;
+          setProgress(percent);
+        },
+        progressInterval: 250, // update UI every 250 ms
+      });
+
+      await downloadJob.promise; // <──── await instead of .then()
+
+      // ── Open the file with an external viewer ─────────────────────────
+      await FileViewer.open(localFilePath, {
+        showOpenWithDialog: true, // chooser if more than one app
+        showAppsSuggestions: true, // jumps to Play Store if none
+        displayName: 'Your PDF Report',
+        mimeType: 'application/pdf',
+      });
+
+      console.log('File opened successfully');
+    } catch (err) {
+      console.error('openDocument error:', err);
+
+      if (/No app associated/i.test(err?.message)) {
         showToast({
           type: 'error',
-          text1: 'Download Error',
-          text2: error?.message || 'Failed to download the file.',
+          text1: 'No PDF viewer found',
+          text2: 'Install a PDF reader and try again.',
         });
-      });
+      } else {
+        showToast({
+          type: 'error',
+          text1: 'File Error',
+          text2: err?.message || 'Could not download or open the file.',
+        });
+      }
+    } finally {
+      // Always reset loading state, even on error
+      setLoading(false);
+    }
   };
+
+  // const openDocument = async url => {
+  //   console.log('Opening document from URL:', url);
+  //   if (!url) {
+  //     console.log('No document URL available');
+  //     return;
+  //   }
+
+  //   let fileName = url.split('/').pop();
+
+  //   if (!fileName.endsWith('.pdf')) {
+  //     fileName += '.pdf';
+  //   }
+  //   console.log('test');
+  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+  //   console.log('fileName', fileName);
+  //   const hasPermission = await requestStoragePermission();
+  //   if (!hasPermission) {
+  //     Alert.alert(
+  //       'Permission Denied',
+  //       'Storage permission is required to download files.',
+  //     );
+
+  //     return;
+  //   } else {
+  //     // console.log('Storage permission granted');
+  //     setLoading(true);
+  //   }
+  //   const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+  //   RNFS.downloadFile({
+  //     fromUrl: url,
+  //     // fromUrl:
+  //     //   'https://gisalesappapi.slicgeneral.com/uploads/3c88cbe6-0d3f-4081-bcf3-d08b9667bbe1.jpg?t=1752254670832',
+  //     toFile: localFilePath,
+  //     headers: {
+  //       'x-api-key': apiKey,
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     progress: res => {
+  //       console.log('work heer');
+  //       console.log(
+  //         `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
+  //       );
+  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
+  //       setProgress(progressPercent);
+  //     },
+  //   })
+  //     .promise.then(response => {
+  //       console.log('Download success:', response);
+  //       setLoading(false);
+
+  //       FileViewer.open(localFilePath, {
+  //         showOpenWithDialog: true,
+  //         displayName: 'Your PDF Report',
+  //         mimeType: 'application/pdf',
+  //       })
+  //         .then(() => {
+  //           console.log('File opened successfully');
+  //         })
+  //         .catch(viewError => {
+  //           console.error('Error opening file:', viewError);
+  //           showToast({
+  //             type: 'error',
+  //             text1: 'Open File Error',
+  //             text2: 'Cannot open the downloaded file.',
+  //           });
+  //         });
+  //     })
+  //     .catch(error => {
+  //       console.error('Download failed', error);
+  //       setLoading(false);
+
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'Download Error',
+  //         text2: error?.message || 'Failed to download the file.',
+  //       });
+  //     });
+  // };
 
   useEffect(() => {
     const formattedYear = moment(selectedDate, 'YYYY/MM').format('YYYY');

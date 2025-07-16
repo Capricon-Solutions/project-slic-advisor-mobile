@@ -194,7 +194,8 @@ export default function MotorRenewal({navigation}) {
 
       if (result.statusCode === 200) {
         await FileViewer.open(localFilePath, {
-          showOpenWithDialog: true,
+          showOpenWithDialog: true, // chooser if more than one app
+          showAppsSuggestions: true, // jumps to Play Store if none
           displayName: 'Your PDF Report',
           mimeType: 'application/pdf',
         });
@@ -357,9 +358,11 @@ export default function MotorRenewal({navigation}) {
           <FlatList
             data={motorRenewalsList?.data?.motorRenewals}
             keyExtractor={item => item.id}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
             renderItem={({item}) => <ECMotorRenewal item={item} />}
             contentContainerStyle={{
-              paddingBottom: 250,
+              paddingBottom: window.height * 0.5,
             }}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={

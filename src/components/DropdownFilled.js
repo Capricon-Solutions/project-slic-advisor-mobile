@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -20,11 +20,16 @@ const DropdownFilled = ({
   Color,
   search,
   onSelect,
+  value: valueFromParent,
+  cancelable,
 }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [searchText, setSearchText] = useState('');
 
+  useEffect(() => {
+    setValue(valueFromParent);
+  }, [valueFromParent]);
   // Filter data where label starts with searchText (case-insensitive)
   const filteredData = useMemo(() => {
     if (!searchText) return dropdownData;
@@ -78,18 +83,22 @@ const DropdownFilled = ({
         )}
         renderRightIcon={() =>
           value ? (
-            <TouchableOpacity
-              onPress={() => {
-                setValue(null);
-                if (onSelect) onSelect(null);
-              }}>
-              <MaterialCommunityIcons
-                style={styles.icon}
-                color={COLORS.primaryRed}
-                name="close-thick"
-                size={14}
-              />
-            </TouchableOpacity>
+            <View>
+              {cancelable && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setValue(null);
+                    if (onSelect) onSelect(null);
+                  }}>
+                  <MaterialCommunityIcons
+                    style={styles.icon}
+                    color={COLORS.primaryRed}
+                    name="close-thick"
+                    size={14}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
           ) : null
         }
       />

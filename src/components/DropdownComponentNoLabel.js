@@ -1,4 +1,9 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -47,7 +52,6 @@ const DropdownComponentNoLabel = forwardRef(
             styles.dropdown,
             {borderColor: BorderColor ? BorderColor : 'gray'},
           ]}
-
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           selectedStyle={{color: 'red'}}
