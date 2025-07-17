@@ -74,6 +74,7 @@ export default function Report({navigation, route}) {
     data: RmReport,
     error: RmReportError,
     isLoading: RmReportLoading,
+    refetch,
     isFetching: RmReportFetching,
   } = useRmReportQuery({
     branch: branch,
@@ -148,6 +149,13 @@ export default function Report({navigation, route}) {
         onPressSearch={() => {
           // PolicyListResponse(searchData);
           setModalVisible(false);
+          refetch();
+        }}
+        initialValues={{
+          type: SelectedType,
+          month: selectedMonth,
+          view: value,
+          branch: branch,
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
@@ -378,6 +386,7 @@ export default function Report({navigation, route}) {
                     padding: 15,
                   }}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                     <Image
                       style={{height: 17, width: 17}}
                       source={Building}></Image>
@@ -388,7 +397,7 @@ export default function Report({navigation, route}) {
                         fontSize: 14,
                         color: COLORS.textColor,
                       }}>
-                      {item.branch.toString() ?? ''}
+                      {item?.branch?.toString() ?? ''}
                     </Text>
                   </View>
 
@@ -403,10 +412,16 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'Renewal'}
-                        // readOnly={true}
                         value={
-                          item.renewal !== null && item.renewal !== undefined
-                            ? Number(item.renewal).toLocaleString('en-US', {
+                          value == 1
+                            ? item?.renewal != null
+                              ? Number(item.renewal).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopRenewal != null
+                            ? Number(item.nopRenewal).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -418,10 +433,9 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'NB'}
-                        // readOnly={true}
                         value={
-                          item.renewal !== null && item.nb !== undefined
-                            ? Number(item.nb).toLocaleString('en-US', {
+                          item?.nb !== null && item?.nb !== undefined
+                            ? Number(item?.nb).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -436,10 +450,16 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'PPW'}
-                        // readOnly={true}
                         value={
-                          item.renewal !== null && item.refundPpw !== undefined
-                            ? Number(item.refundPpw).toLocaleString('en-US', {
+                          value == 1
+                            ? item?.refundPpw != null
+                              ? Number(item.refundPpw).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopPpw != null
+                            ? Number(item.nopPpw).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -451,14 +471,25 @@ export default function Report({navigation, route}) {
                     <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'Others'}
-                        // readOnly={true}
                         value={
-                          item.renewal !== null &&
-                          item.refundOther !== undefined
-                            ? Number(item.refundOther).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                          value == 1
+                            ? item?.refundOther != null
+                              ? Number(item.refundOther).toLocaleString(
+                                  'en-US',
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  },
+                                )
+                              : ''
+                            : item?.nopOtherRefund != null
+                            ? Number(item.nopOtherRefund).toLocaleString(
+                                'en-US',
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                },
+                              )
                             : ''
                         }
                       />
@@ -469,13 +500,22 @@ export default function Report({navigation, route}) {
                   <View>
                     <OutlinedTextView
                       Title={'Endorsement'}
-                      // readOnly={true}
                       value={
-                        item.renewal !== null && item.endorsement !== undefined
-                          ? Number(item.endorsement).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                        value == 1
+                          ? item?.endorsement != null
+                            ? Number(item.endorsement).toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
+                            : ''
+                          : item?.nopEndorsements != null
+                          ? Number(item.nopEndorsements).toLocaleString(
+                              'en-US',
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              },
+                            )
                           : ''
                       }
                     />
@@ -484,14 +524,40 @@ export default function Report({navigation, route}) {
                   <View>
                     <OutlinedTextView
                       Title={'Total'}
-                      // readOnly={true}
-                      value={
-                        item?.renewal +
-                          item?.nb +
-                          item?.refundPpw +
-                          item?.refundOther +
-                          item?.endorsement.toLocaleString() ?? ''
-                      }
+                      value={Number(
+                        value == 1
+                          ? (item?.renewal ?? 0) +
+                              (item?.nb ?? 0) +
+                              (item?.refundPpw ?? 0) +
+                              (item?.refundOther ?? 0) +
+                              (item?.endorsement ?? 0)
+                          : (item?.nopRenewal ?? 0) +
+                              (item?.nopPpw ?? 0) +
+                              (item?.nb ?? 0) +
+                              (item?.nopOtherRefund ?? 0) +
+                              (item?.nopEndorsements ?? 0),
+                      ).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+
+                      // value={
+                      //   value == 1
+                      //     ? (
+                      //         (item?.renewal ?? 0) +
+                      //         (item?.nb ?? 0) +
+                      //         (item?.refundPpw ?? 0) +
+                      //         (item?.refundOther ?? 0) +
+                      //         (item?.endorsement ?? 0)
+                      //       ).toLocaleString()
+                      //     : (
+                      //         (item?.nopRenewal ?? 0) +
+                      //         (item?.nopPpw ?? 0) +
+                      //         (item?.nb ?? 0) +
+                      //         (item?.nopOtherRefund ?? 0) +
+                      //         (item?.nopEndorsements ?? 0)
+                      //       ).toLocaleString()
+                      // }
                     />
                   </View>
                 </View>
