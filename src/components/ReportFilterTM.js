@@ -15,7 +15,7 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-export default function ReportFilter({
+export default function ReportFilterTM({
   modalVisible,
   setModalVisible,
   Name,
@@ -31,16 +31,23 @@ export default function ReportFilter({
   notbranchVisible,
 }) {
   // State for dropdown selections with initial values
-  const [viewDetails, setViewDetails] = React.useState(
-    initialValues.viewDetails || '1',
-  );
-  const [type, setType] = React.useState(initialValues.type || '1');
-  const [month, setMonth] = React.useState(initialValues.month || '00');
-  const [branch, setBranch] = React.useState(initialValues.branch || '');
 
+  const [viewDetails, setViewDetails] = React.useState(initialValues.view);
+  // console.log('initialValues', initialValues);
+  //  const [value, setValue] = React.useState(initialValues.value);
+  const [type, setType] = React.useState(initialValues.type);
+  const [month, setMonth] = React.useState(initialValues.month);
+  const [branch, setBranch] = React.useState(initialValues.branch || '');
+  console.log('typeh', type);
   // Animation setup
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
+  React.useEffect(() => {
+    setViewDetails(initialValues.view);
+    setType(initialValues.type);
+    setMonth(initialValues.month);
+    setBranch(initialValues.branch || '');
+  }, [initialValues]);
   // Handle animation when modal visibility changes
   React.useEffect(() => {
     if (modalVisible) {
@@ -122,7 +129,7 @@ export default function ReportFilter({
           </View>
 
           {/* Filter Options */}
-          <DropdownComponent
+          {/* <DropdownComponent
             label={'View Details'}
             mode={'modal'}
             dropdownData={[
@@ -131,20 +138,50 @@ export default function ReportFilter({
             ]}
             selectedValue={viewDetails}
             onValueChange={setViewDetails}
-          />
+          /> */}
 
           <DropdownComponent
+            label={'View Details'}
+            mode={'modal'}
+            // value={viewDetails}
+            search={false}
+            nonClearable={true}
+            value={viewDetails}
+            // selectedValue={viewDetails}
+            onValueChange={setViewDetails}
+            dropdownData={[
+              {label: 'Value', value: 1},
+              {label: 'NOP', value: 2},
+            ]}
+          />
+
+          {/* <DropdownComponent
             label={'Type'}
             mode={'modal'}
             dropdownData={[
               {label: 'General Cumulative', value: 'G'},
               {label: 'Motor Monthly', value: 'M'},
             ]}
-            selectedValue={type}
+            value={type}
             onValueChange={setType}
-          />
+          /> */}
 
           <DropdownComponent
+            label={'Type'}
+            mode={'modal'}
+            search={false}
+            nonClearable={type == 'ALL' ? true : false}
+            value={type}
+            onValueChange={value => {
+              setType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+            }}
+            dropdownData={[
+              {label: 'General Cumulative', value: 'G'},
+              {label: 'Motor Monthly', value: 'M'},
+            ]}
+          />
+
+          {/* <DropdownComponent
             label={'Month'}
             mode={'modal'}
             dropdownData={[
@@ -162,9 +199,36 @@ export default function ReportFilter({
               {label: 'November', value: '11'},
               {label: 'December', value: '12'},
             ]}
-            selectedValue={month}
+            value={month}
             onValueChange={setMonth}
+          /> */}
+
+          <DropdownComponent
+            label={'Month'}
+            mode={'modal'}
+            value={month}
+            nonClearable={true}
+            // onValueChange={setSelectedMonth}
+            onValueChange={value => {
+              setMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+            }}
+            dropdownData={[
+              {label: 'Cumulative', value: '00'},
+              {label: 'January', value: '01'},
+              {label: 'February', value: '02'},
+              {label: 'March', value: '03'},
+              {label: 'April', value: '04'},
+              {label: 'May', value: '05'},
+              {label: 'June', value: '06'},
+              {label: 'July', value: '07'},
+              {label: 'August', value: '08'},
+              {label: 'September', value: '09'},
+              {label: 'October', value: '10'},
+              {label: 'November', value: '11'},
+              {label: 'December', value: '12'},
+            ]}
           />
+
           {!notbranchVisible && (
             <DropdownComponent
               label={lastTitle}

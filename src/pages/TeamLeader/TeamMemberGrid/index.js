@@ -32,6 +32,8 @@ import {
 import DropdownComponent from '../../../components/DropdownComponent';
 import LoaderKit from 'react-native-loader-kit';
 import OutlinedTextView from '../../../components/OutlinedTextView';
+import ReportFilter from '../../../components/ReportFilter';
+import ReportFilterTM from '../../../components/ReportFilterTM';
 
 const window = Dimensions.get('window');
 const data = [
@@ -57,6 +59,8 @@ export default function TeamMemberGrid({navigation, route}) {
   const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState('ALL');
   const [SelectedMonth, setSelectedMonth] = useState('00');
+  const [modalVisible, setModalVisible] = useState(false);
+
   const tableHead = [
     'Team Member',
     'Renewal',
@@ -73,6 +77,7 @@ export default function TeamMemberGrid({navigation, route}) {
   const {
     data: TeamLeaderReport,
     error: TeamLeaderReportError,
+    refetch,
     // isLoading: TeamLeaderReportLoading,
     isFetching: TeamLeaderReportLoading,
   } = useTeamMemberReportQuery({
@@ -90,7 +95,7 @@ export default function TeamMemberGrid({navigation, route}) {
     type: value,
   });
   console.log('TeamLeaderReport', TeamLeaderReport);
-
+  console.log('TeamLeaderReportLoading', TeamLeaderReportLoading);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
@@ -152,6 +157,26 @@ export default function TeamMemberGrid({navigation, route}) {
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+      <ReportFilterTM
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        dropdownOptions={dropdownOptions}
+        notbranchVisible={true}
+        lastTitle={'Branch'}
+        onPressSearch={() => {
+          // PolicyListResponse(searchData);
+          setModalVisible(false);
+          refetch();
+        }}
+        onPressClear={() => console.log('clear ', policyValues)}
+        Name="Report Filter"
+        initialValues={{type: SelectedType, month: SelectedMonth, view: value}}
+        onViewDetailsChange={value => setValue(value)}
+        onTypeChange={value => setSelectedType(value)}
+        onMonthChange={value => setSelectedMonth(value)}
+
+        // onBranchChange={value => setBranch(value)}
+      />
       {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
@@ -173,13 +198,34 @@ export default function TeamMemberGrid({navigation, route}) {
       {/* <Text style={{ color: 'black' }}>nin</Text> */}
       <View
         style={{
-          justifyContent: 'flex-end',
+          justifyContent: isLandscape == false ? 'space-between' : 'flex-end',
           width: '100%',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,
           paddingRight: 20,
         }}>
+        {isLandscape == false && (
+          <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', gap: 5}}
+              onPress={() => setModalVisible(true)}>
+              <Text
+                style={{
+                  color: COLORS.textColor,
+                  fontFamily: Fonts.Roboto.Bold,
+                  // fontSize: 13
+                }}>
+                Filter By
+              </Text>
+              <MaterialIcons
+                name="filter-list"
+                size={20}
+                color={COLORS.primary}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
         <TouchableOpacity
           onPress={toggleOrientation}
           style={{flexDirection: 'row', gap: 5}}>
@@ -367,23 +413,18 @@ export default function TeamMemberGrid({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  {/* <OutlinedTextBox
-                    Title={'Renewal'}
-                    readOnly={true}
-                    value={
-                      item?.renewal !== null && item?.renewal !== undefined
-                        ? Number(item?.renewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : ''
-                    }
-                  /> */}
                   <OutlinedTextView
                     Title={'Renewal'}
                     value={
-                      item?.renewal !== null && item?.renewal !== undefined
-                        ? Number(item?.renewal).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.renewal != null
+                          ? Number(item.renewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopRenewal != null
+                        ? Number(item.nopRenewal).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -393,22 +434,10 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  {/* <OutlinedTextBox
-                    Title={'NB'}
-                    readOnly={true}
-                    value={
-                      item?.renewal !== null && item?.nb !== undefined
-                        ? Number(item?.nb).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : ''
-                    }
-                  /> */}
                   <OutlinedTextView
                     Title={'NB'}
                     value={
-                      item?.renewal !== null && item?.nb !== undefined
+                      item?.nb !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -422,23 +451,18 @@ export default function TeamMemberGrid({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  {/* <OutlinedTextBox
-                    Title={'PPW'}
-                    readOnly={true}
-                    value={
-                      item.renewal !== null && item?.refundPpw !== undefined
-                        ? Number(item.refundPpw).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : ''
-                    }
-                  /> */}
                   <OutlinedTextView
                     Title={'PPW'}
                     value={
-                      item.renewal !== null && item?.refundPpw !== undefined
-                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundPpw != null
+                          ? Number(item.refundPpw).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopPpw != null
+                        ? Number(item.nopPpw).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -448,23 +472,18 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  {/* <OutlinedTextBox
-                    Title={'Others'}
-                    readOnly={true}
-                    value={
-                      item?.renewal !== null && item?.refundOther !== undefined
-                        ? Number(item.refundOther).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : ''
-                    }
-                  /> */}
                   <OutlinedTextView
                     Title={'Others'}
                     value={
-                      item?.renewal !== null && item?.refundOther !== undefined
-                        ? Number(item.refundOther).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundOther != null
+                          ? Number(item.refundOther).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopOtherRefund != null
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -476,56 +495,18 @@ export default function TeamMemberGrid({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                {/* <OutlinedTextBox
-                  Title={'Endorsement'}
-                  readOnly={true}
-                  value={
-                    item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : ''
-                  }
-                /> */}
-                {/* <View style={{marginTop: 10}}>
-                  <View
-                    style={{
-                      height: 47,
-                      borderColor: COLORS.warmGray,
-                      borderWidth: 1,
-
-                      borderRadius: 10,
-                      justifyContent: 'center',
-                      paddingLeft: 10,
-                    }}>
-                    <Text style={{color: COLORS.ashBlue}}>
-                      {item.renewal !== null && item.endorsement !== undefined
-                        ? Number(item?.endorsement)?.toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : ''}
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      color: COLORS.ashBlue,
-                      fontSize: 12,
-                      position: 'absolute',
-                      top: -10,
-                      paddingHorizontal: 5,
-                      backgroundColor: COLORS.white,
-                      left: 10,
-                    }}>
-                    Endorsement
-                  </Text>
-                </View> */}
                 <OutlinedTextView
                   Title={'Endorsement'}
                   value={
-                    item.renewal !== null && item?.endorsement !== undefined
-                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                    value == 1
+                      ? item?.endorsement != null
+                        ? Number(item.endorsement).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                      : item?.nopEndorsements != null
+                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -535,30 +516,42 @@ export default function TeamMemberGrid({navigation, route}) {
               </View>
 
               <View>
-                {/* <OutlinedTextBox
-                  Title={'Total'}
-                  readOnly={true}
-                  value={
-                    (
-                      item?.renewal +
-                      item?.nb +
-                      item?.refundPpw +
-                      item?.refundOther +
-                      item?.endorsement
-                    ).toLocaleString() ?? '0.00'
-                  }
-                /> */}
                 <OutlinedTextView
                   Title={'Total'}
-                  value={
-                    (
-                      item?.renewal +
-                      item?.nb +
-                      item?.refundPpw +
-                      item?.refundOther +
-                      item?.endorsement
-                    ).toLocaleString() ?? '0.00'
-                  }
+                  value={Number(
+                    value == 1
+                      ? (item?.renewal ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.refundPpw ?? 0) +
+                          (item?.refundOther ?? 0) +
+                          (item?.endorsement ?? 0)
+                      : (item?.nopRenewal ?? 0) +
+                          (item?.nopPpw ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.nopOtherRefund ?? 0) +
+                          (item?.nopEndorsements ?? 0),
+                  ).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+
+                  // value={
+                  //   value == 1
+                  //     ? (
+                  //         (item?.renewal ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.refundPpw ?? 0) +
+                  //         (item?.refundOther ?? 0) +
+                  //         (item?.endorsement ?? 0)
+                  //       ).toLocaleString()
+                  //     : (
+                  //         (item?.nopRenewal ?? 0) +
+                  //         (item?.nopPpw ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.nopOtherRefund ?? 0) +
+                  //         (item?.nopEndorsements ?? 0)
+                  //       ).toLocaleString()
+                  // }
                 />
               </View>
             </View>
