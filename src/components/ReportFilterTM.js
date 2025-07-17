@@ -33,11 +33,9 @@ export default function ReportFilterTM({
   // State for dropdown selections with initial values
 
   const [viewDetails, setViewDetails] = React.useState(initialValues.view);
-  // console.log('initialValues', initialValues);
-  //  const [value, setValue] = React.useState(initialValues.value);
   const [type, setType] = React.useState(initialValues.type);
   const [month, setMonth] = React.useState(initialValues.month);
-  const [branch, setBranch] = React.useState(initialValues.branch || '');
+  const [branch, setBranch] = React.useState(initialValues.branch);
   console.log('typeh', type);
   // Animation setup
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
@@ -129,16 +127,6 @@ export default function ReportFilterTM({
           </View>
 
           {/* Filter Options */}
-          {/* <DropdownComponent
-            label={'View Details'}
-            mode={'modal'}
-            dropdownData={[
-              {label: 'Value', value: '1'},
-              {label: 'NOP', value: '2'},
-            ]}
-            selectedValue={viewDetails}
-            onValueChange={setViewDetails}
-          /> */}
 
           <DropdownComponent
             label={'View Details'}
@@ -155,17 +143,6 @@ export default function ReportFilterTM({
             ]}
           />
 
-          {/* <DropdownComponent
-            label={'Type'}
-            mode={'modal'}
-            dropdownData={[
-              {label: 'General Cumulative', value: 'G'},
-              {label: 'Motor Monthly', value: 'M'},
-            ]}
-            value={type}
-            onValueChange={setType}
-          /> */}
-
           <DropdownComponent
             label={'Type'}
             mode={'modal'}
@@ -180,28 +157,6 @@ export default function ReportFilterTM({
               {label: 'Motor Monthly', value: 'M'},
             ]}
           />
-
-          {/* <DropdownComponent
-            label={'Month'}
-            mode={'modal'}
-            dropdownData={[
-              {label: 'Cumulative', value: '0'},
-              {label: 'January', value: '1'},
-              {label: 'February', value: '2'},
-              {label: 'March', value: '3'},
-              {label: 'April', value: '4'},
-              {label: 'May', value: '5'},
-              {label: 'June', value: '6'},
-              {label: 'July', value: '7'},
-              {label: 'August', value: '8'},
-              {label: 'September', value: '9'},
-              {label: 'October', value: '10'},
-              {label: 'November', value: '11'},
-              {label: 'December', value: '12'},
-            ]}
-            value={month}
-            onValueChange={setMonth}
-          /> */}
 
           <DropdownComponent
             label={'Month'}

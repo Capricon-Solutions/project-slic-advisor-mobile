@@ -82,9 +82,11 @@ export default function TeamLeaderReport({navigation, route}) {
     data: TeamLeaderReport,
     error: TeamLeaderReportError,
     isLoading: TeamLeaderReportLoading,
+    refetch,
     isFetching: TeamLeaderReportFetching,
   } = useTeamLeaderReportQuery({
     branch: regionName,
+
     startMonth: selectedMonth === 0 ? 1 : selectedMonth,
     endMonth: selectedMonth === 0 ? 12 : selectedMonth,
     year: new Date().getFullYear(),
@@ -186,6 +188,13 @@ export default function TeamLeaderReport({navigation, route}) {
         onPressSearch={() => {
           // PolicyListResponse(searchData);
           setModalVisible(false);
+          refetch();
+        }}
+        initialValues={{
+          type: SelectedType,
+          month: selectedMonth,
+          view: value,
+          branch: branch,
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
@@ -416,7 +425,6 @@ export default function TeamLeaderReport({navigation, route}) {
                 }}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
-                    readOnly
                     Title={'Renewal'}
                     value={
                       value == 1
@@ -425,12 +433,12 @@ export default function TeamLeaderReport({navigation, route}) {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })
-                          : item?.nopRenewal != null
-                          ? Number(item.nopRenewal).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
                           : ''
+                        : item?.nopRenewal != null
+                        ? Number(item.nopRenewal).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : ''
                     }
                   />
@@ -439,9 +447,8 @@ export default function TeamLeaderReport({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextView
                     Title={'NB'}
-                    readOnly
                     value={
-                      item?.renewal !== null && item?.nb !== undefined
+                      item?.nb !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -456,11 +463,17 @@ export default function TeamLeaderReport({navigation, route}) {
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
                   <OutlinedTextView
-                    readOnly
                     Title={'PPW'}
                     value={
-                      item.renewal !== null && item?.refundPpw !== undefined
-                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundPpw != null
+                          ? Number(item.refundPpw).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopPpw != null
+                        ? Number(item.nopPpw).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -471,11 +484,17 @@ export default function TeamLeaderReport({navigation, route}) {
 
                 <View style={{flex: 1}}>
                   <OutlinedTextView
-                    readOnly
                     Title={'Others'}
                     value={
-                      item?.renewal !== null && item?.refundOther !== undefined
-                        ? Number(item.refundOther).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundOther != null
+                          ? Number(item.refundOther).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopOtherRefund != null
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -488,11 +507,17 @@ export default function TeamLeaderReport({navigation, route}) {
               {/* Third Row */}
               <View>
                 <OutlinedTextView
-                  readOnly
                   Title={'Endorsement'}
                   value={
-                    item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                    value == 1
+                      ? item?.endorsement != null
+                        ? Number(item.endorsement).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                      : item?.nopEndorsements != null
+                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -503,25 +528,41 @@ export default function TeamLeaderReport({navigation, route}) {
 
               <View>
                 <OutlinedTextView
-                  readOnly
                   Title={'Total'}
-                  value={
+                  value={Number(
                     value == 1
-                      ? (
-                          item?.renewal +
-                          item?.refundPpw +
-                          item?.nb +
-                          item?.refundOther +
-                          item?.endorsement
-                        ).toLocaleString() ?? ''
-                      : (
-                          item?.nopRenewal +
-                          item?.nopPpw +
-                          item?.nb +
-                          item?.nopOtherRefund +
-                          item?.nopEndorsements
-                        ).toLocaleString() ?? ''
-                  }
+                      ? (item?.renewal ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.refundPpw ?? 0) +
+                          (item?.refundOther ?? 0) +
+                          (item?.endorsement ?? 0)
+                      : (item?.nopRenewal ?? 0) +
+                          (item?.nopPpw ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.nopOtherRefund ?? 0) +
+                          (item?.nopEndorsements ?? 0),
+                  ).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+
+                  // value={
+                  //   value == 1
+                  //     ? (
+                  //         (item?.renewal ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.refundPpw ?? 0) +
+                  //         (item?.refundOther ?? 0) +
+                  //         (item?.endorsement ?? 0)
+                  //       ).toLocaleString()
+                  //     : (
+                  //         (item?.nopRenewal ?? 0) +
+                  //         (item?.nopPpw ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.nopOtherRefund ?? 0) +
+                  //         (item?.nopEndorsements ?? 0)
+                  //       ).toLocaleString()
+                  // }
                 />
               </View>
             </View>
