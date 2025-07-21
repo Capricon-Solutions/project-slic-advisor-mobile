@@ -55,15 +55,33 @@ export default function LeadSearch({navigation}) {
   //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
   // );
 
+  // const filteredSELF = searchQuery
+  //   ? SELF.filter(lead =>
+  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     )
+  //   : SELF;
+
   const filteredSELF = searchQuery
     ? SELF.filter(lead =>
-        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+        lead.customerName
+          .toLowerCase()
+          .split(' ')
+          .some(word => word.startsWith(searchQuery.toLowerCase())),
       )
     : SELF;
 
+  // const filteredSLIC = searchQuery
+  //   ? SLIC.filter(lead =>
+  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     )
+  //   : SLIC;
+
   const filteredSLIC = searchQuery
     ? SLIC.filter(lead =>
-        lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
+        lead.customerName
+          .toLowerCase()
+          .split(' ')
+          .some(word => word.startsWith(searchQuery.toLowerCase())),
       )
     : SLIC;
   console.log('filteredSLIC', filteredSLIC);
@@ -79,8 +97,8 @@ export default function LeadSearch({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Lead Search" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 10}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -120,7 +138,7 @@ export default function LeadSearch({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
             placeholder="Quick Search"
@@ -142,7 +160,7 @@ export default function LeadSearch({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -154,7 +172,7 @@ export default function LeadSearch({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -162,7 +180,7 @@ export default function LeadSearch({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }

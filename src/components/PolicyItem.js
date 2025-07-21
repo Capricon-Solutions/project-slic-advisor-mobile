@@ -21,6 +21,7 @@ import insurance from '../icons/insurance.png'; // Replace with the actual logo 
 
 import {TextInput} from 'react-native-paper';
 import Button from './Button';
+import OutlinedTextView from './OutlinedTextView';
 
 export default function PolicyItem({item, navigation}) {
   const [visible, setVisible] = React.useState(false);
@@ -79,7 +80,7 @@ export default function PolicyItem({item, navigation}) {
             paddingBottom: 5,
             paddingTop: 0,
           }}>
-          <TextInput
+          {/* <TextInput
             mode="outlined"
             label="Insured Name"
             readOnly
@@ -89,9 +90,10 @@ export default function PolicyItem({item, navigation}) {
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.customerName}
-          />
+          /> */}
+          <OutlinedTextView Title={'Insured Name'} value={item.customerName} />
 
-          <TextInput
+          {/* <TextInput
             mode="outlined"
             label="Policy Number"
             readOnly
@@ -101,9 +103,10 @@ export default function PolicyItem({item, navigation}) {
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.policyNo}
-          />
+          /> */}
 
-          <TextInput
+          <OutlinedTextView Title={'Policy Number'} value={item.policyNo} />
+          {/* <TextInput
             mode="outlined"
             label="Vehicle Number"
             readOnly
@@ -113,8 +116,9 @@ export default function PolicyItem({item, navigation}) {
             outlineStyle={{borderRadius: 10}}
             outlineColor={COLORS.lightBorder}
             value={item.vehicleNo}
-          />
+          /> */}
 
+          <OutlinedTextView Title={'Vehicle Number'} value={item.vehicleNo} />
           <View
             style={{
               flexDirection: 'row',
@@ -122,7 +126,7 @@ export default function PolicyItem({item, navigation}) {
               flex: 1,
             }}>
             <View style={{flex: 0.48}}>
-              <TextInput
+              {/* <TextInput
                 mode="outlined"
                 label="Start"
                 readOnly
@@ -132,10 +136,14 @@ export default function PolicyItem({item, navigation}) {
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
                 value={moment(item.startDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
+              /> */}
+              <OutlinedTextView
+                Title={'Start'}
+                value={moment(item.startDate).format('YYYY/MM/DD')}
               />
             </View>
             <View style={{flex: 0.48}}>
-              <TextInput
+              {/* <TextInput
                 mode="outlined"
                 label="End"
                 readOnly
@@ -145,6 +153,10 @@ export default function PolicyItem({item, navigation}) {
                 outlineStyle={{borderRadius: 10}}
                 outlineColor={COLORS.lightBorder}
                 value={moment(item.endDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
+              /> */}
+              <OutlinedTextView
+                Title={'End'}
+                value={moment(item.endDate).format('YYYY/MM/DD')}
               />
             </View>
           </View>
@@ -153,6 +165,7 @@ export default function PolicyItem({item, navigation}) {
             style={{
               flexDirection: 'row',
               marginVertical: 5,
+              marginTop: 10,
               justifyContent: 'space-between',
             }}>
             <TouchableOpacity

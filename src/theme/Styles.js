@@ -268,7 +268,7 @@ export const Styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 10,
     shadowColor: '#000',
-    height: 111,
+    height: 100,
     shadowOffset: {
       width: 0,
       height: 2,

@@ -9,7 +9,8 @@ import {
   Dimensions,
   FlatList,
   ScrollView,
-  ActivityIndicator, // Added for the loading animation
+  ActivityIndicator,
+  SafeAreaView, // Added for the loading animation
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -34,6 +35,8 @@ const window = Dimensions.get('window');
 
 export default function PolicyRenewals({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [SelectedType, setSelectedType] = useState(1);
   // const [loading, setLoading] = useState(false); // Loading state
 
@@ -58,8 +61,8 @@ export default function PolicyRenewals({navigation}) {
     'Policy Status',
   ];
 
-  const columnWidths = [110, 190, 100, 200, 90, 110, 110, 110];
-  const columnWidths2 = [110, 190, 200, 90, 110, 110, 110];
+  const columnWidths = [110, 190, 100, 200, 90, 130, 120, 110];
+  const columnWidths2 = [110, 190, 200, 90, 130, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonthStart = moment()
     .subtract(3, 'month')
@@ -76,7 +79,7 @@ export default function PolicyRenewals({navigation}) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
@@ -87,14 +90,14 @@ export default function PolicyRenewals({navigation}) {
     isFetching: isFetchingN,
     refetch: refetchN,
   } = useGetnonMotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
 
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const nonMotorRenewalsResponse = nonmotorRenewalsList?.data;
-  const motorRenewalsResponse = motorRenewalsList?.data;
+  const nonMotorRenewalsResponse = nonmotorRenewalsList?.data?.nonMotorRenewals;
+  const motorRenewalsResponse = motorRenewalsList?.data?.motorRenewals;
 
   const tableData = motorRenewalsResponse?.map(item => [
     item?.dueDate.toString() ?? '',
@@ -102,8 +105,18 @@ export default function PolicyRenewals({navigation}) {
     item?.vehicleNo.toString() ?? '',
     item?.policyNo.toString() ?? '',
     item?.ncbPerc.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.premiumAmount.toString() ?? '',
+    item?.sumInsured != null
+      ? Number(item.sumInsured).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '',
+    item?.premiumAmount != null
+      ? Number(item.premiumAmount).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : '',
     item?.policyStatus.toString() ?? '',
   ]);
 
@@ -112,12 +125,18 @@ export default function PolicyRenewals({navigation}) {
     item?.customerName.toString() ?? '',
     item?.policyNumber.toString() ?? '',
     item?.policyType.toString() ?? '',
-    item?.sumInsured.toString() ?? '',
-    item?.totalAmount.toString() ?? '',
+    item?.sumInsured?.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) ?? '',
+    item?.totalAmount?.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) ?? '',
     item?.isPaid.toString() ?? '',
   ]);
   return (
-    <View style={Styles.container}>
+    <SafeAreaView style={Styles.container}>
       <MonthYearPicker
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
@@ -126,8 +145,8 @@ export default function PolicyRenewals({navigation}) {
       />
       <HeaderBackground />
       <Header Title="Policy Renewals" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 5}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -167,7 +186,7 @@ export default function PolicyRenewals({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             value={fromDate + ' - ' + toDate}
             readOnly
@@ -187,44 +206,45 @@ export default function PolicyRenewals({navigation}) {
               marginBottom: 10,
               color: COLORS.borderColor,
             }}>
-            (Click on policy Number to view details)
+            (Click on Policy Number to View Details)
           </Text>
         </View>
-
-        {SelectedType == 1 ? (
-          <View>
-            {isFetching == true ? (
-              <LoadingScreen />
-            ) : (
-              <TableComponentPR
-                tableHead={tableHead}
-                tableData={tableData}
-                navigation={navigation}
-                clickableColumns={[3]}
-                columnWidths={columnWidths}
-                haveTotal={false}
-              />
-            )}
-          </View>
-        ) : (
-          <View>
-            {isFetchingN == true ? (
-              <LoadingScreen />
-            ) : (
-              <TableComponentPR
-                tableHead={tableHead2}
-                tableData={tableData2}
-                navigation={navigation}
-                clickableColumns={[2]}
-                columnWidths={columnWidths2}
-                haveTotal={false}
-              />
-            )}
-          </View>
-        )}
-
+        <ScrollView
+          contentContainerStyle={{paddingBottom: window.height * 0.5}}>
+          {SelectedType == 1 ? (
+            <View>
+              {isFetching == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponentPR
+                  tableHead={tableHead}
+                  tableData={tableData}
+                  navigation={navigation}
+                  clickableColumns={[3]}
+                  columnWidths={columnWidths}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          ) : (
+            <View>
+              {isFetchingN == true ? (
+                <LoadingScreen />
+              ) : (
+                <TableComponentPR
+                  tableHead={tableHead2}
+                  tableData={tableData2}
+                  navigation={navigation}
+                  clickableColumns={[2]}
+                  columnWidths={columnWidths2}
+                  haveTotal={false}
+                />
+              )}
+            </View>
+          )}
+        </ScrollView>
         {/* )} */}
-      </ScrollView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }

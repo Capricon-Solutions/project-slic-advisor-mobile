@@ -42,8 +42,11 @@ export default function EDocument({navigation}) {
     if (searchText.trim() === '') {
       setFilteredData(originalData);
     } else {
+      // const filtered = originalData.filter(item =>
+      //   item?.docName?.toLowerCase().includes(searchText.toLowerCase()),
+      // );
       const filtered = originalData.filter(item =>
-        item?.docName?.toLowerCase().includes(searchText.toLowerCase()),
+        item?.docName?.toLowerCase().startsWith(searchText.toLowerCase()),
       );
       setFilteredData(filtered);
     }

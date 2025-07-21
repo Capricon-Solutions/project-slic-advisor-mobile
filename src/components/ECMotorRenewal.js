@@ -12,12 +12,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Feather from 'react-native-vector-icons/Feather';
 
 import COLORS from '../theme/colors';
-import { Styles } from '../theme/Styles';
+import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
 
-export default function ECMotorRenewal({ item, navigation }) {
+// export default function ECMotorRenewal({item, navigation}) {
+const ECMotorRenewal = React.memo(({item, navigation}) => {
   const [expanded, setExpanded] = React.useState(false);
 
   return (
@@ -49,9 +50,10 @@ export default function ECMotorRenewal({ item, navigation }) {
             fontFamily: Fonts.Roboto.SemiBold,
             marginVertical: 1,
           }}>
-          {item?.policyStatus}  {`LKR ${new Intl.NumberFormat('en-LK', {
+          {item?.policyStatus}{' '}
+          {`LKR ${new Intl.NumberFormat('en-LK', {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
           }).format(item?.premiumAmount || 0)}`}
         </Text>
         <View>
@@ -63,96 +65,108 @@ export default function ECMotorRenewal({ item, navigation }) {
         </View>
       </View>
       <View style={styles.motorRenewalCardItem}>
-        <View style={{ flex: 0.3 }}>
+        <View style={{flex: 0.3}}>
           <Text style={styles.motorRenewalCardItemLeft}>Policy No</Text>
         </View>
-        <View style={{ flex: 0.7 }}>
+        <View style={{flex: 0.7}}>
           <Text style={styles.motorRenewalCardItemRight}>
-            {item?.policyNo}
+            {item?.policyNo || 'Unavailable'}
           </Text>
         </View>
       </View>
 
       <View style={styles.motorRenewalCardItem}>
-        <View style={{ flex: 0.3 }}>
+        <View style={{flex: 0.3}}>
           <Text style={styles.motorRenewalCardItemLeft}>Vehicle No</Text>
         </View>
-        <View style={{ flex: 0.7 }}>
-          <Text style={styles.motorRenewalCardItemRight}> {item?.vehicleNo}</Text>
+        <View style={{flex: 0.7}}>
+          <Text style={styles.motorRenewalCardItemRight}>
+            {item?.vehicleNo || 'Unavailable'}
+          </Text>
         </View>
       </View>
 
       <View style={styles.motorRenewalCardItem}>
-        <View style={{ flex: 0.3 }}>
+        <View style={{flex: 0.3}}>
           <Text style={styles.motorRenewalCardItemLeft}>Premium</Text>
         </View>
-        <View style={{ flex: 0.7 }}>
+        <View style={{flex: 0.7}}>
           <Text style={styles.motorRenewalCardItemRight}>
             {`LKR ${new Intl.NumberFormat('en-LK', {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2
+              maximumFractionDigits: 2,
             }).format(item?.premiumAmount || 0)}`}
           </Text>
         </View>
       </View>
       <View style={styles.motorRenewalCardItem}>
-        <View style={{ flex: 0.3 }}>
-          <Text style={styles.motorRenewalCardItemLeft}>Total paid claims</Text>
+        <View style={{flex: 0.3}}>
+          <Text style={styles.motorRenewalCardItemLeft}>Total Paid Claims</Text>
         </View>
-        <View style={{ flex: 0.7 }}>
+        <View style={{flex: 0.7}}>
           <Text style={styles.motorRenewalCardItemRight}>
             {`LKR ${new Intl.NumberFormat('en-LK', {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2
+              maximumFractionDigits: 2,
             }).format(item?.sumIns || 0)}`}
           </Text>
         </View>
       </View>
       <View style={styles.motorRenewalCardItem}>
-        <View style={{ flex: 0.3 }}>
+        <View style={{flex: 0.3}}>
           <Text style={styles.motorRenewalCardItemLeft}>Due Date</Text>
         </View>
-        <View style={{ flex: 0.7 }}>
-          <Text style={styles.motorRenewalCardItemRight}>{item?.dueDate}</Text>
+        <View style={{flex: 0.7}}>
+          <Text style={styles.motorRenewalCardItemRight}>
+            {item?.dueDate || 'Unavailable'}
+          </Text>
         </View>
       </View>
 
       {expanded && (
         <View>
+          <View
+            style={{
+              borderWidth: 0.5,
+              borderColor: COLORS.lightBorder,
+              marginVertical: 2,
+            }}></View>
           <View style={styles.motorRenewalCardItem}>
-            <View style={{ flex: 0.3 }}>
+            <View style={{flex: 0.3}}>
               <Text style={styles.motorRenewalCardItemLeft}>Name </Text>
             </View>
-            <View style={{ flex: 0.7 }}>
+            <View style={{flex: 0.7}}>
               <Text style={styles.motorRenewalCardItemRight}>
-                {item?.customerName}
+                {item?.customerName || 'Unavailable'}
               </Text>
             </View>
           </View>
           <View style={styles.motorRenewalCardItem}>
-            <View style={{ flex: 0.3 }}>
+            <View style={{flex: 0.3}}>
               <Text style={styles.motorRenewalCardItemLeft}>Address</Text>
             </View>
-            <View style={{ flex: 0.7 }}>
+            <View style={{flex: 0.7}}>
               <Text style={styles.motorRenewalCardItemRight}>
-                {item?.address}
+                {item?.address || 'Unavailable'}
               </Text>
             </View>
           </View>
           <View style={styles.motorRenewalCardItem}>
-            <View style={{ flex: 0.3 }}>
-              <Text style={styles.motorRenewalCardItemLeft}>contacts Tel</Text>
+            <View style={{flex: 0.3}}>
+              <Text style={styles.motorRenewalCardItemLeft}>Contacts Tel</Text>
             </View>
-            <View style={{ flex: 0.7 }}>
-              <Text style={styles.motorRenewalCardItemRight}> {item?.mobileNo}</Text>
+            <View style={{flex: 0.7}}>
+              <Text style={styles.motorRenewalCardItemRight}>
+                {item?.mobileNo || 'Unavailable'}
+              </Text>
             </View>
           </View>
         </View>
       )}
     </TouchableOpacity>
   );
-}
-
+});
+export default ECMotorRenewal;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.background,

@@ -27,9 +27,13 @@ import HorizontalReportTable from '../../../components/HorizontalReportTable';
 import {
   useRmReportQuery,
   useTeamLeaderReportQuery,
+  useTeamMemberReportQuery,
 } from '../../../redux/services/ReportApiSlice';
 import DropdownComponent from '../../../components/DropdownComponent';
 import LoaderKit from 'react-native-loader-kit';
+import OutlinedTextView from '../../../components/OutlinedTextView';
+import ReportFilter from '../../../components/ReportFilter';
+import ReportFilterTM from '../../../components/ReportFilterTM';
 
 const window = Dimensions.get('window');
 const data = [
@@ -46,15 +50,17 @@ const data = [
 export default function TeamMemberGrid({navigation, route}) {
   const {Title = ''} = route.params || {};
   const userCode = useSelector(state => state.Profile.userCode);
-  console.log('userCode', userCode);
+
   const branchCode = useSelector(
     state => state.Profile.profile.user.branchCode,
   );
   console.log('branchCode', branchCode);
-  const [value, setValue] = useState('nop');
+  const [value, setValue] = useState(1);
   const [isFocus, setIsFocus] = useState(false);
-  const [SelectedType, setSelectedType] = useState('G');
-  const [SelectedMonth, setSelectedMonth] = useState(0);
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [SelectedMonth, setSelectedMonth] = useState('00');
+  const [modalVisible, setModalVisible] = useState(false);
+
   const tableHead = [
     'Team Member',
     'Renewal',
@@ -65,35 +71,68 @@ export default function TeamMemberGrid({navigation, route}) {
   ];
   const columnWidths = [150, 120, 120, 160, 120, 120];
   const [isLandscape, setIsLandscape] = useState(false);
-
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
   const {
     data: TeamLeaderReport,
     error: TeamLeaderReportError,
-    isLoading: TeamLeaderReportLoading,
-    isFetching: TeamLeaderReportFetching,
-  } = useTeamLeaderReportQuery({
-    branch: branchCode,
+    refetch,
+    // isLoading: TeamLeaderReportLoading,
+    isFetching: TeamLeaderReportLoading,
+  } = useTeamMemberReportQuery({
+    // branch: 26,
+    userCode: userCode,
     year: new Date().getFullYear(),
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
-    endMonth: SelectedMonth == '00' ? '12' : SelectedMonth + 1,
+    endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
+    // endMonth:
+    //   SelectedMonth == '00'
+    //     ? '12'
+    //     : String(parseInt(SelectedMonth, 10) + 1).padStart(2, '0'),
+
     type: value,
   });
+  console.log('TeamLeaderReport', TeamLeaderReport);
+  console.log('TeamLeaderReportLoading', TeamLeaderReportLoading);
   const tableData = TeamLeaderReport?.data?.map(item => [
-    item?.teamLeader?.toString() ?? '',
+    item?.teamMember?.toString() ?? '',
 
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nb +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
   ]);
 
   const toggleOrientation = () => {
@@ -118,6 +157,26 @@ export default function TeamMemberGrid({navigation, route}) {
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+      <ReportFilterTM
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        dropdownOptions={dropdownOptions}
+        notbranchVisible={true}
+        lastTitle={'Branch'}
+        onPressSearch={() => {
+          // PolicyListResponse(searchData);
+          setModalVisible(false);
+          refetch();
+        }}
+        onPressClear={() => console.log('clear ', policyValues)}
+        Name="Report Filter"
+        initialValues={{type: SelectedType, month: SelectedMonth, view: value}}
+        onViewDetailsChange={value => setValue(value)}
+        onTypeChange={value => setSelectedType(value)}
+        onMonthChange={value => setSelectedMonth(value)}
+
+        // onBranchChange={value => setBranch(value)}
+      />
       {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
@@ -139,13 +198,34 @@ export default function TeamMemberGrid({navigation, route}) {
       {/* <Text style={{ color: 'black' }}>nin</Text> */}
       <View
         style={{
-          justifyContent: 'flex-end',
+          justifyContent: isLandscape == false ? 'space-between' : 'flex-end',
           width: '100%',
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,
           paddingRight: 20,
         }}>
+        {isLandscape == false && (
+          <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', gap: 5}}
+              onPress={() => setModalVisible(true)}>
+              <Text
+                style={{
+                  color: COLORS.textColor,
+                  fontFamily: Fonts.Roboto.Bold,
+                  // fontSize: 13
+                }}>
+                Filter By
+              </Text>
+              <MaterialIcons
+                name="filter-list"
+                size={20}
+                color={COLORS.primary}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
         <TouchableOpacity
           onPress={toggleOrientation}
           style={{flexDirection: 'row', gap: 5}}>
@@ -187,15 +267,24 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
+                value={value}
+                search={false}
+                nonClearable={true}
                 onValueChange={setValue}
-                dropdownData={[{label: 'NOP', value: '1'}]}
+                dropdownData={[
+                  {label: 'Value', value: 1},
+                  {label: 'NOP', value: 2},
+                ]}
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
-                onValueChange={setSelectedType}
+                search={false}
+                onValueChange={value => {
+                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
                   {label: 'Motor Monthly', value: 'M'},
@@ -206,7 +295,12 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
-                onValueChange={setSelectedMonth}
+                value={SelectedMonth}
+                nonClearable={true}
+                // onValueChange={setSelectedMonth}
+                onValueChange={value => {
+                  setSelectedMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
                   {label: 'Cumulative', value: '00'},
                   {label: 'January', value: '01'},
@@ -265,9 +359,13 @@ export default function TeamMemberGrid({navigation, route}) {
       ) : (
         <FlatList
           data={TeamLeaderReport?.data}
-          initialNumToRender={2}
+          initialNumToRender={4}
+          renderToHardwareTextureAndroid={true}
           keyExtractor={item => item.id}
-          contentContainerStyle={{padding: 10}}
+          contentContainerStyle={{
+            padding: 10,
+            paddingBottom: window.height * 0.25,
+          }}
           ListEmptyComponent={
             <View
               style={{
@@ -276,7 +374,9 @@ export default function TeamMemberGrid({navigation, route}) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={Styles.errorText}>Sorry, No Data found</Text>
+              {!TeamLeaderReportLoading && (
+                <Text style={Styles.errorText}>Sorry, No Data found</Text>
+              )}
             </View>
           }
           renderItem={({item}) => (
@@ -300,7 +400,7 @@ export default function TeamMemberGrid({navigation, route}) {
                     fontSize: 14,
                     color: COLORS.textColor,
                   }}>
-                  {item?.teamLeader?.toString() ?? ''}
+                  {item?.teamMember?.toString() ?? ''}
                 </Text>
               </View>
 
@@ -313,11 +413,18 @@ export default function TeamMemberGrid({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'Renewal'}
                     value={
-                      item?.renewal !== null && item?.renewal !== undefined
-                        ? Number(item?.renewal).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.renewal != null
+                          ? Number(item.renewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopRenewal != null
+                        ? Number(item.nopRenewal).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -327,10 +434,10 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'NB'}
                     value={
-                      item?.renewal !== null && item?.nb !== undefined
+                      item?.nb !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -344,11 +451,18 @@ export default function TeamMemberGrid({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'PPW'}
                     value={
-                      item.renewal !== null && item?.refundPpw !== undefined
-                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundPpw != null
+                          ? Number(item.refundPpw).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopPpw != null
+                        ? Number(item.nopPpw).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -358,11 +472,18 @@ export default function TeamMemberGrid({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'Others'}
                     value={
-                      item?.renewal !== null && item?.refundOther !== undefined
-                        ? Number(item.refundOther).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundOther != null
+                          ? Number(item.refundOther).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopOtherRefund != null
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -374,11 +495,18 @@ export default function TeamMemberGrid({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   Title={'Endorsement'}
                   value={
-                    item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                    value == 1
+                      ? item?.endorsement != null
+                        ? Number(item.endorsement).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                      : item?.nopEndorsements != null
+                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -388,16 +516,42 @@ export default function TeamMemberGrid({navigation, route}) {
               </View>
 
               <View>
-                <OutlinedTextBox
+                <OutlinedTextView
                   Title={'Total'}
-                  value={
-                    item?.renewal !== null && item?.total !== undefined
-                      ? Number(item.total)?.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : ''
-                  }
+                  value={Number(
+                    value == 1
+                      ? (item?.renewal ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.refundPpw ?? 0) +
+                          (item?.refundOther ?? 0) +
+                          (item?.endorsement ?? 0)
+                      : (item?.nopRenewal ?? 0) +
+                          (item?.nopPpw ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.nopOtherRefund ?? 0) +
+                          (item?.nopEndorsements ?? 0),
+                  ).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+
+                  // value={
+                  //   value == 1
+                  //     ? (
+                  //         (item?.renewal ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.refundPpw ?? 0) +
+                  //         (item?.refundOther ?? 0) +
+                  //         (item?.endorsement ?? 0)
+                  //       ).toLocaleString()
+                  //     : (
+                  //         (item?.nopRenewal ?? 0) +
+                  //         (item?.nopPpw ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.nopOtherRefund ?? 0) +
+                  //         (item?.nopEndorsements ?? 0)
+                  //       ).toLocaleString()
+                  // }
                 />
               </View>
             </View>

@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -92,11 +92,12 @@ const HorizontalReportTable = ({
               textStyle={styles.headText}
             />
             {/* Table Rows with Alternating Colors */}
-            {tableData?.map((rowData, index) => (
+            {/* {tableData?.map((rowData, index) => (
               <Row
                 key={index}
-                data={rowData.map((cellData, cellIndex) => (
+                data={rowData?.map((cellData, cellIndex) => (
                   <TouchableOpacity
+                    disabled
                     key={cellIndex}
                     onPress={() => handleCellPress(cellData)}>
                     {cellIndex !== 3 && (
@@ -109,8 +110,8 @@ const HorizontalReportTable = ({
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData}
                           </Text>
@@ -129,14 +130,15 @@ const HorizontalReportTable = ({
                             flex: 0.5,
                           }}>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.text,
                               cellIndex === 0
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData?.ppw}
                           </Text>
@@ -147,14 +149,15 @@ const HorizontalReportTable = ({
                             flex: 0.5,
                           }}>
                           <Text
+                            numberOfLines={1}
                             style={[
                               styles.text,
                               cellIndex === 0
                                 ? styles.leftAlignedText
                                 : styles.centerAlignedText, // Align first column left
                               haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
+                                index === tableData.length - 1 &&
+                                styles.boldText,
                             ]}>
                             {cellData?.other}
                           </Text>
@@ -171,11 +174,87 @@ const HorizontalReportTable = ({
                 textStyle={[
                   styles.text,
                   haveTotal &&
-                  index === tableData.length - 1 &&
-                  styles.boldText, // Apply boldText only if hasTotal is true
+                    index === tableData.length - 1 &&
+                    styles.boldText, // Apply boldText only if hasTotal is true
                 ]}
               />
-            ))}
+            ))} */}
+            {Array.isArray(tableData) && tableData.length > 0 ? (
+              tableData.map((rowData, index) => (
+                <Row
+                  key={index}
+                  data={rowData?.map((cellData, cellIndex) => (
+                    <TouchableOpacity
+                      disabled
+                      key={cellIndex}
+                      onPress={() => handleCellPress(cellData)}>
+                      {cellIndex !== 3 ? (
+                        <View>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignedText
+                                : styles.centerAlignedText,
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData}
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.ppw}
+                            </Text>
+                          </View>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              numberOfLines={1}
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.other}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                  widthArr={columnWidths}
+                  style={[
+                    styles.row,
+                    index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                  ]}
+                  textStyle={[
+                    styles.text,
+                    haveTotal &&
+                      index === tableData.length - 1 &&
+                      styles.boldText,
+                  ]}
+                />
+              ))
+            ) : (
+              <Text>No data available</Text>
+            )}
           </Table>
         </View>
       </View>
@@ -184,12 +263,12 @@ const HorizontalReportTable = ({
 };
 
 const styles = StyleSheet.create({
-  container: { padding: 0 },
+  container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
   },
-  head: { backgroundColor: 'transparent' },
+  head: {backgroundColor: 'transparent'},
   headText: {
     margin: 2,
     fontFamily: Fonts.Roboto.Regular,
@@ -218,9 +297,9 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: COLORS.textColor,
   },
-  row: { height: 50 },
-  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
-  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
+  row: {height: 50},
+  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
+  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

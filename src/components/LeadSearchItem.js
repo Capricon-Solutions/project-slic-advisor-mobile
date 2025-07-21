@@ -7,7 +7,9 @@ import {
   Image,
   Linking,
 } from 'react-native';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
@@ -29,7 +31,7 @@ export default function LeadSearchItem({item, onPress}) {
           justifyContent: 'space-between',
           flex: 1,
           width: '100%',
-          paddingVertical: 15,
+          paddingVertical: 10,
           paddingLeft: 10,
         }}>
         <View
@@ -40,10 +42,12 @@ export default function LeadSearchItem({item, onPress}) {
             height: '100%',
           }}>
           <Text
+            numberOfLines={1}
             style={{
               fontFamily: Fonts.Roboto.Bold,
               color: COLORS.black,
               fontSize: 15,
+              marginRight: 5,
             }}>
             {item?.customerName}
           </Text>
@@ -62,8 +66,8 @@ export default function LeadSearchItem({item, onPress}) {
               gap: 15,
             }}>
             <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
-              <MaterialCommunityIcons
-                name="car"
+              <FontAwesome5
+                name={item?.leadType == 'M' ? 'car' : 'shield-alt'}
                 style={{}}
                 color={COLORS.grayText}
                 size={20}
@@ -74,7 +78,9 @@ export default function LeadSearchItem({item, onPress}) {
                   fontSize: 12,
                   fontFamily: Fonts.Roboto.Medium,
                 }}>
-                Motor Business
+                {item?.leadType == 'M'
+                  ? 'Motor Business'
+                  : 'Non-Motor Business'}
               </Text>
             </View>
 

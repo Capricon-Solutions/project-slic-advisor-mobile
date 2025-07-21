@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { baseApi } from './api';
+import {createSlice} from '@reduxjs/toolkit';
+import {baseApi} from './api';
 
 const initialState = {
   policyDetailsResponse: {
@@ -38,27 +38,27 @@ export const policyDetailsSlice = createSlice({
   },
 });
 
-export const { setPolicyDetailsResponse } = policyDetailsSlice.actions;
+export const {setPolicyDetailsResponse} = policyDetailsSlice.actions;
 export default policyDetailsSlice.reducer;
 
 // Define API endpoints separately
 export const policyDetailsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getPolicyDetails: builder.query({
-      query: ({ id }) => `agent/getPolicyDetails?PolicyNo=${id}`,
+      query: ({id}) => `agent/getPolicyDetails?PolicyNo=${id}`,
     }),
     getClaimHistory: builder.query({
-      query: ({ id }) => `agent/getClaimHistory?policyNumber=${id}`,
+      query: ({id}) => `agent/getClaimHistory?policyNumber=${id}`,
     }),
     getPremiumHistory: builder.query({
-      query: ({ id }) => `agent/getPremiumHistory?PolicyNo=${id}`,
+      query: ({id}) => `agent/getPremiumHistory?PolicyNo=${id}`,
     }),
     getPendingHistory: builder.query({
-      query: ({ id }) => `agent/getPendingHistory?policyNumber=${id}`,
+      query: ({id}) => `agent/getPendingHistory?policyNumber=${id}`,
     }),
     // DebitSettlement
     DebitSettlement: builder.query({
-      query: ({ id }) => `salesIncome/DebitSettlement?policyNo=${id}`,
+      query: ({id}) => `salesIncome/DebitSettlement?policyNo=${id}`,
     }),
     // DebitSettlementSms
     // DebitSettlementSms: builder.mutation({
@@ -69,7 +69,7 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     //   }),
     // }),
     DebitSettlementSms: builder.mutation({
-      query: (body) => {
+      query: body => {
         const url = 'salesIncome/DebitSettlementSms';
         console.log('body:', body);
         return {
@@ -77,6 +77,13 @@ export const policyDetailsApi = baseApi.injectEndpoints({
           method: 'POST',
           body,
         };
+      },
+    }),
+    getClaimDetails: builder.query({
+      query: ({id}) => {
+        console.log('url:', id);
+        const url = `motor/getMotorClaimsDocuments?claimId=${id}`;
+        return url;
       },
     }),
   }),
@@ -89,5 +96,6 @@ export const {
   useGetPremiumHistoryQuery,
   useDebitSettlementQuery,
   useGetPendingHistoryQuery,
-  useDebitSettlementSmsMutation
+  useDebitSettlementSmsMutation,
+  useGetClaimDetailsQuery,
 } = policyDetailsApi;

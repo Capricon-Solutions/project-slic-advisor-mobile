@@ -10,9 +10,10 @@ import {
 import {Table, Row, Rows} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
+import TableComponent from './TableComponent';
 const window = Dimensions.get('window');
 
-const RegionTableComponent = ({
+const TableComponentSalvage = ({
   tableHead,
   tableData,
   columnWidths,
@@ -65,6 +66,7 @@ const RegionTableComponent = ({
                     key={index}
                     data={rowData.map((cellData, cellIndex) => (
                       <View
+                        style={{flex: 1, justifyContent: 'center'}}
                         key={cellIndex}
                         onPress={() => handleCellPress(cellData)}>
                         {cellIndex == 0 && (
@@ -74,9 +76,11 @@ const RegionTableComponent = ({
                               navigation.navigate('BranchSummary', {
                                 title: cellData,
                               })
-                            }>
-                            <View>
+                            }
+                            style={{flex: 1}}>
+                            <View style={{flex: 1, justifyContent: 'center'}}>
                               <Text
+                                numberOfLines={1}
                                 style={[
                                   styles.text,
                                   cellIndex === 0
@@ -92,36 +96,43 @@ const RegionTableComponent = ({
                           </TouchableOpacity>
                         )}
                         {cellIndex > 0 && (
-                          <View style={{}}>
-                            <View style={{}}>
+                          <View
+                            style={{
+                              flex: 1,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <View
+                              style={{
+                                borderRadius: 100,
+                                paddingHorizontal: 10,
+                                backgroundColor:
+                                  cellIndex === rowData.length - 1
+                                    ? cellData === 'Item Received'
+                                      ? COLORS.lightGreen
+                                      : cellData === 'Item Pending'
+                                      ? COLORS.backcard
+                                      : cellData === 'Item Rejected'
+                                      ? COLORS.tableRed
+                                      : 'transparent'
+                                    : 'transparent',
+                              }}>
                               <Text
                                 style={[
                                   styles.text,
-                                  cellIndex === 0
-                                    ? styles.leftAlignedText
-                                    : cellIndex === 3
-                                    ? [
-                                        styles.centerAlignedText,
-                                        {
-                                          color: COLORS.primaryGreen,
-                                          fontFamily: Fonts.Roboto.SemiBold,
-                                        },
-                                      ]
-                                    : cellIndex === 5
-                                    ? [
-                                        styles.centerAlignedText,
-                                        {
-                                          color:
-                                            cellData < 0
-                                              ? COLORS.primaryRed
-                                              : COLORS.primaryGreen,
-                                          fontFamily: Fonts.Roboto.SemiBold,
-                                        },
-                                      ]
-                                    : styles.centerAlignedText, // Align first column left
-                                  haveTotal &&
-                                    index === tableData.length - 1 &&
-                                    styles.boldText,
+                                  {
+                                    fontFamily: Fonts.Roboto.Bold,
+                                    color:
+                                      cellIndex === rowData.length - 1
+                                        ? cellData === 'Item Received'
+                                          ? COLORS.primaryGreen
+                                          : cellData === 'Item Pending'
+                                          ? COLORS.tableOrange
+                                          : cellData === 'Item Rejected'
+                                          ? COLORS.primaryRed
+                                          : 'transparent'
+                                        : 'transparent',
+                                  },
                                 ]}>
                                 {cellData}
                               </Text>
@@ -210,10 +221,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    marginVertical: 6,
+    marginVertical: 3,
     // marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 12,
     color: COLORS.textColor,
   },
   leftAlignedText: {
@@ -237,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegionTableComponent;
+export default TableComponentSalvage;

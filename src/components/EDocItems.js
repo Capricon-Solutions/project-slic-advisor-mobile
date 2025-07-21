@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -21,6 +22,7 @@ import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 import {useSelector} from 'react-redux';
+import {showToast} from './ToastMessage';
 const window = Dimensions.get('window');
 
 export default function EDocItems({item, navigation, onPress}) {
@@ -28,63 +30,36 @@ export default function EDocItems({item, navigation, onPress}) {
   const [isDownloading, setIsDownloading] = React.useState(false);
   const token = useSelector(state => state.Profile.token);
 
-  // const downloadAndOpenPDF = async path => {
-  //   try {
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-
-  //     const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-
-  //     const options = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'X-API-KEY': '12345abcde67890fghijklmnoprstuvwxz',
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         setDownloadProgress(progress);
-  //       },
-  //     };
-
-  //     // Download the file
-  //     const download = RNFS.downloadFile(options);
-  //     await download.promise;
-
-  //     // Open the downloaded file
-  //     await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-  //     console.log('PDF opened successfully!');
-  //   } catch (error) {
-  //     console.error('Download/Open Error:', error);
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      console.log('Requesting storage permission...');
       try {
-        if (Platform.Version < 29) {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            {
-              title: 'Storage Permission Required',
-              message: 'App needs access to your storage to download files.',
-              buttonPositive: 'OK',
-              buttonNegative: 'Cancel',
-            },
-          );
-          return granted === PermissionsAndroid.RESULTS.GRANTED;
-        } else {
-          // Android 10+ doesn't require explicit permission for private storage
+        const apiLevel = Platform.Version;
+
+        if (apiLevel >= 29) {
+          // Scoped storage — permission not required
+          console.log('API 29+ detected. Skipping storage permission.');
           return true;
         }
+
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message: 'App needs access to your storage to download files.',
+            buttonPositive: 'OK',
+            buttonNegative: 'Cancel',
+          },
+        );
+
+        console.log('Permission result:', granted);
+
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
         console.warn('Permission error:', err);
         return false;
       }
     }
+
     return true; // iOS or other platforms
   };
 
@@ -93,25 +68,29 @@ export default function EDocItems({item, navigation, onPress}) {
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
-        Alert.alert(
-          'Permission Denied',
-          'Storage permission is required to download and view the file.',
-        );
+        // Alert.alert(
+        //   'Permission Denied',
+        //   'Storage permission is required to download and view the file.',
+        // );
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
         return;
       }
-
       setIsDownloading(true);
       setDownloadProgress(0);
-
       const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-
       console.log('Starting download from:', pdfUrl);
-
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
       const downloadOptions = {
         fromUrl: pdfUrl,
         toFile: localFilePath,
         headers: {
+          'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         },
         progress: res => {
@@ -122,12 +101,13 @@ export default function EDocItems({item, navigation, onPress}) {
       };
 
       const download = RNFS.downloadFile(downloadOptions);
+      console.log('Download started:', download);
       const result = await download.promise;
-
-      console.log('Download completed:', result);
+      // Linking.openURL(localFilePath).catch();
+      console.log('Download completed:', result.statusCode);
 
       if (result.statusCode === 200) {
-        ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
         await FileViewer.open(localFilePath, {showOpenWithDialog: true});
         console.log('PDF opened successfully!');
       } else {
@@ -137,7 +117,12 @@ export default function EDocItems({item, navigation, onPress}) {
       }
     } catch (error) {
       console.error('Download/Open error:', error);
-      Alert.alert('Error', 'Failed to download or open the PDF file.');
+      showToast({
+        type: 'error',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
+      });
+      // Alert.alert('Error', 'Failed to download or open the PDF file.');
     } finally {
       setIsDownloading(false);
     }

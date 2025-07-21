@@ -63,29 +63,78 @@ export default function ProductPortfolio({navigation}) {
     }
   }, [searchText]);
 
+  // const handleSearch = v => {
+  //   // return;
+  //   // setSearchText(searchText);
+  //   if (v === '') {
+  //     setFilteredData(products?.data || []); // Reset to show all products
+  //   } else {
+  //     // console.log('searchText', searchText);
+  //     // return;
+  //     const filtered = products?.data?.filter(item =>
+  //       item.productName.toLowerCase().includes(v?.toLowerCase()),
+  //     );
+  //     setFilteredData(filtered);
+  //   }
+  // };
   const handleSearch = v => {
-    setSearchText(searchText);
     if (v === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      console.log('searchText', searchText);
-      // return;
-      const filtered = products?.data?.filter(item =>
-        item.productName.toLowerCase().includes(v?.toLowerCase()),
-      );
+      const query = v.toLowerCase();
+      const filtered = products?.data
+        ?.filter(item => item?.productName?.toLowerCase().includes(query))
+        ?.sort((a, b) => {
+          const aName = a?.productName?.toLowerCase();
+          const bName = b?.productName?.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical
+        });
+
       setFilteredData(filtered);
     }
   };
+  const handleSearch2 = () => {
+    console.log('searchText', searchText);
 
+    if (searchText === '') {
+      setFilteredData(products?.data || []); // Reset to show all products
+    } else {
+      const query = searchText.toLowerCase();
+
+      const filtered = products?.data
+        ?.filter(item => item?.productName?.toLowerCase().includes(query))
+        ?.sort((a, b) => {
+          const aName = a?.productName?.toLowerCase();
+          const bName = b?.productName?.toLowerCase();
+
+          const aStartsWith = aName.startsWith(query);
+          const bStartsWith = bName.startsWith(query);
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+
+          return aName.localeCompare(bName); // fallback alphabetical
+        });
+
+      setFilteredData(filtered);
+    }
+  };
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
   console.log('res', products);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
-      <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <Header Title="Product Portfolio" onPress={() => navigation.goBack()} />
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 10}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -125,16 +174,21 @@ export default function ProductPortfolio({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
+            // onChangeText={v => {
+            //   const searchText = v.replace(/[^a-zA-Z]/g, '');
+            //   setSearchText(searchText), handleSearch(searchText);
+            // }}
             onChangeText={v => {
               setSearchText(v), handleSearch(v);
             }}
+            value={searchText}
             placeholder="Quick Search"
           />
           <TouchableOpacity
-            onPress={() => handleSearch()}
+            onPress={() => handleSearch2()}
             style={styles.searchButton}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
@@ -151,7 +205,7 @@ export default function ProductPortfolio({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderItem}
                 // keyExtractor={item => item.id.toString()}
@@ -163,7 +217,7 @@ export default function ProductPortfolio({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -171,7 +225,7 @@ export default function ProductPortfolio({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }

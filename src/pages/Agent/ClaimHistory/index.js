@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,26 +13,26 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { useSelector } from 'react-redux';
-import { useGetClaimHistoryQuery } from '../../../redux/services/policyDetailsSlice';
+import {useSelector} from 'react-redux';
+import {useGetClaimHistoryQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function ClaimHistory({ navigation, route }) {
+export default function ClaimHistory({navigation, route}) {
   // const claimHistoryResponse = useSelector(
   //   state => state.claimHistory.claimHistoryResponse.data,
   // );
-  const { policyNo } = route.params;
+  const {policyNo} = route.params;
   const {
     data: ClaimHistory,
     error,
@@ -44,7 +44,7 @@ export default function ClaimHistory({ navigation, route }) {
 
   console.log('claimHistoryResponse', ClaimHistory);
 
-  const DetailLine = ({ Title, detail }) => {
+  const DetailLine = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -62,13 +62,13 @@ export default function ClaimHistory({ navigation, route }) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
     );
   };
-  const DetailLineBold = ({ Title, detail }) => {
+  const DetailLineBold = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -86,16 +86,20 @@ export default function ClaimHistory({ navigation, route }) {
           <Text style={styles.detailTextBold}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailTextBold}>{detail}</Text>
         </View>
       </View>
     );
   };
 
-  const Card = ({ item }) => {
+  const Card = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("ClaimDetails")} style={styles.card}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ClaimDetails', {claimId: item.claimNo})
+        }
+        style={styles.card}>
         <View>
           <Text
             style={{
@@ -110,10 +114,21 @@ export default function ClaimHistory({ navigation, route }) {
         <DetailLine Title={'Intimated On'} detail={item.intDate} />
         {/* <DetailLine Title={'Voucher'} detail={item.voucher} /> */}
         <DetailLineBold Title={'Date of Loss'} detail={item.dateOfLoss} />
-        <DetailLine Title={'Reg . Date'} detail={item.intDate} />
+        <DetailLine Title={'Reg Date'} detail={item.regDate} />
         <DetailLine Title={'Payment Type'} detail={item.payTyp} />
         <DetailLine Title={'Voucher Status'} detail={item.vouSts} />
-        <DetailLine Title={'Paid amount'} detail={'LKR ' + item.padAmount} />
+        <DetailLine
+          Title={'Paid Amount'}
+          detail={
+            'LKR ' +
+            (item?.padAmount != null
+              ? Number(item.padAmount).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : '0.00')
+          }
+        />
         <DetailLine Title={'Paid Date'} detail={item.payDate} />
         <DetailLine Title={'Voucher No'} detail={item.vouNo} />
         <DetailLine Title={'Status'} detail={item.status} />
@@ -136,7 +151,7 @@ export default function ClaimHistory({ navigation, route }) {
 
       <ScrollView
         fadingEdgeLength={20}
-        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
+        contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
         <View>
           <Text
             style={{
@@ -150,7 +165,7 @@ export default function ClaimHistory({ navigation, route }) {
         </View>
 
         {isFetching ? (
-          <View style={{ height: window.height * 0.7 }}>
+          <View style={{height: window.height * 0.7}}>
             <LoadingScreen />
           </View>
         ) : (
@@ -159,9 +174,9 @@ export default function ClaimHistory({ navigation, route }) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 7 }}
-                renderItem={({ item }) => <Card item={item} />}
-              // keyExtractor={item => item.id.toString()}
+                contentContainerStyle={{paddingHorizontal: 7}}
+                renderItem={({item}) => <Card item={item} />}
+                // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <View
@@ -183,7 +198,6 @@ export default function ClaimHistory({ navigation, route }) {
           </View>
         )}
       </ScrollView>
-
     </View>
   );
 }

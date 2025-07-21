@@ -39,7 +39,7 @@ export default function TeamPerformance({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'New', 'Renewals', 'Total'];
-  const columnWidths = [200, 160, 160, 160];
+  const columnWidths = [200, 180, 180, 180];
 
   const {
     data: CurrentPerformanceMonth,
@@ -70,16 +70,28 @@ export default function TeamPerformance({navigation}) {
   )?.data?.map(item => [
     item?.agentName?.toString() ?? '',
     {
-      cash: item?.cashNewMotorPrm,
-      debit: item?.debitNewMotorPrm,
+      cash: item?.cashNewMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
+      debit: item?.debitNewMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
     },
     {
-      cash: item?.cashRenMotorPrm,
-      debit: item?.debitRenMotorPrm,
+      cash: item?.cashRenMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
+      debit: item?.debitRenMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
     },
     {
-      cash: item?.totCashMotorPrm,
-      debit: item?.totDebitMotorPrm,
+      cash: item?.totCashMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
+      debit: item?.totDebitMotorPrm.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+      }),
     },
   ]);
   const renderItem = ({item}) => <ContactListItem item={item} />;
@@ -103,7 +115,7 @@ export default function TeamPerformance({navigation}) {
         />
       </View>
 
-      <View style={styles.mainWrap}>
+      <View style={[styles.mainWrap, {marginTop: 1}]}>
         <TouchableOpacity
           onPress={() => setSelectedType(1)}
           style={{

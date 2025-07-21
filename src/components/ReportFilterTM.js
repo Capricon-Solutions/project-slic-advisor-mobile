@@ -15,7 +15,7 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-export default function ReportFilter({
+export default function ReportFilterTM({
   modalVisible,
   setModalVisible,
   Name,
@@ -31,16 +31,14 @@ export default function ReportFilter({
   notbranchVisible,
 }) {
   // State for dropdown selections with initial values
-  // const [viewDetails, setViewDetails] = React.useState(
-  //   initialValues.viewDetails || '1',
-  // );
-  // const [type, setType] = React.useState(initialValues.type || '1');
-  // const [month, setMonth] = React.useState(initialValues.month || '00');
-  // const [branch, setBranch] = React.useState(initialValues.branch || '');
+
   const [viewDetails, setViewDetails] = React.useState(initialValues.view);
   const [type, setType] = React.useState(initialValues.type);
   const [month, setMonth] = React.useState(initialValues.month);
   const [branch, setBranch] = React.useState(initialValues.branch);
+  console.log('typeh', type);
+  // Animation setup
+  const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
     setViewDetails(initialValues.view);
@@ -48,9 +46,6 @@ export default function ReportFilter({
     setMonth(initialValues.month);
     setBranch(initialValues.branch || '');
   }, [initialValues]);
-  // Animation setup
-  const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
-
   // Handle animation when modal visibility changes
   React.useEffect(() => {
     if (modalVisible) {
@@ -132,18 +127,7 @@ export default function ReportFilter({
           </View>
 
           {/* Filter Options */}
-          {/* <DropdownComponent
-            label={'View Details'}
-            mode={'modal'}
-            value={viewDetails}
-            onClearable={true}
-            dropdownData={[
-              {label: 'Value', value: '1'},
-              {label: 'NOP', value: '2'},
-            ]}
-            // selectedValue={viewDetails}
-            onValueChange={setViewDetails}
-          /> */}
+
           <DropdownComponent
             label={'View Details'}
             mode={'modal'}
@@ -158,17 +142,6 @@ export default function ReportFilter({
               {label: 'NOP', value: 2},
             ]}
           />
-
-          {/* <DropdownComponent
-            label={'Type'}
-            mode={'modal'}
-            dropdownData={[
-              {label: 'General Cumulative', value: 'G'},
-              {label: 'Motor Monthly', value: 'M'},
-            ]}
-            selectedValue={type}
-            onValueChange={setType}
-          /> */}
 
           <DropdownComponent
             label={'Type'}
@@ -185,27 +158,6 @@ export default function ReportFilter({
             ]}
           />
 
-          {/* <DropdownComponent
-            label={'Month'}
-            mode={'modal'}
-            dropdownData={[
-              {label: 'Cumulative', value: '0'},
-              {label: 'January', value: '1'},
-              {label: 'February', value: '2'},
-              {label: 'March', value: '3'},
-              {label: 'April', value: '4'},
-              {label: 'May', value: '5'},
-              {label: 'June', value: '6'},
-              {label: 'July', value: '7'},
-              {label: 'August', value: '8'},
-              {label: 'September', value: '9'},
-              {label: 'October', value: '10'},
-              {label: 'November', value: '11'},
-              {label: 'December', value: '12'},
-            ]}
-            selectedValue={month}
-            onValueChange={setMonth}
-          /> */}
           <DropdownComponent
             label={'Month'}
             mode={'modal'}
@@ -231,11 +183,11 @@ export default function ReportFilter({
               {label: 'December', value: '12'},
             ]}
           />
+
           {!notbranchVisible && (
             <DropdownComponent
               label={lastTitle}
               mode={'modal'}
-              value={branch}
               dropdownData={dropdownOptions}
               selectedValue={branch}
               onValueChange={setBranch}

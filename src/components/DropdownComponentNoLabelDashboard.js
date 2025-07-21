@@ -22,6 +22,7 @@ const DropdownComponentNoLabelDashboard = ({
   BorderColor,
   backgroundColor,
   search,
+  notclearable,
 }) => {
   const [value, setValue] = useState(initialValue);
   const [isFocus, setIsFocus] = useState(false);
@@ -74,18 +75,22 @@ const DropdownComponentNoLabelDashboard = ({
           return (
             <>
               {value && (
-                <TouchableOpacity
-                  onPress={() => {
-                    setValue(null);
-                    onSelect(null);
-                  }}>
-                  <MaterialCommunityIcons
-                    style={styles.icon}
-                    color={COLORS.primaryRed}
-                    name="close-thick"
-                    size={14}
-                  />
-                </TouchableOpacity>
+                <View>
+                  {!notclearable && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setValue(null);
+                        onSelect(null);
+                      }}>
+                      <MaterialCommunityIcons
+                        style={styles.icon}
+                        color={COLORS.primaryRed}
+                        name="close-thick"
+                        size={14}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
             </>
           );
@@ -135,5 +140,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 10,
+    color: COLORS.textColor,
   },
 });

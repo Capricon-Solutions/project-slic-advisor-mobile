@@ -69,6 +69,7 @@ export default function LeadCreation({navigation, route}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
   console.log('eventDate', eventDate);
+  const [event, setEvent] = useState(-1);
   const [leadType, setLeadType] = useState(null);
   const [policyNo, setPolicyNo] = useState(null);
   const [insCom, setInsCom] = useState(null);
@@ -90,7 +91,13 @@ export default function LeadCreation({navigation, route}) {
   const [address1, setAddress1] = useState(null);
   const [address2, setAddress2] = useState(null);
   const [address3, setAddress3] = useState(null);
+  const [formError, setFormError] = useState({});
+  const [mobileNumberError, setMobileNumberError] = useState('');
+  const [homeNumberError, setHomeNumberError] = useState('');
+  const [workNumberError, setWorkNumberError] = useState('');
+  const [yomError, setYomError] = useState('');
 
+  const eventRef = React.useRef();
   useEffect(() => {
     refetch();
   }, [date]);
@@ -101,15 +108,58 @@ export default function LeadCreation({navigation, route}) {
     {id: 3, Title: 'Customer Basic Info'},
     {id: 4, Title: 'Customer Contact Info'},
   ];
+  // const isValidSriLankanNumber = number => {
+  //   const cleaned = number.replace(/[^0-9]/g, '');
 
+  //   // Accept either 10-digit local format or international format with +94
+  //   const localPattern = /^(07\d{8}|0\d{9})$/;
+  //   const intlPattern = /^94\d{9}$/;
+
+  //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
+  // };
+  const validateYOM = yearString => {
+    const year = parseInt(yearString, 10);
+    const currentYear = new Date().getFullYear();
+
+    if (!yearString || yearString.length !== 4 || isNaN(year)) {
+      return 'Year must be a 4-digit number.';
+    }
+
+    if (year > currentYear) {
+      return `Year cannot be in the future (>${currentYear}).`;
+    }
+
+    return null; // valid
+  };
+
+  const isValidSriLankanNumber = number => {
+    const cleaned = number.replace(/[^0-9]/g, '');
+
+    // If it's empty, skip validation (considered optional)
+    if (cleaned.length === 0) return true;
+
+    // Must be either valid local or international format
+    const localPattern = /^(07\d{8}|0\d{9})$/;
+    const intlPattern = /^94\d{9}$/;
+
+    return localPattern.test(cleaned) || intlPattern.test(cleaned);
+  };
   const handleNext = () => {
     // return;
     if (currentStep < StepperItems.length) {
       console.log(currentStep);
 
       if (currentStep === 1) {
-        if (validateForm1()) {
-          setCurrentStep(2);
+        if (leadType === 'G') {
+          setVehicleNo(null);
+          setVehicleType(null);
+          setVehicleValue(null);
+          setYom(null);
+          setCurrentStep(3);
+        } else {
+          if (validateForm1()) {
+            setCurrentStep(2);
+          }
         }
       } else if (currentStep === 2) {
         console.log(currentStep);
@@ -132,8 +182,12 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(prevStep => prevStep - 1);
+    if (leadType === 'G' && currentStep === 3) {
+      setCurrentStep(1);
+    } else {
+      if (currentStep > 1) {
+        setCurrentStep(prevStep => prevStep - 1);
+      }
     }
   };
 
@@ -153,6 +207,11 @@ export default function LeadCreation({navigation, route}) {
     hideDatePicker2();
   };
 
+  const clearEvents = () => {
+    eventRef.current?.clear();
+    setEvent(-1);
+  };
+
   const hideDatePicker2 = () => {
     setDatePickerVisibility2(false);
   };
@@ -168,7 +227,7 @@ export default function LeadCreation({navigation, route}) {
 
   const body = {
     LeadId: 0,
-    EventId: -1,
+    EventId: event || -1,
     LeadType: leadType,
     CustomerName: customerName,
     CustomerName2: null,
@@ -196,7 +255,15 @@ export default function LeadCreation({navigation, route}) {
     LeadSource: null,
     Address4: null,
     RefNo: refNo,
-    AgentCode: agentCode,
+    AgentCode: usertype == 2 ? personalCode : userCode,
+    VehicleManuf: yom,
+  };
+
+  const isValidEmail = email => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const hasCapitalLetter = /[A-Z]/.test(email);
+    return emailRegex.test(email) && !hasCapitalLetter;
   };
 
   const validateForm1 = () => {
@@ -216,20 +283,50 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
+
     return true;
   };
 
+  const currentYear = new Date().getFullYear();
+
   const validateForm2 = () => {
-    if (!vehicleNo || !vehicleType || !vehicleValue) {
+    if (!vehicleNo || !vehicleType || !vehicleValue || !yom) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Please fill in all required fields. ',
       });
       return false;
     }
+    if (vehicleNo.length < 5 && vehicleNo.length > 0) {
+      setFormError({
+        vehicleNo: 'Vehicle number must be between 5 and 8 characters.',
+      });
+      return false;
+    }
+    if (yom && yom.length != 4) {
+      console.log('yom', yom.length);
+      setFormError({
+        yom: 'Year of manufacture must be 4 digits.',
+      });
+      return false;
+    }
+    if (yom && yom.length == 4 && yom < 1900) {
+      setFormError({
+        yom: 'Year of manufacture must be greater than 1900.',
+      });
+      return false;
+    }
+    if (yom && yom.length == 4 && yom > currentYear) {
+      setFormError({
+        yom: `Year of manufacture cannot be in the future (${currentYear}).`,
+      });
+      return false;
+    }
+    setFormError({});
     return true;
   };
+
   const validateForm3 = () => {
     if (
       !customerName
@@ -238,39 +335,101 @@ export default function LeadCreation({navigation, route}) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Customer Name is mandatory. 🚨',
+        text2: 'Customer name is required. 🚨',
+      });
+      return false;
+    }
+    if (nic && !/^(\d{9}[vxVX]|\d{12})$/.test(nic)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid NIC number format. 🚨',
       });
       return false;
     }
     return true;
   };
   const validateForm4 = () => {
-    console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
-    if (!homeNumber || !mobileNumber || !workNumber || !email || !address1) {
-      console.log('work this');
+    // console.log('here', homeNumber, mobileNumber, workNumber, email, address1);
+    if (!mobileNumber) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Mobile number is required. 🚨',
+      });
+      return false;
+    }
+    if (!isValidSriLankanNumber(mobileNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid mobile number format. 📱',
+      });
+      return false;
+    }
+    if (homeNumber && !isValidSriLankanNumber(homeNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid home number format. ☎️',
+      });
+      return false;
+    }
+    if (workNumber && !isValidSriLankanNumber(workNumber)) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Invalid work number format. 🏢',
       });
       return false;
     }
     return true;
   };
   const handleLeadCreate = async () => {
-    if (!validateForm4())
+    if (!validateForm4()) {
       // Stop if validation fails
       console.log('work');
-    showToast({
-      type: 'error',
-      text1: 'Validation Error',
-      text2: 'Please fill in all required fields. 🚨',
-    });
+
+      return;
+    }
+
+    // if (!isValidEmail(email)) {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Invalid Email',
+    //     text2: 'Please enter a valid email address. 📧',
+    //   });
+    //   return;
+    // }
+    if (email && !isValidEmail(email)) {
+      showToast({
+        type: 'error',
+        text1: 'Invalid Email',
+        text2: 'Please enter a valid email address. 📧',
+      });
+      return;
+    }
+
     try {
+      console.log('body', body);
       const response = await leadCreate(body);
       // setModalVisible(false);
-      console.log('Activity Created:', response);
-      navigation.navigate('BPlanner');
+      console.log('lead Created:', response);
+      if (response?.data?.success == true) {
+        showToast({
+          type: 'success',
+          text1: 'Lead Created Successfully',
+          text2: response?.data?.message,
+        });
+        // navigation.navigate('BPlanner');
+        navigation.goBack();
+      } else {
+        showToast({
+          type: 'error',
+          text1: 'Lead Creation Failed',
+          text2: response?.data?.message || 'Please try again later. 🚨',
+        });
+      }
     } catch (err) {
       console.error('Error creating activity:', err);
     }
@@ -298,10 +457,11 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type
+              Lead Type *
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
+              value={leadType}
               dropdownData={[
                 {label: 'Motor', value: 'M'},
                 {label: 'Non-Motor', value: 'G'},
@@ -319,15 +479,21 @@ export default function LeadCreation({navigation, route}) {
               Label={'Insurance Company'}
               value={insCom}
               borderColor={COLORS.warmGray}
-              setValue={text => setInsCom(text)}
+              setValue={text => {
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setInsCom(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'premium'}
-              value={premium}
+              Label={'Premium'}
+              value={premium ? Number(premium)?.toLocaleString() : ''}
               borderColor={COLORS.warmGray}
               keyboardType={'number-pad'}
-              setValue={text => setPremium(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                setPremium(numericText);
+              }}
             />
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
@@ -361,32 +527,105 @@ export default function LeadCreation({navigation, route}) {
           <View>
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Number'}
+              Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => setVehicleNo(text)}
+              setValue={text => {
+                54;
+                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '');
+
+                if (cleanedText.length >= 5 && cleanedText.length <= 8) {
+                  setVehicleNo(cleanedText);
+                  setFormError({});
+                } else if (cleanedText.length > 8) {
+                  52;
+                  setVehicleNo(cleanedText.slice(0, 8));
+                } else if (cleanedText.length < 5 && cleanedText.length > 0) {
+                  setVehicleNo(cleanedText);
+                  setFormError({
+                    vehicleNo:
+                      'Vehicle number must be between 5 and 8 characters.',
+                  });
+                  1;
+                } else {
+                  setVehicleNo('');
+                }
+              }}
             />
+            {formError.vehicleNo && (
+              <Text style={{color: 'red'}}>{formError.vehicleNo}</Text>
+            )}
+            {/* {(vehicleNo.length < 5 && vehicleNo.length > 0) && (
+              <Text style={{color: 'red'}}>
+                Vehicle number must be between 5 and 8 characters
+              </Text>
+            )} */}
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Type'}
+              Label={'Vehicle Type *'}
               value={vehicleType}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleType(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9]/g, '');
+                setVehicleType(cleanedText);
+              }}
             />
+
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Vehicle Value'}
-              value={vehicleValue}
+              Label={'Vehicle Value *'}
+              keyboardType={'number-pad'}
+              value={vehicleValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               borderColor={COLORS.warmGray}
-              setValue={text => setVehicleValue(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9]/g, '');
+                if (numericText.length <= 10) {
+                  setVehicleValue(numericText);
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Year of manufacture'}
+              Label={'Year of Manufacture *'}
               value={yom}
+              keyboardType={'number-pad'}
+              errorMessage={yomError + '\n' + (formError.yom || '')}
               borderColor={COLORS.warmGray}
-              setValue={text => setYom(text)}
+              // setValue={text => {
+              //   const numericText = text.replace(/[^0-9]/g, '');
+              //   if (numericText.length <= 4) {
+              //     setYom(numericText);
+              //     setFormError({});
+              //   }
+              // }}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
+                // if (formatted.length <= 4) {
+                setYom(formatted);
+                // }
+                if (
+                  // formatted.length >= 9 &&
+                  validateYOM(formatted)
+                ) {
+                  setYomError('Invalid Manufacture Year');
+                } else {
+                  setYomError('');
+                }
+                if (formatted && formatted.length != 4) {
+                  setFormError({
+                    yom: 'Year of manufacture must be 4 digits.',
+                  });
+                } else {
+                  setFormError({
+                    yom: '',
+                  });
+                }
+              }}
             />
+            {/* {formError.yom && (
+              <Text style={{color: 'red'}}>{formError.yom}</Text>
+            )} */}
           </View>
         );
       case 3:
@@ -399,6 +638,10 @@ export default function LeadCreation({navigation, route}) {
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm2}
               onCancel={hideDatePicker2}
+              minimumDate={new Date(1900, 0, 1)}
+              maximumDate={
+                new Date(new Date().setDate(new Date().getDate() - 1))
+              }
             />
             {/* <DateTimePickerModal
               isVisible={isDatePickerVisible2}
@@ -410,17 +653,26 @@ export default function LeadCreation({navigation, route}) {
             /> */}
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Customer Name'}
+              Label={'Customer Name *'}
               borderColor={COLORS.warmGray}
               value={customerName}
-              setValue={text => setCustomerName(text)}
+              setValue={text => {
+                // Allow only letters and numbers
+                const cleanedText = text.replace(/[^A-Za-z0-9 ]/g, '');
+                setCustomerName(cleanedText);
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'NIC Number'}
               borderColor={COLORS.warmGray}
               value={nic}
-              setValue={text => setNic(text)}
+              setValue={text => {
+                const numericText = text.replace(/[^0-9vVxX]/g, '');
+                if (numericText.length <= 12) {
+                  setNic(numericText);
+                }
+              }}
             />
             <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
@@ -456,29 +708,77 @@ export default function LeadCreation({navigation, route}) {
               mediumFont={true}
               Label={'Home Number'}
               value={homeNumber}
+              errorMessage={homeNumberError}
               borderColor={COLORS.warmGray}
-              setValue={text => setHomeNumber(text)}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setHomeNumber(formatted);
+              // }}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                setHomeNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setHomeNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setHomeNumberError('');
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
-              Label={'Mobile Number'}
+              Label={'Mobile Number *'}
               value={mobileNumber}
               borderColor={COLORS.warmGray}
-              setValue={text => setMobileNumber(text)}
+              errorMessage={mobileNumberError}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setMobileNumber(formatted);
+              // }}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                setMobileNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setMobileNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setMobileNumberError('');
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Work Number'}
               value={workNumber}
+              errorMessage={workNumberError}
               borderColor={COLORS.warmGray}
-              setValue={text => setWorkNumber(text)}
+              // setValue={text => {
+              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+              //   setWorkNumber(formatted);
+              // }}
+              setValue={text => {
+                const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
+                setWorkNumber(formatted);
+                if (
+                  // formatted.length >= 9 &&
+                  !isValidSriLankanNumber(formatted)
+                ) {
+                  setWorkNumberError('Invalid Sri Lankan mobile number');
+                } else {
+                  setWorkNumberError('');
+                }
+              }}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Email'}
               value={email}
               borderColor={COLORS.warmGray}
-              setValue={text => setEmail(text)}
+              setValue={text => setEmail(text.toLowerCase())}
             />
             <SquareTextBoxOutlined
               mediumFont={true}
@@ -534,7 +834,7 @@ export default function LeadCreation({navigation, route}) {
             paddingVertical: 6,
             elevation: 10,
           }}>
-          <Text style={{}}>Select Event</Text>
+          <Text style={{color: COLORS.textColor}}>Select Event</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -543,12 +843,19 @@ export default function LeadCreation({navigation, route}) {
             }}>
             <View style={{flex: 0.63}}>
               <DropdownComponentNoLabel
+                ref={eventRef}
                 label="Select Event"
+                onSelect={value => setEvent(value)}
                 dropdownData={dropdownData}
               />
             </View>
             <View style={{flex: 0.35}}>
-              <SmallButton Title={'Set as Default'} />
+              <SmallButton
+                disabledButton={event ? false : true}
+                disabledColor={event ? false : true}
+                onPress={() => clearEvents()}
+                Title={'Set as Default'}
+              />
             </View>
           </View>
         </View>
@@ -562,7 +869,11 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Bold,
                 color: COLORS.grayText,
               }}>
-              {currentStep}/{StepperItems.length}
+              {leadType === 'G' && currentStep > 2
+                ? currentStep - 1
+                : currentStep}
+              /
+              {leadType === 'G' ? StepperItems.length - 1 : StepperItems.length}
             </Text>
             <Text
               style={{
@@ -591,6 +902,7 @@ export default function LeadCreation({navigation, route}) {
                       ? COLORS.primaryGreen
                       : COLORS.warmGray,
                   borderRadius: 20,
+                  display: leadType === 'G' && index === 1 ? 'none' : 'flex',
                 }}
               />
             ))}

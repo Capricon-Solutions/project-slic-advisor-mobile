@@ -1,34 +1,40 @@
-import { baseApi } from './api';
+import {baseApi} from './api';
 
 export const profilePicSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getImage: builder.query({
-      query: ({ id }) => `image/get/${id}`,
+      query: ({id}) => {
+        const url = `image/get/${id}`;
+        console.log('getImage URL: kkkkkktest', url);
+        return url;
+      },
+      providesTags: ['ProfilePic'],
     }),
 
     getImageUrl: builder.query({
-      query: ({ url }) => {
-        console.log("Final API URL:", url); // Log the final URL inside the query function
+      query: ({url}) => {
+        console.log('Final API URL: runs fffffff', url); // Log the final URL inside the query function
         return url;
       },
     }),
     addImage: builder.mutation({
-      query: ({ agencyCode, imageFile }) => {
+      query: ({agencyCode, imageFile}) => {
         const formData = new FormData();
         formData.append('AgencyCode', agencyCode); // Add agency code as text
         formData.append('ImageFile', imageFile); // Add image file
-        console.log("AgencyCode", agencyCode);
-        console.log("ImageFile", imageFile);
+        console.log('AgencyCodeccccccccccccccccccccc', agencyCode);
+        console.log('ImageFilecccccccccccccc  kkkkkktest', imageFile);
         return {
           url: 'image/upload',
           method: 'POST',
           body: formData,
         };
       },
+      invalidatesTags: ['ProfilePic'],
     }),
-
   }),
 });
 
 // Export hooks
-export const { useAddImageMutation, useGetImageQuery, useLazyGetImageUrlQuery } = profilePicSlice;
+export const {useAddImageMutation, useGetImageQuery, useLazyGetImageUrlQuery} =
+  profilePicSlice;

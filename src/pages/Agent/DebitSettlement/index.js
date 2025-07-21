@@ -33,6 +33,7 @@ import {
 import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
 import {showToast} from '../../../components/ToastMessage';
+import SquareTextBoxOutlinedDate from '../../../components/SquareTextBoxOutlinedDate';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -43,11 +44,7 @@ export default function DebitSettlement({navigation, route}) {
   const {policyNo} = route.params;
   const {phone} = route.params;
   const [mobileNo, setMobileNo] = useState(null);
-
-  useEffect(() => {
-    if (phone) setMobileNo(phone);
-  }, [phone]);
-
+  const [amount, setAmount] = useState(null);
   const {
     data: DebitSettlement,
     error: DebitSettlementError,
@@ -57,6 +54,16 @@ export default function DebitSettlement({navigation, route}) {
     id: policyNo,
     // id: "VM6125002610000185",
   });
+  const [date, setDate] = useState(
+    moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD'),
+  );
+
+  useEffect(() => {
+    if (phone) setMobileNo(phone);
+    if (DebitSettlement?.data?.premiumNetValue)
+      setAmount(DebitSettlement.data.premiumNetValue);
+  }, [phone, DebitSettlement?.data?.premiumNetValue]);
+
   const [selectedItem, setSelectedItem] = useState('');
 
   const [debitSettlementSms, {isLoading, error}] =
@@ -70,12 +77,18 @@ export default function DebitSettlement({navigation, route}) {
     );
   }, [DebitSettlement]);
 
-  console.log('policyNo', policyNo);
-
   const handleSubmit = async () => {
+    if (mobileNo === null || mobileNo === '') {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please enter the contact number. 🚨',
+      });
+      return;
+    }
     const body = {
       policyNumber: policyNo,
-      amount: DebitSettlement?.data?.premiumNetValue || 0,
+      amount: amount || 0,
       mobileNo: mobileNo,
     };
 
@@ -94,15 +107,58 @@ export default function DebitSettlement({navigation, route}) {
         }, 800);
       }
     } catch (err) {
+      console.log('err', err);
       showToast({
         type: 'error',
         text1: 'Failed',
-        text2: err?.data?.Message || 'Something went wrong.',
+        text2: err?.data?.message,
       });
     }
   };
 
-  console.log('selectedItemaa,', selectedItem);
+  const validateForm = () => {
+    if (!selectedItem || selectedItem === '') {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Please fill in all required fields.',
+      });
+      return false;
+    }
+
+    // if (!amount || amount === '') {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Validation Error',
+    //     text2: 'Enter a Valid Amount to Proceed',
+    //   });
+    //   return false;
+    // }
+    if (!amount || amount === '' || parseFloat(amount) === 0) {
+      showToast({
+        type: 'error',
+        text1: 'Validation Error',
+        text2: 'Amount Must Be Greater Than Zero',
+      });
+      return false;
+    }
+
+    // if (!date || date === '') {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Validation Error',
+    //     text2: 'Please fill in all required fields. 🚨',
+    //   });
+    //   return false;
+    // }
+
+    return true;
+  };
+
+  const handleSendPaymentLink = () => {
+    if (!validateForm()) return;
+    setModalVisible(true);
+  };
 
   return (
     <View style={Styles.container}>
@@ -139,6 +195,7 @@ export default function DebitSettlement({navigation, route}) {
             clearOnFocus={true}
             closeOnBlur={true}
             showClear={false}
+            useFilter={false}
             style={{}}
             textInputProps={{
               autoCorrect: false,
@@ -162,21 +219,32 @@ export default function DebitSettlement({navigation, route}) {
           />
           {/* <Text>{selectedItem}</Text> */}
           <SquareTextBox
+            keyboardType={'numeric'}
             Title={`LKR ${Number(
               DebitSettlement?.data?.premiumNetValue || 0,
             ).toLocaleString('en-US', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`}
+            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            setValue={text => {
+              const raw = text.replace(/[^0-9]/g, ''); // remove commas
+              setAmount(raw);
+            }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
-          <SquareTextBox
-            Title={moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD')}
+
+          <SquareTextBoxOutlinedDate
+            readOnly={true}
+            // Title={StartToDt}
             Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
+            setValue={text => setDate(text)}
+            keyboardType="numeric"
+            value={date}
           />
           <View style={{marginTop: 15}}>
             <Button
-              onPress={() => setModalVisible(true)}
+              onPress={handleSendPaymentLink}
               Title={'Send Payment Link'}
             />
           </View>

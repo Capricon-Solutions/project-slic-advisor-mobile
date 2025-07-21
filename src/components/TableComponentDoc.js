@@ -80,6 +80,7 @@ const TableComponentDoc = ({
                             style={{flex: 1}}>
                             <View style={{flex: 1, justifyContent: 'center'}}>
                               <Text
+                                numberOfLines={1}
                                 style={[
                                   styles.text,
                                   cellIndex === 0
@@ -103,15 +104,15 @@ const TableComponentDoc = ({
                             }}>
                             <View
                               style={{
-                                width: 80,
                                 borderRadius: 100,
+                                paddingHorizontal: 10,
                                 backgroundColor:
                                   cellIndex === rowData.length - 1
-                                    ? cellData === 'Received'
+                                    ? cellData === 'Document Received'
                                       ? COLORS.lightGreen
-                                      : cellData === 'Pending'
-                                      ? COLORS.pendingColor
-                                      : cellData === 'Reject'
+                                      : cellData === 'Document Pending'
+                                      ? COLORS.backcard
+                                      : cellData === 'Document Rejected'
                                       ? COLORS.tableRed
                                       : 'transparent'
                                     : 'transparent',
@@ -123,11 +124,11 @@ const TableComponentDoc = ({
                                     fontFamily: Fonts.Roboto.Bold,
                                     color:
                                       cellIndex === rowData.length - 1
-                                        ? cellData === 'Received'
+                                        ? cellData === 'Document Received'
                                           ? COLORS.primaryGreen
-                                          : cellData === 'Pending'
+                                          : cellData === 'Document Pending'
                                           ? COLORS.tableOrange
-                                          : cellData === 'Reject'
+                                          : cellData === 'Document Rejected'
                                           ? COLORS.primaryRed
                                           : 'transparent'
                                         : 'transparent',
@@ -174,7 +175,7 @@ const TableComponentDoc = ({
               color: COLORS.primaryRed,
               fontSize: 16,
             }}>
-            Sorry, No Dat found
+            Sorry, No Data found
           </Text>
         </View>
       ) : (
@@ -223,13 +224,13 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     // marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
-    fontSize: 13,
+    fontSize: 11,
     color: COLORS.textColor,
   },
   leftAlignedText: {
     textAlign: 'left',
     paddingLeft: 10, // Ensure proper spacing
-    fontSize: 13,
+    fontSize: 12,
     //  color: 'red',
   },
   centerAlignedText: {

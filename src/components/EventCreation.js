@@ -154,6 +154,7 @@ export default function EventCreation({
             style={{backgroundColor: 'red'}}
             datePickerModeAndorid={'spinner'}
             onConfirm={handleConfirm}
+            minimumDate={new Date()}
             onCancel={hideDatePicker}
           />
           {/* <MonthYearPicker
@@ -201,6 +202,7 @@ export default function EventCreation({
               <SquareTextBox
                 Label={'Event Description *'}
                 Title={'Description'}
+                value={description}
                 setValue={text => setDescription(text)}
               />
 

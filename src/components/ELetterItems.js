@@ -7,17 +7,187 @@ import {
   Image,
   Linking,
   StyleSheet,
+  SafeAreaView,
+  Alert,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 import Fonts from '../theme/Fonts';
+import {useSelector} from 'react-redux';
+import {showToast} from './ToastMessage';
+import Share from 'react-native-share'; // Ensure this is installed and imported
+import ReactNativeBlobUtil from 'react-native-blob-util';
+
 const window = Dimensions.get('window');
 
 export default function ELetterItems({item, navigation}) {
+  const [downloadProgress, setDownloadProgress] = React.useState(0);
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const token = useSelector(state => state.Profile.token);
+
+  const requestStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      console.log('Requesting storage permission...');
+      try {
+        if (Platform.Version < 29) {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission Required',
+              message: 'App needs access to your storage to download files.',
+              buttonPositive: 'OK',
+              buttonNegative: 'Cancel',
+            },
+          );
+          return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+          // Android 10+ doesn't require explicit permission for private storage
+          return true;
+        }
+      } catch (err) {
+        console.warn('Permission error:', err);
+        return false;
+      }
+    }
+    return true; // iOS or other platforms
+  };
+
+  // Download and open PDF
+  const downloadAndOpenPDF = async path => {
+    console.log('test');
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
+        return;
+      }
+      showToast({
+        type: 'success',
+        text1: 'Download Started',
+        text2: 'Please wait until download and open the file.',
+      });
+      setIsDownloading(true);
+      setDownloadProgress(0);
+      const pdfUrl = path;
+      // let fileName = pdfUrl.split('/').pop();
+      let fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+      console.log('Starting download from:', pdfUrl);
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      const downloadOptions = {
+        fromUrl: pdfUrl,
+        toFile: localFilePath,
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
+        progress: res => {
+          const progress = res.bytesWritten / res.contentLength;
+          setDownloadProgress(progress);
+        },
+        progressDivider: 10,
+      };
+
+      const download = RNFS.downloadFile(downloadOptions);
+      console.log('Download started:', download);
+      const result = await download.promise;
+      // Linking.openURL(localFilePath).catch();
+      console.log('Download completed:', result.statusCode);
+
+      if (result.statusCode === 200) {
+        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+        await FileViewer.open(localFilePath, {
+          showOpenWithDialog: true,
+          displayName: 'Your PDF Report',
+          mimeType: 'application/pdf',
+        });
+        console.log('PDF opened successfully!');
+      } else {
+        throw new Error(
+          `Download failed with status code ${result.statusCode}`,
+        );
+      }
+    } catch (error) {
+      console.error('Download/Open error:', error);
+      showToast({
+        type: 'error',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
+      });
+      // Alert.alert('Error', 'Failed to download or open the PDF file.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const sharePDF = async (pdfUrl, fileName, token, apiKey) => {
+    try {
+      // Extract and sanitize file name
+      fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+
+      const downloadDir = ReactNativeBlobUtil.fs.dirs.DownloadDir;
+      const localFilePath = `${downloadDir}/${fileName}`;
+
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        appendExt: 'pdf',
+        path: localFilePath,
+      })
+        .fetch('GET', pdfUrl, {
+          Authorization: `Bearer ${token}`,
+          'x-api-key': apiKey,
+        })
+        .progress({count: 10}, (received, total) => {
+          const progress = received / total;
+          setDownloadProgress(progress);
+        });
+
+      console.log('Sanitized file path:', res.path());
+      setIsDownloading(false);
+      await Share.open({
+        url: `file://${res.path()}`,
+        type: 'application/pdf',
+        filename: fileName,
+        title: fileName,
+        failOnCancel: false,
+      });
+    } catch (error) {
+      console.error('Error sharing PDF:', error);
+      setIsDownloading(false);
+      showToast({
+        type: 'error',
+        text1: 'Share Error',
+        text2: 'Unable to share the PDF file.',
+      });
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
           style={{
@@ -27,7 +197,7 @@ export default function ELetterItems({item, navigation}) {
           }}>
           {item?.customerName}
         </Text>
-        <TouchableOpacity
+        <View
           style={{
             backgroundColor: COLORS.grassGreen,
             justifyContent: 'center',
@@ -43,7 +213,7 @@ export default function ELetterItems({item, navigation}) {
             }}>
             {item?.policyStatus}
           </Text>
-        </TouchableOpacity>
+        </View>
       </View>
 
       <View>
@@ -100,43 +270,83 @@ export default function ELetterItems({item, navigation}) {
                   fontSize: 13,
                   color: COLORS.textColor,
                 }}>
-                {item?.premiumAmount}
+                {Number(item?.premiumAmount || 0).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </Text>
             </View>
           </View>
 
-          {/* <View style={{ flex: 0.3, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <View style={{
-              height: 30, width: 30, borderRadius: 8,
-              backgroundColor: COLORS.primary, justifyContent: 'center',
+          <View
+            style={{
+              flex: 0.3,
               alignItems: 'center',
-              borderWidth: 1,
-              borderColor: COLORS.white
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
             }}>
-              <Feather
-                name="download"
-                color={COLORS.black}
-                size={17}
-              />
-            </View>
-
-            <View style={{
-              height: 30, width: 30, borderRadius: 8,
-              backgroundColor: COLORS.primary, justifyContent: 'center',
-              alignItems: 'center',
-              borderWidth: 1,
-              borderColor: COLORS.white
-            }}>
-              <Ionicons
-                name="share-social-sharp"
-                color={COLORS.black}
-                size={16}
-              />
-            </View>
-          </View> */}
+            {item?.path && (
+              <TouchableOpacity
+                onPress={() => downloadAndOpenPDF(item?.path)}
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 8,
+                  backgroundColor: COLORS.primary,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}>
+                <Feather name="download" color={COLORS.black} size={17} />
+              </TouchableOpacity>
+            )}
+            {item?.path && (
+              <TouchableOpacity
+                onPress={() =>
+                  sharePDF(
+                    item?.path,
+                    null,
+                    token,
+                    '12345abcde67890fghijklmnoprstuvwxz',
+                  )
+                }
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 8,
+                  backgroundColor: COLORS.primary,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 1,
+                  borderColor: COLORS.white,
+                }}>
+                <Ionicons
+                  name="share-social-sharp"
+                  color={COLORS.black}
+                  size={16}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
+        {isDownloading && (
+          <View style={{width: '100%', marginTop: 5}}>
+            <View style={styles.progressBarContainer}>
+              <View
+                style={[
+                  styles.progressBar,
+                  {width: `${downloadProgress * 100}%`},
+                ]}
+              />
+            </View>
+            <Text style={styles.progressText}>
+              {Math.round(downloadProgress * 100)}% Downloaded
+            </Text>
+          </View>
+        )}
       </View>
-    </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
@@ -166,5 +376,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     marginVertical: 2,
+  },
+  progressBarContainer: {
+    height: 5,
+    width: '100%',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 3,
+    marginTop: -3,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.primary,
+  },
+  progressText: {
+    fontSize: 12,
+    color: COLORS.textColor,
+    fontFamily: Fonts.Roboto.Regular,
   },
 });

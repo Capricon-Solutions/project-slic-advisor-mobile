@@ -33,7 +33,7 @@ export default function Contacts({navigation}) {
   const {data: branches, isLoading, error} = useGetBranchesQuery();
   const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
   const [SelectedType, setSelectedType] = useState(1);
-
+  const [search, setSearch] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBranches, setFilteredBranches] = useState([]);
   const [filteredDepartments, setFilteredDepartments] = useState([]);
@@ -50,33 +50,120 @@ export default function Contacts({navigation}) {
     }, []),
   );
 
+  // useEffect(() => {
+  //   if (branches?.data) {
+  //     const filtered = branches?.data?.filter(item =>
+  //       item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //     console.log('filteredbranches', filtered);
+  //     setFilteredBranches(filtered);
+  //   }
+  // }, [branches, searchQuery, search]);
+  // useEffect(() => {
+  //   if (branches?.data) {
+  //     const filtered = branches?.data
+  //       ?.filter(item =>
+  //         item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //       )
+  //       ?.sort((a, b) => {
+  //         const aName = a?.name?.toLowerCase();
+  //         const bName = b?.name?.toLowerCase();
+  //         const query = searchQuery.toLowerCase();
+
+  //         const aStartsWith = aName.startsWith(query);
+  //         const bStartsWith = bName.startsWith(query);
+
+  //         if (aStartsWith && !bStartsWith) return -1;
+  //         if (!aStartsWith && bStartsWith) return 1;
+
+  //         return aName.localeCompare(bName); // fallback alphabetical
+  //       });
+
+  //     console.log('filteredbranches', filtered);
+  //     setFilteredBranches(filtered);
+  //   }
+  // }, [branches, searchQuery, search]);
+
   useEffect(() => {
     if (branches?.data) {
-      const filtered = branches?.data?.filter(item =>
-        item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      console.log('filteredbranches', filtered);
+      const query = searchQuery.toLowerCase();
+
+      const filtered = branches.data
+        .filter(item => item?.name?.toLowerCase().startsWith(query))
+        .sort((a, b) => {
+          const aName = a?.name?.toLowerCase();
+          const bName = b?.name?.toLowerCase();
+
+          return aName.localeCompare(bName); // optional: alphabetical fallback
+        });
+
+      console.log('filteredBranches', filtered);
       setFilteredBranches(filtered);
     }
-  }, [branches, searchQuery]);
+  }, [branches, searchQuery, search]);
+  // useEffect(() => {
+  //   if (departments?.data) {
+  //     const filtered = departments?.data?.filter(item =>
+  //       item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //     console.log('filtereddapartments', filtered);
+  //     console.log('departments', departments);
+  //     setFilteredDepartments(filtered);
+  //   }
+  // }, [departments, searchQuery, search]);
+
+  // useEffect(() => {
+  //   if (departments?.data) {
+  //     const filtered = departments?.data
+  //       ?.filter(item =>
+  //         item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
+  //       )
+  //       ?.sort((a, b) => {
+  //         const aName = a?.contactName?.toLowerCase();
+  //         const bName = b?.contactName?.toLowerCase();
+  //         const query = searchQuery.toLowerCase();
+
+  //         const aStartsWith = aName.startsWith(query);
+  //         const bStartsWith = bName.startsWith(query);
+
+  //         if (aStartsWith && !bStartsWith) return -1;
+  //         if (!aStartsWith && bStartsWith) return 1;
+
+  //         return aName.localeCompare(bName);
+  //       });
+
+  //     console.log('filtereddapartments', filtered);
+  //     console.log('departments', departments);
+  //     setFilteredDepartments(filtered);
+  //   }
+  // }, [departments, searchQuery, search]);
 
   useEffect(() => {
     if (departments?.data) {
-      const filtered = departments?.data?.filter(item =>
-        item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      console.log('filtereddapartments', filtered);
-      console.log('departments', departments);
+      const query = searchQuery.toLowerCase();
+
+      const filtered = departments.data
+        .filter(item => {
+          const words = item?.contactName?.toLowerCase().split(' ') || [];
+          return words.some(word => word.startsWith(query));
+        })
+        .sort((a, b) => {
+          const aName = a?.contactName?.toLowerCase();
+          const bName = b?.contactName?.toLowerCase();
+          return aName.localeCompare(bName);
+        });
+
+      console.log('filteredDepartments', filtered);
       setFilteredDepartments(filtered);
     }
-  }, [departments, searchQuery]);
+  }, [departments, searchQuery, search]);
 
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Contacts" onPress={() => navigation.goBack()} />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={styles.mainWrap}>
+      <View style={{paddingHorizontal: 20}}>
+        <View style={[styles.mainWrap, {marginTop: 5}]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -116,7 +203,7 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchWrap}>
+        <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
             placeholder="Quick Search"
@@ -125,7 +212,7 @@ export default function Contacts({navigation}) {
           />
           <TouchableOpacity
             style={styles.searchButton}
-            onPress={() => setSearchQuery('')}>
+            onPress={() => setSearch(!search)}>
             <Octicons name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
@@ -137,10 +224,11 @@ export default function Contacts({navigation}) {
               <FlatList
                 data={filteredBranches}
                 showsVerticalScrollIndicator={false}
+                scrollToOverflowEnabled={true}
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderItem}
                 // keyExtractor={item => item?.id?.toString()}
@@ -152,7 +240,7 @@ export default function Contacts({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}
@@ -160,7 +248,7 @@ export default function Contacts({navigation}) {
             )}
           </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }

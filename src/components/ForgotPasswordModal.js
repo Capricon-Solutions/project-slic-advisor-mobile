@@ -17,7 +17,11 @@ import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 
-export default function ForgotPasswordModal({ modalVisible, setModalVisible, data }) {
+export default function ForgotPasswordModal({
+  modalVisible,
+  setModalVisible,
+  data,
+}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -45,7 +49,6 @@ export default function ForgotPasswordModal({ modalVisible, setModalVisible, dat
     setTimeout(() => setModalVisible(false), 300);
   }
 
-
   const handleCall = phoneNumber => {
     // Open the phone dialer with the contact number
     const phoneURL = `tel:${phoneNumber}`;
@@ -65,7 +68,7 @@ export default function ForgotPasswordModal({ modalVisible, setModalVisible, dat
           setModalVisible(false);
         }}
         activeOpacity={1}
-        style={{ flex: 1 }}>
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -86,8 +89,13 @@ export default function ForgotPasswordModal({ modalVisible, setModalVisible, dat
             </TouchableOpacity>
             <Image source={Contacts} style={styles.avatar} />
             <Text style={styles.modalTitle}>Get help for Login</Text>
-            <Text style={styles.contactText}>Please Contact: <Text style={{ fontFamily: Fonts.Roboto.Bold }}>{data?.contactSupport}</Text></Text>
-            <View style={{ width: '70%', alignItems: 'center' }}>
+            <Text style={styles.contactText}>
+              Please Contact:{' '}
+              <Text style={{fontFamily: Fonts.Roboto.Bold}}>
+                {data?.contactSupport}
+              </Text>
+            </Text>
+            <View style={{width: '70%', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => handleCall(data?.callExtension)}
                 style={styles.contactItem}>
@@ -97,13 +105,10 @@ export default function ForgotPasswordModal({ modalVisible, setModalVisible, dat
                   color={COLORS.primaryGreen}
                 />
                 <Text style={styles.contactDetails}>
-                  Call Extention - {data?.callExtension}
+                  Phone - {data?.callExtension}
                 </Text>
               </TouchableOpacity>
-
             </View>
-
-
           </View>
         </Animated.View>
       </TouchableOpacity>

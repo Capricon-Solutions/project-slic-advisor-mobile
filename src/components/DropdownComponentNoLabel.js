@@ -1,4 +1,9 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -14,7 +19,16 @@ const window = Dimensions.get('window');
 
 const DropdownComponentNoLabel = forwardRef(
   (
-    {dropdownData, mode, initialValue, placeholder, onSelect, BorderColor},
+    {
+      dropdownData,
+      mode,
+      initialValue,
+      placeholder,
+      search,
+      onSelect,
+      BorderColor,
+      value: valueFromParent,
+    },
     ref,
   ) => {
     const [value, setValue] = useState(initialValue);
@@ -25,6 +39,11 @@ const DropdownComponentNoLabel = forwardRef(
         onSelect(null); // Notify parent
       },
     }));
+
+    useEffect(() => {
+      setValue(valueFromParent);
+    }, [valueFromParent]);
+
     return (
       <View style={styles.container}>
         <Dropdown
@@ -42,8 +61,9 @@ const DropdownComponentNoLabel = forwardRef(
           iconStyle={styles.iconStyle}
           containerStyle={{width: window.width * 0.5, fontSize: 12}}
           data={dropdownData}
-          search
+          search={search === undefined ? true : search}
           maxHeight={300}
+          searchPlaceholderTextColor={COLORS.textColor}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? placeholder : '...'}
@@ -70,7 +90,13 @@ const DropdownComponentNoLabel = forwardRef(
             return (
               <>
                 {value && (
-                  <TouchableOpacity onPress={() => setValue(null)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setValue(null);
+                      if (onSelect) {
+                        onSelect(null); // Notify parent
+                      }
+                    }}>
                     <MaterialCommunityIcons
                       style={styles.icon}
                       color={COLORS.primaryRed}
@@ -129,5 +155,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: COLORS.textColor,
   },
 });

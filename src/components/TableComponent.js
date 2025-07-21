@@ -54,6 +54,7 @@ const TableComponent = ({
                         </TouchableOpacity>
                       ) : (
                         <Text
+                          numberOfLines={2}
                           key={cellIndex}
                           style={[
                             styles.text,
@@ -78,7 +79,7 @@ const TableComponent = ({
         </ScrollView>
       ) : tableData?.length == 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.errorText}>Don't have any data..!</Text>
+          <Text style={styles.errorText}>Sorry, No Data found</Text>
         </View>
       ) : (
         <View style={styles.emptyContainer}>

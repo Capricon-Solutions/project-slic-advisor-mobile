@@ -13,6 +13,7 @@ export const plannerSlice = baseApi.injectEndpoints({
     }),
     getMonthlyPlan: builder.query({
       query: userCode => `planner/GetPlannerMonthly/${userCode}`,
+      providesTags: ['MonthlyPlan'],
     }),
     getLeads: builder.query({
       query: ({userCode}) => {
@@ -88,8 +89,8 @@ export const plannerSlice = baseApi.injectEndpoints({
     monthlyCreation: builder.mutation({
       query: ({body, userCode}) => {
         const finalUrl = `planner/addPlannerMonthly/${userCode}`;
-        console.log('Final URL:', finalUrl);
-        console.log('Final body:', body);
+        console.log('Final URL ggggwefwefwefewf:', finalUrl);
+        console.log('Final bodygggg:', body);
 
         return {
           url: finalUrl,
@@ -97,7 +98,7 @@ export const plannerSlice = baseApi.injectEndpoints({
           body: body,
         };
       },
-      invalidatesTags: ['Events'],
+      invalidatesTags: ['MonthlyPlan'],
     }),
     eventCreation: builder.mutation({
       query: ({body, userCode}) => {

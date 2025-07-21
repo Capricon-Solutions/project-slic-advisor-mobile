@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,18 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { useSelector } from 'react-redux';
-import { useGetPolicyDetailsQuery } from '../../../redux/services/policyDetailsSlice';
+import {useSelector} from 'react-redux';
+import {useGetPolicyDetailsQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
-import { useGetLeadByIdQuery } from '../../../redux/services/plannerSlice';
+import {useGetLeadByIdQuery} from '../../../redux/services/plannerSlice';
 import LoaderKit from 'react-native-loader-kit';
 import moment from 'moment';
 
@@ -32,7 +32,7 @@ import moment from 'moment';
 
 const window = Dimensions.get('window');
 
-export default function ActivityDetails({ navigation, route }) {
+export default function ActivityDetails({navigation, route}) {
   const activityTypeMap = {
     A: 'Appointment',
     M: 'Meeting',
@@ -42,7 +42,12 @@ export default function ActivityDetails({ navigation, route }) {
     C: 'Closed',
     R: 'Reject',
   };
-  const { item } = route.params;
+
+  const leadTypeMap = {
+    M: 'Motor',
+    G: 'Non-Motor',
+  };
+  const {item} = route.params;
   const {
     data: leadData,
     isLoading,
@@ -70,7 +75,8 @@ export default function ActivityDetails({ navigation, route }) {
   //   }
   // };
 
-  const DetailLine = ({ Title, detail }) => {
+  console.log('leadInfo', leadInfo);
+  const DetailLine = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -88,7 +94,7 @@ export default function ActivityDetails({ navigation, route }) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{ flex: 0.6 }}>
+        <View style={{flex: 0.6}}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
@@ -112,7 +118,7 @@ export default function ActivityDetails({ navigation, route }) {
       />
 
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 20 }}>
+        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
         <View style={styles.card}>
           <Text
             style={{
@@ -161,14 +167,14 @@ export default function ActivityDetails({ navigation, route }) {
                     : ''
                 }
               />
-              <DetailLine
+              {/* <DetailLine
                 Title={'Activity Time'}
                 detail={
                   item?.activityDate
                     ? moment(item.activityDate).format('hh:mm A')
                     : ''
                 }
-              />
+              /> */}
             </View>
           )}
         </View>
@@ -181,9 +187,9 @@ export default function ActivityDetails({ navigation, route }) {
               justifyContent: 'center',
             }}>
             <LoaderKit
-              style={{ width: 35, height: 35 }}
+              style={{width: 35, height: 35}}
               name={'BallPulse'} // Optional: see list of animations below
-              color={COLORS.grayText}// Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+              color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
             />
           </View>
         ) : (
@@ -201,11 +207,14 @@ export default function ActivityDetails({ navigation, route }) {
                 </Text>
                 <DetailLine
                   Title={'Lead Type'}
-                  detail={activityTypeMap[leadInfo?.leadType] || 'Unknown'}
+                  detail={leadTypeMap[leadInfo?.leadType] || 'Unknown'}
                 />
                 <DetailLine Title={'Name'} detail={leadInfo?.customerName} />
                 <DetailLine Title={'Contact'} detail={leadInfo?.mobileNumber} />
-                <DetailLine Title={'Email'} detail={leadInfo?.email} />
+                <DetailLine
+                  Title={'Email'}
+                  detail={leadInfo?.email || 'Unavailable'}
+                />
               </View>
             )}
           </View>

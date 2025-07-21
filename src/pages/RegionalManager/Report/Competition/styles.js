@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import COLORS from '../../../../theme/colors';
 import Fonts from '../../../../theme/Fonts';
 
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
     paddingLeft: 10,
     height: 44,
-
   },
   textInput: {
     flex: 1,
@@ -75,5 +74,6 @@ export const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: COLORS.textColor,
   },
 });

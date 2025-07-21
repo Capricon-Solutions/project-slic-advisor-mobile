@@ -8,6 +8,8 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  SafeAreaView,
+  Share,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -73,23 +75,32 @@ export default function MotorRenewalLetter({navigation}) {
   );
   const [searchText, setSearchText] = useState('');
   const userCode = useSelector(state => state.Profile.userCode);
+  const usertype = useSelector(state => state.userType.userType);
+  const personalCode = useSelector(state => state.Profile.personalCode);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
-  const handleSearch = () => {
-    console.log('searchText', searchText);
-    const filtered = motorRenewalsList?.data.filter(
+  const handleSearch = v => {
+    const query = v.toLowerCase();
+
+    const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
       item =>
-        item.policyNo?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.customerName?.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.vehicleNo?.toLowerCase().includes(searchText.toLowerCase()),
+        item.policyNo?.toLowerCase().includes(query) ||
+        item.customerName
+          ?.toLowerCase()
+          .split(/\W+/)
+          .some(word => word.startsWith(query)) ||
+        item.vehicleNo?.toLowerCase().includes(query),
     );
-    console.log('filtered', filtered);
+
     setFilteredData(filtered);
   };
+
   function handleClear(v) {
-    if (v == '') {
-      setFilteredData(motorRenewalsList?.data);
+    if (v === '') {
+      setFilteredData(motorRenewalsList?.data.motorRenewals);
+    } else {
+      handleSearch(v);
     }
   }
   // const currentYear = new Date().getFullYear();
@@ -108,18 +119,26 @@ export default function MotorRenewalLetter({navigation}) {
     isFetching,
     refetch,
   } = useGetmotorRenewalsListQuery({
-    id: userCode, // Dynamic ID
+    id: usertype == 2 ? personalCode : userCode, // Dynamic ID
     fromDate: fromDate,
     toDate: toDate,
   });
 
   useEffect(() => {
     refetch;
-    setFilteredData(motorRenewalsList?.data);
-    console.log('motorRenewalsList?.data', motorRenewalsList?.data);
+    setFilteredData(motorRenewalsList?.data?.motorRenewals);
+    console.log(
+      'motorRenewalsList?.data',
+      motorRenewalsList?.data?.motorRenewals,
+    );
   }, [motorRenewalsList]);
+
+  useEffect(() => {
+    setSearchText('');
+  }, [isFetching]);
+
   return (
-    <View style={Styles.container}>
+    <SafeAreaView style={Styles.container}>
       <MonthYearPicker
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
@@ -133,26 +152,9 @@ export default function MotorRenewalLetter({navigation}) {
       />
       <View style={{paddingHorizontal: 5}}>
         <View
-          style={[
-            styles.searchWrap,
-            {marginHorizontal: 15, marginVertical: 3},
-          ]}>
-          <TextInput
-            style={styles.textInput}
-            value={searchText}
-            onChangeText={v => {
-              setSearchText(v);
-              handleClear(v);
-            }}
-            placeholder="Quick search"
-          />
-          <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
-            <Feather name="search" color={COLORS.white} size={20} />
-          </TouchableOpacity>
-        </View>
-        <View
           style={[styles.searchWrap, {marginHorizontal: 15, marginBottom: 3}]}>
           <TextInput
+            readOnly={true}
             style={styles.textInput}
             value={fromDate + ' - ' + toDate}
             // onChangeText={v => setSearchText(v)}
@@ -162,6 +164,27 @@ export default function MotorRenewalLetter({navigation}) {
             onPress={() => setPickerVisible(true)}
             style={styles.searchButton}>
             <Feather name="calendar" color={COLORS.white} size={20} />
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={[
+            styles.searchWrap,
+            {marginHorizontal: 15, marginVertical: 3},
+          ]}>
+          <TextInput
+            style={styles.textInput}
+            value={searchText}
+            onChangeText={v => {
+              setSearchText(v);
+              handleClear(v); // Now works with latest value
+            }}
+            placeholder="Quick search"
+          />
+          <TouchableOpacity
+            onPress={() => handleSearch(searchText)}
+            style={styles.searchButton}>
+            <Feather name="search" color={COLORS.white} size={20} />
           </TouchableOpacity>
         </View>
 
@@ -189,9 +212,10 @@ export default function MotorRenewalLetter({navigation}) {
               contentContainerStyle={{
                 fadeDuration: 1000,
                 backgroundColor: 'transparent',
-                paddingBottom: window.height * 0.25,
+                paddingBottom: window.height * 0.5,
                 paddingHorizontal: 15,
               }}
+              // ListFooterComponent={<View style={{height: 80}} />}
               renderItem={renderLetterItems}
               // keyExtractor={item => item.id.toString()}
             />
@@ -215,6 +239,6 @@ export default function MotorRenewalLetter({navigation}) {
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }

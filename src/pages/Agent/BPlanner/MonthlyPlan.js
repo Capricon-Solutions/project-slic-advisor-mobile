@@ -25,6 +25,8 @@ import {
   useMonthlyCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import {showToast} from '../../../components/ToastMessage';
 
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
@@ -37,6 +39,15 @@ export default function MonthlyPlan({navigation}) {
   const [proposals, setProposals] = useState('');
   const [closed, setClosed] = useState('');
   const [leads, setLeads] = useState('');
+
+  const [formError, setFormError] = useState({
+    meetings: '',
+    presentations: '',
+    quotations: '',
+    proposals: '',
+    closed: '',
+    leads: '',
+  });
 
   const {
     data: planData,
@@ -57,40 +68,102 @@ export default function MonthlyPlan({navigation}) {
   }, [planData]);
 
   const body = {
-    noOfMeetings: meetings,
-    noOfPresents: presentations,
-    noOfQuots: quotations,
-    noOfProposals: proposals,
-    noOfClosed: closed,
-    noOfLeads: leads,
+    noOfMeetings: meetings || 0,
+    noOfPresents: presentations || 0,
+    noOfQuots: quotations || 0,
+    noOfProposals: proposals || 0,
+    noOfClosed: closed || 0,
+    noOfLeads: leads || 0,
     monthDate: moment().format('YYYY/MM'),
   };
-  console.log('planData', planData);
+
+  //   const body = {
+  //     numberOfMeetings: meetings,
+  //     numberOfPresents: presentations,
+  //     numberOfQuotations: quotations,
+  //     numberOfProposals: proposals,
+  //     numberOfClosed: closed,
+  //     numberOfLeads: leads,
+  //     monthDate: moment().format('YYYY/MM'),
+  //   };
+
   const validateForm = () => {
-    if (
-      !meetings ||
-      !presentations ||
-      !quotations ||
-      !proposals ||
-      !closed ||
-      !leads
-    ) {
-      Alert.alert('All fields are required!');
-      return false;
+    const newErrors = {};
+
+    if (!meetings || meetings === '') {
+      setFormError({...formError, meetings: 'Meetings is required'});
+      newErrors.meetings = 'Meetings is required';
     }
-    return true;
+    if (!presentations || presentations === '') {
+      setFormError({...formError, presentations: 'Presentations is required'});
+      newErrors.presentations = 'Presentations is required';
+    }
+    if (!quotations || quotations === '') {
+      setFormError({...formError, quotations: 'Quotations is required'});
+      newErrors.quotations = 'Quotations is required';
+    }
+    if (!proposals || proposals === '') {
+      setFormError({...formError, proposals: 'Proposals is required'});
+      newErrors.proposals = 'Proposals is required';
+    }
+    if (!closed || closed === '') {
+      setFormError({...formError, closed: 'Closed is required'});
+      newErrors.closed = 'Closed is required';
+    }
+    if (!leads || leads === '') {
+      setFormError({...formError, leads: 'Leads is required'});
+      newErrors.leads = 'Leads is required';
+    }
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleActivityCreate = async () => {
-    if (!validateForm()) return; // Stop if validation fails
+    // if (!validateForm()) return; // Stop if validation fails
+
+    // console.log('body');
+    console.log('proposals', proposals);
+
+    if (
+      !meetings ||
+      meetings === '' ||
+      !presentations ||
+      presentations === '' ||
+      !quotations ||
+      quotations === '' ||
+      !proposals ||
+      proposals === '' ||
+      !closed ||
+      closed === '' ||
+      !leads ||
+      leads === ''
+    ) {
+      showToast({
+        type: 'error',
+        text1: 'Please enter a valid value for all fields',
+        text2: 'Fields cannot be empty',
+      });
+      return;
+    }
 
     try {
       const response = await MonthlyCreate({body, userCode});
-      console.log('Activity Created:', response?.error?.status);
+      console.log('Activity Created:', response);
+
       if (response?.error?.status == '500') {
-        console.log('something went wrong');
-        Alert.alert('something went wrong', 'Unsuccessfull');
+        console.log('something went wrong', response?.error);
+        showToast({
+          type: 'error',
+          text1: 'Monthly Plan Not Created',
+          text2: response?.error?.data?.message || 'Something went wrong',
+        });
+        // Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
+        showToast({
+          type: 'success',
+          text1: 'Monthly Plan Created',
+          text2: 'Monthly Plan Created Successfully',
+        });
         navigation.goBack();
       }
     } catch (err) {
@@ -140,52 +213,112 @@ export default function MonthlyPlan({navigation}) {
         <View>
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Meetings'}
-            Title={'000000'}
+            Label={'Meetings *'}
+            placeholder={'000'}
+            value={String(meetings || '')}
             keyboardType={'number-pad'}
-            setValue={text => setmeetings(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setmeetings(filteredText);
+              setFormError({...formError, meetings: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.meetings}
+            errorBorder={formError.meetings !== ''}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Presentation'}
-            Title={'000000'}
+            Label={'Presentation *'}
+            placeholder={'000'}
+            value={String(presentations || '')}
             keyboardType={'number-pad'}
-            setValue={text => setPresentations(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setPresentations(filteredText);
+              setFormError({...formError, presentations: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.presentations}
+            errorBorder={formError.presentations !== ''}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Quotations'}
-            Title={'000000'}
+            Label={'Quotations *'}
+            placeholder={'000'}
+            value={String(quotations || '')}
             keyboardType={'number-pad'}
-            setValue={text => setQuotations(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setQuotations(filteredText);
+              setFormError({...formError, quotations: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.quotations}
+            errorBorder={formError.quotations !== ''}
           />
 
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Proposals'}
-            Title={'000000'}
+            Label={'Proposals *'}
+            placeholder={'000'}
+            value={String(proposals || '')}
             keyboardType={'number-pad'}
-            setValue={text => setProposals(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setProposals(filteredText);
+              setFormError({...formError, proposals: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.proposals}
+            errorBorder={formError.proposals !== ''}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Closed'}
-            Title={'000000'}
+            Label={'Closed *'}
+            placeholder={'000'}
+            value={String(closed || '')}
             keyboardType={'number-pad'}
-            setValue={text => setClosed(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setClosed(filteredText);
+              setFormError({...formError, closed: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.closed}
+            errorBorder={formError.closed !== ''}
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Leads'}
-            Title={'000000'}
+            Label={'Leads *'}
+            placeholder={'000'}
+            value={String(leads || '')}
             keyboardType={'number-pad'}
-            setValue={text => setLeads(text)}
+            setValue={text => {
+              let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
+              setLeads(filteredText);
+              setFormError({...formError, leads: ''});
+            }}
             borderColor={COLORS.warmGray}
+            errorMessage={formError.leads}
+            errorBorder={formError.leads !== ''}
           />
         </View>
 

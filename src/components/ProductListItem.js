@@ -22,7 +22,8 @@ export default function ProductListItem({item, onPress}) {
       onPress={onPress}
       style={{
         backgroundColor: COLORS.background,
-        marginVertical: 8,
+        marginBottom: 10,
+        marginTop: 5,
         alignItems: 'center',
         paddingHorizontal: 10,
         justifyContent: 'space-between',

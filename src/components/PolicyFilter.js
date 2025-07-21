@@ -17,6 +17,9 @@ import AlertButton from './AlertButton';
 import Fonts from '../theme/Fonts';
 import COLORS from '../theme/colors';
 import SquareTextBoxOutlinedDate from './SquareTextBoxOutlinedDate';
+import {showToast} from './ToastMessage';
+import Toast from 'react-native-toast-message';
+import moment from 'moment';
 
 const window = Dimensions.get('window');
 
@@ -69,8 +72,33 @@ export default function PolicyFilter({
 
   const handleSearch = () => {
     if (!BusinessType) {
-      alert('Please select a Business Type.');
+      // alert('Please select a Business Type.');
+      showToast({
+        type: 'error',
+        text1: 'Please select a Business Type.',
+        // text2:
+        //   'Storage permission is required to download and view the file.',
+      });
       return;
+    }
+
+    if (StartFromDt || StartToDt) {
+      if (!StartFromDt || !StartToDt) {
+        // alert('Please select both Start Date and End Date.');
+        showToast({
+          type: 'error',
+          text1: 'Please select both Start Date and End Date.',
+        });
+        return;
+      }
+      if (StartFromDt > StartToDt) {
+        // alert('Start Date cannot be later than End Date.');
+        showToast({
+          type: 'error',
+          text1: 'Start Date cannot be later than End Date.',
+        });
+        return;
+      }
     }
     onPressSearch();
   };
@@ -187,11 +215,13 @@ export default function PolicyFilter({
               fontFamily: Fonts.Roboto.Medium,
               color: COLORS.ashBlue,
             }}>
-            Business Type
+            Business Type *
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
+            search={false}
             ref={businessTypeRef}
+            value={BusinessType}
             initialValue={BusinessType}
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
@@ -214,6 +244,8 @@ export default function PolicyFilter({
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
             ref={policyStatusRef}
+            search={false}
+            value={status}
             placeholder="Select Policy Status"
             initialValue={status}
             onSelect={value => setStatus(value)}
@@ -226,12 +258,14 @@ export default function PolicyFilter({
           />
           <SquareTextBoxOutlined
             Title={PolicyNumber}
+            maxLength={25}
             Label="Policy Number"
             value={PolicyNumber}
             setValue={text => setPNumber(text)}
           />
           <SquareTextBoxOutlined
             Title={VehicleNumber}
+            maxLength={10}
             value={VehicleNumber}
             Label="Vehicle Number"
             setValue={text => setVNumber(text)}
@@ -247,6 +281,11 @@ export default function PolicyFilter({
                 // Title={StartFromDt}
                 Label="Start Date"
                 ref={sDateRef}
+                maximumDate={
+                  StartToDt
+                    ? moment(StartToDt, 'YYYY/MM/DD').toDate()
+                    : undefined
+                }
                 setValue={text => setSDate(text)}
                 keyboardType="numeric"
                 value={StartFromDt}
@@ -254,11 +293,27 @@ export default function PolicyFilter({
             </View>
 
             <Text style={{marginTop: 25}}>To</Text>
-            <View style={{flex: 0.45}}>
+            {/* <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
                 // Title={StartToDt}
                 ref={eDateRef}
                 Label="End Date"
+                minimumDate={StartFromDt ? StartFromDt : null}
+                setValue={text => setEDate(text)}
+                keyboardType="numeric"
+                value={StartToDt}
+              />
+            </View> */}
+
+            <View style={{flex: 0.45}}>
+              <SquareTextBoxOutlinedDate
+                ref={eDateRef}
+                Label="End Date"
+                minimumDate={
+                  StartFromDt
+                    ? moment(StartFromDt, 'YYYY/MM/DD').toDate()
+                    : undefined
+                }
                 setValue={text => setEDate(text)}
                 keyboardType="numeric"
                 value={StartToDt}
@@ -270,12 +325,15 @@ export default function PolicyFilter({
             Title={MobileNumber}
             Label="Mobile Number"
             keyboardType={'phone-pad'}
+            maxLength={12}
             value={MobileNumber}
             setValue={text => setMobile(text)}
           />
           <SquareTextBoxOutlined
             Title={NicNumber}
             Label="NIC Number"
+            maxLength={12}
+            nic={true}
             value={NicNumber}
             setValue={text => setNic(text)}
           />
@@ -283,6 +341,7 @@ export default function PolicyFilter({
             Title={BusiRegNo}
             Label="Business Reg. No"
             value={BusiRegNo}
+            maxLength={12}
             setValue={text => setBRegNo(text)}
           />
 
@@ -305,6 +364,7 @@ export default function PolicyFilter({
           </View>
         </ScrollView>
       </Animated.View>
+      <Toast visibilityTime={2000} />
     </Modal>
   );
 }

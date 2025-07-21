@@ -196,7 +196,7 @@ function App(): React.JSX.Element {
       <Stack.Screen name="MotorRenewalLetter" component={MotorRenewalLetter} />
       <Stack.Screen
         name="AdvisorReport"
-        options={{orientation: 'landscape'}}
+        // options={{orientation: 'landscape'}}
         component={AdvisorReport}
       />
       <Stack.Screen name="DirectReport" component={DirectReport} />
@@ -231,7 +231,7 @@ function App(): React.JSX.Element {
           <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>
       </NavigationContainer>
-      <Toast />
+      <Toast visibilityTime={2000} />
     </Provider>
   );
 }

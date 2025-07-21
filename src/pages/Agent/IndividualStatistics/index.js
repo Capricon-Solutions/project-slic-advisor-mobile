@@ -31,6 +31,9 @@ import moment from 'moment';
 import {useGetindividualPerfQuery} from '../../../redux/services/IndividualPerfSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import LoaderKit from 'react-native-loader-kit';
+import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
+import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
+import MonthYearPickerSingleCurrent from '../../../components/MonthYearPickerSingleCurrent';
 
 const window = Dimensions.get('window');
 
@@ -38,17 +41,28 @@ export default function IndividualStatistics({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
-  const [selectedDate, setSelectedDate] = useState(null);
+  // const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY/MM')); // default to current month
+
+  const [selectedMonthName, setSelectedMonthName] = useState(null);
+  const [selectedYearName, setSelectedYearName] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const lastMonthStart = moment()
     .subtract(0, 'month')
     .startOf('month')
     .format('YYYY-MM-DD');
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
+  // const [fromDate, toDate] = selectedDate
+  //   ? selectedDate.split(' to ')
+  //   : [lastMonthStart, currentMonthEnd];
   const [fromDate, toDate] = selectedDate
-    ? selectedDate.split(' to ')
+    ? [
+        moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
+        moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
+      ]
     : [lastMonthStart, currentMonthEnd];
-
+  console.log('selectedDate', selectedDate);
+  console.log('fromDate', fromDate, 'toDate', toDate);
   const {
     data: individualPerf,
     error,
@@ -59,43 +73,61 @@ export default function IndividualStatistics({navigation}) {
     fromDate: fromDate,
     toDate: toDate,
   });
-
   useEffect(() => {
-    console.log('individualPerf', individualPerf);
-  }, [individualPerf]);
+    if (selectedDate) {
+      const monthName = moment(selectedDate, 'YYYY/MM').format('MMMM');
+      const yearName = moment(selectedDate, 'YYYY/MM').format('YYYY');
+      setSelectedMonthName(monthName);
+      setSelectedYearName(yearName);
+    }
+  }, [selectedDate]);
+  console.log('selectedMonthName', selectedMonthName);
+  const formatNumber = value => Number(value || 0).toLocaleString();
 
   const tableData = [
     {
-      title: 'Premium for November',
-      renewal: individualPerf?.data?.monthly.premiumForRenewal,
-      new: individualPerf?.data.monthly.premiumForNew,
-      refund: individualPerf?.data.monthly.premiumForRefund,
-      endorsement: individualPerf?.data.monthly.premiumForEndorsement,
-      total: individualPerf?.data.monthly.premiumForTotal,
+      title: `Premium for ${selectedMonthName}`,
+      renewal: formatNumber(individualPerf?.data?.monthly.premiumForRenewal),
+      new: formatNumber(individualPerf?.data?.monthly.premiumForNew),
+      refund: formatNumber(individualPerf?.data?.monthly.premiumForRefund),
+      endorsement: formatNumber(
+        individualPerf?.data?.monthly.premiumForEndorsement,
+      ),
+      total: formatNumber(individualPerf?.data?.monthly.premiumForTotal),
     },
     {
-      title: 'Premium for 2024',
-      renewal: individualPerf?.data.yearly.premiumForRenewal,
-      new: individualPerf?.data.yearly.premiumForNew,
-      refund: individualPerf?.data.yearly.premiumForRefund,
-      endorsement: individualPerf?.data.yearly.premiumForEndorsement,
-      total: individualPerf?.data.yearly.premiumForTotal,
+      title: `Premium for ${selectedYearName}`,
+      renewal: formatNumber(individualPerf?.data?.yearly.premiumForRenewal),
+      new: formatNumber(individualPerf?.data?.yearly.premiumForNew),
+      refund: formatNumber(individualPerf?.data?.yearly.premiumForRefund),
+      endorsement: formatNumber(
+        individualPerf?.data?.yearly.premiumForEndorsement,
+      ),
+      total: formatNumber(individualPerf?.data?.yearly.premiumForTotal),
     },
     {
-      title: 'No. of Policies for November',
-      renewal: individualPerf?.data.monthly.noOfPoliciesForRenewal,
-      new: individualPerf?.data.monthly.noOfPoliciesForNew,
-      refund: individualPerf?.data.monthly.noOfPoliciesForRefund,
-      endorsement: individualPerf?.data.monthly.noOfPoliciesForEndorsement,
-      total: individualPerf?.data.monthly.noOfPoliciesForTotal,
+      title: `No. of Policies for ${selectedMonthName}`,
+      renewal: formatNumber(
+        individualPerf?.data?.monthly.noOfPoliciesForRenewal,
+      ),
+      new: formatNumber(individualPerf?.data?.monthly.noOfPoliciesForNew),
+      refund: formatNumber(individualPerf?.data?.monthly.noOfPoliciesForRefund),
+      endorsement: formatNumber(
+        individualPerf?.data?.monthly.noOfPoliciesForEndorsement,
+      ),
+      total: formatNumber(individualPerf?.data?.monthly.noOfPoliciesForTotal),
     },
     {
-      title: 'No. of Policies for 2024',
-      renewal: individualPerf?.data.yearly.noOfPoliciesForRenewal,
-      new: individualPerf?.data.yearly.noOfPoliciesForNew,
-      refund: individualPerf?.data.yearly.noOfPoliciesForRefund,
-      endorsement: individualPerf?.data.yearly.noOfPoliciesForEndorsement,
-      total: individualPerf?.data.yearly.noOfPoliciesForTotal,
+      title: `No. of Policies for ${selectedYearName}`,
+      renewal: formatNumber(
+        individualPerf?.data?.yearly.noOfPoliciesForRenewal,
+      ),
+      new: formatNumber(individualPerf?.data?.yearly.noOfPoliciesForNew),
+      refund: formatNumber(individualPerf?.data?.yearly.noOfPoliciesForRefund),
+      endorsement: formatNumber(
+        individualPerf?.data?.yearly.noOfPoliciesForEndorsement,
+      ),
+      total: formatNumber(individualPerf?.data?.yearly.noOfPoliciesForTotal),
     },
   ];
 
@@ -117,12 +149,19 @@ export default function IndividualStatistics({navigation}) {
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-      <MonthYearPicker
+      {/* <MonthYearPicker
+        visible={isPickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onSelect={v => setSelectedDate(v)}
+        onSelectText={v => setSelectedDate(v)}
+      /> */}
+      <MonthYearPickerSingleCurrent
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
         onSelectText={v => setSelectedDate(v)}
       />
+
       {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader

@@ -38,13 +38,15 @@ export default function PolicyDetails({navigation, route}) {
   } = useGetPolicyDetailsQuery({
     id: policyNo, // Dynamic ID
   });
-
+  console.log('PolicyDetails', PolicyDetails);
   const policyDetailsResponse = PolicyDetails?.data;
 
   const id = policyDetailsResponse?.id;
   const policyNumber = policyDetailsResponse?.policyNumber;
   const insName = policyDetailsResponse?.insuredName;
-  const Address = policyDetailsResponse?.address;
+  const Address = (policyDetailsResponse?.address || [])
+    .filter(line => line.trim() !== '')
+    .join('\n');
   const phone = policyDetailsResponse?.mobileNumber;
   const startDate = policyDetailsResponse?.startDate;
   const endDate = policyDetailsResponse?.endDate;
@@ -126,7 +128,18 @@ export default function PolicyDetails({navigation, route}) {
             <DetailLine Title={'Mobile No.'} detail={phone} />
             <DetailLine Title={'Started Date'} detail={startDate} />
             <DetailLine Title={'End Date'} detail={endDate} />
-            <DetailLine Title={'Sum Insured'} detail={sumInsured} />
+            <DetailLine
+              Title="Sum Insured"
+              detail={
+                'LKR ' +
+                (sumInsured != null
+                  ? Number(sumInsured).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : '0.00')
+              }
+            />
             <DetailLine Title={'CDM Ref. No.'} detail={refNo} />
             <DetailLine
               Title={'Add. Covers'}
@@ -134,7 +147,7 @@ export default function PolicyDetails({navigation, route}) {
                 <Text
                   key={index}
                   style={{color: COLORS.grayText, lineHeight: 20}}>
-                  {cover.coverTypeName}: {cover.coverValue}
+                  {cover.coverTypeName}: {cover.coverValue.toLocaleString()}
                   {'\n'}
                 </Text>
               ))}

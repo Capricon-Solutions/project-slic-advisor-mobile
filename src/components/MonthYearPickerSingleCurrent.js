@@ -12,9 +12,9 @@ import Fonts from '../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 import moment from 'moment';
-const window = Dimensions.get('window');
 
-const squareSize = Math.min(window.width * 0.92, window.height * 0.92); // Use the smaller value
+const window = Dimensions.get('window');
+const squareSize = Math.min(window.width * 0.92, window.height * 0.92);
 
 const months = [
   'January',
@@ -31,56 +31,21 @@ const months = [
   'December',
 ];
 
-const MonthYearPicker = ({visible, onClose, onSelect}) => {
+const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-
-  // const handleMonthSelection = monthIndex => {
-  //   const selectedDate = moment(
-  //     `${selectedYear}-${monthIndex + 1}-01`,
-  //     'YYYY-MM-DD',
-  //   );
-  //   if (!startDate || (startDate && endDate)) {
-  //     setStartDate(selectedDate);
-  //     setEndDate(null);
-  //   } else if (startDate && !endDate) {
-
-  //     if (selectedDate.isBefore(startDate)) {
-  //       setStartDate(selectedDate);
-  //     } else {
-  //       setEndDate(selectedDate);
-  //     }
-  //   }
-  // };
-
-  const handleMonthSelection = monthIndex => {
-    const selectedDate = moment(
-      `${selectedYear}-${monthIndex + 1}-01`,
-      'YYYY-MM-DD',
-    );
-
-    if (!startDate || (startDate && endDate)) {
-      setStartDate(selectedDate);
-      setEndDate(null);
-    } else if (startDate && !endDate) {
-      // If same month selected again, reset selection
-      if (selectedDate.isSame(startDate, 'month')) {
-        setStartDate(null);
-      } else if (selectedDate.isBefore(startDate)) {
-        setStartDate(selectedDate);
-      } else {
-        setEndDate(selectedDate);
-      }
-    }
+  const [selectedDate, setSelectedDate] = useState(null);
+  // const monthDate = moment({year: selectedYear, month: index, day: 1});
+  // const now = moment().startOf('month');
+  // const isSelected = selectedDate && monthDate.isSame(selectedDate, 'month');
+  // const isDisabled = monthDate.isSameOrAfter(now); // disable current and fut
+  const handleMonthSelection = (year, month) => {
+    setSelectedDate(moment({year, month: month, day: 1}));
   };
 
   const handleDone = () => {
-    if (startDate && endDate) {
-      onSelect(
-        `${startDate.format('YYYY-MM-DD')} to ${endDate.format('YYYY-MM-DD')}`,
-      );
+    if (selectedDate) {
+      onSelect(selectedDate.format('YYYY/MM'));
       onClose();
     }
   };
@@ -91,10 +56,12 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
         <View style={styles.container}>
           {/* Year Navigation */}
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => setSelectedYear(prev => prev - 1)}>
+            <TouchableOpacity
+              onPress={() => setSelectedYear(prev => prev - 1)}
+              disabled={selectedYear <= new Date().getFullYear() - 10}>
               <MaterialCommunityIcons
                 name="chevron-left"
-                color={COLORS.black}
+                color={selectedYear <= 2000 ? COLORS.warmGray : COLORS.black}
                 size={25}
               />
             </TouchableOpacity>
@@ -115,56 +82,79 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
             numColumns={4}
             contentContainerStyle={styles.monthGrid}
             renderItem={({item, index}) => {
-              const selectedDate = moment(
-                `${selectedYear}-${index + 1}-01`,
-                'YYYY-MM-DD',
-              );
+              const monthDate = moment({
+                year: selectedYear,
+                month: index,
+                day: 1,
+              });
+
+              const today = moment();
               const isSelected =
-                startDate && selectedDate.isSame(startDate, 'month');
-              const isInRange =
-                startDate &&
-                endDate &&
-                selectedDate.isBetween(startDate, endDate, 'month', '[]');
+                selectedDate && monthDate.isSame(selectedDate, 'month');
+              const isDisabled =
+                selectedYear > today.year() || // future years
+                (selectedYear === today.year() && index > today.month()); // current or future months in current year
+
               return (
                 <TouchableOpacity
+                  disabled={isDisabled}
                   style={[
                     styles.monthButton,
-                    isSelected || isInRange ? styles.selectedMonth : {},
+                    isSelected ? styles.selectedMonth : {},
+                    isDisabled ? styles.disabledMonth : {},
                   ]}
-                  onPress={() => handleMonthSelection(index)}>
+                  onPress={() => handleMonthSelection(selectedYear, index)}>
                   <Text
                     style={[
                       styles.monthText,
-                      isSelected || isInRange ? styles.selectedMonthText : {},
+                      isSelected ? styles.selectedMonthText : {},
+                      isDisabled ? styles.disabledMonthText : {},
                     ]}>
                     {item}
                   </Text>
                 </TouchableOpacity>
               );
             }}
+
+            // renderItem={({item, index}) => {
+            //   const monthDate = moment({
+            //     year: selectedYear,
+            //     month: index,
+            //     day: 1,
+            //   });
+            //   const now = moment().startOf('month');
+            //   const isSelected =
+            //     selectedDate && monthDate.isSame(selectedDate, 'month');
+            //   const isDisabled = monthDate.isSameOrAfter(now); // current or future months
+
+            //   return (
+            //     <TouchableOpacity
+            //       disabled={isDisabled}
+            //       style={[
+            //         styles.monthButton,
+            //         isSelected ? styles.selectedMonth : {},
+            //         isDisabled ? styles.disabledMonth : {},
+            //       ]}
+            //       onPress={() => handleMonthSelection(selectedYear, index)}>
+            //       <Text
+            //         style={[
+            //           styles.monthText,
+            //           isSelected ? styles.selectedMonthText : {},
+            //           isDisabled ? styles.disabledMonthText : {},
+            //         ]}>
+            //         {item}
+            //       </Text>
+            //     </TouchableOpacity>
+            //   );
+            // }}
           />
-          <Text
-            style={{
-              color: !(startDate && endDate) ? COLORS.warmGray : 'transparent',
-              marginBottom: 10,
-            }}>
-            Please select a start and end month.
-          </Text>
+
           {/* Footer Buttons */}
           <View style={styles.footer}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
-              <Text style={styles.doneText}>Done</Text>
-            </TouchableOpacity> */}
-            <TouchableOpacity
-              style={[
-                styles.doneButton,
-                !(startDate && endDate) && styles.disabledButton,
-              ]}
-              onPress={handleDone}
-              disabled={!(startDate && endDate)}>
+            <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
               <Text style={styles.doneText}>Done</Text>
             </TouchableOpacity>
           </View>
@@ -174,7 +164,7 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
   );
 };
 
-export default MonthYearPicker;
+export default MonthYearPickerSingleCurrent;
 
 const styles = StyleSheet.create({
   overlay: {
@@ -199,10 +189,9 @@ const styles = StyleSheet.create({
   },
   yearText: {fontSize: 20, fontWeight: 'bold', color: COLORS.textColor},
   monthGrid: {
-    marginTop: 20,
+    marginVertical: 20,
     paddingHorizontal: 5,
     justifyContent: 'space-evenly',
-    // width: '80%',
   },
   monthButton: {
     marginHorizontal: 5,
@@ -221,6 +210,13 @@ const styles = StyleSheet.create({
     color: COLORS.textColor,
   },
   selectedMonthText: {color: '#00AEEF', fontWeight: 'bold'},
+  disabledMonth: {
+    backgroundColor: '#f0f0f0',
+    borderColor: '#ddd',
+  },
+  disabledMonthText: {
+    color: '#aaa',
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -239,9 +235,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 6,
     backgroundColor: COLORS.primaryGreen,
-  },
-  disabledButton: {
-    backgroundColor: '#ccc',
   },
   closeText: {color: '#555'},
   doneText: {color: '#fff', fontWeight: 'bold'},

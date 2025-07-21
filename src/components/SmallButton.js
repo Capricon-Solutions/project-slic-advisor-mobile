@@ -20,9 +20,7 @@ export default function SmallButton({
         Styles.smallButtonStyle,
         {
           backgroundColor:
-            disabledColor == true
-              ? COLORS.textInputBackground
-              : COLORS.primaryGreen,
+            disabledColor == true ? COLORS.warmGray : COLORS.primaryGreen,
         },
       ]}>
       <Text style={Styles.smallbuttonText}>{Title}</Text>
