@@ -482,8 +482,10 @@
 			baseConfigurationReference = 9AB690D1D649D43B0E75BDE6 /* Pods-slic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LBL55Q4MKR;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = slic/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "GI Sales App";
@@ -499,7 +501,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.slic;
 				PRODUCT_NAME = slic;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -512,8 +514,10 @@
 			baseConfigurationReference = 41906E8EFF8F1A0E7E2EB816 /* Pods-slic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LBL55Q4MKR;
 				INFOPLIST_FILE = slic/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "GI Sales App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -528,7 +532,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.slic;
 				PRODUCT_NAME = slic;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
