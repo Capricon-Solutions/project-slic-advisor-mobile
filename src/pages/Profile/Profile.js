@@ -55,8 +55,19 @@ export default function Profile({navigation}) {
   const [imageUri, setImageUri] = useState(null);
   const [
     uploadImage,
-    {data: uploadedImage, error: uploadError, refetch, isLoading: isUploading},
+    {data: uploadedImage, error: uploadError, isLoading: isUploading},
   ] = useAddImageMutation();
+
+  const {
+    data: ProfilePic,
+    error,
+    isLoading,
+  } = useGetImageQuery({
+    id: userCode,
+  });
+  useEffect(() => {
+    console.log('ProfilePic lllllll', ProfilePic);
+  }, [ProfilePic]);
 
   const handleUpload = async uri => {
     const agencyCode = userCode;
@@ -65,7 +76,7 @@ export default function Profile({navigation}) {
     try {
       const response = await uploadImage({agencyCode, imageFile}).unwrap();
       console.log('Image uploaded successfully:', response);
-      refetch();
+      // refetch();
     } catch (err) {
       console.error('Image upload failed:', err);
     }
@@ -79,12 +90,13 @@ export default function Profile({navigation}) {
         mode: 'open',
         allowMultiSelection: false,
         type: types.images,
+        quality: 0.4,
       });
       setImage(result.uri);
       console.log(result);
       console.log('result.uri', result.uri);
 
-      dispatch(SetdefaultImageUrl(result.uri));
+      // dispatch(SetdefaultImageUrl(result.uri));
       const uri = result;
       handleUpload(uri);
     } catch (err) {
@@ -218,7 +230,7 @@ export default function Profile({navigation}) {
                 ? 'Branch Code'
                 : 'Agent Code'
             }
-            value={agentCode?.toString() ?? 'Unavailable'}
+            value={agentCode?.toString() || 'Unavailable'}
             readOnly={true}
           />
           {usertype !== 4 && (
@@ -226,30 +238,30 @@ export default function Profile({navigation}) {
               Label={'Personal Code'}
               readOnly={true}
               value={
-                personalCode?.toString() ?? 'Unavailable'
+                personalCode?.toString() || 'Unavailable'
               }></SquareTextBoxOutlined>
           )}
 
           <SquareTextBoxOutlined
             Label={'NIC Number'}
             readOnly={true}
-            value={nic?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={nic?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'E-mail Address'}
             readOnly={true}
-            value={email?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={email?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Mobile Number'}
             readOnly={true}
-            value={phone?.toString() ?? 'Unavailable'}></SquareTextBoxOutlined>
+            value={phone?.toString() || 'Unavailable'}></SquareTextBoxOutlined>
 
           <SquareTextBoxOutlined
             Label={'Contact Number'}
             readOnly={true}
             value={
-              contact?.toString() ?? 'Unavailable'
+              contact?.toString() || 'Unavailable'
             }></SquareTextBoxOutlined>
         </View>
 

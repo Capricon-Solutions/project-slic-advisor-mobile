@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -18,9 +18,13 @@ const DropdownComponent = ({
   label,
   onValueChange,
   onSelect,
+  nonClearable,
+  search,
+  value: valueFromParent,
 }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   const renderLabel = () => {
     // if (value || isFocus) {
@@ -41,6 +45,17 @@ const DropdownComponent = ({
     }
   };
 
+  const filteredData = useMemo(() => {
+    if (!searchText) return dropdownData;
+    return dropdownData.filter(item =>
+      item.label?.toLowerCase().startsWith(searchText.toLowerCase()),
+    );
+  }, [dropdownData, searchText]);
+
+  useEffect(() => {
+    setValue(valueFromParent);
+  }, [valueFromParent]);
+
   return (
     <View style={styles.container}>
       {renderLabel()}
@@ -55,8 +70,8 @@ const DropdownComponent = ({
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
         containerStyle={{width: window.width * 0.5, fontSize: 12}}
-        data={dropdownData}
-        search
+        data={filteredData}
+        search={search === undefined ? true : search}
         maxHeight={300}
         labelField="label"
         valueField="value"
@@ -66,6 +81,7 @@ const DropdownComponent = ({
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleChange}
+        onChangeText={text => setSearchText(text)}
         renderLeftIcon={() => (
           <MaterialCommunityIcons
             style={styles.icon}
@@ -78,20 +94,23 @@ const DropdownComponent = ({
           return (
             <>
               {value && (
-                <TouchableOpacity
-                  onPress={() => {
-                    setValue(null);
-                    if (onSelect) {
-                      onSelect(null); // Notify parent
-                    }
-                  }}>
-                  <MaterialCommunityIcons
-                    style={styles.icon}
-                    color={COLORS.primaryRed}
-                    name="close-thick"
-                    size={14}
-                  />
-                </TouchableOpacity>
+                <View>
+                  {nonClearable ? null : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setValue(null);
+
+                        if (onValueChange) onValueChange(null); // ← Clear in parent
+                      }}>
+                      <MaterialCommunityIcons
+                        style={styles.icon}
+                        color={COLORS.primaryRed}
+                        name="close-thick"
+                        size={14}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
               )}
             </>
           );

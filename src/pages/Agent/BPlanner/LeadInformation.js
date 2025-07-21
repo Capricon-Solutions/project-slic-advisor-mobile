@@ -30,6 +30,11 @@ export default function LeadInformation({navigation, route}) {
   const tableHead = ['Activity ID', 'Date and Time', 'Type', 'Description'];
   const {item} = route.params;
 
+  const leadTypeMap = {
+    M: 'Motor',
+    G: 'Non-Motor',
+  };
+
   const {
     data: leadData,
     isLoading,
@@ -131,7 +136,9 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Lead Type'}
                   readOnly={true}
-                  value={String(leadInfo?.leadType ?? 'Unavailable')}
+                  value={String(
+                    leadTypeMap[leadInfo?.leadType] ?? 'Unavailable',
+                  )}
                   // value={leadInfo?.leadType}
                   borderColor={COLORS.warmGray}
                 />
@@ -325,7 +332,7 @@ export default function LeadInformation({navigation, route}) {
                   fontSize: 16,
                   color: COLORS.textColor,
                 }}>
-                policy Info
+                Policy Info
               </Text>
               <View style={{alignItems: 'center', padding: 3}}>
                 <Octicons
@@ -341,7 +348,9 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Lead Type'}
                   readOnly={true}
-                  value={String(leadInfo?.leadType ?? 'Unavailable')}
+                  value={String(
+                    leadTypeMap[leadInfo?.leadType] ?? 'Unavailable',
+                  )}
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined
@@ -360,7 +369,7 @@ export default function LeadInformation({navigation, route}) {
                 />
                 <SquareTextBoxOutlined
                   mediumFont={true}
-                  Label={'premium'}
+                  Label={'Premium'}
                   readOnly={true}
                   value={
                     leadInfo?.premium != null
@@ -444,7 +453,15 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Vehicle Value'}
                   readOnly={true}
-                  value={String(leadInfo?.vehicleValue ?? 'Unavailable')}
+                  // value={String(leadInfo?.vehicleValue ?? 'Unavailable')}
+                  value={
+                    leadInfo?.vehicleValue != null
+                      ? leadInfo.vehicleValue.toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      : 'Unavailable'
+                  }
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined

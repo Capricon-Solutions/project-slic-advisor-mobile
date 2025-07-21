@@ -26,6 +26,7 @@ import {
 } from '../../../redux/services/plannerSlice';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {showToast} from '../../../components/ToastMessage';
 
 export default function MonthlyPlan({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
@@ -121,28 +122,48 @@ export default function MonthlyPlan({navigation}) {
     // if (!validateForm()) return; // Stop if validation fails
 
     // console.log('body');
+    console.log('proposals', proposals);
 
-    if (!meetings && !presentations && !quotations && !proposals && !closed && !leads) {
-      Toast.show({
+    if (
+      !meetings ||
+      meetings === '' ||
+      !presentations ||
+      presentations === '' ||
+      !quotations ||
+      quotations === '' ||
+      !proposals ||
+      proposals === '' ||
+      !closed ||
+      closed === '' ||
+      !leads ||
+      leads === ''
+    ) {
+      showToast({
         type: 'error',
-        text1: 'Please enter any one field',
-        text2: 'Please enter any one field',
+        text1: 'Please enter a valid value for all fields',
+        text2: 'Fields cannot be empty',
       });
       return;
     }
 
     try {
       const response = await MonthlyCreate({body, userCode});
-      console.log('Activity Created:', response?.error?.status);
-      Toast.show({
-        type: 'success',
-        text1: 'Monthly Plan Created',
-        text2: 'Monthly Plan Created Successfully',
-      });
+      console.log('Activity Created:', response);
+
       if (response?.error?.status == '500') {
-        console.log('something went wrong');
-        Alert.alert('something went wrong', 'Unsuccessfull');
+        console.log('something went wrong', response?.error);
+        showToast({
+          type: 'error',
+          text1: 'Monthly Plan Not Created',
+          text2: response?.error?.data?.message || 'Something went wrong',
+        });
+        // Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
+        showToast({
+          type: 'success',
+          text1: 'Monthly Plan Created',
+          text2: 'Monthly Plan Created Successfully',
+        });
         navigation.goBack();
       }
     } catch (err) {
@@ -193,11 +214,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Meetings *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(meetings || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setmeetings(filteredText);
               setFormError({...formError, meetings: ''});
             }}
@@ -208,11 +232,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Presentation *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(presentations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setPresentations(filteredText);
               setFormError({...formError, presentations: ''});
             }}
@@ -223,11 +250,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Quotations *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(quotations || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setQuotations(filteredText);
               setFormError({...formError, quotations: ''});
             }}
@@ -239,11 +269,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Proposals *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(proposals || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setProposals(filteredText);
               setFormError({...formError, proposals: ''});
             }}
@@ -254,11 +287,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Closed *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(closed || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setClosed(filteredText);
               setFormError({...formError, closed: ''});
             }}
@@ -269,11 +305,14 @@ export default function MonthlyPlan({navigation}) {
           <SquareTextBoxOutlined
             mediumFont={true}
             Label={'Leads *'}
-            placeholder={'000000'}
+            placeholder={'000'}
             value={String(leads || '')}
             keyboardType={'number-pad'}
             setValue={text => {
               let filteredText = text.replace(/[^0-9]/g, '');
+              if (filteredText.length > 3) {
+                filteredText = filteredText.slice(0, 3);
+              }
               setLeads(filteredText);
               setFormError({...formError, leads: ''});
             }}

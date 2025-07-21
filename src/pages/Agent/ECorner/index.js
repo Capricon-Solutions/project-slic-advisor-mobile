@@ -60,7 +60,7 @@ export default function ECorner({navigation}) {
     },
     {
       id: 3,
-      type: 'Non-motor Renewal Compact',
+      type: 'Non-Motor Renewal Compact',
       page: 'NonMotorRenewalCompact',
       conunt: counts?.[2]?.kpiTotalEnrolled,
       download: false,
@@ -68,7 +68,7 @@ export default function ECorner({navigation}) {
     },
     {
       id: 4,
-      type: 'Motor renewal letter',
+      type: 'Motor Renewal Letter',
       page: 'MotorRenewalLetter',
       conunt: '0',
       download: true,
@@ -76,7 +76,7 @@ export default function ECorner({navigation}) {
     },
     {
       id: 5,
-      type: 'commission statement',
+      type: 'Commission Statement',
       page: 'CommissionStatement',
       conunt: '0',
       download: true,

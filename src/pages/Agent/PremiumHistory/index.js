@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,23 +13,23 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { useSelector } from 'react-redux';
-import { useGetPremiumHistoryQuery } from '../../../redux/services/policyDetailsSlice';
+import {useSelector} from 'react-redux';
+import {useGetPremiumHistoryQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function PremiumHistory({ navigation, route }) {
-  const { policyNo } = route.params;
+export default function PremiumHistory({navigation, route}) {
+  const {policyNo} = route.params;
   // const premiumPaymentResponse = useSelector(
   //   state => state.premiumPayment.premiumPaymentResponse.data,
   // );
@@ -44,7 +44,7 @@ export default function PremiumHistory({ navigation, route }) {
 
   const premiumPaymentResponse = PremiumHistory?.data;
 
-  const DetailLine = ({ Title, detail }) => {
+  const DetailLine = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -63,13 +63,13 @@ export default function PremiumHistory({ navigation, route }) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{ flex: 0.45 }}>
+        <View style={{flex: 0.45}}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
     );
   };
-  const DetailLineBold = ({ Title, detail }) => {
+  const DetailLineBold = ({Title, detail}) => {
     return (
       <View
         style={{
@@ -88,14 +88,14 @@ export default function PremiumHistory({ navigation, route }) {
           <Text style={styles.detailTextBold}>:</Text>
         </View>
 
-        <View style={{ flex: 0.45 }}>
+        <View style={{flex: 0.45}}>
           <Text style={styles.detailTextBold}>{detail}</Text>
         </View>
       </View>
     );
   };
 
-  const Card = ({ item }) => {
+  const Card = ({item}) => {
     return (
       <View style={styles.card}>
         <View>
@@ -154,7 +154,7 @@ export default function PremiumHistory({ navigation, route }) {
         <View style={styles.border}></View>
 
         <DetailLine
-          Title={'premium Paid'}
+          Title={'Premium Paid'}
           detail={
             'LKR ' +
             Number(item.paidPremium)?.toLocaleString(undefined, {
@@ -184,7 +184,7 @@ export default function PremiumHistory({ navigation, route }) {
 
       <ScrollView
         fadingEdgeLength={20}
-        contentContainerStyle={{ paddingHorizontal: 17, paddingBottom: 10 }}>
+        contentContainerStyle={{paddingHorizontal: 17, paddingBottom: 10}}>
         <View>
           <Text
             style={{
@@ -197,7 +197,7 @@ export default function PremiumHistory({ navigation, route }) {
           </Text>
         </View>
         {isFetching ? (
-          <View style={{ height: window.height * 0.7 }}>
+          <View style={{height: window.height * 0.7}}>
             <LoadingScreen />
           </View>
         ) : (
@@ -206,9 +206,9 @@ export default function PremiumHistory({ navigation, route }) {
               <FlatList
                 data={premiumPaymentResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 8 }}
-                renderItem={({ item }) => <Card item={item} />}
-              // keyExtractor={item => item.id.toString()}
+                contentContainerStyle={{paddingHorizontal: 8}}
+                renderItem={({item}) => <Card item={item} />}
+                // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <View
@@ -227,11 +227,9 @@ export default function PremiumHistory({ navigation, route }) {
                 </Text>
               </View>
             )}
-
           </View>
         )}
       </ScrollView>
-
     </View>
   );
 }

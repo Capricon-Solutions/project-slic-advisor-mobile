@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -29,6 +29,9 @@ import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
 import {useRmReportQuery} from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
+import OutlinedTextView from '../../../../components/OutlinedTextView';
+import LoaderKit from 'react-native-loader-kit';
+import {useFocusEffect} from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const data = [
@@ -47,9 +50,9 @@ export default function Report({navigation, route}) {
   const profileResponse = profile?.user;
   const regionName = profileResponse?.region;
   const {Title = ''} = route.params || {};
-  const [value, setValue] = useState(null);
-  const [SelectedType, setSelectedType] = useState('All');
-  const [selectedMonth, setSelectedmonth] = useState(0);
+  const [value, setValue] = useState(1);
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [selectedMonth, setSelectedmonth] = useState('00');
   const [type, setType] = useState();
   const [branch, setBranch] = useState(regionName);
 
@@ -71,11 +74,12 @@ export default function Report({navigation, route}) {
     data: RmReport,
     error: RmReportError,
     isLoading: RmReportLoading,
+    refetch,
     isFetching: RmReportFetching,
   } = useRmReportQuery({
     branch: branch,
     startMonth: selectedMonth === 0 ? 1 : selectedMonth,
-    endMonth: selectedMonth === 0 ? 12 : selectedMonth + 1,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth,
     year: new Date().getFullYear(),
     type: SelectedType,
     value: value,
@@ -83,14 +87,20 @@ export default function Report({navigation, route}) {
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
-    item?.renewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+    item?.renewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     {
-      ppw: item?.refundPpw?.toString() ?? '',
-      other: item?.refundOther?.toString() ?? '',
+      ppw: item?.refundPpw?.toLocaleString() ?? '',
+      other: item?.refundOther?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toString() ?? '',
-    item?.total?.toString() ?? '',
+    item?.endorsement?.toLocaleString() ?? '',
+    item?.renewal +
+      item?.nb +
+      item?.refundPpw +
+      item?.refundOther +
+      item?.endorsement.toLocaleString() ?? '',
+
+    // item?.total?.toLocaleString() ?? '',
   ]);
 
   const branchList =
@@ -104,6 +114,19 @@ export default function Report({navigation, route}) {
   const dropdownOptions = [{label: 'All', value: ''}, ...branchList];
 
   console.log('RmReport', RmReport);
+  useFocusEffect(
+    React.useCallback(() => {
+      // When screen is focused
+      Orientation.lockToPortrait();
+      setIsLandscape(false);
+
+      return () => {
+        // Optional: Reset on blur
+        Orientation.lockToPortrait(); // ensure cleanup just in case
+        setIsLandscape(false);
+      };
+    }, []),
+  );
 
   const toggleOrientation = () => {
     if (isLandscape) {
@@ -126,6 +149,13 @@ export default function Report({navigation, route}) {
         onPressSearch={() => {
           // PolicyListResponse(searchData);
           setModalVisible(false);
+          refetch();
+        }}
+        initialValues={{
+          type: SelectedType,
+          month: selectedMonth,
+          view: value,
+          branch: branch,
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
@@ -227,17 +257,24 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'View Details'}
                     mode={'modal'}
-                    selectedValue={value}
-                    onValueChange={value => setValue(value)}
-                    dropdownData={[{label: 'NOP', value: 'n'}]}
+                    value={value}
+                    search={false}
+                    nonClearable={true}
+                    onValueChange={setValue}
+                    dropdownData={[
+                      {label: 'Value', value: 1},
+                      {label: 'NOP', value: 2},
+                    ]}
                   />
                 </View>
                 <View style={{flex: 0.2, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Type'}
                     mode={'modal'}
-                    selectedValue={type}
-                    onValueChange={value => setType(value)}
+                    search={false}
+                    onValueChange={value => {
+                      setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                    }}
                     dropdownData={[
                       {label: 'General Cumulative', value: 'G'},
                       {label: 'Motor Monthly', value: 'M'},
@@ -248,23 +285,27 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'Month'}
                     mode={'modal'}
+                    value={selectedMonth}
+                    nonClearable={true}
+                    // onValueChange={setSelectedMonth}
+                    onValueChange={value => {
+                      setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                    }}
                     dropdownData={[
-                      {label: 'Cumulative', value: '0'},
-                      {label: 'January', value: '1'},
-                      {label: 'February', value: '2'},
-                      {label: 'March', value: '3'},
-                      {label: 'April', value: '4'},
-                      {label: 'May', value: '5'},
-                      {label: 'June', value: '6'},
-                      {label: 'July', value: '7'},
-                      {label: 'August', value: '8'},
-                      {label: 'September', value: '9'},
+                      {label: 'Cumulative', value: '00'},
+                      {label: 'January', value: '01'},
+                      {label: 'February', value: '02'},
+                      {label: 'March', value: '03'},
+                      {label: 'April', value: '04'},
+                      {label: 'May', value: '05'},
+                      {label: 'June', value: '06'},
+                      {label: 'July', value: '07'},
+                      {label: 'August', value: '08'},
+                      {label: 'September', value: '09'},
                       {label: 'October', value: '10'},
                       {label: 'November', value: '11'},
                       {label: 'December', value: '12'},
                     ]}
-                    selectedValue={selectedMonth}
-                    onValueChange={value => setSelectedmonth(value)}
                   />
                 </View>
                 <View style={{flex: 0.19, marginHorizontal: 2}}>
@@ -312,7 +353,10 @@ export default function Report({navigation, route}) {
               data={RmReport?.data}
               initialNumToRender={2}
               keyExtractor={item => item.id}
-              contentContainerStyle={{padding: 10}}
+              contentContainerStyle={{
+                padding: 10,
+                paddingBottom: window.height * 0.5, // Adjusted for footer space
+              }}
               ListEmptyComponent={
                 <View
                   style={{
@@ -320,14 +364,16 @@ export default function Report({navigation, route}) {
                     alignItems: 'center',
                     height: window.height * 0.7,
                   }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: COLORS.errorBorder,
-                      fontFamily: Fonts.Roboto.SemiBold,
-                    }}>
-                    Sorry, No Data Found
-                  </Text>
+                  {!RmReportFetching && (
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: COLORS.errorBorder,
+                        fontFamily: Fonts.Roboto.SemiBold,
+                      }}>
+                      Sorry, No Data Found
+                    </Text>
+                  )}
                 </View>
               }
               renderItem={({item}) => (
@@ -340,6 +386,7 @@ export default function Report({navigation, route}) {
                     padding: 15,
                   }}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                     <Image
                       style={{height: 17, width: 17}}
                       source={Building}></Image>
@@ -350,7 +397,7 @@ export default function Report({navigation, route}) {
                         fontSize: 14,
                         color: COLORS.textColor,
                       }}>
-                      {item.branch.toString() ?? ''}
+                      {item?.branch?.toString() ?? ''}
                     </Text>
                   </View>
 
@@ -363,12 +410,18 @@ export default function Report({navigation, route}) {
                       width: '100%',
                     }}>
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'Renewal'}
-                        readOnly={true}
                         value={
-                          item.renewal !== null && item.renewal !== undefined
-                            ? Number(item.renewal).toLocaleString('en-US', {
+                          value == 1
+                            ? item?.renewal != null
+                              ? Number(item.renewal).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopRenewal != null
+                            ? Number(item.nopRenewal).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -378,12 +431,11 @@ export default function Report({navigation, route}) {
                     </View>
 
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'NB'}
-                        readOnly={true}
                         value={
-                          item.renewal !== null && item.nb !== undefined
-                            ? Number(item.nb).toLocaleString('en-US', {
+                          item?.nb !== null && item?.nb !== undefined
+                            ? Number(item?.nb).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -396,12 +448,18 @@ export default function Report({navigation, route}) {
                   {/* Second Row */}
                   <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'PPW'}
-                        readOnly={true}
                         value={
-                          item.renewal !== null && item.refundPpw !== undefined
-                            ? Number(item.refundPpw).toLocaleString('en-US', {
+                          value == 1
+                            ? item?.refundPpw != null
+                              ? Number(item.refundPpw).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopPpw != null
+                            ? Number(item.nopPpw).toLocaleString('en-US', {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                               })
@@ -411,16 +469,27 @@ export default function Report({navigation, route}) {
                     </View>
 
                     <View style={{flex: 1}}>
-                      <OutlinedTextBox
+                      <OutlinedTextView
                         Title={'Others'}
-                        readOnly={true}
                         value={
-                          item.renewal !== null &&
-                          item.refundOther !== undefined
-                            ? Number(item.refundOther).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                          value == 1
+                            ? item?.refundOther != null
+                              ? Number(item.refundOther).toLocaleString(
+                                  'en-US',
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  },
+                                )
+                              : ''
+                            : item?.nopOtherRefund != null
+                            ? Number(item.nopOtherRefund).toLocaleString(
+                                'en-US',
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                },
+                              )
                             : ''
                         }
                       />
@@ -429,32 +498,66 @@ export default function Report({navigation, route}) {
 
                   {/* Third Row */}
                   <View>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={'Endorsement'}
-                      readOnly={true}
                       value={
-                        item.renewal !== null && item.endorsement !== undefined
-                          ? Number(item.endorsement).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                        value == 1
+                          ? item?.endorsement != null
+                            ? Number(item.endorsement).toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
+                            : ''
+                          : item?.nopEndorsements != null
+                          ? Number(item.nopEndorsements).toLocaleString(
+                              'en-US',
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              },
+                            )
                           : ''
                       }
                     />
                   </View>
 
                   <View>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={'Total'}
-                      readOnly={true}
-                      value={
-                        item.renewal !== null && item.total !== undefined
-                          ? Number(item.total).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                          : ''
-                      }
+                      value={Number(
+                        value == 1
+                          ? (item?.renewal ?? 0) +
+                              (item?.nb ?? 0) +
+                              (item?.refundPpw ?? 0) +
+                              (item?.refundOther ?? 0) +
+                              (item?.endorsement ?? 0)
+                          : (item?.nopRenewal ?? 0) +
+                              (item?.nopPpw ?? 0) +
+                              (item?.nb ?? 0) +
+                              (item?.nopOtherRefund ?? 0) +
+                              (item?.nopEndorsements ?? 0),
+                      ).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+
+                      // value={
+                      //   value == 1
+                      //     ? (
+                      //         (item?.renewal ?? 0) +
+                      //         (item?.nb ?? 0) +
+                      //         (item?.refundPpw ?? 0) +
+                      //         (item?.refundOther ?? 0) +
+                      //         (item?.endorsement ?? 0)
+                      //       ).toLocaleString()
+                      //     : (
+                      //         (item?.nopRenewal ?? 0) +
+                      //         (item?.nopPpw ?? 0) +
+                      //         (item?.nb ?? 0) +
+                      //         (item?.nopOtherRefund ?? 0) +
+                      //         (item?.nopEndorsements ?? 0)
+                      //       ).toLocaleString()
+                      // }
                     />
                   </View>
                 </View>
@@ -463,10 +566,28 @@ export default function Report({navigation, route}) {
           )}
         </View>
       </View>
+      {RmReportFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
+      )}
     </View>
   );
 }
-<View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+{
+  /* <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
   <Text
     style={{
       fontSize: 16,
@@ -475,4 +596,5 @@ export default function Report({navigation, route}) {
     }}>
     Sorry, No Data Found
   </Text>
-</View>;
+</View> */
+}

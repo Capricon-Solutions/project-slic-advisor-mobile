@@ -147,7 +147,7 @@ export default function PolicyDetails({navigation, route}) {
                 <Text
                   key={index}
                   style={{color: COLORS.grayText, lineHeight: 20}}>
-                  {cover.coverTypeName}: {cover.coverValue}
+                  {cover.coverTypeName}: {cover.coverValue.toLocaleString()}
                   {'\n'}
                 </Text>
               ))}

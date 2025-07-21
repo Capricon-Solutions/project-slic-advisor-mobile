@@ -34,6 +34,7 @@ import {
   useGetNextClubQuery,
 } from '../../../redux/services/clubSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
+import OutlinedTextView from '../../../components/OutlinedTextView';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
@@ -44,13 +45,19 @@ export default function ClubInformation({navigation}) {
   const personalCode = useSelector(state => state.Profile.personalCode);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const {data: clubInfo, isFetching, error} = useGetClubQuery(userCode);
+  const {
+    data: clubInfo,
+    isFetching,
+    error,
+  } = useGetClubQuery(usertype == 2 ? personalCode : userCode);
   const {
     data: nextClubInfo,
     isFetching: isNextFetching,
     error: nextError,
   } = useGetNextClubQuery(usertype == 2 ? personalCode : userCode);
   console.log('userCode', userCode);
+  console.log('userCodebbbbbbb', usertype == 2 ? personalCode : userCode);
+  console.log('usertype', usertype);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
@@ -77,7 +84,15 @@ export default function ClubInformation({navigation}) {
 
   const currentClub = clubInfoResponse?.currentClub || 'Unavailable';
   const clubYear = clubInfoResponse?.clubYear || 'Unavailable';
-  const currentClublimit = clubInfoResponse?.currentLimit || 'Unavailable';
+  const currentClublimit =
+    clubInfoResponse?.currentLimit != null
+      ? Number(clubInfoResponse.currentLimit).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : 'Unavailable';
+
+  // clubInfoResponse?.currentLimit || 'Unavailable';
   const generalAppointmentDate =
     clubInfoResponse?.genAppointDate || 'Unavailable';
   const generalPersistency = clubInfoResponse?.genPersistancy || 'Unavailable';
@@ -111,7 +126,7 @@ export default function ClubInformation({navigation}) {
       />
 
       <Header
-        Title="Club information"
+        Title="Club Information"
         onPress={() => navigation.goBack()}
         haveFilters={false}
         haveWhatsapp={false}
@@ -155,17 +170,25 @@ export default function ClubInformation({navigation}) {
                     width: '100%',
                   }}>
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    {/* <OutlinedTextBox
                       Title={'Current Club'}
                       readOnly={true}
+                      value={currentClub?.toString() ?? ''}
+                    /> */}
+                    <OutlinedTextView
+                      Title={'Current Club'}
                       value={currentClub?.toString() ?? ''}
                     />
                   </View>
 
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    {/* <OutlinedTextBox
                       Title={'Current Club’s Limit'}
                       readOnly={true}
+                      value={currentClublimit?.toString() ?? ''}
+                    /> */}
+                    <OutlinedTextView
+                      Title={'Current Club’s Limit'}
                       value={currentClublimit?.toString() ?? ''}
                     />
                   </View>
@@ -178,25 +201,33 @@ export default function ClubInformation({navigation}) {
                     width: '100%',
                   }}>
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    {/* <OutlinedTextBox
                       Title={'General Appt. Date'}
                       readOnly={true}
+                      value={generalAppointmentDate?.toString() ?? ''}
+                    /> */}
+                    <OutlinedTextView
+                      Title={'General Appt. Date'}
                       value={generalAppointmentDate?.toString() ?? ''}
                     />
                   </View>
 
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    {/* <OutlinedTextBox
                       Title={'Gen. Persistency'}
                       readOnly={true}
+                      value={generalPersistency?.toString() ?? ''}
+                    /> */}
+                    <OutlinedTextView
+                      Title={'Gen. Persistency'}
                       value={generalPersistency?.toString() ?? ''}
                     />
                   </View>
                 </View>
 
-                <OutlinedTextBox
-                  Title={'Last 5 year avg. '}
-                  readOnly={true}
+                <OutlinedTextView
+                  Title={'Last 5 Years Avg.'}
+                  // readOnly={true}
                   value={last5YearAverage?.toString() ?? ''}
                 />
 
@@ -207,33 +238,33 @@ export default function ClubInformation({navigation}) {
                     width: '100%',
                   }}>
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={'Next Club'}
-                      readOnly={true}
+                      // readOnly={true}
                       value={nextClub?.toString() ?? ''}
                     />
                   </View>
 
                   <View style={{flex: 1}}>
-                    <OutlinedTextBox
+                    <OutlinedTextView
                       Title={"Next Club's Limit"}
-                      readOnly={true}
+                      // readOnly={true}
                       value={nextLimit?.toString() ?? ''}
                     />
                   </View>
                 </View>
 
-                <OutlinedTextBox
+                <OutlinedTextView
                   Title={'Last Updated Date'}
-                  readOnly={true}
+                  // readOnly={true}
                   value={lastUpdatedDate?.toString() ?? ''}
                 />
                 {tableData && (
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={
-                      'Annual income upto ' + lastUpdatedDate?.toString() ?? ''
+                      'Annual Income Upto ' + lastUpdatedDate?.toString() ?? ''
                     }
-                    readOnly={true}
+                    // readOnly={true}
                     value={annualIncomeUpto?.toString() ?? ''}
                   />
                 )}

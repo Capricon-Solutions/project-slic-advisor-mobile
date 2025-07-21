@@ -15,26 +15,37 @@ export const ReportApi = baseApi.injectEndpoints({
     }),
     // MarketingReport
     MarketingReport: builder.query({
-      query: ({branch, month, type}) => {
-        const url = `report/meReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
+      query: ({branch, startMonth, year, endMonth, type, value}) => {
+        const url = `report/meReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
         console.log('Fetching Report from:', url);
         return url;
       },
     }),
+    // http://122.255.4.181:2001/api/report/meReport?branchCode=26&year=2025&startMonth=3&endMonth=3&dept=All
 
     // AdvisorReport
     AdvisorReport: builder.query({
-      query: ({branch, month, type}) => {
-        const url = `report/advisorReport?branchCode=26&year=2025&startMonth=${month}&endMonth=${month}dept=${branch}`;
+      query: ({branch, startMonth, year, endMonth, type, value}) => {
+        const url = `report/advisorReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
+        console.log('Fetching Report from:', url);
+        console.log('startMonthfff', startMonth);
+        return url;
+      },
+    }),
+    // http://122.255.4.181:2001/api/report/advisorReport?branchCode=26&year=2025&startMonth=3&endMonth=3&dept=all
+    // TeamLeaderReport
+    TeamLeaderReport: builder.query({
+      query: ({branch, startMonth, year, endMonth, type, value}) => {
+        const url = `report/teamLeaderReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
+        //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
         console.log('Fetching Report from:', url);
         return url;
       },
     }),
-
-    // TeamLeaderReport
-    TeamLeaderReport: builder.query({
-      query: ({branch, year, dept, startMonth, endMonth, type}) => {
-        const url = `report/teamLeaderReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${dept}&reportType=${type}`;
+    // TeamMemberReport
+    TeamMemberReport: builder.query({
+      query: ({year, dept, startMonth, endMonth, type, userCode}) => {
+        const url = `agent/GetTMReport?agentCode=${userCode}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${dept}&reportType=${type}`;
         //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
         console.log('Fetching Report from:', url);
         return url;
@@ -43,8 +54,8 @@ export const ReportApi = baseApi.injectEndpoints({
 
     // DirectReport
     DirectReport: builder.query({
-      query: ({branch, month, type}) => {
-        const url = `report/directReport?category=%7Bcategoty%7D&reportType%7D&month=${month}`;
+      query: ({branch, startMonth, year, endMonth, type, value}) => {
+        const url = `report/directReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
         console.log('Fetching Report from:', url);
         return url;
       },
@@ -59,4 +70,5 @@ export const {
   useDirectReportQuery,
   useTeamLeaderReportQuery,
   useAdvisorReportQuery,
+  useTeamMemberReportQuery,
 } = ReportApi;

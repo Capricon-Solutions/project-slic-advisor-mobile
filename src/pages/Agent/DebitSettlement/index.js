@@ -111,7 +111,7 @@ export default function DebitSettlement({navigation, route}) {
       showToast({
         type: 'error',
         text1: 'Failed',
-        text2: err?.data?.Message || 'Enter valid contact number.',
+        text2: err?.data?.message,
       });
     }
   };
@@ -121,16 +121,24 @@ export default function DebitSettlement({navigation, route}) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Please fill in all required fields.',
       });
       return false;
     }
 
-    if (!amount || amount === '') {
+    // if (!amount || amount === '') {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Validation Error',
+    //     text2: 'Enter a Valid Amount to Proceed',
+    //   });
+    //   return false;
+    // }
+    if (!amount || amount === '' || parseFloat(amount) === 0) {
       showToast({
         type: 'error',
         text1: 'Validation Error',
-        text2: 'Please fill in all required fields. 🚨',
+        text2: 'Amount Must Be Greater Than Zero',
       });
       return false;
     }
@@ -225,11 +233,7 @@ export default function DebitSettlement({navigation, route}) {
             }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
           />
-          {/* <SquareTextBox
-            readOnly={true}
-            Title={moment(DebitSettlement?.data?.dueDate).format('YYYY/MM/DD')}
-            Label={selectedItem?.id == 1 ? 'Due Date' : 'Renewal Date'}
-          /> */}
+
           <SquareTextBoxOutlinedDate
             readOnly={true}
             // Title={StartToDt}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -13,25 +13,39 @@ import COLORS from '../theme/colors';
 const window = Dimensions.get('window');
 
 const DropdownFilled = ({
-  dropdownData,
+  dropdownData = [],
   mode,
   label,
   placeholder,
   Color,
   search,
   onSelect,
+  value: valueFromParent,
+  cancelable,
 }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    setValue(valueFromParent);
+  }, [valueFromParent]);
+  // Filter data where label starts with searchText (case-insensitive)
+  const filteredData = useMemo(() => {
+    if (!searchText) return dropdownData;
+    return dropdownData.filter(item =>
+      item.label?.toLowerCase().startsWith(searchText.toLowerCase()),
+    );
+  }, [dropdownData, searchText]);
 
   return (
     <View style={styles.container}>
       <Dropdown
-        mode={mode == 'modal' ? 'modal' : 'auto'}
+        mode={mode === 'modal' ? 'modal' : 'auto'}
         style={[
           styles.dropdown,
           isFocus && {borderColor: 'blue'},
-          {backgroundColor: Color ? Color : COLORS.lightBorder},
+          {backgroundColor: Color || COLORS.lightBorder},
         ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
@@ -41,8 +55,8 @@ const DropdownFilled = ({
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
         containerStyle={{fontSize: 12}}
-        data={dropdownData}
-        search={search === undefined ? true : search}
+        data={filteredData} // Use filtered data
+        search={search !== false}
         maxHeight={300}
         labelField="label"
         valueField="value"
@@ -58,6 +72,7 @@ const DropdownFilled = ({
             onSelect(item.value);
           }
         }}
+        onChangeText={text => setSearchText(text)} // Capture search input
         renderLeftIcon={() => (
           <MaterialCommunityIcons
             style={styles.icon}
@@ -66,17 +81,14 @@ const DropdownFilled = ({
             size={20}
           />
         )}
-        renderRightIcon={item => {
-          return (
-            <>
-              {value && (
-                // <TouchableOpacity onPress={() => setValue(null)}>
+        renderRightIcon={() =>
+          value ? (
+            <View>
+              {!cancelable && (
                 <TouchableOpacity
                   onPress={() => {
                     setValue(null);
-                    if (onSelect) {
-                      onSelect(null); // Notify parent to clear its state
-                    }
+                    if (onSelect) onSelect(null);
                   }}>
                   <MaterialCommunityIcons
                     style={styles.icon}
@@ -86,15 +98,114 @@ const DropdownFilled = ({
                   />
                 </TouchableOpacity>
               )}
-            </>
-          );
-        }}
+            </View>
+          ) : null
+        }
       />
     </View>
   );
 };
 
 export default DropdownFilled;
+
+// import React, {useState} from 'react';
+// import {
+//   Dimensions,
+//   StyleSheet,
+//   Text,
+//   TouchableOpacity,
+//   View,
+// } from 'react-native';
+// import {Dropdown} from 'react-native-element-dropdown';
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// import COLORS from '../theme/colors';
+
+// const window = Dimensions.get('window');
+
+// const DropdownFilled = ({
+//   dropdownData,
+//   mode,
+//   label,
+//   placeholder,
+//   Color,
+//   search,
+//   onSelect,
+// }) => {
+//   const [value, setValue] = useState(null);
+//   const [isFocus, setIsFocus] = useState(false);
+
+//   return (
+//     <View style={styles.container}>
+//       <Dropdown
+//         mode={mode == 'modal' ? 'modal' : 'auto'}
+//         style={[
+//           styles.dropdown,
+//           isFocus && {borderColor: 'blue'},
+//           {backgroundColor: Color ? Color : COLORS.lightBorder},
+//         ]}
+//         placeholderStyle={styles.placeholderStyle}
+//         selectedTextStyle={styles.selectedTextStyle}
+//         selectedStyle={{color: 'red'}}
+//         itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
+//         activeColor={COLORS.lightPrimary}
+//         inputSearchStyle={styles.inputSearchStyle}
+//         iconStyle={styles.iconStyle}
+//         containerStyle={{fontSize: 12}}
+//         data={dropdownData}
+//         search={search === undefined ? true : search}
+
+//         maxHeight={300}
+//         labelField="label"
+//         valueField="value"
+//         placeholder={!isFocus ? placeholder : '...'}
+//         searchPlaceholder="Search..."
+//         value={value}
+//         onFocus={() => setIsFocus(true)}
+//         onBlur={() => setIsFocus(false)}
+//         onChange={item => {
+//           setValue(item.value);
+//           setIsFocus(false);
+//           if (onSelect) {
+//             onSelect(item.value);
+//           }
+//         }}
+//         renderLeftIcon={() => (
+//           <MaterialCommunityIcons
+//             style={styles.icon}
+//             color={isFocus ? 'blue' : 'black'}
+//             name="menu-down"
+//             size={20}
+//           />
+//         )}
+//         renderRightIcon={item => {
+//           return (
+//             <>
+//               {value && (
+//                 // <TouchableOpacity onPress={() => setValue(null)}>
+//                 <TouchableOpacity
+//                   onPress={() => {
+//                     setValue(null);
+//                     if (onSelect) {
+//                       onSelect(null); // Notify parent to clear its state
+//                     }
+//                   }}>
+//                   <MaterialCommunityIcons
+//                     style={styles.icon}
+//                     color={COLORS.primaryRed}
+//                     name="close-thick"
+//                     size={14}
+//                   />
+//                 </TouchableOpacity>
+//               )}
+//             </>
+//           );
+//         }}
+//       />
+//     </View>
+//   );
+// };
+
+// export default DropdownFilled;
 
 const styles = StyleSheet.create({
   container: {

@@ -202,6 +202,7 @@ export default function EventCreation({
               <SquareTextBox
                 Label={'Event Description *'}
                 Title={'Description'}
+                value={description}
                 setValue={text => setDescription(text)}
               />
 

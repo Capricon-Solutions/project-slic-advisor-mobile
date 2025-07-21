@@ -11,7 +11,6 @@ import {
   Alert,
   PermissionsAndroid,
   Platform,
-  Share,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,6 +21,8 @@ import FileViewer from 'react-native-file-viewer';
 import Fonts from '../theme/Fonts';
 import {useSelector} from 'react-redux';
 import {showToast} from './ToastMessage';
+import Share from 'react-native-share'; // Ensure this is installed and imported
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 const window = Dimensions.get('window');
 
@@ -79,8 +80,11 @@ export default function ELetterItems({item, navigation}) {
       setIsDownloading(true);
       setDownloadProgress(0);
       const pdfUrl = path;
-      let fileName = pdfUrl.split('/').pop();
-
+      // let fileName = pdfUrl.split('/').pop();
+      let fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
       if (!fileName.endsWith('.pdf')) {
         fileName += '.pdf';
       }
@@ -134,93 +138,52 @@ export default function ELetterItems({item, navigation}) {
     }
   };
 
-  const sharePDF = async path => {
-    console.log('test');
+  const sharePDF = async (pdfUrl, fileName, token, apiKey) => {
     try {
-      const hasPermission = await requestStoragePermission();
-      if (!hasPermission) {
-        showToast({
-          type: 'error',
-          text1: 'Permission Denied',
-          text2:
-            'Storage permission is required to download and view the file.',
-        });
-        return;
-      }
-      showToast({
-        type: 'success',
-        text1: 'Download Started',
-        text2: 'Please wait until download and open the file.',
-      });
-      setIsDownloading(true);
-      setDownloadProgress(0);
-      const pdfUrl = path;
-      let fileName = pdfUrl.split('/').pop();
-
+      // Extract and sanitize file name
+      fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
       if (!fileName.endsWith('.pdf')) {
         fileName += '.pdf';
       }
-      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-      console.log('Starting download from:', pdfUrl);
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-      const downloadOptions = {
-        fromUrl: pdfUrl,
-        toFile: localFilePath,
-        headers: {
-          'x-api-key': apiKey,
+
+      const downloadDir = ReactNativeBlobUtil.fs.dirs.DownloadDir;
+      const localFilePath = `${downloadDir}/${fileName}`;
+
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        appendExt: 'pdf',
+        path: localFilePath,
+      })
+        .fetch('GET', pdfUrl, {
           Authorization: `Bearer ${token}`,
-        },
-        progress: res => {
-          const progress = res.bytesWritten / res.contentLength;
+          'x-api-key': apiKey,
+        })
+        .progress({count: 10}, (received, total) => {
+          const progress = received / total;
           setDownloadProgress(progress);
-        },
-        progressDivider: 10,
-      };
-
-      const download = RNFS.downloadFile(downloadOptions);
-      console.log('Download started:', download);
-      const result = await download.promise;
-      // Linking.openURL(localFilePath).catch();
-      console.log('Download completed:', result.statusCode);
-
-      if (result.statusCode === 200) {
-        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-        // await FileViewer.open(localFilePath, {
-        //   showOpenWithDialog: true,
-        //   displayName: 'Your PDF Report',
-        //   mimeType: 'application/pdf',
-        // });
-        // Linking.openURL(`file://${localFilePath}`);
-        // Linking.sendIntent(`file://${localFilePath}`);
-        await FileViewer.open(localFilePath, {
-          showOpenWithDialog: true,
-          displayName: 'Your PDF Report',
-          mimeType: 'application/pdf',
         });
-        console.log('PDF opened successfully!');
-      } else {
-        throw new Error(
-          `Download failed with status code ${result.statusCode}`,
-        );
-      }
+
+      console.log('Sanitized file path:', res.path());
+      setIsDownloading(false);
+      await Share.open({
+        url: `file://${res.path()}`,
+        type: 'application/pdf',
+        filename: fileName,
+        title: fileName,
+        failOnCancel: false,
+      });
     } catch (error) {
-      console.error('Download/Open error:', error);
+      console.error('Error sharing PDF:', error);
+      setIsDownloading(false);
       showToast({
         type: 'error',
-        text1: 'Download Error',
-        text2: 'Failed to download or open the PDF file.',
+        text1: 'Share Error',
+        text2: 'Unable to share the PDF file.',
       });
-      // Alert.alert('Error', 'Failed to download or open the PDF file.');
-    } finally {
-      setIsDownloading(false);
     }
-
-    // await FileViewer.open(localFilePath, {
-    //   showOpenWithDialog: true,
-    //   displayName: 'Your PDF Report',
-    //   mimeType: 'application/pdf',
-    // });
   };
 
   return (
@@ -340,7 +303,14 @@ export default function ELetterItems({item, navigation}) {
             )}
             {item?.path && (
               <TouchableOpacity
-                onPress={() => sharePDF(item?.path)}
+                onPress={() =>
+                  sharePDF(
+                    item?.path,
+                    null,
+                    token,
+                    '12345abcde67890fghijklmnoprstuvwxz',
+                  )
+                }
                 style={{
                   height: 30,
                   width: 30,

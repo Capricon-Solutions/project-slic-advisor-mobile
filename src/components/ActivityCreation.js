@@ -105,10 +105,15 @@ export default function ActivityCreation({
         text1: 'Activity Created',
         text2: 'Your activity has been created successfully!',
       });
+      setDescription('');
+      setMeetWith('');
+      setSelectedType('');
+      setSelectedLead('');
+      setSelectedDate(null);
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
         setModalVisible(false);
-      },900);
+      }, 900);
       console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
@@ -230,7 +235,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Lead
+                  Lead *
                 </Text>
                 {/* <DropdownFilled
                   placeholder={'Select Lead'}
@@ -265,7 +270,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Activity Type
+                  Activity Type *
                 </Text>
                 <DropdownFilled
                   placeholder={'Select Activity Type'}
@@ -278,19 +283,22 @@ export default function ActivityCreation({
                     {label: 'Closed', value: 'C'},
                     {label: 'Reject', value: 'R'},
                   ]}
+                  value={selectedType}
                   onSelect={v => setSelectedType(v)}
                 />
               </View>
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
-                Label={'Event Description *'}
+                Label={'Action Description *'}
                 Title={'Description'}
+                value={description}
                 setValue={text => setDescription(text)}
               />
               <SquareTextBox
                 LabelColor={COLORS.ashBlue}
                 Label={'Meeting With *'}
                 Title={'Meeting With'}
+                value={meetWith}
                 setValue={text => setMeetWith(text)}
               />
               <TouchableOpacity

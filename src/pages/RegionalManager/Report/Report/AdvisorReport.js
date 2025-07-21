@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -35,7 +35,10 @@ import {
   useAdvisorReportQuery,
   useRmReportQuery,
 } from '../../../../redux/services/ReportApiSlice';
+import LoaderKit from 'react-native-loader-kit';
+
 import ReportFilter from '../../../../components/ReportFilter';
+import OutlinedTextView from '../../../../components/OutlinedTextView';
 
 const window = Dimensions.get('window');
 const data = [
@@ -53,9 +56,8 @@ export default function AdvisorReport({navigation, route}) {
   const {Title = ''} = route.params || {};
 
   const [value, setValue] = useState(1);
-  const [SelectedType, setSelectedType] = useState(1);
-  const [selectedMonth, setSelectedmonth] = useState(new Date().getMonth() + 1);
-  const [type, setType] = useState();
+  const [SelectedType, setSelectedType] = useState('ALL');
+  const [selectedMonth, setSelectedmonth] = useState('00');
   const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const tableHead = [
@@ -68,49 +70,81 @@ export default function AdvisorReport({navigation, route}) {
   ];
   const columnWidths = [150, 120, 120, 160, 120, 120];
   const [isLandscape, setIsLandscape] = useState(false);
-
+  const profile = useSelector(state => state.Profile.profile);
+  const profileResponse = profile?.user;
+  const regionName = profileResponse?.branchCode;
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
+
+  useEffect(() => {
+    console.log('SelectedType', SelectedType);
+  }, [SelectedType]);
+  console.log('regionName', regionName);
   const {
     data: AdvisorReport,
     error: AdvisorReportError,
     isLoading: AdvisorReportLoading,
+    refetch,
     isFetching: AdvisorReportFetching,
   } = useAdvisorReportQuery({
-    branch: branch,
-    type: type,
-    month: selectedMonth,
-    // type: SelectedType,
+    branch: regionName,
+    startMonth: selectedMonth === 0 ? 1 : selectedMonth,
+    endMonth: selectedMonth === 0 ? 12 : selectedMonth,
+    year: new Date().getFullYear(),
+    type: SelectedType,
     value: value,
   });
   console.log('AdvisorReport', AdvisorReport?.data);
   const tableData = AdvisorReport?.data?.map(item => [
-    item?.agentName?.toString() ?? '',
-
+    item?.advisor?.toString() ?? '',
     value == 1
-      ? item?.renewalPremium?.toString() ?? ''
-      : item?.nopRenewal?.toString() ?? '',
-    item?.nb?.toString() ?? '',
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
       ppw:
         value == 1
-          ? item?.ppwAmount?.toString() ?? ''
-          : item?.nopPpw?.toString() ?? '',
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
       other:
         value == 1
-          ? item?.otherRefundAAmount?.toString() ?? ''
-          : item?.nopOtherRefund?.toString() ?? '',
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
     value == 1
-      ? item?.endorsementsAmount?.toString() ?? ''
-      : item?.nopEndorsements?.toString() ?? '',
-    item?.total?.toString() ?? '',
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nb +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
   ]);
 
+  // useEffect(() => {
+  //   Orientation.lockToPortrait();
+  //   console.log('run here');
+  //   // console.log("Orientation",Orientation)
+  // }, []);
+
   const toggleOrientation = () => {
+    console.log('runhere');
     if (isLandscape) {
+      console.log('runhere');
+
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
       Orientation.lockToLandscape(); // Lock screen to landscape mode
@@ -121,8 +155,8 @@ export default function AdvisorReport({navigation, route}) {
   const advisorList =
     AdvisorReport && AdvisorReport.data
       ? AdvisorReport.data.map(item => ({
-          label: item.agentName,
-          value: item.agentCode,
+          label: item.advisor,
+          value: item.advisor,
         }))
       : [];
 
@@ -140,6 +174,13 @@ export default function AdvisorReport({navigation, route}) {
         onPressSearch={() => {
           // PolicyListResponse(searchData);
           setModalVisible(false);
+          refetch();
+        }}
+        initialValues={{
+          type: SelectedType,
+          month: selectedMonth,
+          view: value,
+          branch: branch,
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
@@ -238,20 +279,27 @@ export default function AdvisorReport({navigation, route}) {
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
+                value={value}
+                search={false}
+                nonClearable={true}
+                onValueChange={setValue}
                 dropdownData={[
-                  {label: 'Value', value: '1'},
-                  {label: 'NOP', value: '2'},
+                  {label: 'Value', value: 1},
+                  {label: 'NOP', value: 2},
                 ]}
-                onValueChange={value => setValue(value)}
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
+                search={false}
+                onValueChange={value => {
+                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
-                  {label: 'General Cumulative', value: '1'},
-                  {label: 'Motor Monthly', value: '2'},
+                  {label: 'General Cumulative', value: 'G'},
+                  {label: 'Motor Monthly', value: 'M'},
                 ]}
               />
             </View>
@@ -259,23 +307,27 @@ export default function AdvisorReport({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
+                value={selectedMonth}
+                nonClearable={true}
+                // onValueChange={setSelectedMonth}
+                onValueChange={value => {
+                  setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                }}
                 dropdownData={[
-                  {label: 'Cumulative', value: '0'},
-                  {label: 'January', value: '1'},
-                  {label: 'February', value: '2'},
-                  {label: 'March', value: '3'},
-                  {label: 'April', value: '4'},
-                  {label: 'May', value: '5'},
-                  {label: 'June', value: '6'},
-                  {label: 'July', value: '7'},
-                  {label: 'August', value: '8'},
-                  {label: 'September', value: '9'},
+                  {label: 'Cumulative', value: '00'},
+                  {label: 'January', value: '01'},
+                  {label: 'February', value: '02'},
+                  {label: 'March', value: '03'},
+                  {label: 'April', value: '04'},
+                  {label: 'May', value: '05'},
+                  {label: 'June', value: '06'},
+                  {label: 'July', value: '07'},
+                  {label: 'August', value: '08'},
+                  {label: 'September', value: '09'},
                   {label: 'October', value: '10'},
                   {label: 'November', value: '11'},
                   {label: 'December', value: '12'},
                 ]}
-                selectedValue={selectedMonth}
-                onValueChange={value => setSelectedmonth(value)}
               />
             </View>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
@@ -290,13 +342,40 @@ export default function AdvisorReport({navigation, route}) {
               <Button Title={'Apply'} />
             </View>
           </View>
-          <HorizontalReportTable
+          {/* <HorizontalReportTable
             onPress={() => navigation.navigate('PolicyDetails')}
             haveTotal={false}
             tableHead={tableHead}
             tableData={tableData}
             columnWidths={columnWidths}
-          />
+          /> */}
+
+          {AdvisorReport?.data.length > 0 ? (
+            <HorizontalReportTable
+              onPress={() => navigation.navigate('PolicyDetails')}
+              haveTotal={false}
+              tableHead={tableHead}
+              tableData={tableData}
+              columnWidths={columnWidths}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+              }}>
+              <Text
+                style={{
+                  marginTop: 20,
+                  fontSize: 16,
+                  color: COLORS.errorBorder,
+                  fontFamily: Fonts.Roboto.Bold,
+                }}>
+                Sorry, No Data Found
+              </Text>
+            </View>
+          )}
         </ScrollView>
       ) : (
         <FlatList
@@ -304,6 +383,25 @@ export default function AdvisorReport({navigation, route}) {
           initialNumToRender={2}
           keyExtractor={item => item.id}
           contentContainerStyle={{padding: 10}}
+          ListEmptyComponent={
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: window.height * 0.7,
+              }}>
+              {!AdvisorReportFetching && (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.SemiBold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              )}
+            </View>
+          }
           renderItem={({item}) => (
             <View
               style={{
@@ -338,12 +436,18 @@ export default function AdvisorReport({navigation, route}) {
                   width: '100%',
                 }}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
-                    readOnly
+                  <OutlinedTextView
                     Title={'Renewal'}
                     value={
-                      item?.renewal !== null && item?.renewal !== undefined
-                        ? Number(item?.renewal).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.renewal != null
+                          ? Number(item.renewal).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopRenewal != null
+                        ? Number(item.nopRenewal).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -353,11 +457,10 @@ export default function AdvisorReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
+                  <OutlinedTextView
                     Title={'NB'}
-                    readOnly
                     value={
-                      item?.renewal !== null && item?.nb !== undefined
+                      item?.nb !== null && item?.nb !== undefined
                         ? Number(item?.nb).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
@@ -371,12 +474,18 @@ export default function AdvisorReport({navigation, route}) {
               {/* Second Row */}
               <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
-                    readOnly
+                  <OutlinedTextView
                     Title={'PPW'}
                     value={
-                      item.renewal !== null && item?.refundPpw !== undefined
-                        ? Number(item.refundPpw).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundPpw != null
+                          ? Number(item.refundPpw).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopPpw != null
+                        ? Number(item.nopPpw).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -386,12 +495,18 @@ export default function AdvisorReport({navigation, route}) {
                 </View>
 
                 <View style={{flex: 1}}>
-                  <OutlinedTextBox
-                    readOnly
+                  <OutlinedTextView
                     Title={'Others'}
                     value={
-                      item?.renewal !== null && item?.refundOther !== undefined
-                        ? Number(item.refundOther).toLocaleString('en-US', {
+                      value == 1
+                        ? item?.refundOther != null
+                          ? Number(item.refundOther).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopOtherRefund != null
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
@@ -403,12 +518,18 @@ export default function AdvisorReport({navigation, route}) {
 
               {/* Third Row */}
               <View>
-                <OutlinedTextBox
-                  readOnly
+                <OutlinedTextView
                   Title={'Endorsement'}
                   value={
-                    item.renewal !== null && item.endorsement !== undefined
-                      ? Number(item?.endorsement)?.toLocaleString('en-US', {
+                    value == 1
+                      ? item?.endorsement != null
+                        ? Number(item.endorsement).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
+                        : ''
+                      : item?.nopEndorsements != null
+                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })
@@ -418,22 +539,64 @@ export default function AdvisorReport({navigation, route}) {
               </View>
 
               <View>
-                <OutlinedTextBox
-                  readOnly
+                <OutlinedTextView
                   Title={'Total'}
-                  value={
-                    item?.renewal !== null && item?.total !== undefined
-                      ? Number(item.total)?.toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : ''
-                  }
+                  value={Number(
+                    value == 1
+                      ? (item?.renewal ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.refundPpw ?? 0) +
+                          (item?.refundOther ?? 0) +
+                          (item?.endorsement ?? 0)
+                      : (item?.nopRenewal ?? 0) +
+                          (item?.nopPpw ?? 0) +
+                          (item?.nb ?? 0) +
+                          (item?.nopOtherRefund ?? 0) +
+                          (item?.nopEndorsements ?? 0),
+                  ).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+
+                  // value={
+                  //   value == 1
+                  //     ? (
+                  //         (item?.renewal ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.refundPpw ?? 0) +
+                  //         (item?.refundOther ?? 0) +
+                  //         (item?.endorsement ?? 0)
+                  //       ).toLocaleString()
+                  //     : (
+                  //         (item?.nopRenewal ?? 0) +
+                  //         (item?.nopPpw ?? 0) +
+                  //         (item?.nb ?? 0) +
+                  //         (item?.nopOtherRefund ?? 0) +
+                  //         (item?.nopEndorsements ?? 0)
+                  //       ).toLocaleString()
+                  // }
                 />
               </View>
             </View>
           )}
         />
+      )}
+      {AdvisorReportFetching && (
+        <View
+          style={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+            width: '100%',
+            height: '100%',
+          }}>
+          <LoaderKit
+            style={{width: 50, height: 50}}
+            name={'LineScalePulseOutRapid'}
+            color={COLORS.grayText}
+          />
+        </View>
       )}
     </View>
   );

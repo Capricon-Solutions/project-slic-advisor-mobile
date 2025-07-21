@@ -87,6 +87,7 @@ export const baseApi = createApi({
     'SetTarget',
     'Notifications',
     'MonthlyPlan',
+    'ProfilePic',
   ],
   endpoints: () => ({}),
 });

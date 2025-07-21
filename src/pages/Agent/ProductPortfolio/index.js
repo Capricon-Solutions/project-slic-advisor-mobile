@@ -132,7 +132,7 @@ export default function ProductPortfolio({navigation}) {
   return (
     <View style={Styles.container}>
       <HeaderBackground />
-      <Header Title="Product portfolio" onPress={() => navigation.goBack()} />
+      <Header Title="Product Portfolio" onPress={() => navigation.goBack()} />
       <View style={{paddingHorizontal: 20}}>
         <View style={[styles.mainWrap, {marginTop: 10}]}>
           <TouchableOpacity
@@ -217,7 +217,7 @@ export default function ProductPortfolio({navigation}) {
                 contentContainerStyle={{
                   fadeDuration: 1000,
                   backgroundColor: 'transparent',
-                  paddingBottom: window.height * 0.25,
+                  paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderDepartmentItem}
                 // keyExtractor={item => item.id.toString()}

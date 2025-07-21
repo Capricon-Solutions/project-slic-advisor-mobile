@@ -190,14 +190,12 @@ export default function MotorRenewal({navigation}) {
       const download = RNFS.downloadFile(downloadOptions);
       console.log('Download started:', download);
       const result = await download.promise;
-      // Linking.openURL(localFilePath).catch();
       console.log('Download completed:', result.statusCode);
 
       if (result.statusCode === 200) {
-        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
         await FileViewer.open(localFilePath, {
-          showOpenWithDialog: true,
+          showOpenWithDialog: true, // chooser if more than one app
+          showAppsSuggestions: true, // jumps to Play Store if none
           displayName: 'Your PDF Report',
           mimeType: 'application/pdf',
         });
@@ -214,7 +212,6 @@ export default function MotorRenewal({navigation}) {
         text1: 'Download Error',
         text2: 'Failed to download or open the PDF file.',
       });
-      // Alert.alert('Error', 'Failed to download or open the PDF file.');
     } finally {
       setIsDownloading(false);
     }
@@ -232,7 +229,7 @@ export default function MotorRenewal({navigation}) {
       <Header
         Title="Motor Renewal"
         onPress={() => navigation.goBack()}
-        havePdf={true}
+        havePdf={motorRenewalsList?.data?.path ? true : false}
         onPDF={() => downloadAndOpenPDF()}
       />
 
@@ -361,11 +358,31 @@ export default function MotorRenewal({navigation}) {
           <FlatList
             data={motorRenewalsList?.data?.motorRenewals}
             keyExtractor={item => item.id}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
             renderItem={({item}) => <ECMotorRenewal item={item} />}
             contentContainerStyle={{
-              paddingBottom: 250,
+              paddingBottom: window.height * 0.5,
             }}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                  height: window.height * 0.7,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.Bold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              </View>
+            }
           />
         )}
       </View>

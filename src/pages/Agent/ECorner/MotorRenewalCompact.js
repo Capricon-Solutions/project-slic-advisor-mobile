@@ -228,7 +228,7 @@ export default function MotorRenewalCompact({navigation}) {
       <Header
         Title="Motor Renewal Compact"
         onPress={() => navigation.goBack()}
-        havePdf={true}
+        havePdf={motorRenewalsList?.data?.path ? true : false}
         onPDF={() => downloadAndOpenPDF()}
       />
       <ScrollView>
@@ -255,7 +255,7 @@ export default function MotorRenewalCompact({navigation}) {
               marginVertical: 20,
               color: COLORS.borderColor,
             }}>
-            (Click on policy Number to view details)
+            (Click on Policy Number to View Details)
           </Text>
 
           {isFetching == true ? (

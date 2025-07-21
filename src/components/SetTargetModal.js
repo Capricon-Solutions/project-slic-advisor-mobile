@@ -174,9 +174,36 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 outlineColor="transparent"
                 textColor={COLORS.textColor}
                 value={inputValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                // onChangeText={text => {
+                //   let sanitizedText = text.replace(/[^0-9.]/g, '');
+
+                //   // Ensure only one decimal point is allowed
+                //   const parts = sanitizedText.split('.');
+                //   if (parts.length > 2) {
+                //     sanitizedText = parts[0] + '.' + parts.slice(1).join('');
+                //   }
+
+                //   setInputValue(sanitizedText);
+                // }}
                 onChangeText={text => {
-                  const raw = text.replace(/[^0-9]/g, ''); // remove commas
-                  setInputValue(raw);
+                  // Remove all non-numeric characters except the decimal point
+                  let sanitizedText = text.replace(/[^0-9.]/g, '');
+
+                  // Ensure only one decimal point is allowed
+                  const parts = sanitizedText.split('.');
+                  if (parts.length > 2) {
+                    sanitizedText = parts[0] + '.' + parts.slice(1).join('');
+                  }
+
+                  // Limit to 10 digits before the decimal
+                  const integerPart = parts[0].slice(0, 10); // max 10 digits before decimal
+                  const decimalPart = parts[1] || '';
+
+                  sanitizedText = decimalPart
+                    ? `${integerPart}.${decimalPart}`
+                    : integerPart;
+
+                  setInputValue(sanitizedText);
                 }}
                 style={{
                   backgroundColor: COLORS.lightBorder,

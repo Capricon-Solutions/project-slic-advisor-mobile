@@ -118,7 +118,7 @@ export default function ClaimHistory({navigation, route}) {
         <DetailLine Title={'Payment Type'} detail={item.payTyp} />
         <DetailLine Title={'Voucher Status'} detail={item.vouSts} />
         <DetailLine
-          Title={'Paid amount'}
+          Title={'Paid Amount'}
           detail={
             'LKR ' +
             (item?.padAmount != null

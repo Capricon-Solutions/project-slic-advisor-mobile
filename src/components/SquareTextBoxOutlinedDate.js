@@ -134,6 +134,8 @@ const SquareTextBoxOutlinedDate = forwardRef(
       errorBorder,
       borderColor,
       readOnly,
+      minimumDate,
+      maximumDate,
     },
     ref,
   ) => {
@@ -222,6 +224,8 @@ const SquareTextBoxOutlinedDate = forwardRef(
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
+          minimumDate={minimumDate ? minimumDate : null}
+          maximumDate={maximumDate ? maximumDate : null}
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
