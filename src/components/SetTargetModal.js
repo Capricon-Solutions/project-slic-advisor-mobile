@@ -63,6 +63,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
     }
     try {
       const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
+      setInputValue(null);
       setModalVisible(false);
       console.log('Response:', response.success); // Handle success response
       if (response.success === true) {
@@ -143,7 +144,10 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 Set your target for {currentTargetDate}
               </Text>
               <TouchableOpacity
-                onPress={() => hide()}
+                onPress={() => {
+                  setInputValue(null);
+                  hide();
+                }}
                 style={styles.closeButton}>
                 <MaterialCommunityIcons
                   name="close"
@@ -169,8 +173,11 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 activeOutlineColor={COLORS.primary}
                 outlineColor="transparent"
                 textColor={COLORS.textColor}
-                value={inputValue} // Controlled component
-                onChangeText={text => setInputValue(text)} // Store input value
+                value={inputValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                onChangeText={text => {
+                  const raw = text.replace(/[^0-9]/g, ''); // remove commas
+                  setInputValue(raw);
+                }}
                 style={{
                   backgroundColor: COLORS.lightBorder,
                   marginBottom: 15,
