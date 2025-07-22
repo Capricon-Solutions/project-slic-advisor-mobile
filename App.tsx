@@ -10,7 +10,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
-import {StyleSheet, Text, View, useColorScheme, StatusBar} from 'react-native';
+import {StyleSheet, Text, View, useColorScheme, StatusBar, SafeAreaView, Platform} from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
@@ -225,14 +225,21 @@ function App(): React.JSX.Element {
   );
 
   return (
+   
+      
+    
     <Provider store={store}>
+  {/* <SafeAreaView style={{ flex: 1 }}> */}
+   
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="AuthStack" component={AuthStack} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast visibilityTime={2000} />
+     {/* </SafeAreaView> */}
     </Provider>
+   
   );
 }
 

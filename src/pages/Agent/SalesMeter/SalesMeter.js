@@ -199,9 +199,11 @@ export default function SalesMeter({navigation}) {
   const closeMenu = () => setVisible(false);
 
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View 
+    style={[Styles.container, {paddingHorizontal: 0}]}>
+      <HeaderBackground />
       <PaperProvider>
-        <HeaderBackground />
+        
         <SetTargetModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}

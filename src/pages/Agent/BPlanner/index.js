@@ -310,12 +310,16 @@ export default function BPlanner({navigation}) {
   return (
     <PaperProvider>
       <View style={Styles.container}>
-        <NotAttending
+      
+
+       
+   
+        {/* <View style={[Styles.container, {overflow: 'scroll'}]}> */}
+            <NotAttending
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-        />
-
-        <EventCreation
+          />
+           <EventCreation
           modalVisible={eventModalVisible}
           setModalVisible={setEventModalVisible}
           onEventCreated={date => {
@@ -329,8 +333,8 @@ export default function BPlanner({navigation}) {
             });
             console.log('Event created for date:', date);
           }}
-        />
-        <ActivityCreation
+         />
+               <ActivityCreation
           modalVisible={activityModalVisible}
           setModalVisible={setActivityModalVisible}
           leadsData={LeadList}
@@ -345,8 +349,7 @@ export default function BPlanner({navigation}) {
             });
             console.log('Event created for date:', date);
           }}
-        />
-        <View style={[Styles.container, {overflow: 'scroll'}]}>
+         />
           <HeaderBackground />
           <Header
             haveFilters={true}
@@ -531,7 +534,7 @@ export default function BPlanner({navigation}) {
               </View>
             )}
           </ScrollView>
-        </View>
+        {/* </View> */}
       </View>
     </PaperProvider>
   );

@@ -1,0 +1,30 @@
+// src/components/IOSPaddingWrapper.tsx
+import React from 'react';
+import { Platform, StyleSheet, View, ViewProps } from 'react-native';
+
+interface IOSPaddingWrapperProps extends ViewProps {
+  children: React.ReactNode;
+}
+
+const IOSPaddingWrapper: React.FC<IOSPaddingWrapperProps> = ({ children, style, ...props }) => {
+  return (
+    <View 
+      style={[
+        Platform.OS === 'ios' ? styles.iosPadding : {},
+        style
+      ]} 
+      {...props}
+    >
+      {children}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  iosPadding: {
+    padding: 20,
+    flex: 1,
+  },
+});
+
+export default IOSPaddingWrapper;

@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		56C86463BF0EDE5F59783ACE /* libPods-slic-slicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F4173CD668BA96A3DB368A /* libPods-slic-slicTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		AABFE8580BBFA0EDBF3CE8EE /* libPods-slic-slicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98738D4B5CB9254A3C1F01E2 /* libPods-slic-slicTests.a */; };
-		D7B838B69663D32E19E159C3 /* libPods-slic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369ECEA5CB5574DE117F848F /* libPods-slic.a */; };
+		E61E8792348ABF832EF55C12 /* libPods-slic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6FD2A5D6E6D112B89AA3AC /* libPods-slic.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,13 +37,13 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = slic/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = slic/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = slic/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		369ECEA5CB5574DE117F848F /* libPods-slic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-slic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3C6BD62EE03E47DFEA8A70EB /* Pods-slic-slicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic-slicTests.debug.xcconfig"; path = "Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests.debug.xcconfig"; sourceTree = "<group>"; };
-		478BDC5232722AE45F3F23DC /* Pods-slic-slicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic-slicTests.release.xcconfig"; path = "Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests.release.xcconfig"; sourceTree = "<group>"; };
-		7E1D9DF59F067CC2365D3F3A /* Pods-slic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic.debug.xcconfig"; path = "Target Support Files/Pods-slic/Pods-slic.debug.xcconfig"; sourceTree = "<group>"; };
+		157F2933349ADCBA6C8CDB99 /* Pods-slic-slicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic-slicTests.debug.xcconfig"; path = "Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests.debug.xcconfig"; sourceTree = "<group>"; };
+		473A4ADF2C999910746D0D31 /* Pods-slic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic.release.xcconfig"; path = "Target Support Files/Pods-slic/Pods-slic.release.xcconfig"; sourceTree = "<group>"; };
+		61669853EE6AD077A60349C5 /* Pods-slic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic.debug.xcconfig"; path = "Target Support Files/Pods-slic/Pods-slic.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = slic/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		98738D4B5CB9254A3C1F01E2 /* libPods-slic-slicTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-slic-slicTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D06577D0F17A050118AEF0CD /* Pods-slic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic.release.xcconfig"; path = "Target Support Files/Pods-slic/Pods-slic.release.xcconfig"; sourceTree = "<group>"; };
+		97F4173CD668BA96A3DB368A /* libPods-slic-slicTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-slic-slicTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D83837909594364F3A0D74A4 /* Pods-slic-slicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-slic-slicTests.release.xcconfig"; path = "Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests.release.xcconfig"; sourceTree = "<group>"; };
+		EB6FD2A5D6E6D112B89AA3AC /* libPods-slic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-slic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -52,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AABFE8580BBFA0EDBF3CE8EE /* libPods-slic-slicTests.a in Frameworks */,
+				56C86463BF0EDE5F59783ACE /* libPods-slic-slicTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7B838B69663D32E19E159C3 /* libPods-slic.a in Frameworks */,
+				E61E8792348ABF832EF55C12 /* libPods-slic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,8 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				369ECEA5CB5574DE117F848F /* libPods-slic.a */,
-				98738D4B5CB9254A3C1F01E2 /* libPods-slic-slicTests.a */,
+				EB6FD2A5D6E6D112B89AA3AC /* libPods-slic.a */,
+				97F4173CD668BA96A3DB368A /* libPods-slic-slicTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -142,10 +142,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7E1D9DF59F067CC2365D3F3A /* Pods-slic.debug.xcconfig */,
-				D06577D0F17A050118AEF0CD /* Pods-slic.release.xcconfig */,
-				3C6BD62EE03E47DFEA8A70EB /* Pods-slic-slicTests.debug.xcconfig */,
-				478BDC5232722AE45F3F23DC /* Pods-slic-slicTests.release.xcconfig */,
+				61669853EE6AD077A60349C5 /* Pods-slic.debug.xcconfig */,
+				473A4ADF2C999910746D0D31 /* Pods-slic.release.xcconfig */,
+				157F2933349ADCBA6C8CDB99 /* Pods-slic-slicTests.debug.xcconfig */,
+				D83837909594364F3A0D74A4 /* Pods-slic-slicTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -157,12 +157,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "slicTests" */;
 			buildPhases = (
-				91F1B4E0CDF224FC3E2F1EC1 /* [CP] Check Pods Manifest.lock */,
+				696A490D927966BD5F0042CA /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				A1527A1520A3ACE464DC7EF2 /* [CP] Embed Pods Frameworks */,
-				644920961426863125D2AB5C /* [CP] Copy Pods Resources */,
+				D907B3C4B1D2DDA1B679758F /* [CP] Embed Pods Frameworks */,
+				6A0BECC9DF1573FF37C3FD9D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,13 +178,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "slic" */;
 			buildPhases = (
-				3DEF082B735E730BF1103671 /* [CP] Check Pods Manifest.lock */,
+				4689F420B141C445CC66B8C2 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				383F6846CF6C6A7B8256E1C5 /* [CP] Embed Pods Frameworks */,
-				A85FC34C98F6D93D80CE0393 /* [CP] Copy Pods Resources */,
+				3DE909C540EA538A2937107D /* [CP] Embed Pods Frameworks */,
+				5FAFCD3311CE719B5B5233A6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,7 +267,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		383F6846CF6C6A7B8256E1C5 /* [CP] Embed Pods Frameworks */ = {
+		3DE909C540EA538A2937107D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -284,7 +284,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3DEF082B735E730BF1103671 /* [CP] Check Pods Manifest.lock */ = {
+		4689F420B141C445CC66B8C2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -306,24 +306,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		644920961426863125D2AB5C /* [CP] Copy Pods Resources */ = {
+		5FAFCD3311CE719B5B5233A6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		91F1B4E0CDF224FC3E2F1EC1 /* [CP] Check Pods Manifest.lock */ = {
+		696A490D927966BD5F0042CA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -345,7 +345,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A1527A1520A3ACE464DC7EF2 /* [CP] Embed Pods Frameworks */ = {
+		6A0BECC9DF1573FF37C3FD9D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D907B3C4B1D2DDA1B679758F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,23 +377,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic-slicTests/Pods-slic-slicTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A85FC34C98F6D93D80CE0393 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-slic/Pods-slic-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -412,7 +412,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C6BD62EE03E47DFEA8A70EB /* Pods-slic-slicTests.debug.xcconfig */;
+			baseConfigurationReference = 157F2933349ADCBA6C8CDB99 /* Pods-slic-slicTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -439,7 +439,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 478BDC5232722AE45F3F23DC /* Pods-slic-slicTests.release.xcconfig */;
+			baseConfigurationReference = D83837909594364F3A0D74A4 /* Pods-slic-slicTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -463,7 +463,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7E1D9DF59F067CC2365D3F3A /* Pods-slic.debug.xcconfig */;
+			baseConfigurationReference = 61669853EE6AD077A60349C5 /* Pods-slic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
@@ -495,7 +495,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D06577D0F17A050118AEF0CD /* Pods-slic.release.xcconfig */;
+			baseConfigurationReference = 473A4ADF2C999910746D0D31 /* Pods-slic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;

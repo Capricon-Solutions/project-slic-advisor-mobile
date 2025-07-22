@@ -7,29 +7,9 @@ PODS:
   - hermes-engine (0.74.0):
     - hermes-engine/Pre-built (= 0.74.0)
   - hermes-engine/Pre-built (0.74.0)
-  - LoaderKit (3.0.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - NVActivityIndicatorView-ObjC
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - NVActivityIndicatorView-ObjC (1.0.1)
+  - NVActivityIndicatorView (5.1.1):
+    - NVActivityIndicatorView/Base (= 5.1.1)
+  - NVActivityIndicatorView/Base (5.1.1)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -964,6 +944,9 @@ PODS:
     - React-Core
   - react-native-document-picker (10.1.0):
     - React-Core
+  - react-native-loader-kit (2.0.8):
+    - NVActivityIndicatorView (= 5.1.1)
+    - React-Core
   - react-native-orientation-locker (1.7.0):
     - React-Core
   - react-native-safe-area-context (5.1.0):
@@ -1411,7 +1394,6 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - LoaderKit (from `../node_modules/react-native-loader-kit`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1441,6 +1423,7 @@ DEPENDENCIES:
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
+  - react-native-loader-kit (from `../node_modules/react-native-loader-kit`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -1482,7 +1465,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - NVActivityIndicatorView-ObjC
+    - NVActivityIndicatorView
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1499,8 +1482,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-02-20-RNv0.74.0-999cfd9979b5f57b1269119679ab8cdf60897de9
-  LoaderKit:
-    :path: "../node_modules/react-native-loader-kit"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1555,6 +1536,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
+  react-native-loader-kit:
+    :path: "../node_modules/react-native-loader-kit"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
@@ -1639,8 +1622,7 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 6eae7edb2f563ee41d7c1f91f4f2e57c26d8a5c3
-  LoaderKit: 09f910409d85c5adeb3f63c2e961118bf8a6802b
-  NVActivityIndicatorView-ObjC: a2394f53d84c32f71823743a2030e0378d40332f
+  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
   RCT-Folly: 5f972de9f7d384c7d0e7380dd7da506228e568f5
   RCTDeprecation: 3ca8b6c36bfb302e1895b72cfe7db0de0c92cd47
   RCTRequired: 9fc183af555fd0c89a366c34c1ae70b7e03b1dc5
@@ -1668,6 +1650,7 @@ SPEC CHECKSUMS:
   react-native-blob-util: 55bf7c1c4c90d138e45ddfeddbec0ec91d8df8c8
   react-native-date-picker: 8504514d3f83c35252cc13b256712ae37ce25169
   react-native-document-picker: 41c1a48a066653cad7ac915e7c543e2baa531b0f
+  react-native-loader-kit: 46b54fe8b8a21fe8c4d4f5d635faedf187d5ba09
   react-native-orientation-locker: cc6f357b289a2e0dd2210fea0c52cb8e0727fdaa
   react-native-safe-area-context: e134b241010ebe2aacdcea013565963d13826faa
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594

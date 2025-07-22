@@ -1,3 +1,5 @@
+import { Platform } from "react-native";
+
 const COLORS = {
   primary: '#00ADBB',
   primaryOrange: '#EB5017',
@@ -7,7 +9,7 @@ const COLORS = {
   title: '#33384B',
   subtitle: '#757575',
   placeholder: '#757575',
-  background: '#FDFDFD',
+  background: Platform.OS === 'ios'? '#edebeb' :'#FDFDFD',
   white: '#ffffff',
   backcard: '#EF9A4B36',
   black: 'black',

@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {View, Platform, StatusBar} from 'react-native';
+import {View, Platform, StatusBar, Dimensions} from 'react-native';
 import {
   useFocusEffect,
   useLinkBuilder,
@@ -22,6 +22,8 @@ import Report from '../../RegionalManager/Report/Report';
 import ReportSwitch from '../../RegionalManager/Report/ReportSwitch';
 import {Getpath} from '../../../redux/services/NavControllerSlice';
 
+const window = Dimensions.get('window');
+
 function AgengNavigator({state, descriptors, navigation}) {
   const {colors} = useTheme();
   const {buildHref} = useLinkBuilder();
@@ -33,6 +35,7 @@ function AgengNavigator({state, descriptors, navigation}) {
         backgroundColor: colors.card,
         borderTopWidth: 1,
         borderColor: colors.border,
+        paddingBottom: Platform.OS === 'ios' ? 10 : 0
       }}>
       <StatusBar
         backgroundColor={COLORS.TopBackColor}
