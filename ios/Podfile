@@ -17,6 +17,21 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+# # Inside your Podfile
+# use_flipper!({
+#   'Flipper' => '0.125.0', # Or any version compatible with your RN version
+#   'Flipper-Folly' => '2.6.10',
+#   'Flipper-RSocket' => '1.4.3',
+#   'FlipperKit' => '0.125.0',
+# })
+  def use_flipper!(options = {})
+       # Your existing Flipper setup code here
+       # For example:
+       flipperkit_version = options['Flipper'] || '0.125.0'
+       pod 'FlipperKit', '~> #{flipperkit_version}'
+       # Additional configuration...
+     end
+
 target 'slic' do
   config = use_native_modules!
 
@@ -41,3 +56,45 @@ target 'slic' do
     )
   end
 end
+
+
+# platform :ios, '15.0'
+
+# require_relative '../node_modules/react-native/scripts/react_native_pods'
+
+# prepare_react_native_project!
+
+# linkage = ENV['USE_FRAMEWORKS']
+# if linkage != nil
+#   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+#   use_frameworks! :linkage => linkage.to_sym
+# end
+
+# target 'slic' do
+#   config = use_native_modules!
+
+#   use_react_native!(
+#     :path => config[:reactNativePath],
+#     :app_path => "#{Pod::Config.instance.installation_root}/.."
+#   )
+
+#   def use_flipper!(options = {})
+#        # Your existing Flipper setup code here
+#        # For example:
+#        flipperkit_version = options['Flipper'] || '0.125.0'
+#        pod 'FlipperKit', '~> #{flipperkit_version}'
+#        # Additional configuration...
+#      end
+
+#   target 'slicTests' do
+#     inherit! :complete
+#   end
+
+#   post_install do |installer|
+#     react_native_post_install(
+#       installer,
+#       config[:reactNativePath],
+#       :mac_catalyst_enabled => false
+#     )
+#   end
+# end

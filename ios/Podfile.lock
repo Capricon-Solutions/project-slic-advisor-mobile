@@ -7,9 +7,29 @@ PODS:
   - hermes-engine (0.74.0):
     - hermes-engine/Pre-built (= 0.74.0)
   - hermes-engine/Pre-built (0.74.0)
-  - NVActivityIndicatorView (5.1.1):
-    - NVActivityIndicatorView/Base (= 5.1.1)
-  - NVActivityIndicatorView/Base (5.1.1)
+  - LoaderKit (3.0.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - NVActivityIndicatorView-ObjC
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - NVActivityIndicatorView-ObjC (1.0.1)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -938,12 +958,11 @@ PODS:
   - React-Mapbuffer (0.74.0):
     - glog
     - React-debug
+  - react-native-blob-util (0.22.2):
+    - React-Core
   - react-native-date-picker (5.0.9):
     - React-Core
   - react-native-document-picker (10.1.0):
-    - React-Core
-  - react-native-loader-kit (2.0.8):
-    - NVActivityIndicatorView (= 5.1.1)
     - React-Core
   - react-native-orientation-locker (1.7.0):
     - React-Core
@@ -1338,7 +1357,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNShare (12.0.9):
+  - RNShare (12.1.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1392,6 +1411,7 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - LoaderKit (from `../node_modules/react-native-loader-kit`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1418,9 +1438,9 @@ DEPENDENCIES:
   - React-jsitracing (from `../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
-  - react-native-loader-kit (from `../node_modules/react-native-loader-kit`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -1462,7 +1482,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - NVActivityIndicatorView
+    - NVActivityIndicatorView-ObjC
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1479,6 +1499,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-02-20-RNv0.74.0-999cfd9979b5f57b1269119679ab8cdf60897de9
+  LoaderKit:
+    :path: "../node_modules/react-native-loader-kit"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1527,12 +1549,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-blob-util:
+    :path: "../node_modules/react-native-blob-util"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
-  react-native-loader-kit:
-    :path: "../node_modules/react-native-loader-kit"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
@@ -1617,7 +1639,8 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 6eae7edb2f563ee41d7c1f91f4f2e57c26d8a5c3
-  NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
+  LoaderKit: 09f910409d85c5adeb3f63c2e961118bf8a6802b
+  NVActivityIndicatorView-ObjC: a2394f53d84c32f71823743a2030e0378d40332f
   RCT-Folly: 5f972de9f7d384c7d0e7380dd7da506228e568f5
   RCTDeprecation: 3ca8b6c36bfb302e1895b72cfe7db0de0c92cd47
   RCTRequired: 9fc183af555fd0c89a366c34c1ae70b7e03b1dc5
@@ -1642,9 +1665,9 @@ SPEC CHECKSUMS:
   React-jsitracing: d30048b056e8c9673dfbe67813bdb874c03558a5
   React-logger: 5ae0978955199c132e71e8cf7797f619a6d17164
   React-Mapbuffer: 3b85b3778e447cd1f06d353b8e967af50f272829
+  react-native-blob-util: 55bf7c1c4c90d138e45ddfeddbec0ec91d8df8c8
   react-native-date-picker: 8504514d3f83c35252cc13b256712ae37ce25169
   react-native-document-picker: 41c1a48a066653cad7ac915e7c543e2baa531b0f
-  react-native-loader-kit: 46b54fe8b8a21fe8c4d4f5d635faedf187d5ba09
   react-native-orientation-locker: cc6f357b289a2e0dd2210fea0c52cb8e0727fdaa
   react-native-safe-area-context: e134b241010ebe2aacdcea013565963d13826faa
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
@@ -1679,12 +1702,12 @@ SPEC CHECKSUMS:
   RNGestureHandler: 4c50b5e4ca199cf497511d44e3fe45d54d62e279
   RNReanimated: 54c8f1cc0be7504cc3eaf213655ad13c4ba53fc2
   RNScreens: c7148190b2cb849bc2acc76c226d59abcfc32821
-  RNShare: 801ea42c16b5b0fe311334998afc0901980ec06a
+  RNShare: 66aa1098b96dab12e42c04f08a6adc60ecdcccaf
   RNSVG: 63ef964b8397204ff70b78de6c93858320816671
   RNVectorIcons: 6c795cacc9276decc31d8e1a139b9cc6fc0479ca
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 56f906bf6c11c931588191dde1229fd3e4e3d557
 
-PODFILE CHECKSUM: d76dd9e8927134accc110f11c404d29c7f2a6e70
+PODFILE CHECKSUM: 9c000caada05069bd3a25ecc2601584bc5803946
 
 COCOAPODS: 1.16.2
