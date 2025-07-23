@@ -1,67 +1,14 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+# # Resolve react_native_pods.rb with node to allow for hoisting
+# require Pod::Executable.execute_command('node', ['-p',
+#   'require.resolve(
+#     "react-native/scripts/react_native_pods.rb",
+#     {paths: [process.argv[1]]},
+#   )', __dir__]).strip
 
-   platform :ios, '15.0'
+#    platform :ios, '15.0'
 
-#  platform :ios, '13.0'
-# platform :ios, min_ios_version_supported
-prepare_react_native_project!
-
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
-
-# # Inside your Podfile
-# use_flipper!({
-#   'Flipper' => '0.125.0', # Or any version compatible with your RN version
-#   'Flipper-Folly' => '2.6.10',
-#   'Flipper-RSocket' => '1.4.3',
-#   'FlipperKit' => '0.125.0',
-# })
-  def use_flipper!(options = {})
-       # Your existing Flipper setup code here
-       # For example:
-       flipperkit_version = options['Flipper'] || '0.125.0'
-       pod 'FlipperKit', '~> #{flipperkit_version}'
-       # Additional configuration...
-     end
-
-target 'slic' do
-  config = use_native_modules!
-
-  use_react_native!(
-    :path => config[:reactNativePath],
-    # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
-
-  target 'slicTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
-  post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
-    )
-  end
-end
-
-
-# platform :ios, '15.0'
-
-# require_relative '../node_modules/react-native/scripts/react_native_pods'
-
+# #  platform :ios, '13.0'
+# # platform :ios, min_ios_version_supported
 # prepare_react_native_project!
 
 # linkage = ENV['USE_FRAMEWORKS']
@@ -69,14 +16,11 @@ end
 #   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
 #   use_frameworks! :linkage => linkage.to_sym
 # end
-
-# target 'slic' do
-#   config = use_native_modules!
-
-#   use_react_native!(
-#     :path => config[:reactNativePath],
-#     :app_path => "#{Pod::Config.instance.installation_root}/.."
-#   )
+# def use_react_native!(
+#   :path => config[:reactNativePath],
+#   :hermes_enabled => true
+# )
+# end
 
 #   def use_flipper!(options = {})
 #        # Your existing Flipper setup code here
@@ -86,15 +30,99 @@ end
 #        # Additional configuration...
 #      end
 
+# target 'slic' do
+#   config = use_native_modules!
+
+#   use_react_native!(
+#     :path => config[:reactNativePath],
+#     # An absolute path to your application root.
+#     :app_path => "#{Pod::Config.instance.installation_root}/.."
+#   )
+
 #   target 'slicTests' do
 #     inherit! :complete
+#     # Pods for testing
 #   end
 
 #   post_install do |installer|
+#     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
 #     react_native_post_install(
 #       installer,
 #       config[:reactNativePath],
-#       :mac_catalyst_enabled => false
+#       :mac_catalyst_enabled => false,
+#       # :ccache_enabled => true
 #     )
 #   end
 # end
+
+
+
+
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve("react-native/scripts/react_native_pods.rb")',
+  __dir__]).strip
+
+platform :ios, '15.0'
+
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+# ❌ Your old `use_react_native!` was redefined as a blank method - removed that
+# ✅ This is automatically provided by React Native scripts
+
+target 'slic' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  # ✅ Add this only if you use Flipper (optional)
+  # use_flipper!({ 'Flipper' => '0.125.0' })
+
+  target 'slicTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+ post_install do |installer|
+  react_native_post_install(
+    installer,
+    config[:reactNativePath],
+    :mac_catalyst_enabled => false
+  )
+
+  # Automatically generate Hermes dSYM if Hermes binary exists
+  hermes_path = "build/Build/Products/Release-iphoneos/hermes.framework/hermes"
+  dsym_output = "build/hermes.framework.dSYM"
+
+  if File.exist?(hermes_path)
+    puts "🔧 Found Hermes binary, generating dSYM..."
+    system("dsymutil #{hermes_path} -o #{dsym_output}")
+  else
+    puts "❌ Hermes binary not found at #{hermes_path}"
+  end
+
+  # Optional: Set iOS deployment target for all pods
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
+end
+
+#     # Optional: Prevent Xcode 15+ build warnings
+#     installer.pods_project.targets.each do |target|
+#       target.build_configurations.each do |config|
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+#       end
+#     end
+#   end
+ end
