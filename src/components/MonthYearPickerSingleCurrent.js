@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import Fonts from '../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 import moment from 'moment';
+import Orientation from 'react-native-orientation-locker';
 
 const window = Dimensions.get('window');
 const squareSize = Math.min(window.width * 0.92, window.height * 0.92);
@@ -33,7 +34,7 @@ const months = [
 
 
 
-const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect}) => {
+const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect,lockOrientation}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -52,8 +53,22 @@ const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect}) => {
     }
   };
 
+ useEffect(() => {
+  // return;
+  if (visible && lockOrientation) {
+    Orientation.lockToLandscape(); // or lockToPortrait() based on need
+  }
+
+  // optional: cleanup orientation on close
+  return () => {
+    if (lockOrientation) Orientation.lockToPortrait();
+  };
+}, [visible, lockOrientation]);
+
   return (
-    <Modal transparent visible={visible} animationType="fade">
+    <Modal
+         supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
+ transparent visible={visible} animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.container}>
           {/* Year Navigation */}

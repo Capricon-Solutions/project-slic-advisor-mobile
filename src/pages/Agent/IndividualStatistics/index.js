@@ -34,6 +34,7 @@ import LoaderKit from 'react-native-loader-kit';
 import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
 import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import MonthYearPickerSingleCurrent from '../../../components/MonthYearPickerSingleCurrent';
+import Orientation from 'react-native-orientation-locker';
 
 const window = Dimensions.get('window');
 
@@ -160,6 +161,7 @@ export default function IndividualStatistics({navigation}) {
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
         onSelectText={v => setSelectedDate(v)}
+          lockOrientation={true}
       />
 
       {/* <HeaderBackground /> */}

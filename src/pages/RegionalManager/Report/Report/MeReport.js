@@ -9,6 +9,8 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {Styles} from '../../../../theme/Styles';
 import {FlatList} from 'react-native';
@@ -184,7 +186,11 @@ export default function MeReport({navigation, route}) {
   const dropdownOptions = [{label: 'All', value: 'All'}, ...advisorList];
 
   return (
-    <View style={Styles.container}>
+<View
+  style={[
+    Styles.container,
+    // isLandscape && Platform.OS === 'ios' && { paddingHorizontal: 0 },
+  ]}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       <ReportFilter
         modalVisible={modalVisible}
@@ -210,7 +216,7 @@ export default function MeReport({navigation, route}) {
         onBranchChange={value => setBranch(value)}
       />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0,}}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
@@ -228,7 +234,7 @@ export default function MeReport({navigation, route}) {
         )}
       </View>
       {/* <Text style={{ color: 'black' }}>nin</Text> */}
-      <View
+      <SafeAreaView
         style={{
           justifyContent: isLandscape == false ? 'space-between' : 'flex-end',
           width: '100%',
@@ -260,7 +266,7 @@ export default function MeReport({navigation, route}) {
         )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5}}>
+          style={{flexDirection: 'row', gap: 5,marginRight:20}}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -278,8 +284,9 @@ export default function MeReport({navigation, route}) {
             />
           )}
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
       {isLandscape == true ? (
+        <SafeAreaView>
         <ScrollView
           contentContainerStyle={{
             alignItems: 'center',
@@ -396,6 +403,7 @@ export default function MeReport({navigation, route}) {
             </View>
           )}
         </ScrollView>
+        </SafeAreaView>
       ) : (
         <FlatList
           data={MEReport?.data}
