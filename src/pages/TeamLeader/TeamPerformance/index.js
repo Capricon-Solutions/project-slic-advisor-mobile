@@ -70,26 +70,26 @@ export default function TeamPerformance({navigation}) {
   )?.data?.map(item => [
     item?.agentName?.toString() ?? '',
     {
-      cash: item?.cashNewMotorPrm.toLocaleString('en-IN', {
+      cash: item?.cashNewMotorPrm.toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.debitNewMotorPrm.toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-      }),
-    },
-    {
-      cash: item?.cashRenMotorPrm.toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-      }),
-      debit: item?.debitRenMotorPrm.toLocaleString('en-IN', {
+      debit: item?.debitNewMotorPrm.toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },
     {
-      cash: item?.totCashMotorPrm.toLocaleString('en-IN', {
+      cash: item?.cashRenMotorPrm.toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.totDebitMotorPrm.toLocaleString('en-IN', {
+      debit: item?.debitRenMotorPrm.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+    },
+    {
+      cash: item?.totCashMotorPrm.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+      debit: item?.totDebitMotorPrm.toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },

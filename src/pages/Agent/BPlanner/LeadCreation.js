@@ -457,7 +457,7 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type *
+              Lead Type <Text style={{color: COLORS.red}}>*</Text>
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}

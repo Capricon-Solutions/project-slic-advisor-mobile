@@ -32,7 +32,7 @@ export default function SquareTextBoxOutlined({
   };
   return (
     <View style={{width: '100%', marginTop: window.height * 0.01}}>
-      {Label && (
+      {/* {Label && (
         <Text
           style={{
             marginBottom: 5,
@@ -42,13 +42,30 @@ export default function SquareTextBoxOutlined({
           }}>
           {Label}
         </Text>
+      )} */}
+      {Label && (
+        <Text
+          style={{
+            marginBottom: 5,
+            fontSize: 12.5,
+            fontFamily: mediumFont ? Fonts.Roboto.Medium : Fonts.Roboto.Bold,
+            color: COLORS.ashBlue,
+          }}>
+          {Label.includes('*') ? (
+            <>
+              {Label.replace('*', '')}
+              <Text style={{color: 'red'}}>*</Text>
+            </>
+          ) : (
+            Label
+          )}
+        </Text>
       )}
       <View style={{position: 'relative'}}>
         <TextInput
           mode={'outlined'}
           readOnly={readOnly}
           maxLength={maxLength}
-      
           outlineColor={
             errorBorder
               ? COLORS.errorBorder
@@ -69,7 +86,6 @@ export default function SquareTextBoxOutlined({
               fontSize: 13,
               color: COLORS.textColor,
               fontFamily: Fonts.Roboto.SemiBold,
-              
             },
           ]}
           placeholderTextColor={COLORS.grayPlaceholder}
@@ -99,9 +115,9 @@ export default function SquareTextBoxOutlined({
               // Allow only digits and V/X (for old NICs like 831234567V)
               sanitizedText = sanitizedText
                 .toUpperCase()
-                .replace(/[^0-9VX]/g, '').slice(0, 12);
+                .replace(/[^0-9VX]/g, '')
+                .slice(0, 12);
             }
-            
 
             // No need to manually limit length — TextInput handles it via maxLength prop
             setValue(sanitizedText);

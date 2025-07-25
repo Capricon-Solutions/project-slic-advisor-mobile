@@ -235,7 +235,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Lead *
+                  Lead <Text style={{color: COLORS.red}}>*</Text>
                 </Text>
                 {/* <DropdownFilled
                   placeholder={'Select Lead'}
@@ -270,7 +270,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Activity Type *
+                  Activity Type <Text style={{color: COLORS.red}}>*</Text>
                 </Text>
                 <DropdownFilled
                   placeholder={'Select Activity Type'}
