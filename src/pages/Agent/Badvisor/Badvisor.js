@@ -21,7 +21,10 @@ export default function Badvisor({navigation}) {
 
   useFocusEffect(() => {
     if (ReturnUrl?.redirectUrl) {
-      navigation.goBack();
+      setTimeout(() => {
+        navigation.goBack();
+      }, 1000);
+
       Linking.openURL(ReturnUrl.redirectUrl).catch(err =>
         console.error('Failed to open URL:', err),
       );
