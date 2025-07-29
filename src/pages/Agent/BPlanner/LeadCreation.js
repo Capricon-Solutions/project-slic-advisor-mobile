@@ -29,6 +29,8 @@ import {
   useLeadCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {showToast} from '../../../components/ToastMessage';
+import { validateSriLankanNIC } from '../../../utils/nicValidation';
+
 
 export default function LeadCreation({navigation, route}) {
   const {eventDate} = route.params;
@@ -327,6 +329,10 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
 
+
+
+
+
   const validateForm3 = () => {
     if (
       !customerName
@@ -339,13 +345,29 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
-    if (nic && !/^(\d{9}[vxVX]|\d{12})$/.test(nic)) {
-      showToast({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Invalid NIC number format. 🚨',
-      });
-      return false;
+    if (nic) {
+      const nicValidation = validateSriLankanNIC(nic);
+      
+      if (!nicValidation.isValid) {
+        showToast({
+          type: 'error',
+          text1: 'Invalid NIC Number',
+          text2: nicValidation.error + ' 🚨',
+        });
+        return false;
+      }
+    }
+    if (nic) {
+      const nicValidation = validateSriLankanNIC(nic);
+      
+      if (!nicValidation.isValid) {
+        showToast({
+          type: 'error',
+          text1: 'Invalid NIC Number',
+          text2: nicValidation.error + ' 🚨',
+        });
+        return false;
+      }
     }
     return true;
   };
