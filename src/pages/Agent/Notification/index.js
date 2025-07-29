@@ -63,7 +63,7 @@ export default function Notification({navigation}) {
           paddingBottom: 10,
           flex: 1,
         }}>
-        {Notifications?.data == null ? (
+        {Notifications?.data == null && !isFetching ? (
           <View
             style={{
               justifyContent: 'center',

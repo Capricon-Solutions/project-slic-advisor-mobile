@@ -20,6 +20,7 @@ const DropdownComponent = ({
   onSelect,
   nonClearable,
   search,
+  disabled,
   value: valueFromParent,
 }) => {
   const [value, setValue] = useState(null);
@@ -61,6 +62,7 @@ const DropdownComponent = ({
       {renderLabel()}
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
+        disable={disabled}
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}

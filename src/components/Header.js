@@ -29,6 +29,8 @@ export default function Header({
   onButton,
   haveFilters,
   haveMenu,
+  haveDownload,
+  downloadItems,
   menuItems,
   haveCall,
   haveWhatsapp,
@@ -37,11 +39,16 @@ export default function Header({
   titleFontSize,
   havePdf,
   onPDF,
+  disabledButton,
+  disabledColor,
 }) {
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
+  const openDMenu = () => setVisible(true);
+
+  const closeDMenu = () => setVisible(false);
   return (
     <View
       style={{
@@ -90,7 +97,11 @@ export default function Header({
         }}>
         {haveButton && (
           <View style={{width: '100%'}}>
-            <SmallButton Title={ButtonTitle} onPress={onButton}></SmallButton>
+            <SmallButton
+              disabledButton={disabledButton}
+              disabledColor={disabledColor}
+              Title={ButtonTitle}
+              onPress={onButton}></SmallButton>
           </View>
         )}
 
@@ -200,6 +211,67 @@ export default function Header({
                   title={item.title}
                 />
                 {index !== menuItems.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </Menu>
+        )}
+        {haveDownload && (
+          <Menu
+            visible={visible}
+            onDismiss={closeDMenu}
+            anchor={
+              // <TouchableOpacity onPress={openDMenu} style={{marginLeft: 5}}>
+              //   <View style={{}}>
+              //     <MaterialIcons
+              //       name="more-vert"
+              //       color={COLORS.black}
+              //       size={27}
+              //     />
+              //   </View>
+              // </TouchableOpacity>
+              <View style={{width: '100%'}}>
+                <TouchableOpacity
+                  // disabled={disabledButton}
+                  onPress={openDMenu}
+                  style={{
+                    backgroundColor: COLORS.primaryGreen,
+                    borderRadius: 6,
+                    width: '100%',
+                    height: 32,
+                    fontFamily: Fonts.Roboto.Bold,
+                    justifyContent: 'center',
+                    marginVertical: 3,
+                    alignItems: 'center',
+                    paddingLeft: 6,
+                    flexDirection: 'row',
+                  }}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: window.width * 0.03,
+                      fontFamily: Fonts.Roboto.SemiBold,
+                    }}>
+                    {'Download'}
+                  </Text>
+                  <MaterialIcons
+                    name="keyboard-arrow-down"
+                    color={COLORS.white}
+                    size={23}
+                  />
+                </TouchableOpacity>
+              </View>
+            }>
+            {downloadItems?.map((item, index) => (
+              <React.Fragment key={index}>
+                <Menu.Item
+                  onPress={() => {
+                    item.onPress();
+                    closeDMenu();
+                  }}
+                  // titleFontSize={'5'}
+                  title={item.title}
+                />
+                {index !== downloadItems.length - 1 && <Divider />}
               </React.Fragment>
             ))}
           </Menu>
