@@ -61,14 +61,35 @@ export default function LeadSearch({navigation}) {
   //     )
   //   : SELF;
 
+  // const filteredSELF = searchQuery
+  //   ? SELF.filter(lead =>
+  //       lead.customerName
+  //         .toLowerCase()
+  //         .split(' ')
+  //         .some(word => word.startsWith(searchQuery.toLowerCase())),
+  //     )
+  //   : SELF;
+
   const filteredSELF = searchQuery
-    ? SELF.filter(lead =>
-        lead.customerName
-          .toLowerCase()
-          .split(' ')
-          .some(word => word.startsWith(searchQuery.toLowerCase())),
-      )
-    : SELF;
+  ? SELF.map(lead => {
+      const nameParts = lead.customerName.trim().toLowerCase().split(/\s+/);
+      const query = searchQuery.toLowerCase();
+
+      let priority = 999;
+
+      if (nameParts[0].startsWith(query)) {
+        priority = 0; // First name starts with query
+      } else if (nameParts[nameParts.length - 1].startsWith(query)) {
+        priority = 1; // Last name starts with query
+      } else if (nameParts.some(word => word.startsWith(query))) {
+        priority = 2; // Any middle name starts with query
+      }
+
+      return { ...lead, priority };
+    })
+    .filter(lead => lead.priority !== 999) // remove non-matching
+    .sort((a, b) => a.priority - b.priority)
+  : SELF;
 
   // const filteredSLIC = searchQuery
   //   ? SLIC.filter(lead =>
@@ -77,13 +98,28 @@ export default function LeadSearch({navigation}) {
   //   : SLIC;
 
   const filteredSLIC = searchQuery
-    ? SLIC.filter(lead =>
-        lead.customerName
-          .toLowerCase()
-          .split(' ')
-          .some(word => word.startsWith(searchQuery.toLowerCase())),
-      )
-    : SLIC;
+  ? SLIC.map(lead => {
+      const nameParts = lead.customerName.trim().toLowerCase().split(/\s+/);
+      const query = searchQuery.toLowerCase();
+
+      let priority = 999;
+
+      if (nameParts[0].startsWith(query)) {
+        priority = 0; // First name starts with query
+      } else if (nameParts[nameParts.length - 1].startsWith(query)) {
+        priority = 1; // Last name starts with query
+      } else if (nameParts.some(word => word.startsWith(query))) {
+        priority = 2; // Any middle name starts with query
+      }
+
+      return { ...lead, priority };
+    })
+    .filter(lead => lead.priority !== 999) // remove non-matching
+    .sort((a, b) => a.priority - b.priority)
+  : SLIC;
+
+
+
   console.log('filteredSLIC', filteredSLIC);
 
   const renderDepartmentItem = ({item}) => (
