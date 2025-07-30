@@ -1,26 +1,26 @@
-import { baseApi } from './api';
+import {baseApi} from './api';
 
 export const trainingSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
-
     getTrainingList: builder.query({
-      query: ({ type, userCode }) => {
+      query: ({type, userCode}) => {
         console.log('Training Type:', type); // Log the type parameter
         return `training/getTrainingList/${userCode}?trainType=${type}`;
       },
       providesTags: ['Trainings'],
     }),
     getTrainingListByDate: builder.query({
-      query: ({ fromDate, toDate, userCode }) => {
-        console.log('fromDate:', fromDate); // Log the fromDate
+      query: ({fromDate, toDate, userCode}) => {
+        console.log('fromDate:ccccc', fromDate); // Log the fromDate
         console.log('toDate:', toDate); // Log the toDate
         return `training/getAgentTrainingsByDate/${userCode}?fromDate=${fromDate}&toDate=${toDate}`;
       },
+      providesTags: ['Trainings'],
     }),
 
     //approveTraining
     approveTraining: builder.mutation({
-      query: ({ id, userCode }) => {
+      query: ({id, userCode}) => {
         const finalUrl = `training/approveTrainingByAgent/${userCode}?trainId=${id}`;
         console.log('id:', id);
         console.log('Final URL:', finalUrl);
@@ -43,20 +43,18 @@ export const trainingSlice = baseApi.injectEndpoints({
         return {
           url: finalUrl,
           method: 'PUT',
-          body: body
+          body: body,
         };
       },
       invalidatesTags: ['Trainings'],
     }),
-
   }),
 });
 
 // Export hooks
 export const {
-
   useGetTrainingListQuery,
   useApproveTrainingMutation,
   useGetTrainingListByDateQuery,
-  useNotAttendingMutation
+  useNotAttendingMutation,
 } = trainingSlice;

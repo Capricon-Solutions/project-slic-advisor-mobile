@@ -59,7 +59,7 @@ export default function PendingClaims({navigation, route}) {
     data: ClaimHistory,
     error,
     isFetching,
-  } = useGetPendingHistoryQuery({
+  } = useGetPremiumHistoryQuery({
     id: policyNo, // Dynamic ID
   });
   const claimHistoryResponse = ClaimHistory?.data;
@@ -238,7 +238,7 @@ export default function PendingClaims({navigation, route}) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal: 7}}
+                contentContainerStyle={{paddingHorizontal: 0}}
                 renderItem={({item}) => <Card item={item} />}
                 // keyExtractor={item => item.id.toString()}
               />

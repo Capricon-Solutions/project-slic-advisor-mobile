@@ -53,7 +53,7 @@ export default function TrainingList({navigation}) {
     'Status',
   ];
 
-  const columnWidths = [100, 160, 100, 130, 100];
+  const columnWidths = [100, 160, 100, 130, 150];
 
   const TrainingListResponse = useSelector(
     state => state.trainingList.trainingListResponse.data,
@@ -82,7 +82,7 @@ export default function TrainingList({navigation}) {
       ? 'Motor'
       : '',
     item?.trainDate ? moment(item.trainDate).format('DD/MM/YYYY HH.mmA') : '',
-    item?.statusCode?.toString() ?? '',
+    item?.status?.toString() ?? '',
   ]);
 
   const renderItem = ({item}) => <ContactListItem item={item} />;

@@ -122,9 +122,9 @@ export default function TrainingCalender({navigation}) {
   const [approveTraining, {isLoading: isApproving, error: approveError}] =
     useApproveTrainingMutation();
 
-  useEffect(() => {
-    console.log('TrainingList', TrainingList);
-  }, [TrainingList]);
+  // useEffect(() => {
+  //   console.log('TrainingListfff', TrainingList);
+  // }, [TrainingList]);
 
   useEffect(() => {
     if (TrainingList?.data) {
@@ -135,8 +135,11 @@ export default function TrainingCalender({navigation}) {
         dates[dateStr] = {marked: true, dotColor: COLORS.primary};
       });
       setMarkedDates(dates);
+    } else if (TrainingList?.data == null) {
+      setMarkedDates(null);
+      setSelectedTrainings([]);
     }
-  }, [TrainingList]);
+  }, [TrainingList?.data]);
 
   const handleDayPress = day => {
     const dateStr = day.dateString;
@@ -445,6 +448,20 @@ export default function TrainingCalender({navigation}) {
                         }}>
                         <SmallButton
                           Title={'Done'}
+                          disabledButton={
+                            training?.statusCode == 1
+                              ? true
+                              : training?.statusCode == 3
+                              ? true
+                              : false
+                          }
+                          disabledColor={
+                            training?.statusCode == 1
+                              ? true
+                              : training?.statusCode == 3
+                              ? true
+                              : false
+                          }
                           onPress={() => {
                             console.log(' training.trainId', training.trainId);
                             // Call the approveTraining mutation with the training ID
@@ -452,9 +469,9 @@ export default function TrainingCalender({navigation}) {
                               .unwrap()
                               .then(() => {
                                 // On success, remove the training from the list
-                                setSelectedTrainings(prev =>
-                                  prev.filter((_, i) => i !== index),
-                                );
+                                // setSelectedTrainings(prev =>
+                                //   prev.filter((_, i) => i !== index),
+                                // );
                               })
                               .catch(error => {
                                 console.error(
