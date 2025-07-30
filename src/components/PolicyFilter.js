@@ -44,15 +44,28 @@ export default function PolicyFilter({
     initialValues.PNumber || '',
   );
   const [VehicleNumber, setVNumber] = React.useState(
-    initialValues.VNumber || '',
+    initialValues.VNumber || 'AAA9999',
   );
   const [StartFromDt, setSDate] = React.useState(initialValues.SDate || '');
   const [StartToDt, setEDate] = React.useState(initialValues.EDate || '');
   const [MobileNumber, setMobile] = React.useState(initialValues.Mobile || '');
   const [NicNumber, setNic] = React.useState(initialValues.Nic || '');
   const [BusiRegNo, setBRegNo] = React.useState(initialValues.BRegNo || '');
+  const [formError, setFormError] = React.useState({
+    firstPart: '',
+    secondPart: '',
+  });
+
+  const [VehicleNumberFrom, setVNumberFrom] = React.useState({
+    firstPart: '',
+    secondPart: '',
+  });
+  const [VehicleNumberTo, setVNumberTo] = React.useState(
+    initialValues.VNumberTo || '',
+  );
   const businessTypeRef = React.useRef();
   const policyStatusRef = React.useRef();
+
   const sDateRef = React.useRef();
   const eDateRef = React.useRef();
   // Reset function to clear fields
@@ -68,7 +81,35 @@ export default function PolicyFilter({
     setMobile('');
     setNic('');
     setBRegNo('');
+    setVNumberFrom({
+      firstPart: '',
+      secondPart: '',
+    });
   };
+
+  React.useEffect(() => {
+    7;
+    const {firstPart, secondPart} = VehicleNumberFrom;
+    const isValidFirstPart = firstPart;
+    const isValidSecondPart = secondPart;
+
+    if (isValidFirstPart || isValidSecondPart) {
+      setVNumber(firstPart + secondPart);
+    }
+  }, [VehicleNumberFrom.firstPart, VehicleNumberFrom.secondPart]);
+
+  console.log('VehicleNumber', VehicleNumber);
+
+  const initial = initialValues?.VNumber || '';
+
+  React.useEffect(() => {
+    setVNumberFrom({
+      firstPart:
+        initial?.length == 6 ? initial?.slice(0, 2) : initial?.slice(0, 3),
+      secondPart:
+        initial?.length == 6 ? initial?.slice(2, 6) : initial?.slice(3),
+    });
+  }, [initial]);
 
   const handleSearch = () => {
     if (!BusinessType) {
@@ -170,7 +211,6 @@ export default function PolicyFilter({
       animationType="fade"
       transparent={true}
       supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
-
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <Animated.View
@@ -265,13 +305,68 @@ export default function PolicyFilter({
             value={PolicyNumber}
             setValue={text => setPNumber(text)}
           />
-          <SquareTextBoxOutlined
-            Title={VehicleNumber}
-            maxLength={10}
-            value={VehicleNumber}
-            Label="Vehicle Number"
-            setValue={text => setVNumber(text)}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 10,
+              width: '100%',
+            }}>
+            {/* <SquareTextBoxOutlined
+              Title={VehicleNumber}
+              maxLength={10}
+              value={VehicleNumber}
+              Label="Vehicle Number"
+              setValue={text => setVNumber(text)}
+            /> */}
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <View style={{flex: 0.45}}>
+              <SquareTextBoxOutlined
+                Title={VehicleNumberFrom.firstPart}
+                placeholder="XXX"
+                maxLength={10}
+                value={VehicleNumberFrom.firstPart}
+                Label="Vehicle Number"
+                setValue={text =>
+                  setVNumberFrom({...VehicleNumberFrom, firstPart: text.replace(/\s/g, '') })
+                }
+              />
+            </View>
+
+            <Text style={{marginTop: 25}}>To</Text>
+
+            <View style={{flex: 0.45}}>
+              <SquareTextBoxOutlined
+                Title={VehicleNumberFrom.secondPart}
+                maxLength={10}
+                placeholder="9999"
+                value={VehicleNumberFrom.secondPart}
+                Label=" "
+                setValue={text => {
+                  setVNumberFrom({...VehicleNumberFrom, secondPart: text.replace(/\s/g, '') });
+                }}
+              />
+            </View>
+          </View>
+          {formError.firstPart && (
+            <Text style={{color: 'red', fontSize: 12}}>
+              {formError.firstPart}
+            </Text>
+          )}
+          {formError.secondPart && (
+            <Text style={{color: 'red', fontSize: 12}}>
+              {formError.secondPart}
+            </Text>
+          )}
+
           <View
             style={{
               flexDirection: 'row',
