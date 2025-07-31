@@ -110,7 +110,7 @@ export default function TeamPerformance({navigation}) {
       <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader
           haveSearch={false}
-          Title="Current Performance"
+          Title="Current Month / Year Performance"
           onPress={() => navigation.goBack()}
         />
       </View>
