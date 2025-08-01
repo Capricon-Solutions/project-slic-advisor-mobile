@@ -15,7 +15,6 @@ import {FlatList} from 'react-native';
 import {styles} from './styles';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector} from 'react-redux';
-import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import SmallButton from '../../../../components/SmallButton';

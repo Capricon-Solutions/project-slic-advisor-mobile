@@ -218,7 +218,7 @@ export default function DebitSettlement({navigation, route}) {
             ]}
           />
           {/* <Text>{selectedItem}</Text> */}
-          <SquareTextBox
+          {/* <SquareTextBox
             keyboardType={'numeric'}
             Title={`LKR ${Number(
               DebitSettlement?.data?.premiumNetValue || 0,
@@ -229,6 +229,28 @@ export default function DebitSettlement({navigation, route}) {
             value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             setValue={text => {
               const raw = text.replace(/[^0-9]/g, ''); // remove commas
+              setAmount(raw);
+            }}
+            Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
+          /> */}
+          <SquareTextBox
+            keyboardType={'numeric'}
+            Title={`LKR ${Number(
+              DebitSettlement?.data?.premiumNetValue || 0,
+            ).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            setValue={text => {
+              let raw = text.replace(/[^0-9.]/g, ''); // allow digits and decimal point
+              const parts = raw.split('.');
+              if (parts.length > 2) {
+                raw = parts[0] + '.' + parts[1]; // keep only first decimal point
+              }
+              if (parts[1]?.length > 2) {
+                raw = parts[0] + '.' + parts[1].slice(0, 2); // max 2 decimals
+              }
               setAmount(raw);
             }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}

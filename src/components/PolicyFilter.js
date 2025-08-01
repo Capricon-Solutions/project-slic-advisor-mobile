@@ -170,7 +170,6 @@ export default function PolicyFilter({
       animationType="fade"
       transparent={true}
       supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
-
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <Animated.View

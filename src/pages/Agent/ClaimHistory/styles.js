@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -18,8 +18,9 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 15,
-    elevation: 5,
+    elevation: 10,
     padding: 15,
+    marginHorizontal: 10,
     marginVertical: 8,
   },
   leadInfoCard: {

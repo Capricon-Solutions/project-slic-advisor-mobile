@@ -285,7 +285,7 @@ export default function Dashboard({navigation}) {
         setModalVisible={setFlagVisible}
       />
       <BottomModal
-        Name={'Individual Performance'}
+        Name={'Sales Performance'}
         modalVisible={modalVisible}
         ButtonList={IndividualPerformanceType}
         setModalVisible={setModalVisible}

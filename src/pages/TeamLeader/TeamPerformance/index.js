@@ -51,6 +51,7 @@ export default function TeamPerformance({navigation}) {
     //  fromDate: fromDate,
     //  toDate: toDate,
   });
+  console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const {
     data: CurrentPerformanceYear,
     error: yearError,
@@ -70,30 +71,31 @@ export default function TeamPerformance({navigation}) {
   )?.data?.map(item => [
     item?.agentName?.toString() ?? '',
     {
-      cash: item?.cashNewMotorPrm.toLocaleString('en-US', {
+      cash: (item?.cashNewMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.debitNewMotorPrm.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-      }),
-    },
-    {
-      cash: item?.cashRenMotorPrm.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-      }),
-      debit: item?.debitRenMotorPrm.toLocaleString('en-US', {
+      debit: (item?.debitNewMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },
     {
-      cash: item?.totCashMotorPrm.toLocaleString('en-US', {
+      cash: (item?.cashRenMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.totDebitMotorPrm.toLocaleString('en-US', {
+      debit: (item?.debitRenMotorPrm ?? 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+    },
+    {
+      cash: (item?.totCashMotorPrm ?? 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+      debit: (item?.totDebitMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },
   ]);
+  console.log('tableData', tableData);
   const renderItem = ({item}) => <ContactListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
@@ -110,7 +112,7 @@ export default function TeamPerformance({navigation}) {
       <View style={{paddingHorizontal: 20}}>
         <LandscapeHeader
           haveSearch={false}
-          Title="Current Month / Year Performance"
+          Title="Current Performance"
           onPress={() => navigation.goBack()}
         />
       </View>

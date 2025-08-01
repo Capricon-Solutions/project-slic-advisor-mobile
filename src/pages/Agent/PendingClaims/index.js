@@ -59,7 +59,7 @@ export default function PendingClaims({navigation, route}) {
     data: ClaimHistory,
     error,
     isFetching,
-  } = useGetPremiumHistoryQuery({
+  } = useGetPendingHistoryQuery({
     id: policyNo, // Dynamic ID
   });
   const claimHistoryResponse = ClaimHistory?.data;

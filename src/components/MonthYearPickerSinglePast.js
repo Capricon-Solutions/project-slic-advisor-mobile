@@ -49,6 +49,11 @@ const MonthYearPickerSinglePast = ({visible, onClose, onSelect}) => {
       onClose();
     }
   };
+  const handleClose = () => {
+    setSelectedYear(currentYear); // Reset to current year
+    setSelectedDate(null);
+    onClose(); // Just close the modal without sending selected date
+  };
 
   return (
     <Modal transparent visible={visible} animationType="fade">
@@ -149,10 +154,20 @@ const MonthYearPickerSinglePast = ({visible, onClose, onSelect}) => {
 
           {/* Footer Buttons */}
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
+            <TouchableOpacity
+              disabled={!selectedDate}
+              style={[
+                styles.doneButton,
+                {
+                  backgroundColor: !selectedDate
+                    ? COLORS.warmGray
+                    : COLORS.primaryGreen,
+                },
+              ]}
+              onPress={handleDone}>
               <Text style={styles.doneText}>Done</Text>
             </TouchableOpacity>
           </View>

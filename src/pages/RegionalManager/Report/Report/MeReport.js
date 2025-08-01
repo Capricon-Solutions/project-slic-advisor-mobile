@@ -17,7 +17,6 @@ import {FlatList} from 'react-native';
 import {styles} from './styles';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector} from 'react-redux';
-import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import SmallButton from '../../../../components/SmallButton';
@@ -186,11 +185,11 @@ export default function MeReport({navigation, route}) {
   const dropdownOptions = [{label: 'All', value: 'All'}, ...advisorList];
 
   return (
-<View
-  style={[
-    Styles.container,
-    // isLandscape && Platform.OS === 'ios' && { paddingHorizontal: 0 },
-  ]}>
+    <View
+      style={[
+        Styles.container,
+        // isLandscape && Platform.OS === 'ios' && { paddingHorizontal: 0 },
+      ]}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       <ReportFilter
         modalVisible={modalVisible}
@@ -216,7 +215,7 @@ export default function MeReport({navigation, route}) {
         onBranchChange={value => setBranch(value)}
       />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0,}}>
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
@@ -266,7 +265,7 @@ export default function MeReport({navigation, route}) {
         )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5,marginRight:20}}>
+          style={{flexDirection: 'row', gap: 5, marginRight: 20}}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -287,122 +286,122 @@ export default function MeReport({navigation, route}) {
       </SafeAreaView>
       {isLandscape == true ? (
         <SafeAreaView>
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-          }}
-          style={{}}>
-          <View
-            style={{
-              width: '100%',
+          <ScrollView
+            contentContainerStyle={{
               alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginVertical: 5,
-            }}>
-            <View style={{flex: 0.19, marginHorizontal: 2}}>
-              <DropdownComponent
-                label={'View Details'}
-                mode={'modal'}
-                value={value}
-                search={false}
-                nonClearable={true}
-                onValueChange={setValue}
-                dropdownData={[
-                  {label: 'Value', value: 1},
-                  {label: 'NOP', value: 2},
-                ]}
-              />
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+            }}
+            style={{}}>
+            <View
+              style={{
+                width: '100%',
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginVertical: 5,
+              }}>
+              <View style={{flex: 0.19, marginHorizontal: 2}}>
+                <DropdownComponent
+                  label={'View Details'}
+                  mode={'modal'}
+                  value={value}
+                  search={false}
+                  nonClearable={true}
+                  onValueChange={setValue}
+                  dropdownData={[
+                    {label: 'Value', value: 1},
+                    {label: 'NOP', value: 2},
+                  ]}
+                />
+              </View>
+              <View style={{flex: 0.2, marginHorizontal: 2}}>
+                <DropdownComponent
+                  label={'Type'}
+                  mode={'modal'}
+                  search={false}
+                  onValueChange={value => {
+                    setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={[
+                    {label: 'General Cumulative', value: 'G'},
+                    {label: 'Motor Monthly', value: 'M'},
+                  ]}
+                />
+              </View>
+              <View style={{flex: 0.18, marginHorizontal: 2}}>
+                <DropdownComponent
+                  label={'Month'}
+                  mode={'modal'}
+                  value={selectedMonth}
+                  nonClearable={true}
+                  // onValueChange={setSelectedMonth}
+                  onValueChange={value => {
+                    setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={[
+                    {label: 'Cumulative', value: '00'},
+                    {label: 'January', value: '01'},
+                    {label: 'February', value: '02'},
+                    {label: 'March', value: '03'},
+                    {label: 'April', value: '04'},
+                    {label: 'May', value: '05'},
+                    {label: 'June', value: '06'},
+                    {label: 'July', value: '07'},
+                    {label: 'August', value: '08'},
+                    {label: 'September', value: '09'},
+                    {label: 'October', value: '10'},
+                    {label: 'November', value: '11'},
+                    {label: 'December', value: '12'},
+                  ]}
+                />
+              </View>
+              <View style={{flex: 0.19, marginHorizontal: 2}}>
+                <DropdownComponent
+                  label={'Agent'}
+                  mode={'modal'}
+                  dropdownData={dropdownOptions}
+                  onValueChange={value => setBranch(value)} // ✅ Captures selection
+                />
+              </View>
+              <View style={{flex: 0.13, marginHorizontal: 2}}>
+                <Button Title={'Apply'} />
+              </View>
             </View>
-            <View style={{flex: 0.2, marginHorizontal: 2}}>
-              <DropdownComponent
-                label={'Type'}
-                mode={'modal'}
-                search={false}
-                onValueChange={value => {
-                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
-                }}
-                dropdownData={[
-                  {label: 'General Cumulative', value: 'G'},
-                  {label: 'Motor Monthly', value: 'M'},
-                ]}
-              />
-            </View>
-            <View style={{flex: 0.18, marginHorizontal: 2}}>
-              <DropdownComponent
-                label={'Month'}
-                mode={'modal'}
-                value={selectedMonth}
-                nonClearable={true}
-                // onValueChange={setSelectedMonth}
-                onValueChange={value => {
-                  setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
-                }}
-                dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
-                ]}
-              />
-            </View>
-            <View style={{flex: 0.19, marginHorizontal: 2}}>
-              <DropdownComponent
-                label={'Agent'}
-                mode={'modal'}
-                dropdownData={dropdownOptions}
-                onValueChange={value => setBranch(value)} // ✅ Captures selection
-              />
-            </View>
-            <View style={{flex: 0.13, marginHorizontal: 2}}>
-              <Button Title={'Apply'} />
-            </View>
-          </View>
-          {/* <HorizontalReportTable
+            {/* <HorizontalReportTable
             onPress={() => navigation.navigate('PolicyDetails')}
             haveTotal={false}
             tableHead={tableHead}
             tableData={tableData}
             columnWidths={columnWidths}
           /> */}
-          {MEReport?.data.length > 0 ? (
-            <HorizontalReportTable
-              onPress={() => navigation.navigate('PolicyDetails')}
-              haveTotal={false}
-              tableHead={tableHead}
-              tableData={tableData}
-              columnWidths={columnWidths}
-            />
-          ) : (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-              }}>
-              <Text
+            {MEReport?.data.length > 0 ? (
+              <HorizontalReportTable
+                onPress={() => navigation.navigate('PolicyDetails')}
+                haveTotal={false}
+                tableHead={tableHead}
+                tableData={tableData}
+                columnWidths={columnWidths}
+              />
+            ) : (
+              <View
                 style={{
-                  marginTop: 20,
-                  fontSize: 16,
-                  color: COLORS.errorBorder,
-                  fontFamily: Fonts.Roboto.Bold,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
                 }}>
-                Sorry, No Data Found
-              </Text>
-            </View>
-          )}
-        </ScrollView>
+                <Text
+                  style={{
+                    marginTop: 20,
+                    fontSize: 16,
+                    color: COLORS.errorBorder,
+                    fontFamily: Fonts.Roboto.Bold,
+                  }}>
+                  Sorry, No Data Found
+                </Text>
+              </View>
+            )}
+          </ScrollView>
         </SafeAreaView>
       ) : (
         <FlatList

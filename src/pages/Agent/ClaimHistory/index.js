@@ -174,7 +174,7 @@ export default function ClaimHistory({navigation, route}) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal: 7}}
+                contentContainerStyle={{paddingHorizontal: 0}}
                 renderItem={({item}) => <Card item={item} />}
                 // keyExtractor={item => item.id.toString()}
               />
