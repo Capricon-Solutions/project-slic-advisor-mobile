@@ -100,7 +100,7 @@ const isLeapYear = (year) => {
     if (!nic || typeof nic !== 'string') {
       return {
         isValid: false,
-        error: 'NIC is required and must be a string'
+        error: ''
       };
     }
   
