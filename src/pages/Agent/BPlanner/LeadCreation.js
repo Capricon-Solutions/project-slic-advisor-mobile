@@ -554,7 +554,7 @@ export default function LeadCreation({navigation, route}) {
               value={vehicleNo}
               setValue={text => {
                 54;
-                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '');
+                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '').toUpperCase();
 
                 if (cleanedText.length >= 5 && cleanedText.length <= 8) {
                   setVehicleNo(cleanedText);
