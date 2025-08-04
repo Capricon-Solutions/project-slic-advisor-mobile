@@ -94,8 +94,8 @@ export default function TeamMemberGrid({navigation, route}) {
 
     type: value,
   });
-  console.log('TeamLeaderReport', TeamLeaderReport);
-  console.log('TeamLeaderReportLoading', TeamLeaderReportLoading);
+  console.log('Team Member  Report', TeamLeaderReport);
+  console.log('Team Member ReportLoading', TeamLeaderReportLoading);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 

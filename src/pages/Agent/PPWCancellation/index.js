@@ -37,7 +37,7 @@ const window = Dimensions.get('window');
 export default function PPWCancellation({navigation}) {
   // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('M');
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const usertype = useSelector(state => state.userType.userType);
@@ -50,8 +50,26 @@ export default function PPWCancellation({navigation}) {
     'Payment Date',
     'Due Date',
   ];
+  const tableHeadNM = [
+    'Policy No',
+    'Customer Name',
+    'Vehicle No',
+    'Debit Amount',
+    'Payment Date',
+    'Due Date',
+  ];
 
   const tableHead2 = [
+    'Policy No',
+    'Customer Name',
+    'Vehicle No',
+    'Debit Amount',
+    'Payment Date',
+    'Cancelled Date',
+    'Re-Instate Date',
+    'Due Date',
+  ];
+  const tableHead2NM = [
     'Policy No',
     'Customer Name',
     'Vehicle No',
@@ -112,23 +130,23 @@ export default function PPWCancellation({navigation}) {
   }, [PPWCanceledList, PPWReminderList, error, errorC]);
 
   const tableData = PPWReminderList?.data?.map(item => [
-    item?.policyNumber.toString() ?? '',
-    item?.customerName.toString() ?? '',
-    item?.vehicleNumber.toString() ?? '',
-    item?.debitAmount.toString() ?? '',
-    item?.paymentDate.toString() ?? '',
-    item?.dueDate.toString() ?? '',
+    item?.policyNo?.toString() ?? 'N/A',
+    item?.custName?.toString() ?? 'N/A',
+    item?.pmve2?.toString() ?? 'N/A',
+    item?.debitAmount?.toString() ?? 'N/A',
+    item?.paymentDate?.toString() ?? 'N/A',
+    item?.dueDate?.toString() ?? 'N/A',
   ]);
 
   const tableData2 = PPWCanceledList?.data?.map(item => [
-    item?.policyNumber.toString() ?? '',
-    item?.customerName.toString() ?? '',
-    item?.vehicleNumber.toString() ?? '',
-    item?.debitAmount.toString() ?? '',
-    item?.paymentDate.toString() ?? '',
-    item?.cancelledDate.toString() ?? '',
-    item?.reInstateDate.toString() ?? '',
-    item?.dueDate.toString() ?? '',
+    item?.policyNumber?.toString() ?? 'N/A',
+    item?.customerName?.toString() ?? 'N/A',
+    item?.vehicleNumber?.toString() ?? 'N/A',
+    item?.debitAmount?.toString() ?? 'N/A',
+    item?.paymentDate?.toString() ?? 'N/A',
+    item?.cancelledDate?.toString() ?? 'N/A',
+    item?.reInstateDate?.toString() ?? 'N/A',
+    item?.dueDate?.toString() ?? 'N/A',
   ]);
 
   return (
@@ -162,7 +180,10 @@ export default function PPWCancellation({navigation}) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setSelectedType(2)}
+            onPress={() => {
+              setSelectedType(2);
+              // setSelectedValue('M');
+            }}
             style={{
               backgroundColor:
                 SelectedType == 2 ? COLORS.primary : COLORS.white,
@@ -217,11 +238,13 @@ export default function PPWCancellation({navigation}) {
             <DropdownFilled
               Color={COLORS.white}
               search={false}
+              cancelable={true}
+              value={selectedValue}
               placeholder={'Select Type'}
               onSelect={handleSelect} // Pass the handleSelect function as a prop
               dropdownData={[
-                {label: 'Motor', value: 'Motor'},
-                {label: 'Non-Motor', value: 'Non-Motor'},
+                {label: 'Motor', value: 'M'},
+                {label: 'Non-Motor', value: 'G'},
               ]}
             />
           </View>
@@ -245,7 +268,7 @@ export default function PPWCancellation({navigation}) {
               ) : (
                 <TableComponent
                   Error={'Sorry, No Data Found'}
-                  tableHead={tableHead}
+                  tableHead={selectedValue == 'M' ? tableHead : tableHeadNM}
                   tableData={tableData}
                   navigation={navigation}
                   clickableColumns={[0]}
@@ -261,7 +284,7 @@ export default function PPWCancellation({navigation}) {
               ) : (
                 <TableComponent
                   Error={'Sorry, No Data Found'}
-                  tableHead={tableHead2}
+                  tableHead={selectedValue == 'M' ? tableHead2 : tableHead2NM}
                   tableData={tableData2}
                   navigation={navigation}
                   clickableColumns={[0]}

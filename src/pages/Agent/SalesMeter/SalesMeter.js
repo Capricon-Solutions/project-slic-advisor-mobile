@@ -242,7 +242,7 @@ export default function SalesMeter({navigation}) {
                     onPress={() => setVisible(true)}
                     style={styles.monthlyCard}>
                     <Text style={styles.monthlyText}>
-                      {type == 'M' ? 'MONTHLY' : 'CUMULATIVE'}
+                      {type == 'M' ? 'Monthly' : 'Cumulative'}
                     </Text>
                     {/* <Octicons
                         name={'chevron-down'}
