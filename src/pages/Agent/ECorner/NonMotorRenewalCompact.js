@@ -247,7 +247,7 @@ export default function NonMotorRenewalCompact({navigation}) {
 
           <Text
             style={{
-              fontFamily: Fonts.Roboto.Regular,
+              fontFamily: Fonts.Roboto.SemiBold,
               fontSize: 14,
               marginVertical: 20,
               color: COLORS.borderColor,

@@ -201,7 +201,7 @@ export default function PolicyRenewals({navigation}) {
         <View>
           <Text
             style={{
-              fontFamily: Fonts.Roboto.Regular,
+              fontFamily: Fonts.Roboto.SemiBold,
               fontSize: 14,
               marginBottom: 10,
               color: COLORS.borderColor,

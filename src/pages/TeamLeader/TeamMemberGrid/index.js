@@ -94,8 +94,8 @@ export default function TeamMemberGrid({navigation, route}) {
 
     type: value,
   });
-  console.log('TeamLeaderReport', TeamLeaderReport);
-  console.log('TeamLeaderReportLoading', TeamLeaderReportLoading);
+  console.log('Team Member  Report', TeamLeaderReport);
+  console.log('Team Member ReportLoading', TeamLeaderReportLoading);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
@@ -283,7 +283,13 @@ export default function TeamMemberGrid({navigation, route}) {
                 mode={'modal'}
                 search={false}
                 onValueChange={value => {
-                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                  setSelectedType(value ?? 'ALL');
+                  if (value == 'G') {
+                    setSelectedMonth('00'); // Reset month to '00' if type is 'G'
+                  } else if (value == 'M') {
+                    setSelectedMonth(null); // Set month to '01' if type is 'M
+                  }
+                  // 👈 If value is null, use 'ALL'
                 }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
@@ -295,27 +301,48 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
+                search={false}
+                disabled={SelectedType == 'G'} // Disable if type is 'G'
                 value={SelectedMonth}
                 nonClearable={true}
                 // onValueChange={setSelectedMonth}
                 onValueChange={value => {
                   setSelectedMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
                 }}
-                dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
-                ]}
+                dropdownData={
+                  SelectedType == 'M'
+                    ? [
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                    : SelectedType == 'G'
+                    ? [{label: 'Cumulative', value: '00'}]
+                    : [
+                        {label: 'Cumulative', value: '00'},
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                }
               />
             </View>
             {/* <View style={{ flex: 0.19, marginHorizontal: 2 }}>

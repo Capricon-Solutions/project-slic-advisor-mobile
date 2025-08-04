@@ -107,7 +107,7 @@ export default function PolicyDetails({navigation, route}) {
         <LoadingScreen />
       ) : (
         <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-          <View style={styles.card}>
+          <View style={[styles.card, {paddingBottom: 1}]}>
             {isCancelled && (
               <Text
                 style={{

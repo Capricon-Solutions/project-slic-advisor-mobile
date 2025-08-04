@@ -44,23 +44,29 @@ export default function AgentProgressCard({
   onProductPortfolioClick,
   loading,
 }) {
-  return loading ? (
-    <View
-      style={[
-        Styles.rankWrap,
-        {
-          backgroundColor: 'rgba(255, 255, 255, 1)',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-      ]}>
-      <LoaderKit
-        style={{width: 50, height: 50}}
-        name={'LineScalePulseOutRapid'} // Optional: see list of animations below
-        color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
-      />
-    </View>
-  ) : (
+  const isDataIncomplete =
+    !totalIslandRank || !totalNumberofRegions || !totalNumberofBranches;
+
+  if (loading || isDataIncomplete) {
+    return (
+      <View
+        style={[
+          Styles.rankWrap,
+          {
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        ]}>
+        <LoaderKit
+          style={{width: 50, height: 50}}
+          name={'LineScalePulseOutRapid'}
+          color={COLORS.grayText}
+        />
+      </View>
+    );
+  }
+  return (
     <TouchableOpacity onPress={onPress} style={Styles.rankWrap}>
       <View
         style={{flex: 0.65, justifyContent: 'center', alignItems: 'center'}}>

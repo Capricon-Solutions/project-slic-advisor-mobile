@@ -32,9 +32,12 @@ const months = [
   'December',
 ];
 
-
-
-const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect,lockOrientation}) => {
+const MonthYearPickerSingleCurrent = ({
+  visible,
+  onClose,
+  onSelect,
+  lockOrientation,
+}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -52,23 +55,30 @@ const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect,lockOrientatio
       onClose();
     }
   };
-
- useEffect(() => {
-  // return;
-  if (visible && lockOrientation) {
-    Orientation.lockToLandscape(); // or lockToPortrait() based on need
-  }
-
-  // optional: cleanup orientation on close
-  return () => {
-    if (lockOrientation) Orientation.lockToPortrait();
+  const handleClose = () => {
+    setSelectedYear(currentYear); // Reset to current year
+    setSelectedDate(null);
+    onClose(); // Just close the modal without sending selected date
   };
-}, [visible, lockOrientation]);
+
+  useEffect(() => {
+    // return;
+    if (visible && lockOrientation) {
+      Orientation.lockToLandscape(); // or lockToPortrait() based on need
+    }
+
+    // optional: cleanup orientation on close
+    return () => {
+      if (lockOrientation) Orientation.lockToPortrait();
+    };
+  }, [visible, lockOrientation]);
 
   return (
     <Modal
-         supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
- transparent visible={visible} animationType="fade">
+      supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
+      transparent
+      visible={visible}
+      animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.container}>
           {/* Year Navigation */}
@@ -168,10 +178,20 @@ const MonthYearPickerSingleCurrent = ({visible, onClose, onSelect,lockOrientatio
 
           {/* Footer Buttons */}
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
+            <TouchableOpacity
+              disabled={!selectedDate}
+              style={[
+                styles.doneButton,
+                {
+                  backgroundColor: !selectedDate
+                    ? COLORS.warmGray
+                    : COLORS.primaryGreen,
+                },
+              ]}
+              onPress={handleDone}>
               <Text style={styles.doneText}>Done</Text>
             </TouchableOpacity>
           </View>
