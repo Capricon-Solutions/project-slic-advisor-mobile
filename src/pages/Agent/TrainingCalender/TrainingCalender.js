@@ -103,12 +103,11 @@ export default function TrainingCalender({navigation}) {
   const dispatch = useDispatch();
   const today = new Date().toISOString().split('T')[0];
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(Getpath(0));
-    }, []),
-  );
-
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(Getpath(0));
+  //   }, []),
+  // );
   const {
     data: TrainingList,
     isFetching,
@@ -118,6 +117,49 @@ export default function TrainingCalender({navigation}) {
     type,
     userCode: usertype == 2 ? personalCode : userCode,
   });
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(Getpath(0));
+
+  //     // Reset calendar selection when returning to screen
+  //     setSelectedDate(null);
+  //     setSelectedTrainings([]);
+
+  //     // Remove 'selected' styles from all marked dates
+  //     setMarkedDates(prevMarkedDates => {
+  //       const updated = {};
+  //       Object.keys(prevMarkedDates || {}).forEach(date => {
+  //         const {selected, selectedColor, ...rest} = prevMarkedDates[date];
+  //         updated[date] = rest;
+  //       });
+  //       return updated;
+  //     });
+
+  //     // Optional: refetch data on focus
+  //     refetch?.();
+  //   }, []),
+  // );
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(Getpath(0));
+
+      // Always reset selected date to today
+      setSelectedDate(today);
+      setSelectedTrainings([]);
+
+      setMarkedDates(prevMarkedDates => {
+        const updated = {};
+        Object.keys(prevMarkedDates || {}).forEach(date => {
+          const {selected, selectedColor, ...rest} = prevMarkedDates[date];
+          updated[date] = rest;
+        });
+        return updated;
+      });
+
+      refetch?.();
+    }, []),
+  );
 
   const [approveTraining, {isLoading: isApproving, error: approveError}] =
     useApproveTrainingMutation();
@@ -251,12 +293,13 @@ export default function TrainingCalender({navigation}) {
               marginVertical: 15,
             }}>
             <Calendar
+              key={selectedDate || 'reset'}
               onDayPress={handleDayPress}
               style={{
                 borderColor: 'gray',
               }}
-              current={today}
-              // today={"15/06/2021"}
+              current={selectedDate || today} // current={today}
+              // today={today}
               markedDates={markedDates}
               theme={{
                 backgroundColor: '#ffffff',
