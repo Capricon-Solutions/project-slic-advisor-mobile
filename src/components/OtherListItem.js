@@ -179,7 +179,12 @@ export default function OtherListItem({item, onPress}) {
         </View>
 
         <View
-          style={{marginLeft: 5, justifyContent: 'space-evenly', flex: 0.55}}>
+          style={{
+            marginLeft: 5,
+
+            justifyContent: 'space-evenly',
+            flex: 0.55,
+          }}>
           <Text
             style={{
               fontFamily: Fonts.Roboto.Bold,
@@ -189,6 +194,7 @@ export default function OtherListItem({item, onPress}) {
             {item.productName}
           </Text>
           <Text
+            numberOfLines={3}
             style={{
               fontFamily: Fonts.Roboto.Regular,
               color: COLORS.black,
@@ -196,7 +202,7 @@ export default function OtherListItem({item, onPress}) {
               textAlign: 'left',
               marginTop: 5,
             }}>
-            {item.description}
+            {item.shortDesc}
           </Text>
         </View>
 
