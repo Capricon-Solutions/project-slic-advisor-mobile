@@ -75,6 +75,13 @@ export default function PolicyFilter({
     setMobile('');
     setNic('');
     setBRegNo('');
+
+    setFormError({
+      VehicleNumber: '',
+      mobile: '',
+      nic: '',
+
+    });
     
   };
 
@@ -291,23 +298,49 @@ export default function PolicyFilter({
               value={VehicleNumber}
               Label="Vehicle Number"
               setValue={text => {
-                const cleaned = text
-                  .replace(/[^a-zA-Z0-9]/g, '')
-                  .trim();
+                // Allow only letters, numbers and space (but do not trim)
+                const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+              
                 setVNumber(cleaned);
-                if (!/[0-9]/.test(cleaned)) {
+              
+                // Check for leading or trailing space
+                const hasLeadingOrTrailingSpace = /^\s|\s$/.test(cleaned);
+              
+                // Check if exactly one space is present
+                const spaceCount = (cleaned.match(/ /g) || []).length;
+              
+                // Check if at least one number exists
+                const hasNumber = /[0-9]/.test(cleaned);
+              
+                // Validation
+                if (cleaned.length < 1) {
                   setFormError(prev => ({
                     ...prev,
-                    VehicleNumber:
-                      'Invalid vehicle number: must contain at least one number',
+                    VehicleNumber: '',
+                  }));
+                } else if (!hasNumber) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: must contain at least one number',
+                  }));
+                } else if (spaceCount !== 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: must contain exactly one space',
+                  }));
+                } else if (hasLeadingOrTrailingSpace) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: space cannot be at the start or end',
                   }));
                 } else {
                   setFormError(prev => ({
                     ...prev,
-                    VehicleNumber: '', // Clear error if valid
+                    VehicleNumber: '',
                   }));
                 }
               }}
+              
             />
           </View>
           {formError.VehicleNumber && (
@@ -370,41 +403,46 @@ export default function PolicyFilter({
           </View>
 
           <SquareTextBoxOutlined
-            Title={MobileNumber}
-            Label="Mobile Number"
-            keyboardType={'phone-pad'}
-            maxLength={15} // E.164: up to +123456789012345 (15 digits max)
-            value={MobileNumber}
-            setValue={text => {
-              // Step 1: Remove all non-digit characters
-              const cleaned = text.replace(/[^0-9]/g, '');
+  Title={MobileNumber}
+  Label="Mobile Number"
+  keyboardType={'phone-pad'}
+  maxLength={11} // local (10) or intl (11) without plus
+  value={MobileNumber}
+  setValue={text => {
+    // Remove all non-digit characters
+    const cleaned = text.replace(/[^0-9]/g, '');
 
-              if(cleaned.length < 1){
-                setFormError({
-                  ...formError,
-                  mobile: '',
-                });
-                setMobile(cleaned);
-                return;
-              }
+    // Set state anyway
+    setMobile(cleaned);
 
+    // If empty, clear error
+    if (cleaned.length < 1) {
+      setFormError({
+        ...formError,
+        mobile: '',
+      });
+      return;
+    }
 
-              // Step 2: Allow only numbers, and check length (E.164: min 10, max 15 digits)
-              if (cleaned.length >= 10 && cleaned.length <= 15) {
-                setMobile(cleaned);
-                setFormError({
-                  ...formError,
-                  mobile: '',
-                });
-              } else {
-                setMobile(cleaned); // Still update state, but show error
-                setFormError({
-                  ...formError,
-                  mobile: 'Mobile number must be between 10 and 15 digits',
-                });
-              }
-            }}
-          />
+    // Validate local format (07XXXXXXXX)
+    const isLocalValid = /^07\d{8}$/.test(cleaned);
+
+    // Validate international format (947XXXXXXXX)
+    const isInternationalValid = /^947\d{8}$/.test(cleaned);
+
+    if (isLocalValid || isInternationalValid) {
+      setFormError({
+        ...formError,
+        mobile: '',
+      });
+    } else {
+      setFormError({
+        ...formError,
+        mobile: 'Enter valid LK mobile number (e.g., 0712345678 or 94712345678)',
+      });
+    }
+  }}
+/>
           {formError.mobile && (
             <Text style={{color: 'red', fontSize: 12}}>{formError.mobile}</Text>
           )}
@@ -461,7 +499,7 @@ export default function PolicyFilter({
               }}
               Title="Clear"
             />
-            <AlertButton onPress={handleSearch} disabledButton={Boolean(formError.VehicleNumber || formError.mobile || formError.nic || formError.VehicleNumber)} Title="Search" />
+            <AlertButton onPress={handleSearch} disabledColor={Boolean(formError.VehicleNumber || formError.mobile || formError.nic || formError.VehicleNumber)} disabledButton={Boolean(formError.VehicleNumber || formError.mobile || formError.nic || formError.VehicleNumber)} Title="Search" />
           </View>
         </ScrollView>
       </Animated.View>

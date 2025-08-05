@@ -552,25 +552,68 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => {
-                54;
-                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '').trim().toLowerCase();
+              // setValue={text => {
+              //   54;
+              //   const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '').trim().toLowerCase();
 
-                if (cleanedText.length >= 5 && cleanedText.length <= 8) {
-                  setVehicleNo(cleanedText);
-                  setFormError({});
-                } else if (cleanedText.length > 8) {
-                  52;
-                  setVehicleNo(cleanedText.slice(0, 8));
-                } else if (cleanedText.length < 5 && cleanedText.length > 0) {
-                  setVehicleNo(cleanedText);
-                  setFormError({
-                    vehicleNo:
-                      'Vehicle number must be between 5 and 8 characters.',
-                  });
-                  1;
+              //   if (cleanedText.length >= 5 && cleanedText.length <= 8) {
+              //     setVehicleNo(cleanedText);
+              //     setFormError({});
+              //   } else if (cleanedText.length > 8) {
+              //     52;
+              //     setVehicleNo(cleanedText.slice(0, 8));
+              //   } else if (cleanedText.length < 5 && cleanedText.length > 0) {
+              //     setVehicleNo(cleanedText);
+              //     setFormError({
+              //       vehicleNo:
+              //         'Vehicle number must be between 5 and 8 characters.',
+              //     });
+              //     1;
+              //   } else {
+              //     setVehicleNo('');
+              //   }
+              // }}
+              setValue={text => {
+                // Allow only letters, numbers and space (but do not trim)
+                const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+              
+                setVehicleNo(cleaned);
+              
+                // Check for leading or trailing space
+                const hasLeadingOrTrailingSpace = /^\s|\s$/.test(cleaned);
+              
+                // Check if exactly one space is present
+                const spaceCount = (cleaned.match(/ /g) || []).length;
+              
+                // Check if at least one number exists
+                const hasNumber = /[0-9]/.test(cleaned);
+              
+                // Validation
+                if (cleaned.length < 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: '',
+                  }));
+                } else if (!hasNumber) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: must contain at least one number',
+                  }));
+                } else if (spaceCount !== 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: must contain exactly one space',
+                  }));
+                } else if (hasLeadingOrTrailingSpace) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: space cannot be at the start or end',
+                  }));
                 } else {
-                  setVehicleNo('');
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: '',
+                  }));
                 }
               }}
             />
