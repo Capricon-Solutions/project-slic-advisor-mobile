@@ -28,6 +28,12 @@ import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
 import clubInfoImg from '../../../icons/clubInfo.png';
+import {
+  IconButton,
+  Tooltip,
+  Provider as PaperProvider,
+} from 'react-native-paper';
+
 import {useSelector} from 'react-redux';
 import {
   useGetClubQuery,
@@ -117,193 +123,207 @@ export default function ClubInformation({navigation}) {
   const annualIncomeUpto = tableData?.[0]?.[1] || '0.00';
   console.log('clubInfoResponse', clubInfoResponse);
   return (
-    <View style={[Styles.container, {paddingHorizontal: 10}]}>
-      <HeaderBackground />
+    <PaperProvider>
+      <View style={[Styles.container, {paddingHorizontal: 10}]}>
+        <HeaderBackground />
 
-      <SendPaymentLink
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
+        <SendPaymentLink
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
 
-      <Header
-        Title="Club Information"
-        onPress={() => navigation.goBack()}
-        haveFilters={false}
-        haveWhatsapp={false}
-        haveMenu={false}
-        onButton={() => setModalVisible(true)}
-      />
-      {isFetching ? (
-        <LoadingScreen />
-      ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{paddingHorizontal: 0}}>
-          <View style={{paddingHorizontal: 6}}>
-            <View style={[styles.card, {alignItems: 'center'}]}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                  width: '100%',
-                  gap: 5,
-                  marginBottom: 5,
-                }}>
-                <Image
-                  style={{height: 26, width: 26}}
-                  source={clubInfoImg}></Image>
-                <Text
-                  style={{
-                    fontFamily: Fonts.Roboto.Bold,
-                    fontSize: 15,
-                    color: COLORS.textColor,
-                  }}>
-                  Club Year {clubYear?.toString() ?? ''}
-                </Text>
-              </View>
-              <View style={{marginBottom: 20}}>
+        <Header
+          Title="Club Information"
+          onPress={() => navigation.goBack()}
+          haveFilters={false}
+          haveWhatsapp={false}
+          haveMenu={false}
+          onButton={() => setModalVisible(true)}
+        />
+        {isFetching ? (
+          <LoadingScreen />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{paddingHorizontal: 0}}>
+            <View style={{paddingHorizontal: 6}}>
+              <View style={[styles.card, {alignItems: 'center'}]}>
                 <View
                   style={{
                     flexDirection: 'row',
-                    gap: 10,
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
                     width: '100%',
+                    gap: 5,
+                    marginBottom: 5,
                   }}>
-                  <View style={{flex: 1}}>
-                    {/* <OutlinedTextBox
+                  <Image
+                    style={{height: 26, width: 26}}
+                    source={clubInfoImg}></Image>
+                  <Text
+                    style={{
+                      fontFamily: Fonts.Roboto.Bold,
+                      fontSize: 15,
+                      color: COLORS.textColor,
+                    }}>
+                    Club Year {clubYear?.toString() ?? ''}
+                  </Text>
+                </View>
+                <View style={{marginBottom: 20}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      width: '100%',
+                    }}>
+                    <View style={{flex: 1}}>
+                      {/* <OutlinedTextBox
                       Title={'Current Club'}
                       readOnly={true}
                       value={currentClub?.toString() ?? ''}
                     /> */}
-                    <OutlinedTextView
-                      Title={'Current Club'}
-                      value={currentClub?.toString() ?? ''}
-                    />
-                  </View>
 
-                  <View style={{flex: 1}}>
-                    {/* <OutlinedTextBox
+                      <Tooltip
+                        enterTouchDelay={1}
+                        leaveTouchDelay={1000}
+                        title={currentClub?.toString() ?? 'Unavailable'}>
+                        <OutlinedTextView
+                          Title={'Current Club'}
+                          value={currentClub?.toString() ?? ''}
+                        />
+                      </Tooltip>
+                    </View>
+
+                    <View style={{flex: 1}}>
+                      {/* <OutlinedTextBox
                       Title={'Current Club’s Limit'}
                       readOnly={true}
                       value={currentClublimit?.toString() ?? ''}
                     /> */}
-                    <OutlinedTextView
-                      Title={'Current Club’s Limit'}
-                      value={currentClublimit?.toString() ?? ''}
-                    />
+                      <OutlinedTextView
+                        Title={'Current Club’s Limit'}
+                        value={currentClublimit?.toString() ?? ''}
+                      />
+                    </View>
                   </View>
-                </View>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                    width: '100%',
-                  }}>
-                  <View style={{flex: 1}}>
-                    {/* <OutlinedTextBox
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      width: '100%',
+                    }}>
+                    <View style={{flex: 1}}>
+                      {/* <OutlinedTextBox
                       Title={'General Appt. Date'}
                       readOnly={true}
                       value={generalAppointmentDate?.toString() ?? ''}
                     /> */}
-                    <OutlinedTextView
-                      Title={'General Appt. Date'}
-                      value={generalAppointmentDate?.toString() ?? ''}
-                    />
-                  </View>
+                      <OutlinedTextView
+                        Title={'General Appt. Date'}
+                        value={generalAppointmentDate?.toString() ?? ''}
+                      />
+                    </View>
 
-                  <View style={{flex: 1}}>
-                    {/* <OutlinedTextBox
+                    <View style={{flex: 1}}>
+                      {/* <OutlinedTextBox
                       Title={'Gen. Persistency'}
                       readOnly={true}
                       value={generalPersistency?.toString() ?? ''}
                     /> */}
-                    <OutlinedTextView
-                      Title={'Gen. Persistency'}
-                      value={generalPersistency?.toString() ?? ''}
-                    />
-                  </View>
-                </View>
-
-                <OutlinedTextView
-                  Title={'Last 5 Years Avg.'}
-                  // readOnly={true}
-                  value={last5YearAverage?.toString() ?? ''}
-                />
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                    width: '100%',
-                  }}>
-                  <View style={{flex: 1}}>
-                    <OutlinedTextView
-                      Title={'Next Club'}
-                      // readOnly={true}
-                      value={nextClub?.toString() ?? ''}
-                    />
+                      <OutlinedTextView
+                        Title={'Gen. Persistency'}
+                        value={generalPersistency?.toString() ?? ''}
+                      />
+                    </View>
                   </View>
 
-                  <View style={{flex: 1}}>
-                    <OutlinedTextView
-                      Title={"Next Club's Limit"}
-                      // readOnly={true}
-                      value={nextLimit?.toString() ?? ''}
-                    />
-                  </View>
-                </View>
-
-                <OutlinedTextView
-                  Title={'Last Updated Date'}
-                  // readOnly={true}
-                  value={lastUpdatedDate?.toString() ?? ''}
-                />
-                {tableData && (
                   <OutlinedTextView
-                    Title={
-                      'Annual Income Upto ' + lastUpdatedDate?.toString() ?? ''
-                    }
+                    Title={'Last 5 Years Avg.'}
                     // readOnly={true}
-                    value={annualIncomeUpto?.toString() ?? ''}
+                    value={last5YearAverage?.toString() ?? ''}
                   />
-                )}
-              </View>
-              {tableData ? (
-                <View style={{flex: 1}}>
-                  <TableComponent
-                    haveTotal={false}
-                    tableHead={tableHead}
-                    tableData={tableData}
-                    columnWidths={columnWidths}
-                  />
-                </View>
-              ) : (
-                <Text
-                  style={{
-                    color: COLORS.borderColor,
-                    fontFamily: Fonts.Roboto.Medium,
-                    fontSize: 16,
-                    marginVertical: 20,
-                  }}>
-                  No table data available
-                </Text>
-              )}
 
-              {/* Important Notice */}
-              <View style={styles.noticeContainer}>
-                <Text style={styles.noticeTitle}>* Note</Text>
-                <Text style={styles.noticeText}>
-                  Your club selection data displayed in this page is only a
-                  forecast based on primitive data. They could be different from
-                  the final club entitlement which is released by Sales Support
-                  Division, after processing these data further.
-                </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      width: '100%',
+                    }}>
+                    <View style={{flex: 1}}>
+                      <Tooltip
+                        enterTouchDelay={1}
+                        leaveTouchDelay={1000}
+                        title={nextClub?.toString() ?? 'Unavailable'}>
+                        <OutlinedTextView
+                          Title={'Next Club'}
+                          // readOnly={true}
+                          value={nextClub?.toString() ?? ''}
+                        />
+                      </Tooltip>
+                    </View>
+
+                    <View style={{flex: 1}}>
+                      <OutlinedTextView
+                        Title={"Next Club's Limit"}
+                        // readOnly={true}
+                        value={nextLimit?.toString() ?? ''}
+                      />
+                    </View>
+                  </View>
+
+                  <OutlinedTextView
+                    Title={'Last Updated Date'}
+                    // readOnly={true}
+                    value={lastUpdatedDate?.toString() ?? ''}
+                  />
+                  {tableData && (
+                    <OutlinedTextView
+                      Title={
+                        'Annual Income Upto ' + lastUpdatedDate?.toString() ??
+                        ''
+                      }
+                      // readOnly={true}
+                      value={annualIncomeUpto?.toString() ?? ''}
+                    />
+                  )}
+                </View>
+                {tableData ? (
+                  <View style={{flex: 1}}>
+                    <TableComponent
+                      haveTotal={false}
+                      tableHead={tableHead}
+                      tableData={tableData}
+                      columnWidths={columnWidths}
+                    />
+                  </View>
+                ) : (
+                  <Text
+                    style={{
+                      color: COLORS.borderColor,
+                      fontFamily: Fonts.Roboto.Medium,
+                      fontSize: 16,
+                      marginVertical: 20,
+                    }}>
+                    No table data available
+                  </Text>
+                )}
+
+                {/* Important Notice */}
+                <View style={styles.noticeContainer}>
+                  <Text style={styles.noticeTitle}>* Note</Text>
+                  <Text style={styles.noticeText}>
+                    Your club selection data displayed in this page is only a
+                    forecast based on primitive data. They could be different
+                    from the final club entitlement which is released by Sales
+                    Support Division, after processing these data further.
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      )}
-    </View>
+          </ScrollView>
+        )}
+      </View>
+    </PaperProvider>
   );
 }

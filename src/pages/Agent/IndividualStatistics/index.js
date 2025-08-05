@@ -56,12 +56,26 @@ export default function IndividualStatistics({navigation}) {
   // const [fromDate, toDate] = selectedDate
   //   ? selectedDate.split(' to ')
   //   : [lastMonthStart, currentMonthEnd];
-  const [fromDate, toDate] = selectedDate
-    ? [
-        moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
-        moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
-      ]
-    : [lastMonthStart, currentMonthEnd];
+  // const [fromDate, toDate] = selectedDate
+  //   ? [
+  //       moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
+  //       moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
+  //     ]
+  //   : [lastMonthStart, currentMonthEnd];
+  const isCurrentMonth = moment(selectedDate, 'YYYY/MM').isSame(
+    moment(),
+    'month',
+  );
+
+  const fromDate = selectedDate
+    ? moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD')
+    : lastMonthStart;
+
+  const toDate = selectedDate
+    ? isCurrentMonth
+      ? moment().format('YYYY-MM-DD') // today if current month
+      : moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD')
+    : currentMonthEnd;
   console.log('selectedDate', selectedDate);
   console.log('fromDate', fromDate, 'toDate', toDate);
   const {
@@ -161,7 +175,7 @@ export default function IndividualStatistics({navigation}) {
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
         onSelectText={v => setSelectedDate(v)}
-          lockOrientation={true}
+        lockOrientation={false}
       />
 
       {/* <HeaderBackground /> */}
@@ -176,22 +190,23 @@ export default function IndividualStatistics({navigation}) {
         />
       </View>
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        <HorizontalTableComponent
-          onPress={() => console.log('test')}
-          clickable={false}
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableDataFinal}
-          columnWidths={columnWidths}
-        />
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          <HorizontalTableComponent
+            onPress={() => console.log('test')}
+            clickable={false}
+            haveTotal={false}
+            tableHead={tableHead}
+            tableData={tableDataFinal}
+            columnWidths={columnWidths}
+          />
+        </View>
+      </View>
       {isFetching && (
         <View
           style={{

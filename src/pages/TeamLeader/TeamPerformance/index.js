@@ -126,8 +126,8 @@ export default function TeamPerformance({navigation}) {
             flex: 0.2,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: 6,
-            paddingHorizontal: 5,
+            paddingVertical: 4,
+            paddingHorizontal: 6,
           }}>
           <Text
             style={{
@@ -145,8 +145,8 @@ export default function TeamPerformance({navigation}) {
             flex: 0.2,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: 6,
-            paddingHorizontal: 5,
+            paddingVertical: 4,
+            paddingHorizontal: 6,
           }}>
           <Text
             style={{
@@ -157,24 +157,24 @@ export default function TeamPerformance({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        {tableData?.length > 0 && (
-          <HorizontalMargedTableComponent
-            onPress={() => navigation.navigate('PolicyDetails')}
-            haveTotal={false}
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-          />
-        )}
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          {tableData?.length > 0 && (
+            <HorizontalMargedTableComponent
+              onPress={() => navigation.navigate('PolicyDetails')}
+              haveTotal={false}
+              tableHead={tableHead}
+              tableData={tableData}
+              columnWidths={columnWidths}
+            />
+          )}
+        </View>
+      </View>
       {(isFetching || yearFetching) && (
         <View
           style={{

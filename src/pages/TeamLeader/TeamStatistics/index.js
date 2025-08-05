@@ -186,22 +186,23 @@ export default function TeamStatistics({navigation}) {
           </TouchableOpacity>
         </View>
       </View> */}
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            // alignItems: 'center',
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        <HorizontalTableComponent
-          onPress={() => navigation.navigate('PolicyDetails')}
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableDataFinal}
-          columnWidths={columnWidths}
-        />
-      </ScrollView>
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          <HorizontalTableComponent
+            onPress={() => navigation.navigate('PolicyDetails')}
+            haveTotal={false}
+            tableHead={tableHead}
+            tableData={tableDataFinal}
+            columnWidths={columnWidths}
+          />
+        </View>
+      </View>
       {isFetching && (
         <View
           style={{
