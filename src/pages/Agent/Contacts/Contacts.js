@@ -46,6 +46,7 @@ export default function Contacts({navigation}) {
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
+      setSearchQuery('');
       console.log('test conact');
     }, []),
   );
