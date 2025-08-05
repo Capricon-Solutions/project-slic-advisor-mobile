@@ -41,6 +41,7 @@ import {
   useApproveTrainingMutation,
   useGetTrainingListQuery,
 } from '../../../redux/services/trainingSlice';
+import {showToast} from '../../../components/ToastMessage';
 
 const window = Dimensions.get('window');
 
@@ -492,36 +493,89 @@ export default function TrainingCalender({navigation}) {
                         <SmallButton
                           Title={'Done'}
                           disabledButton={
-                            training?.statusCode == 1
-                              ? true
-                              : training?.statusCode == 3
-                              ? true
-                              : false
+                            training?.statusCode == 0
+                              ? false
+                              : // : training?.statusCode == 3
+                                // ? true
+                                true
                           }
                           disabledColor={
-                            training?.statusCode == 1
-                              ? true
-                              : training?.statusCode == 3
-                              ? true
-                              : false
+                            training?.statusCode == 0
+                              ? false
+                              : // : training?.statusCode == 3
+                                // ? true
+                                true
                           }
+                          // onPress={() => {
+                          //   console.log(' training.trainId', training.trainId);
+                          //   // Call the approveTraining mutation with the training ID
+                          //   approveTraining({id: training.trainId, userCode})
+                          //     .unwrap()
+                          //     .then(() => {
+                          //       // On success, remove the training from the list
+                          //       // setSelectedTrainings(prev =>
+                          //       //   prev.filter((_, i) => i !== index),
+                          //       // );
+                          //     })
+                          //     .catch(error => {
+                          //       console.error(
+                          //         'Failed to approve training:',
+                          //         error,
+                          //       );
+                          //       // You might want to show an error message to the user here
+                          //     });
+                          // }}
                           onPress={() => {
-                            console.log(' training.trainId', training.trainId);
-                            // Call the approveTraining mutation with the training ID
-                            approveTraining({id: training.trainId, userCode})
+                            console.log('training.trainId', training.trainId);
+
+                            approveTraining({
+                              id: training.trainId,
+                              userCode: usertype == 2 ? personalCode : userCode,
+                            })
                               .unwrap()
-                              .then(() => {
-                                // On success, remove the training from the list
-                                // setSelectedTrainings(prev =>
-                                //   prev.filter((_, i) => i !== index),
-                                // );
+                              .then(response => {
+                                console.log(
+                                  'response.success',
+                                  response.success,
+                                );
+                                if (response.success) {
+                                  // alert('✅ Training approved successfully!');
+                                  showToast({
+                                    type: 'success',
+                                    text1: 'Successfull',
+                                    text2: 'Training approved successfully!',
+                                  });
+                                  setSelectedTrainings(prev =>
+                                    prev.map((t, i) =>
+                                      i === index ? {...t, statusCode: 1} : t,
+                                    ),
+                                  );
+                                  // Optionally remove the approved training from list
+                                  // setSelectedTrainings(prev => prev.filter((_, i) => i !== index));
+                                } else {
+                                  // alert(
+                                  //   '❌ Training approval failed: ' +
+                                  //     response.message,
+                                  // );
+                                  showToast({
+                                    type: 'error',
+                                    text1: 'Failed',
+                                    text2: 'Training approval failed.',
+                                  });
+                                }
                               })
                               .catch(error => {
                                 console.error(
                                   'Failed to approve training:',
                                   error,
                                 );
-                                // You might want to show an error message to the user here
+
+                                showToast({
+                                  type: 'error',
+                                  text1: 'Failed',
+                                  text2:
+                                    'Something went wrong while approving training.',
+                                });
                               });
                           }}
                         />
