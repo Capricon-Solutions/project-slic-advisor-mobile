@@ -273,7 +273,7 @@ export default function PolicyFilter({
             Label="Policy Number"
             value={PolicyNumber}
             setValue={text => {
-              const cleanedText = text.replace(/[^0-9]/g, '');
+              const cleanedText = text;
               setPNumber(cleanedText);
             }}
           />
@@ -441,7 +441,7 @@ export default function PolicyFilter({
             value={BusiRegNo}
             maxLength={12}
             setValue={text => {
-              const cleaned = text.replace(/[^a-zA-Z0-9]/g, '');
+              const cleaned = text;
               setBRegNo(cleaned);
             }}
           />
