@@ -49,12 +49,26 @@ export default function MyselfPerformance({navigation}) {
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
   const [selectedMonthName, setSelectedMonthName] = useState(null);
   const [selectedYearName, setSelectedYearName] = useState(null);
-  const [fromDate, toDate] = selectedDate
-    ? [
-        moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
-        moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
-      ]
-    : [lastMonthStart, currentMonthEnd];
+  // const [fromDate, toDate] = selectedDate
+  //   ? [
+  //       moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
+  //       moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
+  //     ]
+  //   : [lastMonthStart, currentMonthEnd];
+  const isCurrentMonth = moment(selectedDate, 'YYYY/MM').isSame(
+    moment(),
+    'month',
+  );
+
+  const fromDate = selectedDate
+    ? moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD')
+    : lastMonthStart;
+
+  const toDate = selectedDate
+    ? isCurrentMonth
+      ? moment().format('YYYY-MM-DD') // today if current month
+      : moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD')
+    : currentMonthEnd;
   const columnWidths = [200, 160, 120, 130, 120, 100];
 
   const {
@@ -174,6 +188,7 @@ export default function MyselfPerformance({navigation}) {
 
       <MonthYearPickerSingleCurrent
         visible={isPickerVisible}
+        lockOrientation={false}
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
         onSelectText={v => setSelectedDate(v)}
@@ -198,22 +213,23 @@ export default function MyselfPerformance({navigation}) {
         </View>
       </View> */}
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        <HorizontalTableComponent
-          onPress={() => console.log('test')}
-          clickable={false}
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableDataFinal}
-          columnWidths={columnWidths}
-        />
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          <HorizontalTableComponent
+            onPress={() => console.log('test')}
+            clickable={false}
+            haveTotal={false}
+            tableHead={tableHead}
+            tableData={tableDataFinal}
+            columnWidths={columnWidths}
+          />
+        </View>
+      </View>
       {isFetching && (
         <View
           style={{
