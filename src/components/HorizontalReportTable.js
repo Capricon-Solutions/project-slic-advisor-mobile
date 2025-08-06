@@ -51,7 +51,7 @@ const HorizontalReportTable = ({
           </Table>
 
           {/* Body */}
-          <ScrollView>
+          <ScrollView contentContainerStyle={{paddingBottom: 150}}>
             <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
               {Array.isArray(tableData) && tableData.length > 0 ? (
                 tableData.map((rowData, index) => (

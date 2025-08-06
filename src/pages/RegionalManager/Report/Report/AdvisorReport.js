@@ -259,20 +259,19 @@ export default function AdvisorReport({navigation, route}) {
         </TouchableOpacity>
       </View>
       {isLandscape == true ? (
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-          }}
-          style={{}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 0,
+          }}>
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              marginVertical: 5,
+              // marginVertical: 5,
             }}>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
@@ -364,7 +363,7 @@ export default function AdvisorReport({navigation, route}) {
                 onValueChange={value => setBranch(value)} // ✅ Captures selection
               />
             </View>
-            <View style={{flex: 0.13, marginHorizontal: 2}}>
+            <View style={{flex: 0.13, marginHorizontal: 10}}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -402,7 +401,7 @@ export default function AdvisorReport({navigation, route}) {
               </Text>
             </View>
           )}
-        </ScrollView>
+        </View>
       ) : (
         <FlatList
           data={AdvisorReport?.data}

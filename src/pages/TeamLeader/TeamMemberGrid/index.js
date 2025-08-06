@@ -251,7 +251,6 @@ export default function TeamMemberGrid({navigation, route}) {
       {isLandscape == true ? (
         <View
           style={{
-            // alignItems: 'center',
             flex: 1,
             paddingHorizontal: 1,
             paddingTop: 0,
