@@ -302,7 +302,7 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
-                search={false}
+                search={true}
                 disabled={SelectedType == 'G'} // Disable if type is 'G'
                 value={SelectedMonth}
                 nonClearable={true}

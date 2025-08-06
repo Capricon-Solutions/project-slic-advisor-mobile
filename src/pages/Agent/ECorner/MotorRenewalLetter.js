@@ -80,18 +80,69 @@ export default function MotorRenewalLetter({navigation}) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
+  // const handleSearch = v => {
+  //   const query = v.toLowerCase();
+
+  //   const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
+  //     item =>
+  //       item.policyNo?.toLowerCase().includes(query) ||
+  //       item.customerName
+  //         ?.toLowerCase()
+  //         .split(/\W+/)
+  //         .some(word => word.startsWith(query)) ||
+  //       item.vehicleNo?.toLowerCase().includes(query),
+  //   );
+
+  //   setFilteredData(filtered);
+  // };
   const handleSearch = v => {
     const query = v.toLowerCase();
 
-    const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
-      item =>
-        item.policyNo?.toLowerCase().includes(query) ||
-        item.customerName
+    const filtered = motorRenewalsList?.data?.motorRenewals
+      ?.filter(
+        item =>
+          item.policyNo?.toLowerCase().includes(query) ||
+          item.customerName
+            ?.toLowerCase()
+            .split(/\W+/)
+            .some(word => word.startsWith(query)) ||
+          item.vehicleNo?.toLowerCase().includes(query),
+      )
+      ?.sort((a, b) => {
+        const aCustomerMatch = a.customerName
           ?.toLowerCase()
           .split(/\W+/)
-          .some(word => word.startsWith(query)) ||
-        item.vehicleNo?.toLowerCase().includes(query),
-    );
+          .some(word => word.startsWith(query))
+          ? 0
+          : 1;
+
+        const bCustomerMatch = b.customerName
+          ?.toLowerCase()
+          .split(/\W+/)
+          .some(word => word.startsWith(query))
+          ? 0
+          : 1;
+
+        if (aCustomerMatch !== bCustomerMatch) {
+          return aCustomerMatch - bCustomerMatch;
+        }
+
+        const aPolicyMatch = a.policyNo?.toLowerCase().includes(query) ? 0 : 1;
+        const bPolicyMatch = b.policyNo?.toLowerCase().includes(query) ? 0 : 1;
+
+        if (aPolicyMatch !== bPolicyMatch) {
+          return aPolicyMatch - bPolicyMatch;
+        }
+
+        const aVehicleMatch = a.vehicleNo?.toLowerCase().includes(query)
+          ? 0
+          : 1;
+        const bVehicleMatch = b.vehicleNo?.toLowerCase().includes(query)
+          ? 0
+          : 1;
+
+        return aVehicleMatch - bVehicleMatch;
+      });
 
     setFilteredData(filtered);
   };

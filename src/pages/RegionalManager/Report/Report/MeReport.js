@@ -316,7 +316,7 @@ export default function MeReport({navigation, route}) {
                 />
               </View>
               <View style={{flex: 0.2, marginHorizontal: 2}}>
-                <DropdownComponent
+                {/* <DropdownComponent
                   label={'Type'}
                   mode={'modal'}
                   search={false}
@@ -327,10 +327,28 @@ export default function MeReport({navigation, route}) {
                     {label: 'General Cumulative', value: 'G'},
                     {label: 'Motor Monthly', value: 'M'},
                   ]}
+                /> */}
+                <DropdownComponent
+                  label={'Type'}
+                  mode={'modal'}
+                  search={false}
+                  onValueChange={value => {
+                    setSelectedType(value ?? 'ALL');
+                    if (value == 'G') {
+                      setSelectedmonth('00'); // Reset month to '00' if type is 'G'
+                    } else if (value == 'M') {
+                      setSelectedmonth(null); // Set month to '01' if type is 'M
+                    }
+                    // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={[
+                    {label: 'General Cumulative', value: 'G'},
+                    {label: 'Motor Monthly', value: 'M'},
+                  ]}
                 />
               </View>
               <View style={{flex: 0.18, marginHorizontal: 2}}>
-                <DropdownComponent
+                {/* <DropdownComponent
                   label={'Month'}
                   mode={'modal'}
                   value={selectedMonth}
@@ -354,6 +372,52 @@ export default function MeReport({navigation, route}) {
                     {label: 'November', value: '11'},
                     {label: 'December', value: '12'},
                   ]}
+                /> */}
+                <DropdownComponent
+                  label={'Month'}
+                  mode={'modal'}
+                  search={true}
+                  disabled={SelectedType == 'G'} // Disable if type is 'G'
+                  value={selectedMonth}
+                  nonClearable={true}
+                  // onValueChange={setSelectedMonth}
+                  onValueChange={value => {
+                    setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={
+                    SelectedType == 'M'
+                      ? [
+                          {label: 'January', value: '01'},
+                          {label: 'February', value: '02'},
+                          {label: 'March', value: '03'},
+                          {label: 'April', value: '04'},
+                          {label: 'May', value: '05'},
+                          {label: 'June', value: '06'},
+                          {label: 'July', value: '07'},
+                          {label: 'August', value: '08'},
+                          {label: 'September', value: '09'},
+                          {label: 'October', value: '10'},
+                          {label: 'November', value: '11'},
+                          {label: 'December', value: '12'},
+                        ]
+                      : SelectedType == 'G'
+                      ? [{label: 'Cumulative', value: '00'}]
+                      : [
+                          {label: 'Cumulative', value: '00'},
+                          {label: 'January', value: '01'},
+                          {label: 'February', value: '02'},
+                          {label: 'March', value: '03'},
+                          {label: 'April', value: '04'},
+                          {label: 'May', value: '05'},
+                          {label: 'June', value: '06'},
+                          {label: 'July', value: '07'},
+                          {label: 'August', value: '08'},
+                          {label: 'September', value: '09'},
+                          {label: 'October', value: '10'},
+                          {label: 'November', value: '11'},
+                          {label: 'December', value: '12'},
+                        ]
+                  }
                 />
               </View>
               <View style={{flex: 0.19, marginHorizontal: 2}}>
