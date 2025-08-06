@@ -58,9 +58,13 @@ export default function ReportSwitch({navigation}) {
     }, []),
   );
 
-  // useEffect(() => {
-  //   setModalVisible(true)
-  // }, [])
+  useEffect(() => {
+    if (ModalVisible == false) {
+      setTimeout(() => {
+        navigation.goBack();
+      }, 200);
+    }
+  }, [ModalVisible]);
 
   const ReportModal = [
     {

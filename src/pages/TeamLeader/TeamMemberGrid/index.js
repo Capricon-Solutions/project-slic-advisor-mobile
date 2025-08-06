@@ -282,6 +282,8 @@ export default function TeamMemberGrid({navigation, route}) {
                 label={'Type'}
                 mode={'modal'}
                 search={false}
+                nonClearable={SelectedType == 'ALL' ? true : false}
+                value={SelectedType}
                 onValueChange={value => {
                   setSelectedType(value ?? 'ALL');
                   if (value == 'G') {

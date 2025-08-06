@@ -271,6 +271,8 @@ export default function Report({navigation, route}) {
                     label={'Type'}
                     mode={'modal'}
                     search={false}
+                    nonClearable={SelectedType == 'ALL' ? true : false}
+                    value={SelectedType}
                     onValueChange={value => {
                       setSelectedType(value ?? 'ALL');
                       if (value == 'G') {
@@ -336,6 +338,7 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'Branch'}
                     mode={'modal'}
+                    value={branch}
                     dropdownData={dropdownOptions}
                     selectedValue={branch}
                     onValueChange={value => setBranch(value)} // ✅ Captures selection

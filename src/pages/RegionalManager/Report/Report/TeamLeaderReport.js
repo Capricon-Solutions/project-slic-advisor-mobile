@@ -306,6 +306,8 @@ export default function TeamLeaderReport({navigation, route}) {
                 label={'Type'}
                 mode={'modal'}
                 search={false}
+                nonClearable={SelectedType == 'ALL' ? true : false}
+                value={SelectedType}
                 onValueChange={value => {
                   setSelectedType(value ?? 'ALL');
                   if (value == 'G') {
@@ -373,6 +375,7 @@ export default function TeamLeaderReport({navigation, route}) {
               <DropdownComponent
                 label={'Agent'}
                 mode={'modal'}
+                value={branch}
                 dropdownData={dropdownOptions}
                 onValueChange={value => setBranch(value)} // ✅ Captures selection
               />
