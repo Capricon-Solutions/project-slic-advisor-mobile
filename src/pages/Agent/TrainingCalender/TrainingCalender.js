@@ -438,6 +438,14 @@ export default function TrainingCalender({navigation}) {
                         Session Type :{' '}
                         {training.trainType === 'G' ? 'General' : 'Motor'}
                       </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Status : {training.status}
+                      </Text>
 
                       <View
                         style={{
