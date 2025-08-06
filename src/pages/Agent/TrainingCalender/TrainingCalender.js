@@ -526,7 +526,7 @@ export default function TrainingCalender({navigation}) {
                           //     });
                           // }}
                           onPress={() => {
-                            console.log('training.trainId', training.trainId);
+                            console.log('training.trainId', training);
 
                             approveTraining({
                               id: training.trainId,

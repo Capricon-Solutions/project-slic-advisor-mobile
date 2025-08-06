@@ -238,20 +238,19 @@ export default function Report({navigation, route}) {
 
         <View>
           {isLandscape == true ? (
-            <ScrollView
-              contentContainerStyle={{
-                alignItems: 'center',
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-              }}
-              style={{}}>
+            <View
+              style={{
+                // flex: 1,
+                overflow: 'scroll',
+                paddingHorizontal: 1,
+                paddingTop: 0,
+              }}>
               <View
                 style={{
                   width: '100%',
                   alignItems: 'center',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  marginVertical: 5,
                 }}>
                 <View style={{flex: 0.19, marginHorizontal: 2}}>
                   <DropdownComponent
@@ -273,7 +272,12 @@ export default function Report({navigation, route}) {
                     mode={'modal'}
                     search={false}
                     onValueChange={value => {
-                      setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                      setSelectedType(value ?? 'ALL');
+                      if (value == 'G') {
+                        setSelectedmonth('00'); // Reset month to '00' if type is 'G'
+                      } else if (value == 'M') {
+                        setSelectedmonth(null); // Set month to '01' if type is 'M
+                      }
                     }}
                     dropdownData={[
                       {label: 'General Cumulative', value: 'G'},
@@ -285,27 +289,47 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'Month'}
                     mode={'modal'}
+                    search={false}
+                    disabled={SelectedType == 'G'} // Disable if type is 'G'
                     value={selectedMonth}
                     nonClearable={true}
-                    // onValueChange={setSelectedMonth}
                     onValueChange={value => {
                       setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
                     }}
-                    dropdownData={[
-                      {label: 'Cumulative', value: '00'},
-                      {label: 'January', value: '01'},
-                      {label: 'February', value: '02'},
-                      {label: 'March', value: '03'},
-                      {label: 'April', value: '04'},
-                      {label: 'May', value: '05'},
-                      {label: 'June', value: '06'},
-                      {label: 'July', value: '07'},
-                      {label: 'August', value: '08'},
-                      {label: 'September', value: '09'},
-                      {label: 'October', value: '10'},
-                      {label: 'November', value: '11'},
-                      {label: 'December', value: '12'},
-                    ]}
+                    dropdownData={
+                      SelectedType == 'M'
+                        ? [
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
+                          ]
+                        : SelectedType == 'G'
+                        ? [{label: 'Cumulative', value: '00'}]
+                        : [
+                            {label: 'Cumulative', value: '00'},
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
+                          ]
+                    }
                   />
                 </View>
                 <View style={{flex: 0.19, marginHorizontal: 2}}>
@@ -317,7 +341,7 @@ export default function Report({navigation, route}) {
                     onValueChange={value => setBranch(value)} // ✅ Captures selection
                   />
                 </View>
-                <View style={{flex: 0.13, marginHorizontal: 2}}>
+                <View style={{flex: 0.13, marginHorizontal: 10}}>
                   <Button Title={'Apply'} />
                 </View>
               </View>
@@ -347,7 +371,7 @@ export default function Report({navigation, route}) {
                   </Text>
                 </View>
               )}
-            </ScrollView>
+            </View>
           ) : (
             <FlatList
               data={RmReport?.data}
@@ -540,24 +564,6 @@ export default function Report({navigation, route}) {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
-
-                      // value={
-                      //   value == 1
-                      //     ? (
-                      //         (item?.renewal ?? 0) +
-                      //         (item?.nb ?? 0) +
-                      //         (item?.refundPpw ?? 0) +
-                      //         (item?.refundOther ?? 0) +
-                      //         (item?.endorsement ?? 0)
-                      //       ).toLocaleString()
-                      //     : (
-                      //         (item?.nopRenewal ?? 0) +
-                      //         (item?.nopPpw ?? 0) +
-                      //         (item?.nb ?? 0) +
-                      //         (item?.nopOtherRefund ?? 0) +
-                      //         (item?.nopEndorsements ?? 0)
-                      //       ).toLocaleString()
-                      // }
                     />
                   </View>
                 </View>
@@ -585,16 +591,4 @@ export default function Report({navigation, route}) {
       )}
     </View>
   );
-}
-{
-  /* <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-  <Text
-    style={{
-      fontSize: 16,
-      color: COLORS.errorBorder,
-      fontFamily: Fonts.Roboto.Bold,
-    }}>
-    Sorry, No Data Found
-  </Text>
-</View> */
 }

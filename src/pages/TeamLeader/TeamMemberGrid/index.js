@@ -251,7 +251,6 @@ export default function TeamMemberGrid({navigation, route}) {
       {isLandscape == true ? (
         <View
           style={{
-            // alignItems: 'center',
             flex: 1,
             paddingHorizontal: 1,
             paddingTop: 0,
@@ -302,7 +301,7 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
-                search={false}
+                search={true}
                 disabled={SelectedType == 'G'} // Disable if type is 'G'
                 value={SelectedMonth}
                 nonClearable={true}

@@ -168,30 +168,12 @@ export default function ReportFilterTM({
             mode={'modal'}
             disabled={type == 'G'}
             value={month}
-            search={type == 'M' ? true : false}
+            search={type == 'M' ? true : type == 'G' ? false : true}
             nonClearable={true}
             // onValueChange={setSelectedMonth}
             onValueChange={value => {
               setMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
             }}
-            // dropdownData={
-            //   type == 'M'
-            //     ? [
-            //         {label: 'January', value: '01'},
-            //         {label: 'February', value: '02'},
-            //         {label: 'March', value: '03'},
-            //         {label: 'April', value: '04'},
-            //         {label: 'May', value: '05'},
-            //         {label: 'June', value: '06'},
-            //         {label: 'July', value: '07'},
-            //         {label: 'August', value: '08'},
-            //         {label: 'September', value: '09'},
-            //         {label: 'October', value: '10'},
-            //         {label: 'November', value: '11'},
-            //         {label: 'December', value: '12'},
-            //       ]
-            //     : [{label: 'Cumulative', value: '00'}]
-            // }
             dropdownData={
               type == 'M'
                 ? [
