@@ -311,12 +311,26 @@ export default function PolicyFilter({
               
                 // Check if at least one number exists
                 const hasNumber = /[0-9]/.test(cleaned);
+                
+                // Count consecutive letters (excluding spaces and numbers)
+                const letterGroups = cleaned.match(/[a-zA-Z]+/g) || [];
+                const hasMoreThan3ConsecutiveLetters = letterGroups.some(group => group.length > 3);
               
                 // Validation
                 if (cleaned.length < 1) {
                   setFormError(prev => ({
                     ...prev,
                     VehicleNumber: '',
+                  }));
+                } else if (cleaned.length < 5) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: minimum 5 characters required',
+                  }));
+                } else if (cleaned.length > 8) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: maximum 8 characters allowed',
                   }));
                 } else if (!hasNumber) {
                   setFormError(prev => ({
@@ -332,6 +346,11 @@ export default function PolicyFilter({
                   setFormError(prev => ({
                     ...prev,
                     VehicleNumber: 'Invalid: space cannot be at the start or end',
+                  }));
+                } else if (hasMoreThan3ConsecutiveLetters) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: cannot have more than 3 consecutive letters',
                   }));
                 } else {
                   setFormError(prev => ({
