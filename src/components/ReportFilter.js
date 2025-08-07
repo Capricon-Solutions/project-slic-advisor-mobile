@@ -260,7 +260,20 @@ export default function ReportFilter({
               value={branch}
               dropdownData={dropdownOptions}
               selectedValue={branch}
-              onValueChange={setBranch}
+              // onValueChange={{setBranch;
+              //    if (value == null) {
+              //           setBranch('');
+              //           console.log('value', value);
+              //         }
+              // }}
+              onValueChange={value => {
+                if (value == null) {
+                  setBranch('');
+                  console.log('value', value);
+                } else {
+                  setBranch(value);
+                }
+              }}
             />
           )}
 

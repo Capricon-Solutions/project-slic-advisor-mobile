@@ -155,6 +155,10 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 12,
     color: COLORS.textColor,
+    flexWrap: 'wrap',
+    numberOfLines: 2,
+    lineHeight: 16,
+    maxHeight: 32,
   },
   iconStyle: {
     width: 20,

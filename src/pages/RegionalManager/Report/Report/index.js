@@ -54,11 +54,12 @@ export default function Report({navigation, route}) {
   const [SelectedType, setSelectedType] = useState('ALL');
   const [selectedMonth, setSelectedmonth] = useState('00');
   const [type, setType] = useState();
-  const [branch, setBranch] = useState(regionName);
-
+  // const [branch, setBranch] = useState(regionName);
+  const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  // const [ value, setValue]= useState();
 
+  // const [ value, setValue]= useState();
+  console.log('regionName', regionName);
   const tableHead = [
     'Branch',
     'Renewal',
@@ -119,7 +120,13 @@ export default function Report({navigation, route}) {
       // When screen is focused
       Orientation.lockToPortrait();
       setIsLandscape(false);
+      setSelectedType('ALL');
+      setSelectedmonth('00');
 
+      // if (branch !== '') {
+      //   console.log('branch', branch);
+      setBranch('');
+      // }
       return () => {
         // Optional: Reset on blur
         Orientation.lockToPortrait(); // ensure cleanup just in case
@@ -338,10 +345,18 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'Branch'}
                     mode={'modal'}
+                    // nonClearable={true}
                     value={branch}
                     dropdownData={dropdownOptions}
                     selectedValue={branch}
-                    onValueChange={value => setBranch(value)} // ✅ Captures selection
+                    onValueChange={value => {
+                      setBranch(value);
+                      console.log('value e', value);
+                      if (value == null) {
+                        setBranch('');
+                        console.log('value', value);
+                      }
+                    }} // ✅ Captures selection
                   />
                 </View>
                 <View style={{flex: 0.13, marginHorizontal: 10}}>
