@@ -113,7 +113,12 @@ export default function Report({navigation, route}) {
       : [];
 
   const dropdownOptions = [{label: 'All', value: ''}, ...branchList];
-
+  useEffect(() => {
+    const isValid = dropdownOptions.some(option => option.value === branch);
+    if (!isValid && branch !== '') {
+      setBranch(''); // Reset to default value if invalid
+    }
+  }, [branch, dropdownOptions]);
   console.log('RmReport', RmReport);
   useFocusEffect(
     React.useCallback(() => {

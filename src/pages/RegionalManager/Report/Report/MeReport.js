@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -183,7 +183,12 @@ export default function MeReport({navigation, route}) {
       : [];
 
   const dropdownOptions = [{label: 'All', value: 'All'}, ...advisorList];
-
+  useEffect(() => {
+    const isValid = dropdownOptions.some(option => option.value === branch);
+    if (!isValid && branch !== '') {
+      setBranch(''); // Reset to default value if invalid
+    }
+  }, [branch, dropdownOptions]);
   return (
     <View
       style={[

@@ -310,16 +310,12 @@ export default function BPlanner({navigation}) {
   return (
     <PaperProvider>
       <View style={Styles.container}>
-      
-
-       
-   
         {/* <View style={[Styles.container, {overflow: 'scroll'}]}> */}
-            <NotAttending
+        <NotAttending
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          />
-           <EventCreation
+        />
+        <EventCreation
           modalVisible={eventModalVisible}
           setModalVisible={setEventModalVisible}
           onEventCreated={date => {
@@ -333,8 +329,8 @@ export default function BPlanner({navigation}) {
             });
             console.log('Event created for date:', date);
           }}
-         />
-               <ActivityCreation
+        />
+        <ActivityCreation
           modalVisible={activityModalVisible}
           setModalVisible={setActivityModalVisible}
           leadsData={LeadList}
@@ -349,191 +345,189 @@ export default function BPlanner({navigation}) {
             });
             console.log('Event created for date:', date);
           }}
-         />
-          <HeaderBackground />
-          <Header
-            haveFilters={true}
-            onFilterPress={() => navigation.navigate('LeadSearch')}
-            haveMenu={true}
-            menuItems={menuItems}
-            Title="B Planner"
-            onPress={() => navigation.goBack()}
-          />
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            fadingEdgeLength={20}
-            contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
-            style={{}}>
-            {calenderVisible && (
-              <View
-                style={{
-                  borderRadius: 15,
-                  backgroundColor: COLORS.white,
-                  padding: 5,
-                  elevation: 5,
-                  marginVertical: 15,
-                }}>
-                <Calendar
-                  onDayPress={day => {
-                    console.log('test', day.dateString);
-                    setSelectedDate(day.dateString);
-                    setSelected({
-                      [day.dateString]: {
-                        selected: true,
-                        marked: true,
-                        selectedColor: 'blue', // Change this color if needed
-                      },
-                    });
-                  }}
-                  style={{
-                    borderColor: 'gray',
-                  }}
-                  theme={{
-                    backgroundColor: '#ffffff',
-                    calendarBackground: '#ffffff',
-                    textSectionTitleColor: '#b6c1cd',
-                    selectedDayBackgroundColor: COLORS.primary,
-                    selectedDayTextColor: 'white',
-                    todayTextColor: '#00adf5',
-                    dayTextColor: '#2d4150',
-                    textDisabledColor: '#dd99ee',
-                  }}
-                  markedDates={selected}
-                />
-              </View>
-            )}
-
+        />
+        <HeaderBackground />
+        <Header
+          haveFilters={true}
+          onFilterPress={() => navigation.navigate('LeadSearch')}
+          haveMenu={true}
+          menuItems={menuItems}
+          Title="B Planner"
+          onPress={() => navigation.goBack()}
+        />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          fadingEdgeLength={20}
+          contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+          style={{}}>
+          {calenderVisible && (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                marginTop: 5,
+                borderRadius: 15,
+                backgroundColor: COLORS.white,
+                padding: 5,
+                elevation: 5,
+                marginVertical: 15,
               }}>
-              <View>
-                {/* <SmallButton Title={'View Training List'} /> */}
-                <TouchableOpacity
-                  style={styles.smallButton}
-                  onPress={() => setEventModalVisible(true)}>
-                  {/* <MaterialCommunityIcons
-                    name="plus"
-                    color={COLORS.white}
-                    size={20}
-                  /> */}
-                  <Text style={styles.smallButtonText}>Event Creation</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                {/* <SmallButton Title={'View Training List'} /> */}
-                <TouchableOpacity
-                  style={styles.smallButton}
-                  onPress={() => setActivityModalVisible(true)}>
-                  {/* <MaterialCommunityIcons
-                    name="plus"
-                    color={COLORS.white}
-                    size={20}
-                  /> */}
-                  <Text style={styles.smallButtonText}>Activity Creation</Text>
-                </TouchableOpacity>
-              </View>
-              {/* {isAnyItemSelected && ( */}
-              <View>
-                {/* <SmallButton Title={'View Training List'} /> */}
-                <TouchableOpacity
-                  disabled={!isAnyItemSelected}
-                  style={
-                    isAnyItemSelected ? styles.orangeButton : styles.grayButton
-                  }
-                  onPress={() => {
-                    handleActivityDelete();
-                  }}>
-                  <MaterialCommunityIcons
-                    name="delete"
-                    color={COLORS.white}
-                    size={18}
-                  />
-                </TouchableOpacity>
-              </View>
-              {/* )} */}
-
-              <View>
-                {/* <SmallButton Title={'View Training List'} /> */}
-                <TouchableOpacity
-                  style={styles.orangeButton}
-                  onPress={() => setCalenderVisible(!calenderVisible)}>
-                  <MaterialCommunityIcons
-                    name={calenderVisible ? 'arrow-up' : 'arrow-down'}
-                    color={COLORS.white}
-                    size={18}
-                  />
-                </TouchableOpacity>
-              </View>
+              <Calendar
+                onDayPress={day => {
+                  console.log('test', day.dateString);
+                  setSelectedDate(day.dateString);
+                  setSelected({
+                    [day.dateString]: {
+                      selected: true,
+                      marked: true,
+                      selectedColor: 'blue', // Change this color if needed
+                    },
+                  });
+                }}
+                style={{
+                  borderColor: 'gray',
+                }}
+                theme={{
+                  backgroundColor: '#ffffff',
+                  calendarBackground: '#ffffff',
+                  textSectionTitleColor: '#b6c1cd',
+                  selectedDayBackgroundColor: COLORS.primary,
+                  selectedDayTextColor: 'white',
+                  todayTextColor: '#00adf5',
+                  dayTextColor: '#2d4150',
+                  textDisabledColor: '#dd99ee',
+                }}
+                markedDates={selected}
+              />
             </View>
+          )}
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              marginTop: 5,
+            }}>
+            <View>
+              {/* <SmallButton Title={'View Training List'} /> */}
+              <TouchableOpacity
+                style={styles.smallButton}
+                onPress={() => setEventModalVisible(true)}>
+                {/* <MaterialCommunityIcons
+                    name="plus"
+                    color={COLORS.white}
+                    size={20}
+                  /> */}
+                <Text style={styles.smallButtonText}>Event Creation</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              {/* <SmallButton Title={'View Training List'} /> */}
+              <TouchableOpacity
+                style={styles.smallButton}
+                onPress={() => setActivityModalVisible(true)}>
+                {/* <MaterialCommunityIcons
+                    name="plus"
+                    color={COLORS.white}
+                    size={20}
+                  /> */}
+                <Text style={styles.smallButtonText}>Activity Creation</Text>
+              </TouchableOpacity>
+            </View>
+            {/* {isAnyItemSelected && ( */}
+            <View>
+              {/* <SmallButton Title={'View Training List'} /> */}
+              <TouchableOpacity
+                disabled={!isAnyItemSelected}
+                style={
+                  isAnyItemSelected ? styles.orangeButton : styles.grayButton
+                }
+                onPress={() => {
+                  handleActivityDelete();
+                }}>
+                <MaterialCommunityIcons
+                  name="delete"
+                  color={COLORS.white}
+                  size={18}
+                />
+              </TouchableOpacity>
+            </View>
+            {/* )} */}
 
             <View>
-              <Text
-                style={{
-                  fontFamily: Fonts.Roboto.SemiBold,
-                  color: COLORS.textColor,
-                  fontSize: 14,
-                  marginVertical: 10,
-                }}>
-                {/* Monday, 22/January/2025 */}
-                {moment(selectedDate, 'YYYY-MM-DD').format(
-                  'dddd, DD/MMMM/YYYY',
-                )}
-              </Text>
-            </View>
-            {isFetching ? (
-              <View
-                style={{
-                  alignItems: 'center',
-                  flex: 1,
-                  height: calenderVisible
-                    ? window.height * 0.2
-                    : window.height * 0.7,
-                  justifyContent: 'center',
-                }}>
-                <LoaderKit
-                  style={{width: 35, height: 35}}
-                  name={'BallPulse'} // Optional: see list of animations below
-                  color={COLORS.warmGray} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+              {/* <SmallButton Title={'View Training List'} /> */}
+              <TouchableOpacity
+                style={styles.orangeButton}
+                onPress={() => setCalenderVisible(!calenderVisible)}>
+                <MaterialCommunityIcons
+                  name={calenderVisible ? 'arrow-up' : 'arrow-down'}
+                  color={COLORS.white}
+                  size={18}
                 />
-              </View>
-            ) : (
-              <View>
-                {activities?.length > 0 ? (
-                  <View>
-                    {activities?.map((activity, index) => (
-                      <ActivityCard
-                        key={activity.id}
-                        activity={activity}
-                        onPress={() =>
-                          navigation.navigate('ActivityDetails', {
-                            item: activity,
-                          })
-                        }
-                        index={index}
-                        handleCheckboxToggle={handleCheckboxToggle}
-                      />
-                    ))}
-                  </View>
-                ) : (
-                  <View style={{alignItems: 'center', marginTop: 40}}>
-                    <Text
-                      style={{
-                        color: COLORS.grayText,
-                        fontFamily: Fonts.Roboto.Regular,
-                        fontSize: 14,
-                      }}>
-                      {' '}
-                      Events and Activities not available
-                    </Text>
-                  </View>
-                )}
-              </View>
-            )}
-          </ScrollView>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View>
+            <Text
+              style={{
+                fontFamily: Fonts.Roboto.SemiBold,
+                color: COLORS.textColor,
+                fontSize: 14,
+                marginVertical: 10,
+              }}>
+              {/* Monday, 22/January/2025 */}
+              {moment(selectedDate, 'YYYY-MM-DD').format('dddd, DD/MMMM/YYYY')}
+            </Text>
+          </View>
+          {isFetching ? (
+            <View
+              style={{
+                alignItems: 'center',
+                flex: 1,
+                height: calenderVisible
+                  ? window.height * 0.2
+                  : window.height * 0.7,
+                justifyContent: 'center',
+              }}>
+              <LoaderKit
+                style={{width: 35, height: 35}}
+                name={'BallPulse'} // Optional: see list of animations below
+                color={COLORS.warmGray} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+              />
+            </View>
+          ) : (
+            <View>
+              {activities?.length > 0 ? (
+                <View>
+                  {activities?.map((activity, index) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      onPress={() =>
+                        navigation.navigate('ActivityDetails', {
+                          item: activity,
+                        })
+                      }
+                      index={index}
+                      handleCheckboxToggle={handleCheckboxToggle}
+                    />
+                  ))}
+                </View>
+              ) : (
+                <View style={{alignItems: 'center', marginTop: 40}}>
+                  <Text
+                    style={{
+                      color: COLORS.grayText,
+                      fontFamily: Fonts.Roboto.Regular,
+                      fontSize: 14,
+                    }}>
+                    {' '}
+                    Events and Activities not available
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
+        </ScrollView>
         {/* </View> */}
       </View>
     </PaperProvider>

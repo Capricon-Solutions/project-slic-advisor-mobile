@@ -105,13 +105,14 @@ export default function ActivityCreation({
         text1: 'Activity Created',
         text2: 'Your activity has been created successfully!',
       });
-      setDescription('');
-      setMeetWith('');
-      setSelectedType('');
-      setSelectedLead('');
-      setSelectedDate(null);
+
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
+        setDescription('');
+        setMeetWith('');
+        setSelectedType('');
+        setSelectedLead('');
+        setSelectedDate(null);
         setModalVisible(false);
       }, 900);
       console.log('Activity Created:', response);

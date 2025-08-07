@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -161,7 +161,12 @@ export default function DirectReport({navigation, route}) {
   // }
 
   const dropdownOptions = [{label: 'All', value: 'All'}, ...branchList];
-
+  useEffect(() => {
+    const isValid = dropdownOptions.some(option => option.value === branch);
+    if (!isValid && branch !== '') {
+      setBranch(''); // Reset to default value if invalid
+    }
+  }, [branch, dropdownOptions]);
   console.log('RmReport', RmReport);
 
   const toggleOrientation = () => {
