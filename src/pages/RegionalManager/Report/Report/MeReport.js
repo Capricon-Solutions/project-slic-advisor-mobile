@@ -131,7 +131,9 @@ export default function MeReport({navigation, route}) {
     value == 1
       ? item?.renewal?.toLocaleString() ?? ''
       : item?.nopRenewal?.toLocaleString() ?? '',
-    item?.nb?.toLocaleString() ?? '',
+    value == 1
+      ? item?.nb?.toLocaleString() ?? ''
+      : item?.nopNew?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
       ppw:
@@ -158,7 +160,7 @@ export default function MeReport({navigation, route}) {
       : (
           item?.nopRenewal +
           item?.nopPpw +
-          item?.nb +
+          item?.nopNew +
           item?.nopOtherRefund +
           item?.nopEndorsements
         ).toLocaleString() ?? '',
@@ -559,11 +561,15 @@ export default function MeReport({navigation, route}) {
                   <OutlinedTextView
                     Title={'NB'}
                     value={
-                      item?.nb !== null && item?.nb !== undefined
-                        ? Number(item?.nb).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                      value == 1
+                        ? item?.nb != null
+                          ? Number(item.nb).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopNew != null
+                        ? Number(item.nopNew).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -649,7 +655,7 @@ export default function MeReport({navigation, route}) {
                           (item?.endorsement ?? 0)
                       : (item?.nopRenewal ?? 0) +
                           (item?.nopPpw ?? 0) +
-                          (item?.nb ?? 0) +
+                          (item?.nopNew ?? 0) +
                           (item?.nopOtherRefund ?? 0) +
                           (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {

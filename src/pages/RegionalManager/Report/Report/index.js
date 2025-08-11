@@ -88,18 +88,42 @@ export default function Report({navigation, route}) {
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
-    item?.renewal?.toLocaleString() ?? '',
-    item?.nb?.toLocaleString() ?? '',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    value == 1
+      ? item?.nb?.toLocaleString() ?? ''
+      : item?.nopNew?.toLocaleString() ?? '',
+    // item?.nb?.toLocaleString() ?? '',
+    // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toLocaleString() ?? '',
-      other: item?.refundOther?.toLocaleString() ?? '',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toLocaleString() ?? '',
-    item?.renewal +
-      item?.nb +
-      item?.refundPpw +
-      item?.refundOther +
-      item?.endorsement.toLocaleString() ?? '',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nopNew +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
 
     // item?.total?.toLocaleString() ?? '',
   ]);
@@ -481,11 +505,15 @@ export default function Report({navigation, route}) {
                       <OutlinedTextView
                         Title={'NB'}
                         value={
-                          item?.nb !== null && item?.nb !== undefined
-                            ? Number(item?.nb).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                          value == 1
+                            ? item?.nb != null
+                              ? Number(item.nb).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopNew != null
+                            ? Number(item.nopNew).toLocaleString('en-US')
                             : ''
                         }
                       />
@@ -580,7 +608,7 @@ export default function Report({navigation, route}) {
                               (item?.endorsement ?? 0)
                           : (item?.nopRenewal ?? 0) +
                               (item?.nopPpw ?? 0) +
-                              (item?.nb ?? 0) +
+                              (item?.nopNew ?? 0) +
                               (item?.nopOtherRefund ?? 0) +
                               (item?.nopEndorsements ?? 0),
                       ).toLocaleString('en-US', {
