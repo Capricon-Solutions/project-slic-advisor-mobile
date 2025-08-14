@@ -307,7 +307,10 @@ export default function PolicyFilter({
               Label="Vehicle Number"
               setValue={text => {
                 // Allow only letters, numbers and space (but do not trim)
-                const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+                // const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+                const cleaned = text
+                  .replace(/[^a-zA-Z0-9 ]/g, '')
+                  .toUpperCase();
 
                 setVNumber(cleaned);
 

@@ -491,10 +491,7 @@ export default function DirectReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopRenewal != null
-                        ? Number(item.nopRenewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopRenewal).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -533,10 +530,7 @@ export default function DirectReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopPpw != null
-                        ? Number(item.nopPpw).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopPpw).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -554,10 +548,7 @@ export default function DirectReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopOtherRefund != null
-                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -577,10 +568,7 @@ export default function DirectReport({navigation, route}) {
                           })
                         : ''
                       : item?.nopEndorsements != null
-                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
+                      ? Number(item.nopEndorsements).toLocaleString('en-US')
                       : ''
                   }
                 />
@@ -602,8 +590,8 @@ export default function DirectReport({navigation, route}) {
                           (item?.nopOtherRefund ?? 0) +
                           (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    minimumFractionDigits: value == 1 ? 2 : 0,
+                    maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
                   // value={

@@ -243,7 +243,7 @@ export default function GeneralPolicyList({navigation}) {
                     alignItems: 'center',
                   }}>
                   <Text style={{color: COLORS.grayText}}>
-                    policies not available yet.!
+                    Policies not available yet.!
                   </Text>
                 </View>
               )}

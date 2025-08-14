@@ -160,7 +160,7 @@ export default function SalesMeter({navigation}) {
 
   // API Binds
 
-  const monthlySalePercentage = filterdData?.achievement;
+  const monthlySalePercentage = filterdData?.achievementToSetTarget;
   const monthlySale = salesIncome?.data?.targetAmount.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

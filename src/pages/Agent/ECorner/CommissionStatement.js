@@ -79,6 +79,7 @@ export default function CommissionStatement({navigation}) {
         return;
       } else {
         const url = response?.data?.data;
+        console.log('Document response:', response?.data);
         openDocument(url);
 
         // openDocument(
@@ -188,86 +189,6 @@ export default function CommissionStatement({navigation}) {
       setLoading(false);
     }
   };
-
-  // const openDocument = async url => {
-  //   console.log('Opening document from URL:', url);
-  //   if (!url) {
-  //     console.log('No document URL available');
-  //     return;
-  //   }
-
-  //   let fileName = url.split('/').pop();
-
-  //   if (!fileName.endsWith('.pdf')) {
-  //     fileName += '.pdf';
-  //   }
-  //   console.log('test');
-  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-  //   console.log('fileName', fileName);
-  //   const hasPermission = await requestStoragePermission();
-  //   if (!hasPermission) {
-  //     Alert.alert(
-  //       'Permission Denied',
-  //       'Storage permission is required to download files.',
-  //     );
-
-  //     return;
-  //   } else {
-  //     // console.log('Storage permission granted');
-  //     setLoading(true);
-  //   }
-  //   const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-  //   RNFS.downloadFile({
-  //     fromUrl: url,
-  //     // fromUrl:
-  //     //   'https://gisalesappapi.slicgeneral.com/uploads/3c88cbe6-0d3f-4081-bcf3-d08b9667bbe1.jpg?t=1752254670832',
-  //     toFile: localFilePath,
-  //     headers: {
-  //       'x-api-key': apiKey,
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     progress: res => {
-  //       console.log('work heer');
-  //       console.log(
-  //         `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
-  //       );
-  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
-  //       setProgress(progressPercent);
-  //     },
-  //   })
-  //     .promise.then(response => {
-  //       console.log('Download success:', response);
-  //       setLoading(false);
-
-  //       FileViewer.open(localFilePath, {
-  //         showOpenWithDialog: true,
-  //         displayName: 'Your PDF Report',
-  //         mimeType: 'application/pdf',
-  //       })
-  //         .then(() => {
-  //           console.log('File opened successfully');
-  //         })
-  //         .catch(viewError => {
-  //           console.error('Error opening file:', viewError);
-  //           showToast({
-  //             type: 'error',
-  //             text1: 'Open File Error',
-  //             text2: 'Cannot open the downloaded file.',
-  //           });
-  //         });
-  //     })
-  //     .catch(error => {
-  //       console.error('Download failed', error);
-  //       setLoading(false);
-
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Download Error',
-  //         text2: error?.message || 'Failed to download the file.',
-  //       });
-  //     });
-  // };
 
   useEffect(() => {
     const formattedYear = moment(selectedDate, 'YYYY/MM').format('YYYY');
