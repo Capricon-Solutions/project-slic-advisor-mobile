@@ -103,7 +103,7 @@ export default function TrainingCalender({navigation}) {
   const [selectedId, setSelectedId] = useState(0);
   const dispatch = useDispatch();
   const today = new Date().toISOString().split('T')[0];
-
+  const [expanded, setExpanded] = useState(false);
   // useFocusEffect(
   //   useCallback(() => {
   //     dispatch(Getpath(0));
@@ -118,29 +118,8 @@ export default function TrainingCalender({navigation}) {
     type,
     userCode: usertype == 2 ? personalCode : userCode,
   });
+  console.log('TrainingList testtt', TrainingList);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     dispatch(Getpath(0));
-
-  //     // Reset calendar selection when returning to screen
-  //     setSelectedDate(null);
-  //     setSelectedTrainings([]);
-
-  //     // Remove 'selected' styles from all marked dates
-  //     setMarkedDates(prevMarkedDates => {
-  //       const updated = {};
-  //       Object.keys(prevMarkedDates || {}).forEach(date => {
-  //         const {selected, selectedColor, ...rest} = prevMarkedDates[date];
-  //         updated[date] = rest;
-  //       });
-  //       return updated;
-  //     });
-
-  //     // Optional: refetch data on focus
-  //     refetch?.();
-  //   }, []),
-  // );
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
@@ -159,15 +138,12 @@ export default function TrainingCalender({navigation}) {
       });
 
       refetch?.();
+      handleDayPress();
     }, []),
   );
 
   const [approveTraining, {isLoading: isApproving, error: approveError}] =
     useApproveTrainingMutation();
-
-  // useEffect(() => {
-  //   console.log('TrainingListfff', TrainingList);
-  // }, [TrainingList]);
 
   useEffect(() => {
     if (TrainingList?.data) {
@@ -185,7 +161,9 @@ export default function TrainingCalender({navigation}) {
   }, [TrainingList?.data]);
 
   const handleDayPress = day => {
-    const dateStr = day.dateString;
+    console.log('Selected day:', day);
+    // const dateStr = day.dateString;
+    const dateStr = '2025-09-05';
     setSelectedDate(dateStr);
 
     // Find trainings for the selected date
@@ -426,7 +404,10 @@ export default function TrainingCalender({navigation}) {
                           fontFamily: Fonts.Roboto.Medium,
                           fontSize: 13,
                         }}>
-                        Session Method : Online
+                        Session Method :{' '}
+                        {training.trainingDetails
+                          ? training.trainingDetails[0].trainMode
+                          : 'N/A'}
                       </Text>
 
                       <Text
@@ -491,7 +472,13 @@ export default function TrainingCalender({navigation}) {
                         </Text>
                       </View>
                     </View>
-                    <View style={{flex: 0.4, alignItems: 'center', padding: 3}}>
+                    <View
+                      style={{
+                        flex: 0.4,
+                        alignItems: 'center',
+
+                        padding: 3,
+                      }}>
                       <View
                         style={{
                           width: '90%',
@@ -602,7 +589,36 @@ export default function TrainingCalender({navigation}) {
                           Can't Attend?
                         </Text>
                       </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={{marginTop: 5}}
+                        onPress={() => {
+                          setExpanded(!expanded);
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingTop: 2,
+                          }}>
+                          <Text
+                            style={{
+                              color: COLORS.primaryGreen,
+                              fontFamily: Fonts.Roboto.SemiBold,
+                              fontSize: 13,
+                            }}>
+                            {expanded ? 'Collapse' : 'Expand'}
+                          </Text>
+                          <MaterialCommunityIcons
+                            name={expanded ? 'chevron-up' : 'chevron-down'}
+                            color={COLORS.primaryGreen}
+                            size={22}
+                          />
+                        </View>
+                      </TouchableOpacity>
                     </View>
+
                     {/* <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
                       <View
                         style={{
@@ -632,6 +648,97 @@ export default function TrainingCalender({navigation}) {
                       </TouchableOpacity>
                     </View> */}
                   </View>
+                  {expanded && (
+                    <View>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Training No :{' '}
+                        {training.trainingDetails[0].trainId || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Duration :{' '}
+                        {training.trainingDetails[0].duration || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        To whom : {training.trainingDetails[0].toWhom || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Region :{' '}
+                        {training.trainingDetails[0].regionName || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Venue :{' '}
+                        {training.trainingDetails[0].branchName || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Trainer : {training.trainingDetails[0].trainer || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Contents :{' '}
+                        {training.trainingDetails[0].contentsCovered || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Tools : {training.trainingDetails[0].tools || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Attachments :{' '}
+                        {training.trainingDetails[0].attachments || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Additional Info :{' '}
+                        {training.trainingDetails[0].additionalInfo || 'N/A'}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               ))}
             </>

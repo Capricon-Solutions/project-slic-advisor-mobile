@@ -36,15 +36,15 @@ export default function Notification({navigation}) {
     isLoading,
     isFetching,
   } = useGetNotificationsQuery({
-    id: usertype == 2 ? personalCode : userCode,
+    // id: usertype == 2 ? personalCode : userCode,
+    id: userCode,
   });
 
   const renderItem = ({item}) => (
     <GestureHandlerRootView
       style={{
         flex: 1,
-        marginVertical: 10,
-        marginHorizontal: 5,
+
         borderRadius: 20,
         overflow: 'hidden',
       }}>

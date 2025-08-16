@@ -1,37 +1,34 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Animated,
-} from 'react-native';
-import { Swipeable } from 'react-native-gesture-handler'; // Import Swipeable
+import {TouchableOpacity, Text, View, StyleSheet, Animated} from 'react-native';
+import {Swipeable} from 'react-native-gesture-handler'; // Import Swipeable
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
-import { useDeleteNotificationMutation, useReadNotificationMutation } from '../redux/services/NotificationSlice';
+import {
+  useDeleteNotificationMutation,
+  useReadNotificationMutation,
+} from '../redux/services/NotificationSlice';
 import moment from 'moment';
 import Fonts from '../theme/Fonts';
 
-export default function NotificationItem({ item, navigation, onDelete }) {
+export default function NotificationItem({item, navigation, onDelete}) {
   const [readNotification] = useReadNotificationMutation();
   const [deleteNotification] = useDeleteNotificationMutation();
 
   const handleReadNotification = async () => {
-    await readNotification({ notificationId: [item?.notificationId] }); // API call
-    navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
+    await readNotification({notificationId: [item?.notificationId]}); // API call
+    navigation.navigate('PolicyDetails', {policyNo: item.policyNo});
   };
 
   const handleDeleteNotification = async () => {
-    console.log('test', item.policyNo)
-    await deleteNotification({ notificationId: [item?.notificationId] }); // API call
+    console.log('test', item.policyNo);
+    await deleteNotification({notificationId: [item?.notificationId]}); // API call
     // navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
 
   const renderRightActions = (progress, dragX) => {
     const translateX = dragX.interpolate({
-      inputRange: [0, 100],  // You can adjust this range
-      outputRange: [0, 100],  // Define how far the button moves
+      inputRange: [0, 100], // You can adjust this range
+      outputRange: [0, 100], // Define how far the button moves
       extrapolate: 'clamp', // Prevents going out of bounds
     });
     // return (
@@ -44,29 +41,38 @@ export default function NotificationItem({ item, navigation, onDelete }) {
     //   </View>
     // );
     return (
-      <Animated.View style={[style.deleteButton, { transform: [{ translateX }] }]}>
+      <Animated.View style={[style.deleteButton, {transform: [{translateX}]}]}>
         <TouchableOpacity
           onPress={() => handleDeleteNotification()} // Trigger delete action
           style={style.deleteButtonContent}>
-          <MaterialCommunityIcons name="trash-can" size={25} color={COLORS.white} />
+          <MaterialCommunityIcons
+            name="trash-can"
+            size={25}
+            color={COLORS.white}
+          />
         </TouchableOpacity>
       </Animated.View>
     );
-
   };
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
-      <TouchableOpacity onPress={() => handleReadNotification()} style={style.cardWrap}>
+      <TouchableOpacity
+        onPress={() => handleReadNotification()}
+        style={[
+          style.cardWrap,
+          {elevation: 5, marginVertical: 10, marginHorizontal: 5},
+        ]}>
         <View
           style={[
             style.leftBorder,
             {
-              backgroundColor: item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
+              backgroundColor:
+                item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
             },
           ]}></View>
-        <View style={{ flex: 0.95 }}>
-          <View style={{ padding: 10 }}>
+        <View style={{flex: 0.95}}>
+          <View style={{padding: 10}}>
             <View style={style.topline}>
               <Text style={style.topic}>{item.title}</Text>
               <Text style={style.date}>
@@ -138,7 +144,6 @@ const style = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     borderRadius: 20,
-
   },
   deleteButtonContent: {
     justifyContent: 'center',

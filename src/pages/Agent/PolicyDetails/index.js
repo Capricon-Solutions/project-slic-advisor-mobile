@@ -96,9 +96,9 @@ export default function PolicyDetails({navigation, route}) {
         Title="Policy Details"
         onPress={() => navigation.goBack()}
         haveFilters={false}
-        haveWhatsapp={true}
+        haveWhatsapp={phone ? true : false}
         whatsappNo={phone}
-        haveCall={true}
+        haveCall={phone ? true : false}
         callNo={phone}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
