@@ -138,7 +138,7 @@ export default function TrainingCalender({navigation}) {
       });
 
       refetch?.();
-      handleDayPress();
+      // handleDayPress();
     }, []),
   );
 
@@ -162,8 +162,8 @@ export default function TrainingCalender({navigation}) {
 
   const handleDayPress = day => {
     console.log('Selected day:', day);
-    // const dateStr = day.dateString;
-    const dateStr = '2025-09-05';
+    const dateStr = day.dateString;
+    // const dateStr = '2025-09-05';
     setSelectedDate(dateStr);
 
     // Find trainings for the selected date

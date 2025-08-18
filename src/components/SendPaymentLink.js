@@ -183,7 +183,7 @@ export default function SendPaymentLink({
               keyboardType="phone-pad"
             /> */}
             <SquareTextBox
-              Label={'Contact Number'}
+              Label={'Mobile Number'}
               Title={'Enter phone number'}
               value={phone}
               errorBorder={mobileNumberError}
