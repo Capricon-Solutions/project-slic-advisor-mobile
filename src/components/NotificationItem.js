@@ -144,6 +144,8 @@ const style = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     borderRadius: 20,
+    marginVertical: 10,
+    marginHorizontal: 5,
   },
   deleteButtonContent: {
     justifyContent: 'center',

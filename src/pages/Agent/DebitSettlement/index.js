@@ -45,6 +45,8 @@ export default function DebitSettlement({navigation, route}) {
   const {phone} = route.params;
   const [mobileNo, setMobileNo] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [selectedItem, setSelectedItem] = useState('');
+
   const {
     data: DebitSettlement,
     error: DebitSettlementError,
@@ -59,23 +61,31 @@ export default function DebitSettlement({navigation, route}) {
   );
 
   useEffect(() => {
+    console.log('DebitSettlement', DebitSettlement);
     if (phone) setMobileNo(phone);
-    if (DebitSettlement?.data?.premiumNetValue)
+    if (
+      DebitSettlement?.data?.premiumNetValue &&
+      Number(DebitSettlement.data.premiumNetValue) > 0
+    ) {
       setAmount(DebitSettlement.data.premiumNetValue);
-  }, [phone, DebitSettlement?.data?.premiumNetValue]);
+    }
 
-  const [selectedItem, setSelectedItem] = useState('');
+    if (DebitSettlement?.data?.paymentType) {
+      setSelectedItem(DebitSettlement?.data?.paymentType);
+    }
+  }, [
+    phone,
+    DebitSettlement?.data?.premiumNetValue,
+    DebitSettlement?.data?.paymentType,
+  ]);
 
   const [debitSettlementSms, {isLoading, error}] =
     useDebitSettlementSmsMutation();
-  useEffect(() => {
-    console.log('DebitSettlement', DebitSettlement);
-    setSelectedItem(DebitSettlement?.data?.paymentType);
-    console.log(
-      'DebitSettlement?.data?.paymentType,',
-      DebitSettlement?.data?.paymentType,
-    );
-  }, [DebitSettlement]);
+  // useEffect(() => {
+
+  //   setSelectedItem(DebitSettlement?.data?.paymentType);
+
+  // }, [DebitSettlement]);
 
   const handleSubmit = async () => {
     if (mobileNo === null || mobileNo === '') {
@@ -207,7 +217,7 @@ export default function DebitSettlement({navigation, route}) {
             containerStyle={{}}
             contentContainerStyle={{color: 'red'}}
             closeOnSubmit={false}
-            initialValue={{id: DebitSettlement?.data?.paymentType}} // or just '2'
+            initialValue={{id: selectedItem}} // or just '2'
             onSelectItem={v => {
               setSelectedItem(v?.id);
               console.log('v:', v?.id);
@@ -217,7 +227,7 @@ export default function DebitSettlement({navigation, route}) {
               {id: 'Payment', title: 'Payment'},
             ]}
           />
-          {/* <Text>{selectedItem}</Text> */}
+          {/* <Text style={{color: 'red'}}>{selectedItem}</Text> */}
           {/* <SquareTextBox
             keyboardType={'numeric'}
             Title={`LKR ${Number(
