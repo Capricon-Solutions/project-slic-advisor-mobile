@@ -308,15 +308,16 @@ export default function SalesMeter({navigation}) {
                         }}>
                         LKR {monthlySale || 0.0}
                       </Text>
-                    ) : // <Text
-                    //   style={{
-                    //     color: COLORS.black,
-                    //     fontSize: window.width * 0.04,
-                    //     fontFamily: Fonts.Roboto.SemiBold,
-                    //   }}>
-                    //   LKR {cumulativeSale || 0.0}
-                    // </Text>
-                    null}
+                    ) : (
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontSize: window.width * 0.04,
+                          fontFamily: Fonts.Roboto.SemiBold,
+                        }}>
+                        LKR {lastYearTarget || 0.0}
+                      </Text>
+                    )}
                   </View>
                 </View>
                 <View
