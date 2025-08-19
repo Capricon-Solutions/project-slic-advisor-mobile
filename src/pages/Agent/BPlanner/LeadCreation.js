@@ -1011,7 +1011,7 @@ export default function LeadCreation({navigation, route}) {
           <AlertButton
             Title={currentStep == StepperItems.length ? 'Submit' : 'Next'}
             onPress={handleNext}
-            disabled={currentStep === StepperItems.length}
+            disabledButton={currentStep === StepperItems.length ||  Boolean(formError.vehicleNo)}
           />
         </View>
       </View>
