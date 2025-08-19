@@ -400,6 +400,7 @@ export default function CommissionStatement({navigation}) {
           </Text>
           <DropdownFilled
             placeholder={'Select'}
+            search={false}
             onSelect={handleType} // Pass the handleSelect function as a prop
             value={selectedType}
             dropdownData={[
