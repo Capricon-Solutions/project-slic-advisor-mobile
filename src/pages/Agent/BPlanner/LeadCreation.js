@@ -29,8 +29,7 @@ import {
   useLeadCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {showToast} from '../../../components/ToastMessage';
-import { validateSriLankanNIC } from '../../../utils/nicValidation';
-
+import {validateSriLankanNIC} from '../../../utils/nicValidation';
 
 export default function LeadCreation({navigation, route}) {
   const {eventDate} = route.params;
@@ -329,10 +328,6 @@ export default function LeadCreation({navigation, route}) {
     return true;
   };
 
-
-
-
-
   const validateForm3 = () => {
     if (
       !customerName
@@ -347,7 +342,7 @@ export default function LeadCreation({navigation, route}) {
     }
     if (nic) {
       const nicValidation = validateSriLankanNIC(nic);
-      
+
       if (!nicValidation.isValid) {
         showToast({
           type: 'error',
@@ -359,7 +354,7 @@ export default function LeadCreation({navigation, route}) {
     }
     if (nic) {
       const nicValidation = validateSriLankanNIC(nic);
-      
+
       if (!nicValidation.isValid) {
         showToast({
           type: 'error',
@@ -576,22 +571,24 @@ export default function LeadCreation({navigation, route}) {
               setValue={text => {
                 // Allow only letters, numbers and space (but do not trim)
                 const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
-              
+
                 setVehicleNo(cleaned);
-              
+
                 // Check for leading or trailing space
                 const hasLeadingOrTrailingSpace = /^\s|\s$/.test(cleaned);
-              
+
                 // Check if exactly one space is present
                 const spaceCount = (cleaned.match(/ /g) || []).length;
-              
+
                 // Check if at least one number exists
                 const hasNumber = /[0-9]/.test(cleaned);
-                
+
                 // Count consecutive letters (excluding spaces and numbers)
                 const letterGroups = cleaned.match(/[a-zA-Z]+/g) || [];
-                const hasMoreThan3ConsecutiveLetters = letterGroups.some(group => group.length > 3);
-              
+                const hasMoreThan3ConsecutiveLetters = letterGroups.some(
+                  group => group.length > 3,
+                );
+
                 // Validation
                 if (cleaned.length < 1) {
                   setFormError(prev => ({
@@ -626,7 +623,8 @@ export default function LeadCreation({navigation, route}) {
                 } else if (hasMoreThan3ConsecutiveLetters) {
                   setFormError(prev => ({
                     ...prev,
-                    vehicleNo: 'Invalid: cannot have more than 3 consecutive letters',
+                    vehicleNo:
+                      'Invalid: cannot have more than 3 consecutive letters',
                   }));
                 } else {
                   setFormError(prev => ({
@@ -683,21 +681,24 @@ export default function LeadCreation({navigation, route}) {
               //     setFormError({});
               //   }
               // }}
-              setValue={(text) => {
+              setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
                 setYom(formatted);
-              
+
                 // Validate YOM (Year of Manufacture)
                 if (validateYOM(formatted)) {
                   setYomError('Invalid Manufacture Year');
                 } else {
                   setYomError('');
                 }
-              
+
                 // Update formError without overwriting other fields
-                setFormError((prev) => ({
+                setFormError(prev => ({
                   ...prev,
-                  yom: formatted.length === 4 ? '' : 'Year of manufacture must be 4 digits.',
+                  yom:
+                    formatted.length === 4
+                      ? ''
+                      : 'Year of manufacture must be 4 digits.',
                 }));
               }}
             />
@@ -1011,7 +1012,8 @@ export default function LeadCreation({navigation, route}) {
           <AlertButton
             Title={currentStep == StepperItems.length ? 'Submit' : 'Next'}
             onPress={handleNext}
-            disabledButton={currentStep === StepperItems.length ||  Boolean(formError.vehicleNo)}
+            disabledButton={Boolean(formError.vehicleNo)}
+            // disabledColor={Boolean(formError.vehicleNo)}
           />
         </View>
       </View>

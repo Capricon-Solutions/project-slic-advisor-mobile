@@ -119,17 +119,85 @@ export default function CommissionStatement({navigation}) {
     return true; // iOS or other platforms
   };
 
+  // const openDocument = async url => {
+  //   try {
+  //     console.log('Opening document from URL:', url);
+  //     if (!url) return;
+
+  //     // ── Build file path ────────────────────────────────────────────────
+  //     let fileName = url.split('/').pop() || 'document.pdf';
+  //     if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+
+  //     // ── Check / request storage permission (Android ≤ 10) ─────────────
+  //     const hasPermission = await requestStoragePermission();
+  //     if (!hasPermission) {
+  //       Alert.alert(
+  //         'Permission Denied',
+  //         'Storage permission is required to download files.',
+  //       );
+  //       return;
+  //     }
+
+  //     // ── Start download ────────────────────────────────────────────────
+  //     setLoading(true);
+  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+  //     const downloadJob = RNFS.downloadFile({
+  //       fromUrl: url,
+  //       toFile: localFilePath,
+  //       headers: {
+  //         'x-api-key': apiKey,
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       progress: res => {
+  //         const percent = (res.bytesWritten / res.contentLength) * 100;
+  //         setProgress(percent);
+  //       },
+  //       progressInterval: 250, // update UI every 250 ms
+  //     });
+
+  //     await downloadJob.promise; // <──── await instead of .then()
+
+  //     // ── Open the file with an external viewer ─────────────────────────
+  //     await FileViewer.open(localFilePath, {
+  //       showOpenWithDialog: true, // chooser if more than one app
+  //       showAppsSuggestions: true, // jumps to Play Store if none
+  //       displayName: 'Your PDF Report',
+  //       mimeType: 'application/pdf',
+  //     });
+
+  //     console.log('File opened successfully');
+  //   } catch (err) {
+  //     console.error('openDocument error:', err);
+
+  //     if (/No app associated/i.test(err?.message)) {
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'No PDF viewer found',
+  //         text2: 'Install a PDF reader and try again.',
+  //       });
+  //     } else {
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'File Error',
+  //         text2: err?.message || 'Could not download or open the file.',
+  //       });
+  //     }
+  //   } finally {
+  //     // Always reset loading state, even on error
+  //     setLoading(false);
+  //   }
+  // };
   const openDocument = async url => {
     try {
       console.log('Opening document from URL:', url);
       if (!url) return;
 
-      // ── Build file path ────────────────────────────────────────────────
       let fileName = url.split('/').pop() || 'document.pdf';
       if (!fileName.endsWith('.pdf')) fileName += '.pdf';
       const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
-      // ── Check / request storage permission (Android ≤ 10) ─────────────
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
         Alert.alert(
@@ -139,10 +207,29 @@ export default function CommissionStatement({navigation}) {
         return;
       }
 
-      // ── Start download ────────────────────────────────────────────────
       setLoading(true);
       const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
 
+      // 🔹 First, do a quick fetch to check if response is JSON error
+      const checkRes = await fetch(url, {
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const contentType = checkRes.headers.get('content-type') || '';
+
+      if (contentType.includes('application/json')) {
+        const errorData = await checkRes.json();
+        showToast({
+          type: 'error',
+          text1: 'Request Failed',
+          text2: errorData?.message || 'No data found for this request',
+        });
+        return; // 🚫 stop here, don’t download
+      }
+
+      // 🔹 Continue with RNFS download since it's a PDF
       const downloadJob = RNFS.downloadFile({
         fromUrl: url,
         toFile: localFilePath,
@@ -154,15 +241,14 @@ export default function CommissionStatement({navigation}) {
           const percent = (res.bytesWritten / res.contentLength) * 100;
           setProgress(percent);
         },
-        progressInterval: 250, // update UI every 250 ms
+        progressDivider: 10,
       });
 
-      await downloadJob.promise; // <──── await instead of .then()
+      await downloadJob.promise;
 
-      // ── Open the file with an external viewer ─────────────────────────
       await FileViewer.open(localFilePath, {
-        showOpenWithDialog: true, // chooser if more than one app
-        showAppsSuggestions: true, // jumps to Play Store if none
+        showOpenWithDialog: true,
+        showAppsSuggestions: true,
         displayName: 'Your PDF Report',
         mimeType: 'application/pdf',
       });
@@ -185,8 +271,8 @@ export default function CommissionStatement({navigation}) {
         });
       }
     } finally {
-      // Always reset loading state, even on error
       setLoading(false);
+      setProgress(0);
     }
   };
 
