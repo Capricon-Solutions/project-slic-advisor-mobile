@@ -683,28 +683,22 @@ export default function LeadCreation({navigation, route}) {
               //     setFormError({});
               //   }
               // }}
-              setValue={text => {
+              setValue={(text) => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
-                // if (formatted.length <= 4) {
                 setYom(formatted);
-                // }
-                if (
-                  // formatted.length >= 9 &&
-                  validateYOM(formatted)
-                ) {
+              
+                // Validate YOM (Year of Manufacture)
+                if (validateYOM(formatted)) {
                   setYomError('Invalid Manufacture Year');
                 } else {
                   setYomError('');
                 }
-                if (formatted && formatted.length != 4) {
-                  setFormError({
-                    yom: 'Year of manufacture must be 4 digits.',
-                  });
-                } else {
-                  setFormError({
-                    yom: '',
-                  });
-                }
+              
+                // Update formError without overwriting other fields
+                setFormError((prev) => ({
+                  ...prev,
+                  yom: formatted.length === 4 ? '' : 'Year of manufacture must be 4 digits.',
+                }));
               }}
             />
             {/* {formError.yom && (
