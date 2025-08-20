@@ -34,6 +34,8 @@ import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
 import {showToast} from '../../../components/ToastMessage';
 import SquareTextBoxOutlinedDate from '../../../components/SquareTextBoxOutlinedDate';
+import DropdownFilled from '../../../components/DropdownFilled';
+import DropdownFilledDebit from '../../../components/DropdownFilledDebit';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -201,7 +203,21 @@ export default function DebitSettlement({navigation, route}) {
             }}>
             Select type
           </Text>
-          <AutocompleteDropdown
+          <DropdownFilledDebit
+            // placeholder={'Select'}
+            onSelect={v => {
+              setSelectedItem(v);
+            }}
+            search={false}
+            cancelable
+            Color={COLORS.textInputBackground}
+            value={selectedItem}
+            dropdownData={[
+              {label: 'Debit Settlement', value: 'Debit Settlement'},
+              {label: 'Payment', value: 'Payment'},
+            ]}
+          />
+          {/* <AutocompleteDropdown
             clearOnFocus={true}
             closeOnBlur={true}
             showClear={false}
@@ -226,7 +242,7 @@ export default function DebitSettlement({navigation, route}) {
               {id: 'Debit Settlement', title: 'Debit Settlement'},
               {id: 'Payment', title: 'Payment'},
             ]}
-          />
+          /> */}
           {/* <Text style={{color: 'red'}}>{selectedItem}</Text> */}
           {/* <SquareTextBox
             keyboardType={'numeric'}

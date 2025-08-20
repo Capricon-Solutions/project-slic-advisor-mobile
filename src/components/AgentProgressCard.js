@@ -82,8 +82,8 @@ export default function AgentProgressCard({
           inActiveStrokeColor={COLORS.lightBorder}
           valueSuffix={`/${totalIslandRank || 0}`}
           titleStyle={{fontWeight: 'bold'}}
-          progressValueStyle={{fontSize: 20, fontFamily: Fonts.Roboto.Bold}}
-          valueSuffixStyle={{fontSize: 20, color: COLORS.textColor}}
+          progressValueStyle={{fontSize: 19, fontFamily: Fonts.Roboto.Bold}}
+          valueSuffixStyle={{fontSize: 19, color: COLORS.textColor}}
         />
         <Text
           style={{
@@ -112,11 +112,11 @@ export default function AgentProgressCard({
             inActiveStrokeColor={COLORS.lightBorder}
             valueSuffix={`/${totalNumberofRegions || 0}`}
             progressValueStyle={{
-              fontSize: window.height * 0.02,
+              fontSize: window.height * 0.018,
               fontFamily: Fonts.Roboto.Bold,
             }}
             valueSuffixStyle={{
-              fontSize: window.height * 0.016,
+              fontSize: window.height * 0.014,
               color: COLORS.regionalRank,
               fontFamily: Fonts.Roboto.SemiBold,
             }}
@@ -148,11 +148,11 @@ export default function AgentProgressCard({
             inActiveStrokeColor={COLORS.lightBorder}
             valueSuffix={`/${totalNumberofBranches || 0}`}
             progressValueStyle={{
-              fontSize: window.height * 0.02,
+              fontSize: window.height * 0.018,
               fontFamily: Fonts.Roboto.Bold,
             }}
             valueSuffixStyle={{
-              fontSize: window.height * 0.016,
+              fontSize: window.height * 0.014,
               color: COLORS.branchRank,
               fontFamily: Fonts.Roboto.SemiBold,
             }}
