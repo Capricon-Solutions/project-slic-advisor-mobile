@@ -60,7 +60,7 @@ export default function Notification({navigation}) {
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 20,
-          paddingBottom: 10,
+          // paddingBottom: 10,
           flex: 1,
         }}>
         {Notifications?.data == null && !isFetching ? (
@@ -74,7 +74,7 @@ export default function Notification({navigation}) {
               style={{
                 fontFamily: Fonts?.Roboto?.Bold,
                 fontSize: window.width * 0.04,
-                color: COLORS.grayText,
+                color: COLORS.errorBorder,
               }}>
               {'No notifications available.!'}
             </Text>

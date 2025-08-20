@@ -195,7 +195,9 @@ export default function ProductPortfolio({navigation}) {
         </View>
 
         {isLoading == true ? (
-          <LoadingScreen />
+          <View style={{height: window.height * 0.6}}>
+            <LoadingScreen />
+          </View>
         ) : (
           <View>
             {SelectedType == 1 ? (

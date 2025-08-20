@@ -214,15 +214,24 @@ export default function EDocument({navigation}) {
                 paddingHorizontal: 15,
               }}
               ListEmptyComponent={
-                <Text
+                <View
                   style={{
-                    textAlign: 'center',
-                    marginTop: 40,
-                    color: '#888',
-                    fontFamily: Fonts.Roboto.Medium,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    height: window.height * 0.6,
                   }}>
-                  No documents found.
-                </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      marginTop: 40,
+                      fontSize: 15,
+                      color: COLORS.errorBorder,
+                      fontFamily: Fonts.Roboto.Medium,
+                    }}>
+                    No documents found.
+                  </Text>
+                </View>
               }
             />
           )}

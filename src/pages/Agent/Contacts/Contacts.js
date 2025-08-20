@@ -51,23 +51,6 @@ export default function Contacts({navigation}) {
     }, []),
   );
 
-  // useEffect(() => {
-  //   if (branches?.data) {
-  //     const query = searchQuery.toLowerCase();
-
-  //     const filtered = branches.data
-  //       .filter(item => item?.name?.toLowerCase().startsWith(query))
-  //       .sort((a, b) => {
-  //         const aName = a?.name?.toLowerCase();
-  //         const bName = b?.name?.toLowerCase();
-
-  //         return aName.localeCompare(bName); // optional: alphabetical fallback
-  //       });
-
-  //     console.log('filteredBranches', filtered);
-  //     setFilteredBranches(filtered);
-  //   }
-  // }, [branches, searchQuery, search]);
   useEffect(() => {
     if (branches?.data) {
       const query = searchQuery.toLowerCase();
@@ -94,26 +77,6 @@ export default function Contacts({navigation}) {
       setFilteredBranches(filtered);
     }
   }, [branches, searchQuery, search]);
-
-  // useEffect(() => {
-  //   if (departments?.data) {
-  //     const query = searchQuery.toLowerCase();
-
-  //     const filtered = departments.data
-  //       .filter(item => {
-  //         const words = item?.contactName?.toLowerCase().split(' ') || [];
-  //         return words.some(word => word.startsWith(query));
-  //       })
-  //       .sort((a, b) => {
-  //         const aName = a?.contactName?.toLowerCase();
-  //         const bName = b?.contactName?.toLowerCase();
-  //         return aName.localeCompare(bName);
-  //       });
-
-  //     console.log('filteredDepartments', filtered);
-  //     setFilteredDepartments(filtered);
-  //   }
-  // }, [departments, searchQuery, search]);
 
   useEffect(() => {
     if (departments?.data) {
@@ -203,7 +166,9 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
         {isLoading == true ? (
-          <LoadingScreen />
+          <View style={{height: window.height * 0.6}}>
+            <LoadingScreen />
+          </View>
         ) : (
           <View>
             {SelectedType == 1 ? (
