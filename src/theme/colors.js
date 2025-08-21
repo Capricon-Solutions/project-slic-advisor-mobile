@@ -1,15 +1,17 @@
-import { Platform } from "react-native";
+import {Platform} from 'react-native';
+import {red} from 'react-native-reanimated/lib/typescript/Colors';
 
 const COLORS = {
   primary: '#00ADBB',
   primaryOrange: '#EB5017',
+  red: '#F44336',
   primaryRed: '#BB0000',
   primaryGreen: '#00796B',
   lightPrimary: '#24c4d1',
   title: '#33384B',
   subtitle: '#757575',
   placeholder: '#757575',
-  background: Platform.OS === 'ios'? '#f5f3f3ff' :'#FDFDFD',
+  background: Platform.OS === 'ios' ? '#f5f3f3ff' : '#FDFDFD',
   white: '#ffffff',
   backcard: '#EF9A4B36',
   black: 'black',

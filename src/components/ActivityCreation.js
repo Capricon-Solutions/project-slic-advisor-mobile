@@ -105,13 +105,14 @@ export default function ActivityCreation({
         text1: 'Activity Created',
         text2: 'Your activity has been created successfully!',
       });
-      setDescription('');
-      setMeetWith('');
-      setSelectedType('');
-      setSelectedLead('');
-      setSelectedDate(null);
+
       setTimeout(() => {
         onActivityCreated(moment(selectedDate).format('YYYY-MM-DD'));
+        setDescription('');
+        setMeetWith('');
+        setSelectedType('');
+        setSelectedLead('');
+        setSelectedDate(null);
         setModalVisible(false);
       }, 900);
       console.log('Activity Created:', response);
@@ -235,7 +236,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Lead *
+                  Lead <Text style={{color: COLORS.red}}>*</Text>
                 </Text>
                 {/* <DropdownFilled
                   placeholder={'Select Lead'}
@@ -270,7 +271,7 @@ export default function ActivityCreation({
                     fontFamily: Fonts.Roboto.Medium,
                     color: COLORS.ashBlue,
                   }}>
-                  Activity Type *
+                  Activity Type <Text style={{color: COLORS.red}}>*</Text>
                 </Text>
                 <DropdownFilled
                   placeholder={'Select Activity Type'}

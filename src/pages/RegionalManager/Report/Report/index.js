@@ -54,11 +54,12 @@ export default function Report({navigation, route}) {
   const [SelectedType, setSelectedType] = useState('ALL');
   const [selectedMonth, setSelectedmonth] = useState('00');
   const [type, setType] = useState();
-  const [branch, setBranch] = useState(regionName);
-
+  // const [branch, setBranch] = useState(regionName);
+  const [branch, setBranch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  // const [ value, setValue]= useState();
 
+  // const [ value, setValue]= useState();
+  console.log('regionName', regionName);
   const tableHead = [
     'Branch',
     'Renewal',
@@ -87,18 +88,42 @@ export default function Report({navigation, route}) {
   });
   const tableData = RmReport?.data?.map(item => [
     item?.branch?.toString() ?? '',
-    item?.renewal?.toLocaleString() ?? '',
-    item?.nb?.toLocaleString() ?? '',
+    value == 1
+      ? item?.renewal?.toLocaleString() ?? ''
+      : item?.nopRenewal?.toLocaleString() ?? '',
+    value == 1
+      ? item?.nb?.toLocaleString() ?? ''
+      : item?.nopNew?.toLocaleString() ?? '',
+    // item?.nb?.toLocaleString() ?? '',
+    // item?.refundPpw?.toString() ?? '',
     {
-      ppw: item?.refundPpw?.toLocaleString() ?? '',
-      other: item?.refundOther?.toLocaleString() ?? '',
+      ppw:
+        value == 1
+          ? item?.refundPpw?.toLocaleString() ?? ''
+          : item?.nopPpw?.toLocaleString() ?? '',
+      other:
+        value == 1
+          ? item?.refundOther?.toLocaleString() ?? ''
+          : item?.nopOtherRefund?.toLocaleString() ?? '',
     },
-    item?.endorsement?.toLocaleString() ?? '',
-    item?.renewal +
-      item?.nb +
-      item?.refundPpw +
-      item?.refundOther +
-      item?.endorsement.toLocaleString() ?? '',
+    value == 1
+      ? item?.endorsement?.toLocaleString() ?? ''
+      : item?.nopEndorsements?.toLocaleString() ?? '',
+    value == 1
+      ? (
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
+      : (
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nopNew +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
 
     // item?.total?.toLocaleString() ?? '',
   ]);
@@ -112,14 +137,25 @@ export default function Report({navigation, route}) {
       : [];
 
   const dropdownOptions = [{label: 'All', value: ''}, ...branchList];
-
+  useEffect(() => {
+    const isValid = dropdownOptions.some(option => option.value === branch);
+    if (!isValid && branch !== '') {
+      setBranch(''); // Reset to default value if invalid
+    }
+  }, [branch, dropdownOptions]);
   console.log('RmReport', RmReport);
   useFocusEffect(
     React.useCallback(() => {
       // When screen is focused
       Orientation.lockToPortrait();
       setIsLandscape(false);
+      setSelectedType('ALL');
+      setSelectedmonth('00');
 
+      // if (branch !== '') {
+      //   console.log('branch', branch);
+      setBranch('');
+      // }
       return () => {
         // Optional: Reset on blur
         Orientation.lockToPortrait(); // ensure cleanup just in case
@@ -238,20 +274,19 @@ export default function Report({navigation, route}) {
 
         <View>
           {isLandscape == true ? (
-            <ScrollView
-              contentContainerStyle={{
-                alignItems: 'center',
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-              }}
-              style={{}}>
+            <View
+              style={{
+                // flex: 1,
+                overflow: 'scroll',
+                paddingHorizontal: 1,
+                paddingTop: 0,
+              }}>
               <View
                 style={{
                   width: '100%',
                   alignItems: 'center',
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
-                  marginVertical: 5,
                 }}>
                 <View style={{flex: 0.19, marginHorizontal: 2}}>
                   <DropdownComponent
@@ -272,8 +307,15 @@ export default function Report({navigation, route}) {
                     label={'Type'}
                     mode={'modal'}
                     search={false}
+                    nonClearable={SelectedType == 'ALL' ? true : false}
+                    value={SelectedType}
                     onValueChange={value => {
-                      setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                      setSelectedType(value ?? 'ALL');
+                      if (value == 'G') {
+                        setSelectedmonth('00'); // Reset month to '00' if type is 'G'
+                      } else if (value == 'M') {
+                        setSelectedmonth(null); // Set month to '01' if type is 'M
+                      }
                     }}
                     dropdownData={[
                       {label: 'General Cumulative', value: 'G'},
@@ -285,39 +327,68 @@ export default function Report({navigation, route}) {
                   <DropdownComponent
                     label={'Month'}
                     mode={'modal'}
+                    search={false}
+                    disabled={SelectedType == 'G'} // Disable if type is 'G'
                     value={selectedMonth}
                     nonClearable={true}
-                    // onValueChange={setSelectedMonth}
                     onValueChange={value => {
                       setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
                     }}
-                    dropdownData={[
-                      {label: 'Cumulative', value: '00'},
-                      {label: 'January', value: '01'},
-                      {label: 'February', value: '02'},
-                      {label: 'March', value: '03'},
-                      {label: 'April', value: '04'},
-                      {label: 'May', value: '05'},
-                      {label: 'June', value: '06'},
-                      {label: 'July', value: '07'},
-                      {label: 'August', value: '08'},
-                      {label: 'September', value: '09'},
-                      {label: 'October', value: '10'},
-                      {label: 'November', value: '11'},
-                      {label: 'December', value: '12'},
-                    ]}
+                    dropdownData={
+                      SelectedType == 'M'
+                        ? [
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
+                          ]
+                        : SelectedType == 'G'
+                        ? [{label: 'Cumulative', value: '00'}]
+                        : [
+                            {label: 'Cumulative', value: '00'},
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
+                          ]
+                    }
                   />
                 </View>
                 <View style={{flex: 0.19, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Branch'}
                     mode={'modal'}
+                    // nonClearable={true}
+                    value={branch}
                     dropdownData={dropdownOptions}
                     selectedValue={branch}
-                    onValueChange={value => setBranch(value)} // ✅ Captures selection
+                    onValueChange={value => {
+                      setBranch(value);
+                      console.log('value e', value);
+                      if (value == null) {
+                        setBranch('');
+                        console.log('value', value);
+                      }
+                    }} // ✅ Captures selection
                   />
                 </View>
-                <View style={{flex: 0.13, marginHorizontal: 2}}>
+                <View style={{flex: 0.13, marginHorizontal: 10}}>
                   <Button Title={'Apply'} />
                 </View>
               </View>
@@ -347,7 +418,7 @@ export default function Report({navigation, route}) {
                   </Text>
                 </View>
               )}
-            </ScrollView>
+            </View>
           ) : (
             <FlatList
               data={RmReport?.data}
@@ -421,10 +492,7 @@ export default function Report({navigation, route}) {
                                 })
                               : ''
                             : item?.nopRenewal != null
-                            ? Number(item.nopRenewal).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                            ? Number(item.nopRenewal).toLocaleString('en-US')
                             : ''
                         }
                       />
@@ -434,11 +502,15 @@ export default function Report({navigation, route}) {
                       <OutlinedTextView
                         Title={'NB'}
                         value={
-                          item?.nb !== null && item?.nb !== undefined
-                            ? Number(item?.nb).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                          value == 1
+                            ? item?.nb != null
+                              ? Number(item.nb).toLocaleString('en-US', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ''
+                            : item?.nopNew != null
+                            ? Number(item.nopNew).toLocaleString('en-US')
                             : ''
                         }
                       />
@@ -459,10 +531,7 @@ export default function Report({navigation, route}) {
                                 })
                               : ''
                             : item?.nopPpw != null
-                            ? Number(item.nopPpw).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                            ? Number(item.nopPpw).toLocaleString('en-US')
                             : ''
                         }
                       />
@@ -485,10 +554,6 @@ export default function Report({navigation, route}) {
                             : item?.nopOtherRefund != null
                             ? Number(item.nopOtherRefund).toLocaleString(
                                 'en-US',
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                },
                               )
                             : ''
                         }
@@ -509,13 +574,7 @@ export default function Report({navigation, route}) {
                               })
                             : ''
                           : item?.nopEndorsements != null
-                          ? Number(item.nopEndorsements).toLocaleString(
-                              'en-US',
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              },
-                            )
+                          ? Number(item.nopEndorsements).toLocaleString('en-US')
                           : ''
                       }
                     />
@@ -533,31 +592,13 @@ export default function Report({navigation, route}) {
                               (item?.endorsement ?? 0)
                           : (item?.nopRenewal ?? 0) +
                               (item?.nopPpw ?? 0) +
-                              (item?.nb ?? 0) +
+                              (item?.nopNew ?? 0) +
                               (item?.nopOtherRefund ?? 0) +
                               (item?.nopEndorsements ?? 0),
                       ).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
+                        minimumFractionDigits: value == 1 ? 2 : 0,
+                        maximumFractionDigits: value == 1 ? 2 : 0,
                       })}
-
-                      // value={
-                      //   value == 1
-                      //     ? (
-                      //         (item?.renewal ?? 0) +
-                      //         (item?.nb ?? 0) +
-                      //         (item?.refundPpw ?? 0) +
-                      //         (item?.refundOther ?? 0) +
-                      //         (item?.endorsement ?? 0)
-                      //       ).toLocaleString()
-                      //     : (
-                      //         (item?.nopRenewal ?? 0) +
-                      //         (item?.nopPpw ?? 0) +
-                      //         (item?.nb ?? 0) +
-                      //         (item?.nopOtherRefund ?? 0) +
-                      //         (item?.nopEndorsements ?? 0)
-                      //       ).toLocaleString()
-                      // }
                     />
                   </View>
                 </View>
@@ -585,16 +626,4 @@ export default function Report({navigation, route}) {
       )}
     </View>
   );
-}
-{
-  /* <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-  <Text
-    style={{
-      fontSize: 16,
-      color: COLORS.errorBorder,
-      fontFamily: Fonts.Roboto.Bold,
-    }}>
-    Sorry, No Data Found
-  </Text>
-</View> */
 }

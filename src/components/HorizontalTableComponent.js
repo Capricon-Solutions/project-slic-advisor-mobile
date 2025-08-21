@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import {Table, Row} from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 
@@ -19,26 +19,22 @@ const HorizontalTableComponent = ({
   clickable,
 }) => {
   const handleCellPress = cellData => {
-    onPress();
+    onPress?.();
     console.log('Clicked Cell:', cellData);
   };
 
   return (
-    <View style={styles.fullContainer}>
-      {tableData.length === 0 ? (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>Sorry, No Data Found</Text>
-        </View>
-      ) : (
-        <ScrollView horizontal>
+    <ScrollView horizontal>
+      <View style={styles.fullContainer}>
+        {tableData.length === 0 ? (
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataText}>Sorry, No Data Found</Text>
+          </View>
+        ) : (
           <View style={styles.container}>
             <View style={styles.tableWrapper}>
-              <Table
-                borderStyle={{
-                  borderWidth: 1,
-                  borderColor: COLORS.white,
-                }}>
-                {/* Table Header */}
+              {/* Table Header */}
+              <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
                 <Row
                   data={tableHead.map((item, index) => (
                     <Text
@@ -54,67 +50,67 @@ const HorizontalTableComponent = ({
                   style={styles.head}
                   textStyle={styles.headText}
                 />
-                {tableData.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={rowData.map((cellData, cellIndex) => (
-                      <TouchableOpacity
-                        disabled={!clickable}
-                        key={cellIndex}
-                        onPress={() => handleCellPress(cellData)}>
-                        <Text
-                          style={[
-                            styles.text,
-                            cellIndex === 0
-                              ? styles.leftAlignText
-                              : styles.centerAlignText,
-                            haveTotal &&
-                              index === tableData.length - 1 &&
-                              styles.boldText,
-                          ]}>
-                          {cellData}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                    widthArr={columnWidths}
-                    style={[
-                      styles.row,
-                      index % 2 === 0 ? styles.rowGray : styles.rowWhite,
-                    ]}
-                    textStyle={[
-                      styles.text,
-                      haveTotal &&
-                        index === tableData.length - 1 &&
-                        styles.boldText,
-                    ]}
-                  />
-                ))}
               </Table>
+
+              {/* Table Body - Vertical scroll only */}
+              <ScrollView>
+                <Table
+                  borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
+                  {tableData.map((rowData, index) => (
+                    <Row
+                      key={index}
+                      data={rowData.map((cellData, cellIndex) => (
+                        <TouchableOpacity
+                          disabled={!clickable}
+                          key={cellIndex}
+                          onPress={() => handleCellPress(cellData)}>
+                          <Text
+                            style={[
+                              styles.text,
+                              cellIndex === 0
+                                ? styles.leftAlignText
+                                : styles.centerAlignText,
+                              haveTotal &&
+                                index === tableData.length - 1 &&
+                                styles.boldText,
+                            ]}>
+                            {cellData}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                      widthArr={columnWidths}
+                      style={[
+                        styles.row,
+                        index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                      ]}
+                    />
+                  ))}
+                </Table>
+              </ScrollView>
             </View>
           </View>
-        </ScrollView>
-      )}
-    </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
+  container: {
+    padding: 0,
+  },
   tableWrapper: {
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'scroll',
   },
   fullContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // padding: 16,
   },
   noDataContainer: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
     height: 250,
   },
   noDataText: {
@@ -122,7 +118,10 @@ const styles = StyleSheet.create({
     color: COLORS.errorBorder,
     fontFamily: Fonts.Roboto.Bold,
   },
-  head: {height: 50, backgroundColor: '#00A8B5'},
+  head: {
+    height: 50,
+    backgroundColor: '#00A8B5',
+  },
   headText: {
     margin: 6,
     fontWeight: 'bold',
@@ -131,37 +130,36 @@ const styles = StyleSheet.create({
   },
   firstCell: {
     backgroundColor: COLORS.background,
-    flex: 1, // Make first cell background red
-    color: 'white', // Ensure text is visible
+    flex: 1,
+    color: 'white',
     padding: 0,
     margin: -1,
   },
   text: {
     marginVertical: 6,
-    marginHorizontal: 10, // Add horizontal margin to create spacing between columns
-    textAlign: 'left',
+    marginHorizontal: 10,
     fontSize: 13,
     color: COLORS.textColor,
   },
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
-  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
+  row: {
+    height: 50,
+  },
+  rowGray: {
+    backgroundColor: '#F8F9FA',
+  },
+  rowWhite: {
+    backgroundColor: '#FFFFFF',
+  },
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,
     textAlign: 'left',
   },
-  transparentHead: {
-    backgroundColor: 'transparent', // Make first header cell background transparent
-  },
-  transparentText: {
-    color: 'transparent', // Make first header item text transparent
-  },
   leftAlignText: {
-    textAlign: 'left', // First column aligned left
+    textAlign: 'left',
   },
   centerAlignText: {
-    textAlign: 'center', // Other columns aligned center
+    textAlign: 'center',
   },
 });
 

@@ -50,12 +50,27 @@ export default function TeamStatistics({navigation}) {
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
   const [selectedMonthName, setSelectedMonthName] = useState(null);
   const [selectedYearName, setSelectedYearName] = useState(null);
-  const [fromDate, toDate] = selectedDate
-    ? [
-        moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
-        moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
-      ]
-    : [lastMonthStart, currentMonthEnd];
+  // const [fromDate, toDate] = selectedDate
+  //   ? [
+  //       moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
+  //       moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
+  //     ]
+  //   : [lastMonthStart, currentMonthEnd];
+  const isCurrentMonth = moment(selectedDate, 'YYYY/MM').isSame(
+    moment(),
+    'month',
+  );
+
+  const fromDate = selectedDate
+    ? moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD')
+    : lastMonthStart;
+
+  const toDate = selectedDate
+    ? isCurrentMonth
+      ? moment().format('YYYY-MM-DD') // today if current month
+      : moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD')
+    : currentMonthEnd;
+
   const {
     data: individualPerf,
     error,
@@ -171,22 +186,23 @@ export default function TeamStatistics({navigation}) {
           </TouchableOpacity>
         </View>
       </View> */}
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            // alignItems: 'center',
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        <HorizontalTableComponent
-          onPress={() => navigation.navigate('PolicyDetails')}
-          haveTotal={false}
-          tableHead={tableHead}
-          tableData={tableDataFinal}
-          columnWidths={columnWidths}
-        />
-      </ScrollView>
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          <HorizontalTableComponent
+            onPress={() => navigation.navigate('PolicyDetails')}
+            haveTotal={false}
+            tableHead={tableHead}
+            tableData={tableDataFinal}
+            columnWidths={columnWidths}
+          />
+        </View>
+      </View>
       {isFetching && (
         <View
           style={{

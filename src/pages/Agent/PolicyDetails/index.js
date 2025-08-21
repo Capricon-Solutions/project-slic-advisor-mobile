@@ -96,9 +96,9 @@ export default function PolicyDetails({navigation, route}) {
         Title="Policy Details"
         onPress={() => navigation.goBack()}
         haveFilters={false}
-        haveWhatsapp={true}
+        haveWhatsapp={phone ? true : false}
         whatsappNo={phone}
-        haveCall={true}
+        haveCall={phone ? true : false}
         callNo={phone}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
@@ -107,7 +107,7 @@ export default function PolicyDetails({navigation, route}) {
         <LoadingScreen />
       ) : (
         <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-          <View style={styles.card}>
+          <View style={[styles.card, {paddingBottom: 1}]}>
             {isCancelled && (
               <Text
                 style={{

@@ -26,26 +26,20 @@ const HorizontalMargedTableComponent = ({
     <ScrollView horizontal>
       <View style={styles.container}>
         <View style={styles.tableWrapper}>
-          <Table
-            borderStyle={{
-              borderWidth: 1,
-              borderColor: COLORS.white,
-            }}>
-            {/* Table Header */}
-
+          {/* Table header (fixed row) */}
+          <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
             <Row
               data={tableHead?.map((item, index) => (
-                <View>
+                <View key={index}>
                   <View
                     style={[
                       styles.mainHeader,
                       index === 0 ? styles.firstHeader : null,
                     ]}>
                     <Text
-                      key={index}
                       style={[
                         styles.headText,
-                        index === 0 ? styles.firstCell : null, // Apply red background to first item
+                        index === 0 ? styles.firstCell : null,
                       ]}>
                       {item}
                     </Text>
@@ -61,25 +55,22 @@ const HorizontalMargedTableComponent = ({
                         index === 0 ? styles.firstHeader : null,
                       ]}>
                       <Text
-                        key={index}
                         style={[
                           styles.headTextSub,
-                          index === 0 ? styles.firstCell : null, // Apply red background to first item
+                          index === 0 ? styles.firstCell : null,
                         ]}>
                         Cash
                       </Text>
                     </View>
-
                     <View
                       style={[
                         styles.subheaderItem,
                         index === 0 ? styles.firstHeader : null,
                       ]}>
                       <Text
-                        key={index}
                         style={[
                           styles.headTextSub,
-                          index === 0 ? styles.firstCell : null, // Apply red background to first item
+                          index === 0 ? styles.firstCell : null,
                         ]}>
                         Debit
                       </Text>
@@ -91,91 +82,70 @@ const HorizontalMargedTableComponent = ({
               style={styles.head}
               textStyle={styles.headText}
             />
-            {/* Table Rows with Alternating Colors */}
-            {tableData?.map((rowData, index) => (
-              <Row
-                key={index}
-                data={rowData.map((cellData, cellIndex) => (
-                  <View
-                    key={cellIndex}
-                    onPress={() => handleCellPress(cellData)}>
-                    {cellIndex == 0 && (
-                      <View>
-                        <View>
-                          <Text
-                            style={[
-                              styles.text,
-                              cellIndex === 0
-                                ? styles.leftAlignedText
-                                : styles.centerAlignedText, // Align first column left
-                              haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
-                            ]}>
-                            {cellData}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                    {cellIndex > 0 && (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View
-                          style={{
-                            flex: 0.5,
-                          }}>
-                          <Text
-                            style={[
-                              styles.text,
-                              cellIndex === 0
-                                ? styles.leftAlignedText
-                                : styles.centerAlignedText, // Align first column left
-                              haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
-                            ]}>
-                            {cellData?.cash}
-                          </Text>
-                        </View>
-
-                        <View
-                          style={{
-                            flex: 0.5,
-                          }}>
-                          <Text
-                            style={[
-                              styles.text,
-                              cellIndex === 0
-                                ? styles.leftAlignedText
-                                : styles.centerAlignedText, // Align first column left
-                              haveTotal &&
-                                index === tableData.length - 1 &&
-                                styles.boldText,
-                            ]}>
-                            {cellData?.debit}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </View>
-                ))}
-                widthArr={columnWidths}
-                style={[
-                  styles.row,
-                  index % 2 === 0 ? styles.rowGray : styles.rowWhite,
-                ]}
-                textStyle={[
-                  styles.text,
-                  haveTotal &&
-                    index === tableData.length - 1 &&
-                    styles.boldText, // Apply boldText only if hasTotal is true
-                ]}
-              />
-            ))}
           </Table>
+
+          {/* Table body (scrollable rows) */}
+          <ScrollView>
+            <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
+              {tableData?.map((rowData, index) => (
+                <Row
+                  key={index}
+                  data={rowData.map((cellData, cellIndex) => (
+                    <View key={cellIndex}>
+                      {cellIndex === 0 ? (
+                        <Text
+                          style={[
+                            styles.text,
+                            styles.leftAlignedText,
+                            haveTotal &&
+                              index === tableData.length - 1 &&
+                              styles.boldText,
+                          ]}>
+                          {cellData}
+                        </Text>
+                      ) : (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.cash}
+                            </Text>
+                          </View>
+                          <View style={{flex: 0.5}}>
+                            <Text
+                              style={[
+                                styles.text,
+                                styles.centerAlignedText,
+                                haveTotal &&
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
+                              ]}>
+                              {cellData?.debit}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+                    </View>
+                  ))}
+                  widthArr={columnWidths}
+                  style={[
+                    styles.row,
+                    index % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                  ]}
+                />
+              ))}
+            </Table>
+          </ScrollView>
         </View>
       </View>
     </ScrollView>
@@ -186,7 +156,7 @@ const styles = StyleSheet.create({
   container: {padding: 0},
   tableWrapper: {
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'scroll',
   },
   head: {backgroundColor: 'transparent'},
   headText: {
@@ -233,7 +203,7 @@ const styles = StyleSheet.create({
   },
   subheaderItem: {
     backgroundColor: COLORS.tableSubHeader,
-    paddingVertical: 5,
+    paddingVertical: 1,
     flex: 0.5,
     borderWidth: 0.7,
 
@@ -241,7 +211,7 @@ const styles = StyleSheet.create({
   },
   mainHeader: {
     backgroundColor: COLORS.primary,
-    paddingVertical: 5,
+    paddingVertical: 1,
   },
   firstHeader: {
     backgroundColor: 'transparent',

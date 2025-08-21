@@ -36,19 +36,56 @@ export default function EDocument({navigation}) {
     return [];
   };
 
+  // useEffect(() => {
+  //   const originalData = getCurrentData();
+
+  //   if (searchText.trim() === '') {
+  //     setFilteredData(originalData);
+  //   } else {
+  //     // const filtered = originalData.filter(item =>
+  //     //   item?.docName?.toLowerCase().includes(searchText.toLowerCase()),
+  //     // );
+  //     const filtered = originalData.filter(item =>
+  //       item?.docName?.toLowerCase().startsWith(searchText.toLowerCase()),
+  //     );
+  //     setFilteredData(filtered);
+  //   }
+  // }, [searchText, SelectedType, EDocument]);
+
   useEffect(() => {
     const originalData = getCurrentData();
 
     if (searchText.trim() === '') {
       setFilteredData(originalData);
     } else {
-      // const filtered = originalData.filter(item =>
-      //   item?.docName?.toLowerCase().includes(searchText.toLowerCase()),
-      // );
-      const filtered = originalData.filter(item =>
-        item?.docName?.toLowerCase().startsWith(searchText.toLowerCase()),
-      );
-      setFilteredData(filtered);
+      const query = searchText.toLowerCase().trim();
+
+      const filtered = originalData.filter(item => {
+        const name = item?.docName?.toLowerCase() || '';
+        const words = name.split(/\s+/); // split into words
+        return words.some(word => word.startsWith(query)); // ✅ must match from beginning of word
+      });
+
+      const sorted = filtered.sort((a, b) => {
+        const nameA = a?.docName?.toLowerCase() || '';
+        const nameB = b?.docName?.toLowerCase() || '';
+
+        // find earliest word-start index for query
+        const indexA = Math.min(
+          ...nameA
+            .split(/\s+/)
+            .map(w => (w.startsWith(query) ? nameA.indexOf(w) : Infinity)),
+        );
+        const indexB = Math.min(
+          ...nameB
+            .split(/\s+/)
+            .map(w => (w.startsWith(query) ? nameB.indexOf(w) : Infinity)),
+        );
+
+        return indexA - indexB;
+      });
+
+      setFilteredData(sorted);
     }
   }, [searchText, SelectedType, EDocument]);
 
@@ -177,15 +214,24 @@ export default function EDocument({navigation}) {
                 paddingHorizontal: 15,
               }}
               ListEmptyComponent={
-                <Text
+                <View
                   style={{
-                    textAlign: 'center',
-                    marginTop: 40,
-                    color: '#888',
-                    fontFamily: Fonts.Roboto.Medium,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                    height: window.height * 0.6,
                   }}>
-                  No documents found.
-                </Text>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      marginTop: 40,
+                      fontSize: 15,
+                      color: COLORS.errorBorder,
+                      fontFamily: Fonts.Roboto.Medium,
+                    }}>
+                    No documents found.
+                  </Text>
+                </View>
               }
             />
           )}

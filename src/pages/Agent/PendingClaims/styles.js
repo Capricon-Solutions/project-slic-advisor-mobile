@@ -18,8 +18,9 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 15,
-    elevation: 5,
+    elevation: 9,
     padding: 15,
+    marginHorizontal: 10,
     marginVertical: 8,
   },
 });

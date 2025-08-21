@@ -94,15 +94,18 @@ export default function TeamMemberGrid({navigation, route}) {
 
     type: value,
   });
-  console.log('TeamLeaderReport', TeamLeaderReport);
-  console.log('TeamLeaderReportLoading', TeamLeaderReportLoading);
+  console.log('Team Member  Report', TeamLeaderReport);
+  console.log('Team Member ReportLoading', TeamLeaderReportLoading);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
     value == 1
       ? item?.renewal?.toLocaleString() ?? ''
       : item?.nopRenewal?.toLocaleString() ?? '',
-    item?.nb?.toLocaleString() ?? '',
+    value == 1
+      ? item?.nb?.toLocaleString() ?? ''
+      : item?.nopNew?.toLocaleString() ?? '',
+    // item?.nb?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
       ppw:
@@ -129,7 +132,7 @@ export default function TeamMemberGrid({navigation, route}) {
       : (
           item?.nopRenewal +
           item?.nopPpw +
-          item?.nb +
+          item?.nopNew +
           item?.nopOtherRefund +
           item?.nopEndorsements
         ).toLocaleString() ?? '',
@@ -203,6 +206,7 @@ export default function TeamMemberGrid({navigation, route}) {
           flexDirection: 'row',
           alignItems: 'center',
           gap: 5,
+          // backgroundColor: 'red',
           paddingRight: 20,
         }}>
         {isLandscape == false && (
@@ -248,20 +252,19 @@ export default function TeamMemberGrid({navigation, route}) {
         </TouchableOpacity>
       </View>
       {isLandscape == true ? (
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-          }}
-          style={{}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 0,
+          }}>
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              marginVertical: 5,
+              marginTop: -5,
             }}>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
@@ -282,8 +285,16 @@ export default function TeamMemberGrid({navigation, route}) {
                 label={'Type'}
                 mode={'modal'}
                 search={false}
+                nonClearable={SelectedType == 'ALL' ? true : false}
+                value={SelectedType}
                 onValueChange={value => {
-                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                  setSelectedType(value ?? 'ALL');
+                  if (value == 'G') {
+                    setSelectedMonth('00'); // Reset month to '00' if type is 'G'
+                  } else if (value == 'M') {
+                    setSelectedMonth(null); // Set month to '01' if type is 'M
+                  }
+                  // 👈 If value is null, use 'ALL'
                 }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
@@ -295,27 +306,48 @@ export default function TeamMemberGrid({navigation, route}) {
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
+                search={true}
+                disabled={SelectedType == 'G'} // Disable if type is 'G'
                 value={SelectedMonth}
                 nonClearable={true}
                 // onValueChange={setSelectedMonth}
                 onValueChange={value => {
                   setSelectedMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
                 }}
-                dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
-                ]}
+                dropdownData={
+                  SelectedType == 'M'
+                    ? [
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                    : SelectedType == 'G'
+                    ? [{label: 'Cumulative', value: '00'}]
+                    : [
+                        {label: 'Cumulative', value: '00'},
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                }
               />
             </View>
             {/* <View style={{ flex: 0.19, marginHorizontal: 2 }}>
@@ -355,7 +387,7 @@ export default function TeamMemberGrid({navigation, route}) {
             tableData={tableData}
             columnWidths={columnWidths}
           /> */}
-        </ScrollView>
+        </View>
       ) : (
         <FlatList
           data={TeamLeaderReport?.data}
@@ -424,10 +456,7 @@ export default function TeamMemberGrid({navigation, route}) {
                             })
                           : ''
                         : item?.nopRenewal != null
-                        ? Number(item.nopRenewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopRenewal).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -436,12 +465,25 @@ export default function TeamMemberGrid({navigation, route}) {
                 <View style={{flex: 1}}>
                   <OutlinedTextView
                     Title={'NB'}
+                    // value={
+                    //   item?.nb !== null && item?.nb !== undefined
+                    //     ? Number(item?.nb).toLocaleString('en-US', {
+                    //         minimumFractionDigits: 2,
+                    //         maximumFractionDigits: 2,
+                    //       })
+                    //     : ''
+                    // }
+
                     value={
-                      item?.nb !== null && item?.nb !== undefined
-                        ? Number(item?.nb).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                      value == 1
+                        ? item?.nb != null
+                          ? Number(item.nb).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopNew != null
+                        ? Number(item.nopNew).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -462,10 +504,7 @@ export default function TeamMemberGrid({navigation, route}) {
                             })
                           : ''
                         : item?.nopPpw != null
-                        ? Number(item.nopPpw).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopPpw).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -483,10 +522,7 @@ export default function TeamMemberGrid({navigation, route}) {
                             })
                           : ''
                         : item?.nopOtherRefund != null
-                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -506,10 +542,7 @@ export default function TeamMemberGrid({navigation, route}) {
                           })
                         : ''
                       : item?.nopEndorsements != null
-                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
+                      ? Number(item.nopEndorsements).toLocaleString('en-US')
                       : ''
                   }
                 />
@@ -527,12 +560,12 @@ export default function TeamMemberGrid({navigation, route}) {
                           (item?.endorsement ?? 0)
                       : (item?.nopRenewal ?? 0) +
                           (item?.nopPpw ?? 0) +
-                          (item?.nb ?? 0) +
+                          (item?.nopNew ?? 0) +
                           (item?.nopOtherRefund ?? 0) +
                           (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    minimumFractionDigits: value == 1 ? 2 : 0,
+                    maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
                   // value={

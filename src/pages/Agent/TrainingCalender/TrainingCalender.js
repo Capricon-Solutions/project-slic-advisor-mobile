@@ -41,6 +41,7 @@ import {
   useApproveTrainingMutation,
   useGetTrainingListQuery,
 } from '../../../redux/services/trainingSlice';
+import {showToast} from '../../../components/ToastMessage';
 
 const window = Dimensions.get('window');
 
@@ -102,13 +103,12 @@ export default function TrainingCalender({navigation}) {
   const [selectedId, setSelectedId] = useState(0);
   const dispatch = useDispatch();
   const today = new Date().toISOString().split('T')[0];
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(Getpath(0));
-    }, []),
-  );
-
+  const [expanded, setExpanded] = useState(false);
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(Getpath(0));
+  //   }, []),
+  // );
   const {
     data: TrainingList,
     isFetching,
@@ -118,13 +118,32 @@ export default function TrainingCalender({navigation}) {
     type,
     userCode: usertype == 2 ? personalCode : userCode,
   });
+  console.log('TrainingList testtt', TrainingList);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(Getpath(0));
+
+      // Always reset selected date to today
+      setSelectedDate(today);
+      setSelectedTrainings([]);
+
+      setMarkedDates(prevMarkedDates => {
+        const updated = {};
+        Object.keys(prevMarkedDates || {}).forEach(date => {
+          const {selected, selectedColor, ...rest} = prevMarkedDates[date];
+          updated[date] = rest;
+        });
+        return updated;
+      });
+
+      refetch?.();
+      // handleDayPress();
+    }, []),
+  );
 
   const [approveTraining, {isLoading: isApproving, error: approveError}] =
     useApproveTrainingMutation();
-
-  useEffect(() => {
-    console.log('TrainingList', TrainingList);
-  }, [TrainingList]);
 
   useEffect(() => {
     if (TrainingList?.data) {
@@ -135,11 +154,16 @@ export default function TrainingCalender({navigation}) {
         dates[dateStr] = {marked: true, dotColor: COLORS.primary};
       });
       setMarkedDates(dates);
+    } else if (TrainingList?.data == null) {
+      setMarkedDates(null);
+      setSelectedTrainings([]);
     }
-  }, [TrainingList]);
+  }, [TrainingList?.data]);
 
   const handleDayPress = day => {
+    console.log('Selected day:', day);
     const dateStr = day.dateString;
+    // const dateStr = '2025-09-05';
     setSelectedDate(dateStr);
 
     // Find trainings for the selected date
@@ -248,12 +272,13 @@ export default function TrainingCalender({navigation}) {
               marginVertical: 15,
             }}>
             <Calendar
+              key={selectedDate || 'reset'}
               onDayPress={handleDayPress}
               style={{
                 borderColor: 'gray',
               }}
-              current={today}
-              // today={"15/06/2021"}
+              current={selectedDate || today} // current={today}
+              // today={today}
               markedDates={markedDates}
               theme={{
                 backgroundColor: '#ffffff',
@@ -379,7 +404,10 @@ export default function TrainingCalender({navigation}) {
                           fontFamily: Fonts.Roboto.Medium,
                           fontSize: 13,
                         }}>
-                        Session Method : Online
+                        Session Method :{' '}
+                        {training.trainingDetails
+                          ? training.trainingDetails[0].trainMode
+                          : 'N/A'}
                       </Text>
 
                       <Text
@@ -390,6 +418,14 @@ export default function TrainingCalender({navigation}) {
                         }}>
                         Session Type :{' '}
                         {training.trainType === 'G' ? 'General' : 'Motor'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Status : {training.status}
                       </Text>
 
                       <View
@@ -436,7 +472,13 @@ export default function TrainingCalender({navigation}) {
                         </Text>
                       </View>
                     </View>
-                    <View style={{flex: 0.4, alignItems: 'center', padding: 3}}>
+                    <View
+                      style={{
+                        flex: 0.4,
+                        alignItems: 'center',
+
+                        padding: 3,
+                      }}>
                       <View
                         style={{
                           width: '90%',
@@ -445,23 +487,90 @@ export default function TrainingCalender({navigation}) {
                         }}>
                         <SmallButton
                           Title={'Done'}
+                          disabledButton={
+                            training?.statusCode == 0
+                              ? false
+                              : // : training?.statusCode == 3
+                                // ? true
+                                true
+                          }
+                          disabledColor={
+                            training?.statusCode == 0
+                              ? false
+                              : // : training?.statusCode == 3
+                                // ? true
+                                true
+                          }
+                          // onPress={() => {
+                          //   console.log(' training.trainId', training.trainId);
+                          //   // Call the approveTraining mutation with the training ID
+                          //   approveTraining({id: training.trainId, userCode})
+                          //     .unwrap()
+                          //     .then(() => {
+                          //       // On success, remove the training from the list
+                          //       // setSelectedTrainings(prev =>
+                          //       //   prev.filter((_, i) => i !== index),
+                          //       // );
+                          //     })
+                          //     .catch(error => {
+                          //       console.error(
+                          //         'Failed to approve training:',
+                          //         error,
+                          //       );
+                          //       // You might want to show an error message to the user here
+                          //     });
+                          // }}
                           onPress={() => {
-                            console.log(' training.trainId', training.trainId);
-                            // Call the approveTraining mutation with the training ID
-                            approveTraining({id: training.trainId, userCode})
+                            console.log('training.trainId', training);
+
+                            approveTraining({
+                              id: training.trainId,
+                              userCode: usertype == 2 ? personalCode : userCode,
+                            })
                               .unwrap()
-                              .then(() => {
-                                // On success, remove the training from the list
-                                setSelectedTrainings(prev =>
-                                  prev.filter((_, i) => i !== index),
+                              .then(response => {
+                                console.log(
+                                  'response.success',
+                                  response.success,
                                 );
+                                if (response.success) {
+                                  // alert('✅ Training approved successfully!');
+                                  showToast({
+                                    type: 'success',
+                                    text1: 'Successfull',
+                                    text2: 'Training approved successfully!',
+                                  });
+                                  setSelectedTrainings(prev =>
+                                    prev.map((t, i) =>
+                                      i === index ? {...t, statusCode: 1} : t,
+                                    ),
+                                  );
+                                  // Optionally remove the approved training from list
+                                  // setSelectedTrainings(prev => prev.filter((_, i) => i !== index));
+                                } else {
+                                  // alert(
+                                  //   '❌ Training approval failed: ' +
+                                  //     response.message,
+                                  // );
+                                  showToast({
+                                    type: 'error',
+                                    text1: 'Failed',
+                                    text2: 'Training approval failed.',
+                                  });
+                                }
                               })
                               .catch(error => {
                                 console.error(
                                   'Failed to approve training:',
                                   error,
                                 );
-                                // You might want to show an error message to the user here
+
+                                showToast({
+                                  type: 'error',
+                                  text1: 'Failed',
+                                  text2:
+                                    'Something went wrong while approving training.',
+                                });
                               });
                           }}
                         />
@@ -480,7 +589,36 @@ export default function TrainingCalender({navigation}) {
                           Can't Attend?
                         </Text>
                       </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={{marginTop: 5}}
+                        onPress={() => {
+                          setExpanded(!expanded);
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingTop: 2,
+                          }}>
+                          <Text
+                            style={{
+                              color: COLORS.primaryGreen,
+                              fontFamily: Fonts.Roboto.SemiBold,
+                              fontSize: 13,
+                            }}>
+                            {expanded ? 'Collapse' : 'Expand'}
+                          </Text>
+                          <MaterialCommunityIcons
+                            name={expanded ? 'chevron-up' : 'chevron-down'}
+                            color={COLORS.primaryGreen}
+                            size={22}
+                          />
+                        </View>
+                      </TouchableOpacity>
                     </View>
+
                     {/* <View style={{ flex: 0.4, alignItems: 'center', padding: 3 }}>
                       <View
                         style={{
@@ -510,6 +648,97 @@ export default function TrainingCalender({navigation}) {
                       </TouchableOpacity>
                     </View> */}
                   </View>
+                  {expanded && (
+                    <View>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Training No :{' '}
+                        {training.trainingDetails[0].trainId || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Duration :{' '}
+                        {training.trainingDetails[0].duration || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        To whom : {training.trainingDetails[0].toWhom || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Region :{' '}
+                        {training.trainingDetails[0].regionName || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Venue :{' '}
+                        {training.trainingDetails[0].branchName || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Trainer : {training.trainingDetails[0].trainer || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Contents :{' '}
+                        {training.trainingDetails[0].contentsCovered || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Tools : {training.trainingDetails[0].tools || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Attachments :{' '}
+                        {training.trainingDetails[0].attachments || 'N/A'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: COLORS.grayText,
+                          fontFamily: Fonts.Roboto.Medium,
+                          fontSize: 13,
+                        }}>
+                        Additional Info :{' '}
+                        {training.trainingDetails[0].additionalInfo || 'N/A'}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               ))}
             </>

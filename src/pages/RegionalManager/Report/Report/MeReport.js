@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,6 @@ import {FlatList} from 'react-native';
 import {styles} from './styles';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector} from 'react-redux';
-import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import SmallButton from '../../../../components/SmallButton';
@@ -132,7 +131,9 @@ export default function MeReport({navigation, route}) {
     value == 1
       ? item?.renewal?.toLocaleString() ?? ''
       : item?.nopRenewal?.toLocaleString() ?? '',
-    item?.nb?.toLocaleString() ?? '',
+    value == 1
+      ? item?.nb?.toLocaleString() ?? ''
+      : item?.nopNew?.toLocaleString() ?? '',
     // item?.refundPpw?.toString() ?? '',
     {
       ppw:
@@ -159,7 +160,7 @@ export default function MeReport({navigation, route}) {
       : (
           item?.nopRenewal +
           item?.nopPpw +
-          item?.nb +
+          item?.nopNew +
           item?.nopOtherRefund +
           item?.nopEndorsements
         ).toLocaleString() ?? '',
@@ -184,13 +185,18 @@ export default function MeReport({navigation, route}) {
       : [];
 
   const dropdownOptions = [{label: 'All', value: 'All'}, ...advisorList];
-
+  useEffect(() => {
+    const isValid = dropdownOptions.some(option => option.value === branch);
+    if (!isValid && branch !== '') {
+      setBranch(''); // Reset to default value if invalid
+    }
+  }, [branch, dropdownOptions]);
   return (
-<View
-  style={[
-    Styles.container,
-    // isLandscape && Platform.OS === 'ios' && { paddingHorizontal: 0 },
-  ]}>
+    <View
+      style={[
+        Styles.container,
+        // isLandscape && Platform.OS === 'ios' && { paddingHorizontal: 0 },
+      ]}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       <ReportFilter
         modalVisible={modalVisible}
@@ -216,7 +222,7 @@ export default function MeReport({navigation, route}) {
         onBranchChange={value => setBranch(value)}
       />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0,}}>
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
@@ -266,7 +272,7 @@ export default function MeReport({navigation, route}) {
         )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5,marginRight:20}}>
+          style={{flexDirection: 'row', gap: 5, marginRight: 20}}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -286,21 +292,22 @@ export default function MeReport({navigation, route}) {
         </TouchableOpacity>
       </SafeAreaView>
       {isLandscape == true ? (
-        <SafeAreaView>
-        <ScrollView
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-          }}
-          style={{}}>
+        // <SafeAreaView>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 0,
+            // backgroundColor: 'red',
+          }}>
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              marginVertical: 5,
+              // backgroundColor: 'red',
+              // marginVertical: 5,
             }}>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
@@ -317,12 +324,32 @@ export default function MeReport({navigation, route}) {
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
+              {/* <DropdownComponent
+                  label={'Type'}
+                  mode={'modal'}
+                  search={false}
+                  onValueChange={value => {
+                    setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={[
+                    {label: 'General Cumulative', value: 'G'},
+                    {label: 'Motor Monthly', value: 'M'},
+                  ]}
+                /> */}
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
                 search={false}
+                nonClearable={SelectedType == 'ALL' ? true : false}
+                value={SelectedType}
                 onValueChange={value => {
-                  setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+                  setSelectedType(value ?? 'ALL');
+                  if (value == 'G') {
+                    setSelectedmonth('00'); // Reset month to '00' if type is 'G'
+                  } else if (value == 'M') {
+                    setSelectedmonth(null); // Set month to '01' if type is 'M
+                  }
+                  // 👈 If value is null, use 'ALL'
                 }}
                 dropdownData={[
                   {label: 'General Cumulative', value: 'G'},
@@ -331,41 +358,88 @@ export default function MeReport({navigation, route}) {
               />
             </View>
             <View style={{flex: 0.18, marginHorizontal: 2}}>
+              {/* <DropdownComponent
+                  label={'Month'}
+                  mode={'modal'}
+                  value={selectedMonth}
+                  nonClearable={true}
+                  // onValueChange={setSelectedMonth}
+                  onValueChange={value => {
+                    setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
+                  }}
+                  dropdownData={[
+                    {label: 'Cumulative', value: '00'},
+                    {label: 'January', value: '01'},
+                    {label: 'February', value: '02'},
+                    {label: 'March', value: '03'},
+                    {label: 'April', value: '04'},
+                    {label: 'May', value: '05'},
+                    {label: 'June', value: '06'},
+                    {label: 'July', value: '07'},
+                    {label: 'August', value: '08'},
+                    {label: 'September', value: '09'},
+                    {label: 'October', value: '10'},
+                    {label: 'November', value: '11'},
+                    {label: 'December', value: '12'},
+                  ]}
+                /> */}
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
+                search={true}
+                disabled={SelectedType == 'G'} // Disable if type is 'G'
                 value={selectedMonth}
                 nonClearable={true}
                 // onValueChange={setSelectedMonth}
                 onValueChange={value => {
                   setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
                 }}
-                dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
-                ]}
+                dropdownData={
+                  SelectedType == 'M'
+                    ? [
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                    : SelectedType == 'G'
+                    ? [{label: 'Cumulative', value: '00'}]
+                    : [
+                        {label: 'Cumulative', value: '00'},
+                        {label: 'January', value: '01'},
+                        {label: 'February', value: '02'},
+                        {label: 'March', value: '03'},
+                        {label: 'April', value: '04'},
+                        {label: 'May', value: '05'},
+                        {label: 'June', value: '06'},
+                        {label: 'July', value: '07'},
+                        {label: 'August', value: '08'},
+                        {label: 'September', value: '09'},
+                        {label: 'October', value: '10'},
+                        {label: 'November', value: '11'},
+                        {label: 'December', value: '12'},
+                      ]
+                }
               />
             </View>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
                 label={'Agent'}
                 mode={'modal'}
+                value={branch}
                 dropdownData={dropdownOptions}
                 onValueChange={value => setBranch(value)} // ✅ Captures selection
               />
             </View>
-            <View style={{flex: 0.13, marginHorizontal: 2}}>
+            <View style={{flex: 0.13, marginHorizontal: 10}}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -375,7 +449,7 @@ export default function MeReport({navigation, route}) {
             tableHead={tableHead}
             tableData={tableData}
             columnWidths={columnWidths}
-          /> */}
+           /> */}
           {MEReport?.data.length > 0 ? (
             <HorizontalReportTable
               onPress={() => navigation.navigate('PolicyDetails')}
@@ -402,9 +476,9 @@ export default function MeReport({navigation, route}) {
               </Text>
             </View>
           )}
-        </ScrollView>
-        </SafeAreaView>
+        </View>
       ) : (
+        // </SafeAreaView>
         <FlatList
           data={MEReport?.data}
           initialNumToRender={2}
@@ -474,10 +548,7 @@ export default function MeReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopRenewal != null
-                        ? Number(item.nopRenewal).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopRenewal).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -487,11 +558,15 @@ export default function MeReport({navigation, route}) {
                   <OutlinedTextView
                     Title={'NB'}
                     value={
-                      item?.nb !== null && item?.nb !== undefined
-                        ? Number(item?.nb).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                      value == 1
+                        ? item?.nb != null
+                          ? Number(item.nb).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : ''
+                        : item?.nopNew != null
+                        ? Number(item.nopNew).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -512,10 +587,7 @@ export default function MeReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopPpw != null
-                        ? Number(item.nopPpw).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopPpw).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -533,10 +605,7 @@ export default function MeReport({navigation, route}) {
                             })
                           : ''
                         : item?.nopOtherRefund != null
-                        ? Number(item.nopOtherRefund).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                        ? Number(item.nopOtherRefund).toLocaleString('en-US')
                         : ''
                     }
                   />
@@ -556,10 +625,7 @@ export default function MeReport({navigation, route}) {
                           })
                         : ''
                       : item?.nopEndorsements != null
-                      ? Number(item.nopEndorsements).toLocaleString('en-US', {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
+                      ? Number(item.nopEndorsements).toLocaleString('en-US')
                       : ''
                   }
                 />
@@ -577,12 +643,12 @@ export default function MeReport({navigation, route}) {
                           (item?.endorsement ?? 0)
                       : (item?.nopRenewal ?? 0) +
                           (item?.nopPpw ?? 0) +
-                          (item?.nb ?? 0) +
+                          (item?.nopNew ?? 0) +
                           (item?.nopOtherRefund ?? 0) +
                           (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    minimumFractionDigits: value == 1 ? 2 : 0,
+                    maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
                   // value={

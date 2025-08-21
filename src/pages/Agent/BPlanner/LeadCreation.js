@@ -29,6 +29,7 @@ import {
   useLeadCreationMutation,
 } from '../../../redux/services/plannerSlice';
 import {showToast} from '../../../components/ToastMessage';
+import {validateSriLankanNIC} from '../../../utils/nicValidation';
 
 export default function LeadCreation({navigation, route}) {
   const {eventDate} = route.params;
@@ -339,13 +340,29 @@ export default function LeadCreation({navigation, route}) {
       });
       return false;
     }
-    if (nic && !/^(\d{9}[vxVX]|\d{12})$/.test(nic)) {
-      showToast({
-        type: 'error',
-        text1: 'Validation Error',
-        text2: 'Invalid NIC number format. 🚨',
-      });
-      return false;
+    if (nic) {
+      const nicValidation = validateSriLankanNIC(nic);
+
+      if (!nicValidation.isValid) {
+        showToast({
+          type: 'error',
+          text1: 'Invalid NIC Number',
+          text2: nicValidation.error + ' 🚨',
+        });
+        return false;
+      }
+    }
+    if (nic) {
+      const nicValidation = validateSriLankanNIC(nic);
+
+      if (!nicValidation.isValid) {
+        showToast({
+          type: 'error',
+          text1: 'Invalid NIC Number',
+          text2: nicValidation.error + ' 🚨',
+        });
+        return false;
+      }
     }
     return true;
   };
@@ -457,7 +474,7 @@ export default function LeadCreation({navigation, route}) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type *
+              Lead Type <Text style={{color: COLORS.red}}>*</Text>
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
@@ -530,25 +547,90 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              setValue={text => {
-                54;
-                const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '');
+              // setValue={text => {
+              //   54;
+              //   const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '').trim().toLowerCase();
 
-                if (cleanedText.length >= 5 && cleanedText.length <= 8) {
-                  setVehicleNo(cleanedText);
-                  setFormError({});
-                } else if (cleanedText.length > 8) {
-                  52;
-                  setVehicleNo(cleanedText.slice(0, 8));
-                } else if (cleanedText.length < 5 && cleanedText.length > 0) {
-                  setVehicleNo(cleanedText);
-                  setFormError({
+              //   if (cleanedText.length >= 5 && cleanedText.length <= 8) {
+              //     setVehicleNo(cleanedText);
+              //     setFormError({});
+              //   } else if (cleanedText.length > 8) {
+              //     52;
+              //     setVehicleNo(cleanedText.slice(0, 8));
+              //   } else if (cleanedText.length < 5 && cleanedText.length > 0) {
+              //     setVehicleNo(cleanedText);
+              //     setFormError({
+              //       vehicleNo:
+              //         'Vehicle number must be between 5 and 8 characters.',
+              //     });
+              //     1;
+              //   } else {
+              //     setVehicleNo('');
+              //   }
+              // }}
+              setValue={text => {
+                // Allow only letters, numbers and space (but do not trim)
+                const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+
+                setVehicleNo(cleaned);
+
+                // Check for leading or trailing space
+                const hasLeadingOrTrailingSpace = /^\s|\s$/.test(cleaned);
+
+                // Check if exactly one space is present
+                const spaceCount = (cleaned.match(/ /g) || []).length;
+
+                // Check if at least one number exists
+                const hasNumber = /[0-9]/.test(cleaned);
+
+                // Count consecutive letters (excluding spaces and numbers)
+                const letterGroups = cleaned.match(/[a-zA-Z]+/g) || [];
+                const hasMoreThan3ConsecutiveLetters = letterGroups.some(
+                  group => group.length > 3,
+                );
+
+                // Validation
+                if (cleaned.length < 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: '',
+                  }));
+                } else if (cleaned.length < 5) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: minimum 5 characters required',
+                  }));
+                } else if (cleaned.length > 8) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: maximum 8 characters allowed',
+                  }));
+                } else if (!hasNumber) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: must contain at least one number',
+                  }));
+                } else if (spaceCount !== 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: must contain exactly one space',
+                  }));
+                } else if (hasLeadingOrTrailingSpace) {
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: 'Invalid: space cannot be at the start or end',
+                  }));
+                } else if (hasMoreThan3ConsecutiveLetters) {
+                  setFormError(prev => ({
+                    ...prev,
                     vehicleNo:
-                      'Vehicle number must be between 5 and 8 characters.',
-                  });
-                  1;
+                      'Invalid: cannot have more than 3 consecutive letters',
+                  }));
                 } else {
-                  setVehicleNo('');
+                  setFormError(prev => ({
+                    ...prev,
+                    vehicleNo: '',
+                  }));
                 }
               }}
             />
@@ -601,26 +683,23 @@ export default function LeadCreation({navigation, route}) {
               // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
-                // if (formatted.length <= 4) {
                 setYom(formatted);
-                // }
-                if (
-                  // formatted.length >= 9 &&
-                  validateYOM(formatted)
-                ) {
+
+                // Validate YOM (Year of Manufacture)
+                if (validateYOM(formatted)) {
                   setYomError('Invalid Manufacture Year');
                 } else {
                   setYomError('');
                 }
-                if (formatted && formatted.length != 4) {
-                  setFormError({
-                    yom: 'Year of manufacture must be 4 digits.',
-                  });
-                } else {
-                  setFormError({
-                    yom: '',
-                  });
-                }
+
+                // Update formError without overwriting other fields
+                setFormError(prev => ({
+                  ...prev,
+                  yom:
+                    formatted.length === 4
+                      ? ''
+                      : 'Year of manufacture must be 4 digits.',
+                }));
               }}
             />
             {/* {formError.yom && (
@@ -933,7 +1012,8 @@ export default function LeadCreation({navigation, route}) {
           <AlertButton
             Title={currentStep == StepperItems.length ? 'Submit' : 'Next'}
             onPress={handleNext}
-            disabled={currentStep === StepperItems.length}
+            disabledButton={Boolean(formError.vehicleNo)}
+            // disabledColor={Boolean(formError.vehicleNo)}
           />
         </View>
       </View>

@@ -124,24 +124,40 @@ export default function MonthlyPlan({navigation}) {
     // console.log('body');
     console.log('proposals', proposals);
 
+    // if (
+    //   !meetings ||
+    //   meetings === '' ||
+    //   !presentations ||
+    //   presentations === '' ||
+    //   !quotations ||
+    //   quotations === '' ||
+    //   !proposals ||
+    //   proposals === '' ||
+    //   !closed ||
+    //   closed === '' ||
+    //   !leads ||
+    //   leads === ''
+    // ) {
+    //   showToast({
+    //     type: 'error',
+    //     text1: 'Please enter a valid value for all fields',
+    //     text2: 'Fields cannot be empty',
+    //   });
+    //   return;
+    // }
+
     if (
-      !meetings ||
-      meetings === '' ||
-      !presentations ||
-      presentations === '' ||
-      !quotations ||
-      quotations === '' ||
-      !proposals ||
-      proposals === '' ||
-      !closed ||
-      closed === '' ||
-      !leads ||
-      leads === ''
+      (!meetings || meetings === '') &&
+      (!presentations || presentations === '') &&
+      (!quotations || quotations === '') &&
+      (!proposals || proposals === '') &&
+      (!closed || closed === '') &&
+      (!leads || leads === '')
     ) {
       showToast({
         type: 'error',
-        text1: 'Please enter a valid value for all fields',
-        text2: 'Fields cannot be empty',
+        text1: 'Please enter at least one value',
+        text2: 'At least one field must be filled',
       });
       return;
     }
@@ -213,7 +229,7 @@ export default function MonthlyPlan({navigation}) {
         <View>
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Meetings *'}
+            Label={'Meetings '}
             placeholder={'000'}
             value={String(meetings || '')}
             keyboardType={'number-pad'}
@@ -231,7 +247,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Presentation *'}
+            Label={'Presentation '}
             placeholder={'000'}
             value={String(presentations || '')}
             keyboardType={'number-pad'}
@@ -249,7 +265,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Quotations *'}
+            Label={'Quotations '}
             placeholder={'000'}
             value={String(quotations || '')}
             keyboardType={'number-pad'}
@@ -268,7 +284,7 @@ export default function MonthlyPlan({navigation}) {
 
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Proposals *'}
+            Label={'Proposals '}
             placeholder={'000'}
             value={String(proposals || '')}
             keyboardType={'number-pad'}
@@ -286,7 +302,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Closed *'}
+            Label={'Closed '}
             placeholder={'000'}
             value={String(closed || '')}
             keyboardType={'number-pad'}
@@ -304,7 +320,7 @@ export default function MonthlyPlan({navigation}) {
           />
           <SquareTextBoxOutlined
             mediumFont={true}
-            Label={'Leads *'}
+            Label={'Leads '}
             placeholder={'000'}
             value={String(leads || '')}
             keyboardType={'number-pad'}

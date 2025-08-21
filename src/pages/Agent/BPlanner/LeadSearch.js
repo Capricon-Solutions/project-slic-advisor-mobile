@@ -61,13 +61,34 @@ export default function LeadSearch({navigation}) {
   //     )
   //   : SELF;
 
+  // const filteredSELF = searchQuery
+  //   ? SELF.filter(lead =>
+  //       lead.customerName
+  //         .toLowerCase()
+  //         .split(' ')
+  //         .some(word => word.startsWith(searchQuery.toLowerCase())),
+  //     )
+  //   : SELF;
+
   const filteredSELF = searchQuery
-    ? SELF.filter(lead =>
-        lead.customerName
-          .toLowerCase()
-          .split(' ')
-          .some(word => word.startsWith(searchQuery.toLowerCase())),
-      )
+    ? SELF.map(lead => {
+        const nameParts = lead.customerName.trim().toLowerCase().split(/\s+/);
+        const query = searchQuery.toLowerCase();
+
+        let priority = 999;
+
+        if (nameParts[0].startsWith(query)) {
+          priority = 0; // First name starts with query
+        } else if (nameParts[nameParts.length - 1].startsWith(query)) {
+          priority = 1; // Last name starts with query
+        } else if (nameParts.some(word => word.startsWith(query))) {
+          priority = 2; // Any middle name starts with query
+        }
+
+        return {...lead, priority};
+      })
+        .filter(lead => lead.priority !== 999) // remove non-matching
+        .sort((a, b) => a.priority - b.priority)
     : SELF;
 
   // const filteredSLIC = searchQuery
@@ -77,13 +98,26 @@ export default function LeadSearch({navigation}) {
   //   : SLIC;
 
   const filteredSLIC = searchQuery
-    ? SLIC.filter(lead =>
-        lead.customerName
-          .toLowerCase()
-          .split(' ')
-          .some(word => word.startsWith(searchQuery.toLowerCase())),
-      )
+    ? SLIC.map(lead => {
+        const nameParts = lead.customerName.trim().toLowerCase().split(/\s+/);
+        const query = searchQuery.toLowerCase();
+
+        let priority = 999;
+
+        if (nameParts[0].startsWith(query)) {
+          priority = 0; // First name starts with query
+        } else if (nameParts[nameParts.length - 1].startsWith(query)) {
+          priority = 1; // Last name starts with query
+        } else if (nameParts.some(word => word.startsWith(query))) {
+          priority = 2; // Any middle name starts with query
+        }
+
+        return {...lead, priority};
+      })
+        .filter(lead => lead.priority !== 999) // remove non-matching
+        .sort((a, b) => a.priority - b.priority)
     : SLIC;
+
   console.log('filteredSLIC', filteredSLIC);
 
   const renderDepartmentItem = ({item}) => (
@@ -150,7 +184,9 @@ export default function LeadSearch({navigation}) {
           </TouchableOpacity>
         </View>
         {isLoading == true ? (
-          <LoadingScreen />
+          <View style={{height: window.height * 0.6}}>
+            <LoadingScreen />
+          </View>
         ) : (
           <View>
             {SelectedType == 1 ? (
@@ -163,6 +199,24 @@ export default function LeadSearch({navigation}) {
                   paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flex: 1,
+                      height: window.height * 0.6,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: COLORS.errorBorder,
+                        fontFamily: Fonts.Roboto.Bold,
+                      }}>
+                      Sorry, No Data Found
+                    </Text>
+                  </View>
+                }
                 // keyExtractor={item => item.id.toString()}
               />
             ) : (
@@ -175,6 +229,24 @@ export default function LeadSearch({navigation}) {
                   paddingBottom: window.height * 0.55,
                 }}
                 renderItem={renderDepartmentItem}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flex: 1,
+                      height: window.height * 0.6,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: COLORS.errorBorder,
+                        fontFamily: Fonts.Roboto.Bold,
+                      }}>
+                      Sorry, No Data Found
+                    </Text>
+                  </View>
+                }
                 // keyExtractor={item => item.id.toString()}
               />
             )}

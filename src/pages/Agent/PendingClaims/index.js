@@ -147,11 +147,12 @@ export default function PendingClaims({navigation, route}) {
           <DetailLine Title={'Intimation No.'} detail={item.intimationNo} />
           <DetailLineBold Title={'Job No.'} detail={item.jobNo} />
           <DetailLine Title={'Ins. Name'} detail={item.name} />
+
           <DetailLine
             Title={'Date Of Loss'}
             detail={
               item.dateOfLoss
-                ? moment(item.dateOfLoss, 'DD/MM/YYYY HH:mm:ss').format(
+                ? moment(item.dateOfLoss, 'MM/DD/YYYY HH:mm:ss').format(
                     'DD MMM YYYY',
                   )
                 : 'N/A'
@@ -161,7 +162,7 @@ export default function PendingClaims({navigation, route}) {
             Title={'Date Of Intimation'}
             detail={
               item.dateOfIntimation
-                ? moment(item.dateOfIntimation, 'DD/MM/YYYY HH:mm:ss').format(
+                ? moment(item.dateOfIntimation, 'MM/DD/YYYY HH:mm:ss').format(
                     'DD MMM YYYY',
                   )
                 : 'N/A'
@@ -171,7 +172,7 @@ export default function PendingClaims({navigation, route}) {
             Title={'Date Of Register'}
             detail={
               item.dateOfRegister
-                ? moment(item.dateOfRegister, 'DD/MM/YYYY HH:mm:ss').format(
+                ? moment(item.dateOfRegister, 'MM/DD/YYYY HH:mm:ss').format(
                     'DD MMM YYYY',
                   )
                 : 'N/A'
@@ -238,7 +239,7 @@ export default function PendingClaims({navigation, route}) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal: 7}}
+                contentContainerStyle={{paddingHorizontal: 0}}
                 renderItem={({item}) => <Card item={item} />}
                 // keyExtractor={item => item.id.toString()}
               />

@@ -34,6 +34,8 @@ import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
 import {showToast} from '../../../components/ToastMessage';
 import SquareTextBoxOutlinedDate from '../../../components/SquareTextBoxOutlinedDate';
+import DropdownFilled from '../../../components/DropdownFilled';
+import DropdownFilledDebit from '../../../components/DropdownFilledDebit';
 
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
@@ -45,6 +47,8 @@ export default function DebitSettlement({navigation, route}) {
   const {phone} = route.params;
   const [mobileNo, setMobileNo] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [selectedItem, setSelectedItem] = useState('');
+
   const {
     data: DebitSettlement,
     error: DebitSettlementError,
@@ -59,23 +63,31 @@ export default function DebitSettlement({navigation, route}) {
   );
 
   useEffect(() => {
+    console.log('DebitSettlement', DebitSettlement);
     if (phone) setMobileNo(phone);
-    if (DebitSettlement?.data?.premiumNetValue)
+    if (
+      DebitSettlement?.data?.premiumNetValue &&
+      Number(DebitSettlement.data.premiumNetValue) > 0
+    ) {
       setAmount(DebitSettlement.data.premiumNetValue);
-  }, [phone, DebitSettlement?.data?.premiumNetValue]);
+    }
 
-  const [selectedItem, setSelectedItem] = useState('');
+    if (DebitSettlement?.data?.paymentType) {
+      setSelectedItem(DebitSettlement?.data?.paymentType);
+    }
+  }, [
+    phone,
+    DebitSettlement?.data?.premiumNetValue,
+    DebitSettlement?.data?.paymentType,
+  ]);
 
   const [debitSettlementSms, {isLoading, error}] =
     useDebitSettlementSmsMutation();
-  useEffect(() => {
-    console.log('DebitSettlement', DebitSettlement);
-    setSelectedItem(DebitSettlement?.data?.paymentType);
-    console.log(
-      'DebitSettlement?.data?.paymentType,',
-      DebitSettlement?.data?.paymentType,
-    );
-  }, [DebitSettlement]);
+  // useEffect(() => {
+
+  //   setSelectedItem(DebitSettlement?.data?.paymentType);
+
+  // }, [DebitSettlement]);
 
   const handleSubmit = async () => {
     if (mobileNo === null || mobileNo === '') {
@@ -191,7 +203,21 @@ export default function DebitSettlement({navigation, route}) {
             }}>
             Select type
           </Text>
-          <AutocompleteDropdown
+          <DropdownFilledDebit
+            // placeholder={'Select'}
+            onSelect={v => {
+              setSelectedItem(v);
+            }}
+            search={false}
+            cancelable
+            Color={COLORS.textInputBackground}
+            value={selectedItem}
+            dropdownData={[
+              {label: 'Debit Settlement', value: 'Debit Settlement'},
+              {label: 'Payment', value: 'Payment'},
+            ]}
+          />
+          {/* <AutocompleteDropdown
             clearOnFocus={true}
             closeOnBlur={true}
             showClear={false}
@@ -207,7 +233,7 @@ export default function DebitSettlement({navigation, route}) {
             containerStyle={{}}
             contentContainerStyle={{color: 'red'}}
             closeOnSubmit={false}
-            initialValue={{id: DebitSettlement?.data?.paymentType}} // or just '2'
+            initialValue={{id: selectedItem}} // or just '2'
             onSelectItem={v => {
               setSelectedItem(v?.id);
               console.log('v:', v?.id);
@@ -216,9 +242,9 @@ export default function DebitSettlement({navigation, route}) {
               {id: 'Debit Settlement', title: 'Debit Settlement'},
               {id: 'Payment', title: 'Payment'},
             ]}
-          />
-          {/* <Text>{selectedItem}</Text> */}
-          <SquareTextBox
+          /> */}
+          {/* <Text style={{color: 'red'}}>{selectedItem}</Text> */}
+          {/* <SquareTextBox
             keyboardType={'numeric'}
             Title={`LKR ${Number(
               DebitSettlement?.data?.premiumNetValue || 0,
@@ -229,6 +255,28 @@ export default function DebitSettlement({navigation, route}) {
             value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             setValue={text => {
               const raw = text.replace(/[^0-9]/g, ''); // remove commas
+              setAmount(raw);
+            }}
+            Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
+          /> */}
+          <SquareTextBox
+            keyboardType={'numeric'}
+            Title={`LKR ${Number(
+              DebitSettlement?.data?.premiumNetValue || 0,
+            ).toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`}
+            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            setValue={text => {
+              let raw = text.replace(/[^0-9.]/g, ''); // allow digits and decimal point
+              const parts = raw.split('.');
+              if (parts.length > 2) {
+                raw = parts[0] + '.' + parts[1]; // keep only first decimal point
+              }
+              if (parts[1]?.length > 2) {
+                raw = parts[0] + '.' + parts[1].slice(0, 2); // max 2 decimals
+              }
               setAmount(raw);
             }}
             Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}

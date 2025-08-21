@@ -27,7 +27,7 @@ export default function SquareTextBox({
   };
   return (
     <View style={{width: '100%', marginTop: window.height * 0.015}}>
-      {Label && (
+      {/* {Label && (
         <Text
           style={{
             marginBottom: 5,
@@ -36,6 +36,24 @@ export default function SquareTextBox({
             fontSize: window.width * 0.035,
           }}>
           {Label}
+        </Text>
+      )} */}
+      {Label && (
+        <Text
+          style={{
+            marginBottom: 5,
+            fontFamily: Fonts.Roboto.Bold,
+            color: LabelColor ? LabelColor : COLORS.textColor,
+            fontSize: window.width * 0.035,
+          }}>
+          {Label.includes('*') ? (
+            <>
+              {Label.replace('*', '')}
+              <Text style={{color: 'red'}}>*</Text>
+            </>
+          ) : (
+            Label
+          )}
         </Text>
       )}
       <View style={{position: 'relative'}}>

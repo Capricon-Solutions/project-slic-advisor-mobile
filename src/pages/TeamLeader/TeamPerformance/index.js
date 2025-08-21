@@ -51,6 +51,7 @@ export default function TeamPerformance({navigation}) {
     //  fromDate: fromDate,
     //  toDate: toDate,
   });
+  console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const {
     data: CurrentPerformanceYear,
     error: yearError,
@@ -70,30 +71,31 @@ export default function TeamPerformance({navigation}) {
   )?.data?.map(item => [
     item?.agentName?.toString() ?? '',
     {
-      cash: item?.cashNewMotorPrm.toLocaleString('en-IN', {
+      cash: (item?.cashNewMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.debitNewMotorPrm.toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-      }),
-    },
-    {
-      cash: item?.cashRenMotorPrm.toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-      }),
-      debit: item?.debitRenMotorPrm.toLocaleString('en-IN', {
+      debit: (item?.debitNewMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },
     {
-      cash: item?.totCashMotorPrm.toLocaleString('en-IN', {
+      cash: (item?.cashRenMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
-      debit: item?.totDebitMotorPrm.toLocaleString('en-IN', {
+      debit: (item?.debitRenMotorPrm ?? 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+    },
+    {
+      cash: (item?.totCashMotorPrm ?? 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+      }),
+      debit: (item?.totDebitMotorPrm ?? 0).toLocaleString('en-US', {
         minimumFractionDigits: 2,
       }),
     },
   ]);
+  console.log('tableData', tableData);
   const renderItem = ({item}) => <ContactListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
@@ -124,8 +126,8 @@ export default function TeamPerformance({navigation}) {
             flex: 0.2,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: 6,
-            paddingHorizontal: 5,
+            paddingVertical: 4,
+            paddingHorizontal: 6,
           }}>
           <Text
             style={{
@@ -143,8 +145,8 @@ export default function TeamPerformance({navigation}) {
             flex: 0.2,
             justifyContent: 'center',
             alignItems: 'center',
-            paddingVertical: 6,
-            paddingHorizontal: 5,
+            paddingVertical: 4,
+            paddingHorizontal: 6,
           }}>
           <Text
             style={{
@@ -155,24 +157,24 @@ export default function TeamPerformance({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-        }}
-        style={{}}>
-        {tableData?.length > 0 && (
-          <HorizontalMargedTableComponent
-            onPress={() => navigation.navigate('PolicyDetails')}
-            haveTotal={false}
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-          />
-        )}
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 1,
+            paddingTop: 5,
+          }}>
+          {tableData?.length > 0 && (
+            <HorizontalMargedTableComponent
+              onPress={() => navigation.navigate('PolicyDetails')}
+              haveTotal={false}
+              tableHead={tableHead}
+              tableData={tableData}
+              columnWidths={columnWidths}
+            />
+          )}
+        </View>
+      </View>
       {(isFetching || yearFetching) && (
         <View
           style={{

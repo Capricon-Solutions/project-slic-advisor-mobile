@@ -22,6 +22,7 @@ export const plannerSlice = baseApi.injectEndpoints({
         console.log('Final URL:', url); // Logs to console whenever the query runs
         return url;
       },
+      providesTags: ['Events'],
     }),
     getLeadById: builder.query({
       query: id => {

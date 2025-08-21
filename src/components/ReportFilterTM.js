@@ -151,6 +151,11 @@ export default function ReportFilterTM({
             value={type}
             onValueChange={value => {
               setType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
+              if (value == 'G') {
+                setMonth('00'); // Reset month to '00' if type is 'G'
+              } else if (value == 'M') {
+                setMonth(null); // Set month to '01' if type is 'M
+              }
             }}
             dropdownData={[
               {label: 'General Cumulative', value: 'G'},
@@ -161,27 +166,48 @@ export default function ReportFilterTM({
           <DropdownComponent
             label={'Month'}
             mode={'modal'}
+            disabled={type == 'G'}
             value={month}
+            search={type == 'M' ? true : type == 'G' ? false : true}
             nonClearable={true}
             // onValueChange={setSelectedMonth}
             onValueChange={value => {
               setMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
             }}
-            dropdownData={[
-              {label: 'Cumulative', value: '00'},
-              {label: 'January', value: '01'},
-              {label: 'February', value: '02'},
-              {label: 'March', value: '03'},
-              {label: 'April', value: '04'},
-              {label: 'May', value: '05'},
-              {label: 'June', value: '06'},
-              {label: 'July', value: '07'},
-              {label: 'August', value: '08'},
-              {label: 'September', value: '09'},
-              {label: 'October', value: '10'},
-              {label: 'November', value: '11'},
-              {label: 'December', value: '12'},
-            ]}
+            dropdownData={
+              type == 'M'
+                ? [
+                    {label: 'January', value: '01'},
+                    {label: 'February', value: '02'},
+                    {label: 'March', value: '03'},
+                    {label: 'April', value: '04'},
+                    {label: 'May', value: '05'},
+                    {label: 'June', value: '06'},
+                    {label: 'July', value: '07'},
+                    {label: 'August', value: '08'},
+                    {label: 'September', value: '09'},
+                    {label: 'October', value: '10'},
+                    {label: 'November', value: '11'},
+                    {label: 'December', value: '12'},
+                  ]
+                : type == 'G'
+                ? [{label: 'Cumulative', value: '00'}]
+                : [
+                    {label: 'Cumulative', value: '00'},
+                    {label: 'January', value: '01'},
+                    {label: 'February', value: '02'},
+                    {label: 'March', value: '03'},
+                    {label: 'April', value: '04'},
+                    {label: 'May', value: '05'},
+                    {label: 'June', value: '06'},
+                    {label: 'July', value: '07'},
+                    {label: 'August', value: '08'},
+                    {label: 'September', value: '09'},
+                    {label: 'October', value: '10'},
+                    {label: 'November', value: '11'},
+                    {label: 'December', value: '12'},
+                  ]
+            }
           />
 
           {!notbranchVisible && (

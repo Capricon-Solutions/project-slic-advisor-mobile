@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -12,40 +12,25 @@ import COLORS from '../theme/colors';
 
 const window = Dimensions.get('window');
 
-const DropdownComponent = ({
-  dropdownData,
+const DropdownFilledDebit = ({
+  dropdownData = [],
   mode,
   label,
-  onValueChange,
-  onSelect,
-  nonClearable,
+  placeholder,
+  Color,
   search,
-  disabled,
+  onSelect,
   value: valueFromParent,
+  cancelable,
 }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const renderLabel = () => {
-    // if (value || isFocus) {
-    return (
-      <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
-    );
-    // }
-    // return null;
-  };
-  const handleChange = item => {
-    setValue(item.value);
-    setIsFocus(false);
-    if (onValueChange) {
-      onValueChange(item.value); // 🔥 Send selected value to parent
-    }
-    if (onSelect) {
-      onSelect(null); // Notify parent
-    }
-  };
-
+  useEffect(() => {
+    setValue(valueFromParent);
+  }, [valueFromParent]);
+  // Filter data where label starts with searchText (case-insensitive)
   const filteredData = useMemo(() => {
     if (!searchText) return dropdownData;
     return dropdownData.filter(item =>
@@ -53,17 +38,15 @@ const DropdownComponent = ({
     );
   }, [dropdownData, searchText]);
 
-  useEffect(() => {
-    setValue(valueFromParent);
-  }, [valueFromParent]);
-
   return (
     <View style={styles.container}>
-      {renderLabel()}
       <Dropdown
-        mode={mode == 'modal' ? 'modal' : 'auto'}
-        disable={disabled}
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        mode={mode === 'modal' ? 'modal' : 'auto'}
+        style={[
+          styles.dropdown,
+          isFocus && {borderColor: 'blue'},
+          {backgroundColor: Color || COLORS.lightBorder},
+        ]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         selectedStyle={{color: 'red'}}
@@ -71,19 +54,25 @@ const DropdownComponent = ({
         activeColor={COLORS.lightPrimary}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        containerStyle={{width: window.width * 0.5, fontSize: 12}}
-        data={filteredData}
-        search={search === undefined ? true : search}
+        containerStyle={{fontSize: 12}}
+        data={filteredData} // Use filtered data
+        search={search !== false}
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
+        placeholder={!isFocus ? placeholder : '...'}
         searchPlaceholder="Search..."
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={handleChange}
-        onChangeText={text => setSearchText(text)}
+        onChange={item => {
+          setValue(item.value);
+          setIsFocus(false);
+          if (onSelect) {
+            onSelect(item.value);
+          }
+        }}
+        onChangeText={text => setSearchText(text)} // Capture search input
         renderLeftIcon={() => (
           <MaterialCommunityIcons
             style={styles.icon}
@@ -92,46 +81,42 @@ const DropdownComponent = ({
             size={20}
           />
         )}
-        renderRightIcon={item => {
-          return (
-            <>
-              {value && (
-                <View>
-                  {nonClearable ? null : (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setValue(null);
-
-                        if (onValueChange) onValueChange(null); // ← Clear in parent
-                      }}>
-                      <MaterialCommunityIcons
-                        style={styles.icon}
-                        color={COLORS.primaryRed}
-                        name="close-thick"
-                        size={14}
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
+        renderRightIcon={() =>
+          value ? (
+            <View>
+              {!cancelable && (
+                <TouchableOpacity
+                  onPress={() => {
+                    setValue(null);
+                    if (onSelect) onSelect(null);
+                  }}>
+                  <MaterialCommunityIcons
+                    style={styles.icon}
+                    color={COLORS.primaryRed}
+                    name="close-thick"
+                    size={14}
+                  />
+                </TouchableOpacity>
               )}
-            </>
-          );
-        }}
+            </View>
+          ) : null
+        }
       />
     </View>
   );
 };
 
-export default DropdownComponent;
+export default DropdownFilledDebit;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 15,
+    paddingVertical: 0,
   },
   dropdown: {
-    height: 43,
-    borderColor: 'gray',
-    borderWidth: 0.5,
+    height: 45,
+    borderColor: COLORS.warmGray,
+    // borderWidth: 0.5,
+    backgroundColor: COLORS.warmGray,
     borderRadius: 8,
     paddingHorizontal: 8,
   },
@@ -155,10 +140,6 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 12,
     color: COLORS.textColor,
-    flexWrap: 'wrap',
-    numberOfLines: 2,
-    lineHeight: 16,
-    maxHeight: 32,
   },
   iconStyle: {
     width: 20,

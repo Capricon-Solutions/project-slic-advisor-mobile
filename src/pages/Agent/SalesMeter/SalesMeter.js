@@ -91,7 +91,9 @@ export default function SalesMeter({navigation}) {
   } = useSalesIncomeQuery({
     id: usertype == 2 ? personalCode : userCode,
   });
-
+  console.log('CurrentMonthAchievement', CurrentMonthAchievement);
+  console.log('CurrentMonthIncome', CurrentMonthIncome);
+  console.log('salesIncome', salesIncome);
   const filterdData =
     type == 'M'
       ? CurrentMonthAchievement?.data?.monthly
@@ -158,7 +160,7 @@ export default function SalesMeter({navigation}) {
 
   // API Binds
 
-  const monthlySalePercentage = filterdData?.achievement;
+  const monthlySalePercentage = filterdData?.achievementToSetTarget;
   const monthlySale = salesIncome?.data?.targetAmount.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -199,11 +201,9 @@ export default function SalesMeter({navigation}) {
   const closeMenu = () => setVisible(false);
 
   return (
-    <View 
-    style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />
       <PaperProvider>
-        
         <SetTargetModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -215,6 +215,8 @@ export default function SalesMeter({navigation}) {
             onPress={() => navigation.goBack()}
             haveButton={true}
             ButtonTitle={'Set Target'}
+            disabledButton={type == 'C' ? true : false}
+            disabledColor={type == 'C' ? true : false}
             onButton={() => setModalVisible(true)}
           />
         </View>
@@ -240,7 +242,7 @@ export default function SalesMeter({navigation}) {
                     onPress={() => setVisible(true)}
                     style={styles.monthlyCard}>
                     <Text style={styles.monthlyText}>
-                      {type == 'M' ? 'MONTHLY' : 'CUMULATIVE'}
+                      {type == 'M' ? 'Monthly' : 'Cumulative'}
                     </Text>
                     {/* <Octicons
                         name={'chevron-down'}
@@ -297,14 +299,25 @@ export default function SalesMeter({navigation}) {
                   </View>
 
                   <View style={styles.monthlyAmount}>
-                    <Text
-                      style={{
-                        color: COLORS.black,
-                        fontSize: window.width * 0.04,
-                        fontFamily: Fonts.Roboto.SemiBold,
-                      }}>
-                      LKR {monthlySale || 0.0}
-                    </Text>
+                    {type == 'M' ? (
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontSize: window.width * 0.04,
+                          fontFamily: Fonts.Roboto.SemiBold,
+                        }}>
+                        LKR {monthlySale || 0.0}
+                      </Text>
+                    ) : (
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontSize: window.width * 0.04,
+                          fontFamily: Fonts.Roboto.SemiBold,
+                        }}>
+                        LKR {lastYearTarget || 0.0}
+                      </Text>
+                    )}
                   </View>
                 </View>
                 <View

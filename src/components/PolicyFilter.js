@@ -20,6 +20,7 @@ import SquareTextBoxOutlinedDate from './SquareTextBoxOutlinedDate';
 import {showToast} from './ToastMessage';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
+import {validateSriLankanNIC} from '../utils/nicValidation';
 
 const window = Dimensions.get('window');
 
@@ -51,8 +52,14 @@ export default function PolicyFilter({
   const [MobileNumber, setMobile] = React.useState(initialValues.Mobile || '');
   const [NicNumber, setNic] = React.useState(initialValues.Nic || '');
   const [BusiRegNo, setBRegNo] = React.useState(initialValues.BRegNo || '');
+  const [formError, setFormError] = React.useState({});
+
+  const [VehicleNumberTo, setVNumberTo] = React.useState(
+    initialValues.VNumberTo || '',
+  );
   const businessTypeRef = React.useRef();
   const policyStatusRef = React.useRef();
+
   const sDateRef = React.useRef();
   const eDateRef = React.useRef();
   // Reset function to clear fields
@@ -68,7 +75,15 @@ export default function PolicyFilter({
     setMobile('');
     setNic('');
     setBRegNo('');
+
+    setFormError({
+      VehicleNumber: '',
+      mobile: '',
+      nic: '',
+    });
   };
+
+  const today = new Date();
 
   const handleSearch = () => {
     if (!BusinessType) {
@@ -170,7 +185,6 @@ export default function PolicyFilter({
       animationType="fade"
       transparent={true}
       supportedOrientations={['portrait', 'landscape-left', 'landscape-right']} // 🔑
-
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <Animated.View
@@ -217,7 +231,17 @@ export default function PolicyFilter({
               fontFamily: Fonts.Roboto.Medium,
               color: COLORS.ashBlue,
             }}>
-            Business Type *
+            Business Type{' '}
+            <Text
+              style={{
+                marginBottom: 5,
+                marginTop: 5,
+                fontSize: 12.5,
+                fontFamily: Fonts.Roboto.Medium,
+                color: COLORS.errorBorder,
+              }}>
+              *
+            </Text>
           </Text>
           <DropdownComponentNoLabel
             BorderColor={COLORS.textColor}
@@ -263,15 +287,101 @@ export default function PolicyFilter({
             maxLength={25}
             Label="Policy Number"
             value={PolicyNumber}
-            setValue={text => setPNumber(text)}
+            setValue={text => {
+              const cleanedText = text;
+              setPNumber(cleanedText);
+            }}
           />
-          <SquareTextBoxOutlined
-            Title={VehicleNumber}
-            maxLength={10}
-            value={VehicleNumber}
-            Label="Vehicle Number"
-            setValue={text => setVNumber(text)}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 10,
+              width: '100%',
+            }}>
+            <SquareTextBoxOutlined
+              Title={VehicleNumber}
+              maxLength={10}
+              value={VehicleNumber}
+              Label="Vehicle Number"
+              setValue={text => {
+                // Allow only letters, numbers and space (but do not trim)
+                // const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
+                const cleaned = text
+                  .replace(/[^a-zA-Z0-9 ]/g, '')
+                  .toUpperCase();
+
+                setVNumber(cleaned);
+
+                // Check for leading or trailing space
+                const hasLeadingOrTrailingSpace = /^\s|\s$/.test(cleaned);
+
+                // Check if exactly one space is present
+                const spaceCount = (cleaned.match(/ /g) || []).length;
+
+                // Check if at least one number exists
+                const hasNumber = /[0-9]/.test(cleaned);
+
+                // Count consecutive letters (excluding spaces and numbers)
+                const letterGroups = cleaned.match(/[a-zA-Z]+/g) || [];
+                const hasMoreThan3ConsecutiveLetters = letterGroups.some(
+                  group => group.length > 3,
+                );
+
+                // Validation
+                if (cleaned.length < 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: '',
+                  }));
+                } else if (cleaned.length < 5) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: minimum 5 characters required',
+                  }));
+                } else if (cleaned.length > 8) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: maximum 8 characters allowed',
+                  }));
+                } else if (!hasNumber) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: must contain at least one number',
+                  }));
+                } else if (spaceCount !== 1) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: 'Invalid: must contain exactly one space',
+                  }));
+                } else if (hasLeadingOrTrailingSpace) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber:
+                      'Invalid: space cannot be at the start or end',
+                  }));
+                } else if (hasMoreThan3ConsecutiveLetters) {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber:
+                      'Invalid: cannot have more than 3 consecutive letters',
+                  }));
+                } else {
+                  setFormError(prev => ({
+                    ...prev,
+                    VehicleNumber: '',
+                  }));
+                }
+              }}
+            />
+          </View>
+          {formError.VehicleNumber && (
+            <Text style={{color: 'red', fontSize: 12}}>
+              {formError.VehicleNumber}
+            </Text>
+          )}
+
           <View
             style={{
               flexDirection: 'row',
@@ -285,8 +395,10 @@ export default function PolicyFilter({
                 ref={sDateRef}
                 maximumDate={
                   StartToDt
-                    ? moment(StartToDt, 'YYYY/MM/DD').toDate()
-                    : undefined
+                    ? moment(StartToDt, 'YYYY/MM/DD').isAfter(moment(), 'day')
+                      ? moment(today, 'YYYY/MM/DD').toDate() // If StartToDt is in the future, use today
+                      : moment(StartToDt, 'YYYY/MM/DD').toDate() // Else, use StartToDt
+                    : moment(today, 'YYYY/MM/DD').toDate() // Fallback to today
                 }
                 setValue={text => setSDate(text)}
                 keyboardType="numeric"
@@ -327,24 +439,83 @@ export default function PolicyFilter({
             Title={MobileNumber}
             Label="Mobile Number"
             keyboardType={'phone-pad'}
-            maxLength={12}
+            maxLength={11} // local (10) or intl (11) without plus
             value={MobileNumber}
-            setValue={text => setMobile(text)}
+            setValue={text => {
+              // Remove all non-digit characters
+              const cleaned = text.replace(/[^0-9]/g, '');
+
+              // Set state anyway
+              setMobile(cleaned);
+
+              // If empty, clear error
+              if (cleaned.length < 1) {
+                setFormError({
+                  ...formError,
+                  mobile: '',
+                });
+                return;
+              }
+
+              // Validate local format (07XXXXXXXX)
+              const isLocalValid = /^07\d{8}$/.test(cleaned);
+
+              // Validate international format (947XXXXXXXX)
+              const isInternationalValid = /^947\d{8}$/.test(cleaned);
+
+              if (isLocalValid || isInternationalValid) {
+                setFormError({
+                  ...formError,
+                  mobile: '',
+                });
+              } else {
+                setFormError({
+                  ...formError,
+                  mobile:
+                    'Enter valid LK mobile number (e.g., 0712345678 or 94712345678)',
+                });
+              }
+            }}
           />
+          {formError.mobile && (
+            <Text style={{color: 'red', fontSize: 12}}>{formError.mobile}</Text>
+          )}
           <SquareTextBoxOutlined
             Title={NicNumber}
             Label="NIC Number"
             maxLength={12}
             nic={true}
             value={NicNumber}
-            setValue={text => setNic(text)}
+            setValue={text => {
+              const nicValidation = validateSriLankanNIC(text);
+
+              if (nicValidation.isValid) {
+                setFormError({
+                  ...formError,
+                  nic: '',
+                });
+              } else {
+                setFormError({
+                  ...formError,
+                  nic: nicValidation.error,
+                });
+              }
+
+              setNic(text);
+            }}
           />
+          {formError.nic && (
+            <Text style={{color: 'red', fontSize: 12}}>{formError.nic}</Text>
+          )}
           <SquareTextBoxOutlined
             Title={BusiRegNo}
             Label="Business Reg. No"
             value={BusiRegNo}
             maxLength={12}
-            setValue={text => setBRegNo(text)}
+            setValue={text => {
+              const cleaned = text;
+              setBRegNo(cleaned);
+            }}
           />
 
           <View
@@ -362,7 +533,22 @@ export default function PolicyFilter({
               }}
               Title="Clear"
             />
-            <AlertButton onPress={handleSearch} Title="Search" />
+            <AlertButton
+              onPress={handleSearch}
+              disabledColor={Boolean(
+                formError.VehicleNumber ||
+                  formError.mobile ||
+                  formError.nic ||
+                  formError.VehicleNumber,
+              )}
+              disabledButton={Boolean(
+                formError.VehicleNumber ||
+                  formError.mobile ||
+                  formError.nic ||
+                  formError.VehicleNumber,
+              )}
+              Title="Search"
+            />
           </View>
         </ScrollView>
       </Animated.View>

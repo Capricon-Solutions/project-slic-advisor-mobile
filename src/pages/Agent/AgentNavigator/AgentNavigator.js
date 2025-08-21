@@ -21,13 +21,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import Report from '../../RegionalManager/Report/Report';
 import ReportSwitch from '../../RegionalManager/Report/ReportSwitch';
 import {Getpath} from '../../../redux/services/NavControllerSlice';
+import {useWindowDimensions} from 'react-native';
 
 const window = Dimensions.get('window');
 
 function AgengNavigator({state, descriptors, navigation}) {
   const {colors} = useTheme();
   const {buildHref} = useLinkBuilder();
-
+  const {width, height} = useWindowDimensions();
+  const isLandscape = width > height;
   return (
     <View
       style={{
@@ -35,7 +37,7 @@ function AgengNavigator({state, descriptors, navigation}) {
         backgroundColor: colors.card,
         borderTopWidth: 1,
         borderColor: colors.border,
-        paddingBottom: Platform.OS === 'ios' ? 10 : 0
+        paddingBottom: Platform.OS === 'ios' ? 10 : 0,
       }}>
       <StatusBar
         backgroundColor={COLORS.TopBackColor}
@@ -83,7 +85,10 @@ function AgengNavigator({state, descriptors, navigation}) {
             android_ripple={{color: 'transparent'}} // Removes ripple effect on Android
             onPress={onPress}
             onLongPress={onLongPress}
-            style={Styles.platformStyle}>
+            style={[
+              Styles.platformStyle,
+              {display: isLandscape ? 'none' : 'flex'},
+            ]}>
             {Icon && (
               <Icon
                 color={isFocused ? COLORS.primary : COLORS.iconDisabled}

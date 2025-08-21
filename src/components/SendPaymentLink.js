@@ -44,25 +44,75 @@ export default function SendPaymentLink({
   //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
   // };
 
+  // const isValidSriLankanNumber = number => {
+  //   const cleaned = number.replace(/[^0-9+]/g, '');
+
+  //   // Normalize to numeric-only without + sign
+  //   let normalized = cleaned;
+  //   if (normalized.startsWith('+94')) {
+  //     normalized = normalized.replace('+94', '94');
+  //   } else if (normalized.startsWith('0')) {
+  //     normalized = '94' + normalized.substring(1);
+  //   } else if (/^[7|1|2]\d{8}$/.test(normalized)) {
+  //     // If it's missing leading 0 but starts with valid digit
+  //     normalized = '94' + normalized;
+  //   }
+
+  //   // Patterns
+  //   const mobilePattern = /^947[0-9]{8}$/;
+  //   const landlinePattern = /^94(1\d{8}|2\d{8})$/; // landlines like 011xxxxxxx or 021xxxxxxx
+
+  //   return mobilePattern.test(normalized) || landlinePattern.test(normalized);
+  // };
+  // const isValidSriLankanNumber = number => {
+  //   // 1. Remove all non-numeric except leading +
+  //   const cleaned = number.replace(/[^0-9+]/g, '');
+
+  //   let normalized = cleaned;
+
+  //   // 2. Normalize to start with 94
+  //   if (normalized.startsWith('+94')) {
+  //     normalized = '94' + normalized.substring(3);
+  //   } else if (normalized.startsWith('0')) {
+  //     normalized = '94' + normalized.substring(1);
+  //   } else if (/^7\d{8}$/.test(normalized)) {
+  //     // Missing leading 0 for mobile numbers
+  //     normalized = '94' + normalized;
+  //   }
+
+  //   // 3. Patterns
+  //   const mobilePattern = /^947\d{8}$/; // 94 + 7xxxxxxxx
+  //   const landlinePattern = /^94(1\d{8}|2\d{8})$/; // 94 + (1xxxxxxxx or 2xxxxxxxx)
+
+  //   // 4. Validate
+  //   return mobilePattern.test(normalized) || landlinePattern.test(normalized);
+  // };
+
   const isValidSriLankanNumber = number => {
+    // Remove all non-digits except leading +
     const cleaned = number.replace(/[^0-9+]/g, '');
 
-    // Normalize to numeric-only without + sign
+    // Length checks based on format
+    if (cleaned.startsWith('+94') && cleaned.length !== 12) return false; // +94 + 9 digits
+    if (cleaned.startsWith('94') && cleaned.length !== 11) return false; // 94 + 9 digits
+    if (cleaned.startsWith('0') && cleaned.length !== 10) return false; // 0 + 9 digits
+    if (cleaned.startsWith('7') && cleaned.length !== 9) return false; // 7 + 8 digits
+
     let normalized = cleaned;
+
+    // Normalize all to 94xxxxxxxxx
     if (normalized.startsWith('+94')) {
-      normalized = normalized.replace('+94', '94');
+      normalized = '94' + normalized.substring(3);
     } else if (normalized.startsWith('0')) {
       normalized = '94' + normalized.substring(1);
-    } else if (/^[7|1|2]\d{8}$/.test(normalized)) {
-      // If it's missing leading 0 but starts with valid digit
+    } else if (/^7\d{8}$/.test(normalized)) {
       normalized = '94' + normalized;
     }
 
-    // Patterns
-    const mobilePattern = /^947[0-9]{8}$/;
-    const landlinePattern = /^94(1\d{8}|2\d{8})$/; // landlines like 011xxxxxxx or 021xxxxxxx
+    // Final mobile pattern: 94 + 7xxxxxxxx
+    const mobilePattern = /^947\d{8}$/;
 
-    return mobilePattern.test(normalized) || landlinePattern.test(normalized);
+    return mobilePattern.test(normalized);
   };
 
   React.useEffect(() => {
@@ -133,7 +183,7 @@ export default function SendPaymentLink({
               keyboardType="phone-pad"
             /> */}
             <SquareTextBox
-              Label={'Contact Number'}
+              Label={'Mobile Number'}
               Title={'Enter phone number'}
               value={phone}
               errorBorder={mobileNumberError}

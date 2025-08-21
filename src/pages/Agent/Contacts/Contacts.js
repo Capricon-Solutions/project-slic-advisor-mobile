@@ -46,111 +46,60 @@ export default function Contacts({navigation}) {
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
+      setSearchQuery('');
       console.log('test conact');
     }, []),
   );
-
-  // useEffect(() => {
-  //   if (branches?.data) {
-  //     const filtered = branches?.data?.filter(item =>
-  //       item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     );
-  //     console.log('filteredbranches', filtered);
-  //     setFilteredBranches(filtered);
-  //   }
-  // }, [branches, searchQuery, search]);
-  // useEffect(() => {
-  //   if (branches?.data) {
-  //     const filtered = branches?.data
-  //       ?.filter(item =>
-  //         item?.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-  //       )
-  //       ?.sort((a, b) => {
-  //         const aName = a?.name?.toLowerCase();
-  //         const bName = b?.name?.toLowerCase();
-  //         const query = searchQuery.toLowerCase();
-
-  //         const aStartsWith = aName.startsWith(query);
-  //         const bStartsWith = bName.startsWith(query);
-
-  //         if (aStartsWith && !bStartsWith) return -1;
-  //         if (!aStartsWith && bStartsWith) return 1;
-
-  //         return aName.localeCompare(bName); // fallback alphabetical
-  //       });
-
-  //     console.log('filteredbranches', filtered);
-  //     setFilteredBranches(filtered);
-  //   }
-  // }, [branches, searchQuery, search]);
 
   useEffect(() => {
     if (branches?.data) {
       const query = searchQuery.toLowerCase();
 
       const filtered = branches.data
-        .filter(item => item?.name?.toLowerCase().startsWith(query))
+        .map(item => {
+          const name = item?.name?.toLowerCase() || '';
+          const words = name.split(/\s+/);
+          const matchIndex = words.findIndex(word => word.startsWith(query));
+          return {
+            ...item,
+            _matchIndex: matchIndex >= 0 ? matchIndex : Infinity, // prioritize match position
+          };
+        })
+        .filter(item => item._matchIndex !== Infinity)
         .sort((a, b) => {
-          const aName = a?.name?.toLowerCase();
-          const bName = b?.name?.toLowerCase();
-
-          return aName.localeCompare(bName); // optional: alphabetical fallback
+          if (a._matchIndex !== b._matchIndex) {
+            return a._matchIndex - b._matchIndex;
+          }
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase()); // fallback alphabetical
         });
 
       console.log('filteredBranches', filtered);
       setFilteredBranches(filtered);
     }
   }, [branches, searchQuery, search]);
-  // useEffect(() => {
-  //   if (departments?.data) {
-  //     const filtered = departments?.data?.filter(item =>
-  //       item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     );
-  //     console.log('filtereddapartments', filtered);
-  //     console.log('departments', departments);
-  //     setFilteredDepartments(filtered);
-  //   }
-  // }, [departments, searchQuery, search]);
-
-  // useEffect(() => {
-  //   if (departments?.data) {
-  //     const filtered = departments?.data
-  //       ?.filter(item =>
-  //         item?.contactName?.toLowerCase().includes(searchQuery.toLowerCase()),
-  //       )
-  //       ?.sort((a, b) => {
-  //         const aName = a?.contactName?.toLowerCase();
-  //         const bName = b?.contactName?.toLowerCase();
-  //         const query = searchQuery.toLowerCase();
-
-  //         const aStartsWith = aName.startsWith(query);
-  //         const bStartsWith = bName.startsWith(query);
-
-  //         if (aStartsWith && !bStartsWith) return -1;
-  //         if (!aStartsWith && bStartsWith) return 1;
-
-  //         return aName.localeCompare(bName);
-  //       });
-
-  //     console.log('filtereddapartments', filtered);
-  //     console.log('departments', departments);
-  //     setFilteredDepartments(filtered);
-  //   }
-  // }, [departments, searchQuery, search]);
 
   useEffect(() => {
     if (departments?.data) {
       const query = searchQuery.toLowerCase();
 
       const filtered = departments.data
-        .filter(item => {
-          const words = item?.contactName?.toLowerCase().split(' ') || [];
-          return words.some(word => word.startsWith(query));
+        .map(item => {
+          const name = item?.contactName?.toLowerCase() || '';
+          const words = name.split(' ');
+          const matchIndex = words.findIndex(word => word.startsWith(query));
+          return {
+            ...item,
+            _matchIndex: matchIndex >= 0 ? matchIndex : Infinity, // store match position
+          };
         })
+        .filter(item => item._matchIndex !== Infinity) // only keep matches
         .sort((a, b) => {
-          const aName = a?.contactName?.toLowerCase();
-          const bName = b?.contactName?.toLowerCase();
-          return aName.localeCompare(bName);
+          if (a._matchIndex !== b._matchIndex) {
+            return a._matchIndex - b._matchIndex; // prioritize earlier match position
+          }
+          return a.contactName
+            .toLowerCase()
+            .localeCompare(b.contactName.toLowerCase()); // fallback alphabetical sort
         });
 
       console.log('filteredDepartments', filtered);
@@ -217,7 +166,9 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
         {isLoading == true ? (
-          <LoadingScreen />
+          <View style={{height: window.height * 0.6}}>
+            <LoadingScreen />
+          </View>
         ) : (
           <View>
             {SelectedType == 1 ? (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,12 +10,11 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import { Styles } from '../../../../theme/Styles';
-import { FlatList } from 'react-native';
-import { styles } from './styles';
-import { Dropdown } from 'react-native-element-dropdown';
-import { useSelector } from 'react-redux';
-import HorizontalMargedTableComponent from '../../../../components/HorizontalMargedTableComponent';
+import {Styles} from '../../../../theme/Styles';
+import {FlatList} from 'react-native';
+import {styles} from './styles';
+import {Dropdown} from 'react-native-element-dropdown';
+import {useSelector} from 'react-redux';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import SmallButton from '../../../../components/SmallButton';
@@ -33,22 +32,22 @@ import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
 import BottomModal from '../../../../components/BottomModal';
 import individualPerforamance from '../../../../icons/individualPerforamance.png'; // Replace with the actual logo path
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import ReportBottomModal from '../../../../components/ReportBottomModal';
 
 const window = Dimensions.get('window');
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
 ];
 
-export default function ReportSwitch({ navigation }) {
+export default function ReportSwitch({navigation}) {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [ModalVisible, setModalVisible] = useState(true);
@@ -56,13 +55,16 @@ export default function ReportSwitch({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       setModalVisible(true);
-    }, [])
+    }, []),
   );
 
-  // useEffect(() => {
-  //   setModalVisible(true)
-  // }, [])
-
+  useEffect(() => {
+    if (ModalVisible == false) {
+      setTimeout(() => {
+        navigation.goBack();
+      }, 200);
+    }
+  }, [ModalVisible]);
 
   const ReportModal = [
     {
@@ -71,7 +73,7 @@ export default function ReportSwitch({ navigation }) {
 
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('MeReport', { Title: 'Marketing executive' });
+        navigation.navigate('MeReport', {Title: 'Marketing executive'});
       },
     },
     {
@@ -79,7 +81,7 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('TeamLeaderReport', { Title: 'Team leader' });
+        navigation.navigate('TeamLeaderReport', {Title: 'Team leader'});
       },
     },
     {
@@ -87,7 +89,7 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('AdvisorReport', { Title: 'Advisor' });
+        navigation.navigate('AdvisorReport', {Title: 'Advisor'});
       },
     },
     {
@@ -95,14 +97,10 @@ export default function ReportSwitch({ navigation }) {
       icon: individualPerforamance,
       onPress: () => {
         setModalVisible(false);
-        navigation.navigate('DirectReport', { Title: 'Direct' });
+        navigation.navigate('DirectReport', {Title: 'Direct'});
       },
     },
-
   ];
-
-
-
 
   return (
     <View style={Styles.container}>
@@ -115,7 +113,6 @@ export default function ReportSwitch({ navigation }) {
         navigation={navigation}
       />
       {/* <HeaderBackground /> */}
-
     </View>
   );
 }
