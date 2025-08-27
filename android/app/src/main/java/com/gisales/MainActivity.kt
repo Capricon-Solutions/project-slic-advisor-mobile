@@ -1,4 +1,4 @@
-package com.slic
+package com.gisales
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
