@@ -5,12 +5,14 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
-import {StyleSheet, Text, View, useColorScheme, StatusBar, SafeAreaView, Platform} from 'react-native';
+import { StyleSheet, Text, View, useColorScheme, StatusBar, SafeAreaView, Platform } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
@@ -23,8 +25,8 @@ import PremiumHistory from './src/pages/Agent/PremiumHistory';
 import DebitSettlement from './src/pages/Agent/DebitSettlement';
 import ProductPortfolio from './src/pages/Agent/ProductPortfolio';
 import ClubInformation from './src/pages/Agent/ClubInformation';
-import {Provider, useSelector} from 'react-redux';
-import {store} from './src/redux/services/store';
+import { Provider, useSelector } from 'react-redux';
+import { store } from './src/redux/services/store';
 import PolicyRenewals from './src/pages/Agent/PolicyRenewals';
 import TrainingList from './src/pages/Agent/TrainingList/TrainingList';
 import IndividualStatistics from './src/pages/Agent/IndividualStatistics';
@@ -62,16 +64,19 @@ import PendingClaims from './src/pages/Agent/PendingClaims';
 import ClaimDetails from './src/pages/Agent/ClaimHistory/ClaimDetails';
 import DebitSettlementRenewal from './src/pages/Agent/DebitSettlementRenewal';
 import ReportSwitch from './src/pages/RegionalManager/Report/ReportSwitch';
-import {ToastMessage} from './src/components/ToastMessage';
+import { ToastMessage } from './src/components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdvisorReport from './src/pages/RegionalManager/Report/Report/AdvisorReport';
 import DirectReport from './src/pages/RegionalManager/Report/Report/DirectReport';
 import MeReport from './src/pages/RegionalManager/Report/Report/MeReport';
 import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLeaderReport';
-import {navigationRef} from './src/navigation/RootNavigation';
+import { navigationRef } from './src/navigation/RootNavigation';
+import HeaderBackground from './src/components/HeaderBackground';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
+
+
   useEffect(() => {
     SplashScreen.hide();
   }, []);
@@ -98,7 +103,7 @@ function App(): React.JSX.Element {
   // **Auth Stack (Contains Only Login)**
 
   const AuthStack = () => (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         options={{
           gestureEnabled: true, // Disable swipe back
@@ -108,7 +113,7 @@ function App(): React.JSX.Element {
       />
       <Stack.Screen
         name="NavigateToAppStack"
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         component={AppStack}
       />
     </Stack.Navigator>
@@ -128,7 +133,7 @@ function App(): React.JSX.Element {
 
       <Stack.Screen
         name="NavigateToAuthStack"
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         component={AuthStack}
       />
 
@@ -153,7 +158,7 @@ function App(): React.JSX.Element {
       <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} />
       <Stack.Screen name="TrainingList" component={TrainingList} />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="IndividualStatistics"
         component={IndividualStatistics}
       />
@@ -162,17 +167,17 @@ function App(): React.JSX.Element {
       <Stack.Screen name="PDFViewer" component={PDFViewer} />
       <Stack.Screen name="ProductDetails" component={ProductDetails} />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="MyselfPerformance"
         component={MyselfPerformance}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="TeamStatistics"
         component={TeamStatistics}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="TeamPerformance"
         component={TeamPerformance}
       />
@@ -223,24 +228,44 @@ function App(): React.JSX.Element {
       <Stack.Screen name="ReportSwitch" component={ReportSwitch} />
     </Stack.Navigator>
   );
+  function SafeAreaViewWithInsets() {
+    const insets = useSafeAreaInsets();
+    return (
 
+      <View style={{ flex: 1 }}>
+        <HeaderBackground Title={undefined} />
+
+        <SafeAreaView style={{ flex: 1,
+           marginTop: Platform.OS === 'ios' ? -30 : 0,
+            marginBottom: Platform.OS === 'ios' ? -15 : 0, }} >
+          <Provider store={store}>
+            {/* <SafeAreaView style={{ flex: 1 }}> */}
+
+            <NavigationContainer ref={navigationRef}>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="AuthStack" component={AuthStack} />
+              </Stack.Navigator>
+            </NavigationContainer>
+            <Toast visibilityTime={2000} />
+            {/* </SafeAreaView> */}
+          </Provider>
+        </SafeAreaView>
+
+      </View>
+
+    );
+  }
   return (
-   
-      
-    
-    <Provider store={store}>
-  {/* <SafeAreaView style={{ flex: 1 }}> */}
-   
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="AuthStack" component={AuthStack} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Toast visibilityTime={2000} />
-     {/* </SafeAreaView> */}
-    </Provider>
-   
+    <SafeAreaProvider>
+      <View style={{ flex: 1 }}>
+        <HeaderBackground Title={undefined} />
+
+        {/* Now you can safely use useSafeAreaInsets */}
+        <SafeAreaViewWithInsets />
+      </View>
+    </SafeAreaProvider>
   );
+
 }
 
 export default App;

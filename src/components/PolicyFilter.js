@@ -199,7 +199,7 @@ export default function PolicyFilter({
         ]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 20, paddingVertical: 10}}
+          contentContainerStyle={{paddingHorizontal: 20, paddingVertical: Platform.OS === 'ios' ? window.height*0.1 : 0}}
           style={styles.modalContainer}>
           <View
             style={{
