@@ -118,7 +118,7 @@ export default function PolicyFilter({
     onPressSearch();
   };
   React.useEffect(() => {
-    console.log('VehicleNumber', VehicleNumber);
+    // console.log('VehicleNumber', VehicleNumber);
 
     handlePolicyValuesChange({
       BusinessType,
@@ -308,9 +308,7 @@ export default function PolicyFilter({
               setValue={text => {
                 // Allow only letters, numbers and space (but do not trim)
                 // const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
-                const cleaned = text
-                  .replace(/[^a-zA-Z0-9 ]/g, '')
-                  .toUpperCase();
+                const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
 
                 setVNumber(cleaned);
 
