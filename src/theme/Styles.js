@@ -10,7 +10,7 @@ export const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingVertical: Platform.OS === 'ios' ? window.height*0.03 : 0
+    // paddingVertical: Platform.OS === 'ios' ? window.height*0.03 : 0
   },
   // Login
   customTheme: {
