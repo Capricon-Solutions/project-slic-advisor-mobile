@@ -7,6 +7,8 @@ import {
   Text,
   Dimensions,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {TextInput, Checkbox} from 'react-native-paper';
 import Svg, {Path} from 'react-native-svg';
@@ -167,7 +169,7 @@ const LoginScreen = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.container}>
       {/* Rectangle with Curved Bottom */}
 
       <AboutModal
@@ -231,8 +233,11 @@ const LoginScreen = ({navigation}) => {
 
       {/* Remember Me and Forgot Password */}
       <View style={styles.row}>
-        <View style={styles.rememberMe}>
+        <TouchableOpacity  onPress={() => {
+              setRememberMe(!rememberMe);
+            }} style={styles.rememberMe}>
           <Checkbox
+         
             uncheckedColor={COLORS.subtext}
             color={COLORS.primary}
             status={rememberMe ? 'checked' : 'unchecked'}
@@ -241,7 +246,7 @@ const LoginScreen = ({navigation}) => {
             }}
           />
           <Text style={styles.checkboxLabel}>Remember Me</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => setModalVisible2(true)}>
           <Text style={styles.forgotPassword}>Forgot Password ?</Text>
         </TouchableOpacity>
@@ -271,7 +276,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       } */}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

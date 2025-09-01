@@ -117,7 +117,7 @@ export default function TeamPerformance({navigation}) {
         />
       </View>
 
-      <View style={[styles.mainWrap, {marginTop: 1}]}>
+      <View style={[styles.mainWrap, {marginTop: 1,backgroundColor:COLORS.background}]}>
         <TouchableOpacity
           onPress={() => setSelectedType(1)}
           style={{

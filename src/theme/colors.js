@@ -11,7 +11,7 @@ const COLORS = {
   title: '#33384B',
   subtitle: '#757575',
   placeholder: '#757575',
-  background: Platform.OS === 'ios' ? '#f5f3f3ff' : '#FDFDFD',
+  background: Platform.OS === 'ios' ? '#f7f7f7ff' : '#FDFDFD',
   white: '#ffffff',
   backcard: '#EF9A4B36',
   black: 'black',

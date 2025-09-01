@@ -7,12 +7,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets ,SafeAreaView} from 'react-native-safe-area-context';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
-import { StyleSheet, Text, View, useColorScheme, StatusBar, SafeAreaView, Platform } from 'react-native';
+import { StyleSheet, Text, View, useColorScheme, StatusBar, Platform } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
@@ -107,15 +107,16 @@ function App(): React.JSX.Element {
       <Stack.Screen
         options={{
           gestureEnabled: true, // Disable swipe back
+         orientation: 'portrait' 
         }}
         name="Login"
         component={LoginScreen}
       />
       <Stack.Screen
         name="NavigateToAppStack"
-        options={{ headerShown: false }}
+        options={{ headerShown: false ,orientation: 'portrait' }}
         component={AppStack}
-      />
+      />   
     </Stack.Navigator>
   );
 
@@ -133,8 +134,9 @@ function App(): React.JSX.Element {
 
       <Stack.Screen
         name="NavigateToAuthStack"
-        options={{ headerShown: false }}
+        options={{ headerShown: false ,orientation: 'portrait' }}
         component={AuthStack}
+        
       />
 
       <Stack.Screen name="TypeTest" component={TypeTest} />
@@ -143,29 +145,30 @@ function App(): React.JSX.Element {
         component={AgentNavigator}
         options={{
           gestureEnabled: false, // Disable swipe back
+           orientation: 'portrait'
         }}
       />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Settings" component={Settings} />
-      <Stack.Screen name="SalesMeter" component={SalesMeter} />
-      <Stack.Screen name="GeneralPolicyList" component={GeneralPolicyList} />
-      <Stack.Screen name="PolicyDetails" component={PolicyDetails} />
-      <Stack.Screen name="ClaimHistory" component={ClaimHistory} />
-      <Stack.Screen name="PremiumHistory" component={PremiumHistory} />
-      <Stack.Screen name="DebitSettlement" component={DebitSettlement} />
-      <Stack.Screen name="ProductPortfolio" component={ProductPortfolio} />
-      <Stack.Screen name="ClubInformation" component={ClubInformation} />
-      <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} />
-      <Stack.Screen name="TrainingList" component={TrainingList} />
+      <Stack.Screen name="Profile" component={Profile}  options={{ orientation: 'portrait' }} />
+      <Stack.Screen name="Settings" component={Settings} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="SalesMeter" component={SalesMeter} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="GeneralPolicyList" component={GeneralPolicyList} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="PolicyDetails" component={PolicyDetails} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ClaimHistory" component={ClaimHistory} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="PremiumHistory" component={PremiumHistory} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="DebitSettlement" component={DebitSettlement} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ProductPortfolio" component={ProductPortfolio} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ClubInformation" component={ClubInformation} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="PolicyRenewals" component={PolicyRenewals} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="TrainingList" component={TrainingList} options={{ orientation: 'portrait' }}/>
       <Stack.Screen
         options={{ orientation: 'landscape' }}
         name="IndividualStatistics"
         component={IndividualStatistics}
       />
-      <Stack.Screen name="PPWCancellation" component={PPWCancellation} />
-      <Stack.Screen name="Notification" component={Notification} />
-      <Stack.Screen name="PDFViewer" component={PDFViewer} />
-      <Stack.Screen name="ProductDetails" component={ProductDetails} />
+      <Stack.Screen name="PPWCancellation" component={PPWCancellation}options={{ orientation: 'portrait' }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="PDFViewer" component={PDFViewer} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ProductDetails" component={ProductDetails} options={{ orientation: 'portrait' }}/>
       <Stack.Screen
         options={{ orientation: 'landscape' }}
         name="MyselfPerformance"
@@ -182,18 +185,18 @@ function App(): React.JSX.Element {
         component={TeamPerformance}
       />
       <Stack.Screen name="TeamMemberGrid" component={TeamMemberGrid} />
-      <Stack.Screen name="BPlanner" component={BPlanner} />
-      <Stack.Screen name="LeadSearch" component={LeadSearch} />
-      <Stack.Screen name="LeadCreation" component={LeadCreation} />
-      <Stack.Screen name="MonthlyPlan" component={MonthlyPlan} />
-      <Stack.Screen name="ActivityDetails" component={ActivityDetails} />
+      <Stack.Screen name="BPlanner" component={BPlanner} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="LeadSearch" component={LeadSearch} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="LeadCreation" component={LeadCreation} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="MonthlyPlan" component={MonthlyPlan} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="Report" component={Report} />
-      <Stack.Screen name="ECorner" component={ECorner} />
-      <Stack.Screen name="KPISummary" component={KPISummary} />
-      <Stack.Screen name="DUESSummary" component={DUESSummary} />
-      <Stack.Screen name="ClassSummary" component={ClassSummary} />
-      <Stack.Screen name="RegionSummary" component={RegionSummary} />
-      <Stack.Screen name="BranchSummary" component={BranchSummary} />
+      <Stack.Screen name="ECorner" component={ECorner}options={{ orientation: 'portrait' }} />
+      <Stack.Screen name="KPISummary" component={KPISummary}options={{ orientation: 'portrait' }} />
+      <Stack.Screen name="DUESSummary" component={DUESSummary} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ClassSummary" component={ClassSummary} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="RegionSummary" component={RegionSummary} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="BranchSummary" component={BranchSummary} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="Competition" component={Competition} />
       <Stack.Screen name="LeadInformation" component={LeadInformation} />
       <Stack.Screen name="MotorRenewal" component={MotorRenewal} />
@@ -233,11 +236,13 @@ function App(): React.JSX.Element {
     return (
 
       <View style={{ flex: 1 }}>
-        <HeaderBackground Title={undefined} />
+        {/* <HeaderBackground Title={undefined} /> */}
 
-        <SafeAreaView style={{ flex: 1,
-           marginTop: Platform.OS === 'ios' ? -30 : 0,
-            marginBottom: Platform.OS === 'ios' ? -15 : 0, }} >
+        <SafeAreaView edges={['top','left']} style={{ flex: 1,
+          //  marginTop: Platform.OS === 'ios' ? -10 : 0,
+            // marginBottom: Platform.OS === 'ios' ? -15 : 0, 
+           backgroundColor: COLORS.TopBackColor
+            }}  >
           <Provider store={store}>
             {/* <SafeAreaView style={{ flex: 1 }}> */}
 
@@ -258,7 +263,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
       <View style={{ flex: 1 }}>
-        <HeaderBackground Title={undefined} />
+        {/* <HeaderBackground Title={undefined} /> */}
 
         {/* Now you can safely use useSafeAreaInsets */}
         <SafeAreaViewWithInsets />
