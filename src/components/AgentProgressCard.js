@@ -77,6 +77,7 @@ export default function AgentProgressCard({
           progressValueColor={COLORS.textColor}
           maxValue={totalIslandRank}
           activeStrokeWidth={20}
+          strokeLinecap="butt"
           inActiveStrokeWidth={20}
           activeStrokeColor={COLORS.primary}
           inActiveStrokeColor={COLORS.lightBorder}
@@ -108,6 +109,7 @@ export default function AgentProgressCard({
             maxValue={totalNumberofRegions || 0}
             activeStrokeWidth={12}
             inActiveStrokeWidth={12}
+            strokeLinecap="butt"
             activeStrokeColor={COLORS.regionalRank}
             inActiveStrokeColor={COLORS.lightBorder}
             valueSuffix={`/${totalNumberofRegions || 0}`}
@@ -143,6 +145,7 @@ export default function AgentProgressCard({
             progressValueColor={COLORS.branchRank}
             maxValue={totalNumberofBranches || 0}
             activeStrokeWidth={12}
+            strokeLinecap="butt"
             inActiveStrokeWidth={12}
             activeStrokeColor={COLORS.branchRank}
             inActiveStrokeColor={COLORS.lightBorder}

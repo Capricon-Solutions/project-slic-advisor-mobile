@@ -174,6 +174,11 @@ export default function SalesMeter({navigation}) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+  const lastYearTargetNew =
+    filterdData?.targetCumulative?.totalTarget.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   const currentYearGrowth = filterdData?.growth;
   const lastYear = salesMeterResponse.lastYear;
   const currentYear = salesMeterResponse.currentYear;
@@ -315,7 +320,7 @@ export default function SalesMeter({navigation}) {
                           fontSize: window.width * 0.04,
                           fontFamily: Fonts.Roboto.SemiBold,
                         }}>
-                        LKR {lastYearTarget || 0.0}
+                        LKR {lastYearTargetNew || 0.0}
                       </Text>
                     )}
                   </View>
