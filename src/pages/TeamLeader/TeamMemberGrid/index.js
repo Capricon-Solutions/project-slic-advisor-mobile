@@ -97,11 +97,11 @@ export default function TeamMemberGrid({ navigation, route }) {
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
     endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
-   
+
 
     type: value,
   });
- 
+
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
@@ -111,7 +111,7 @@ export default function TeamMemberGrid({ navigation, route }) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-   
+
     {
       ppw:
         value == 1
@@ -391,7 +391,7 @@ export default function TeamMemberGrid({ navigation, route }) {
               columnWidths={columnWidths}
             />
           )}
-       
+
         </View>
       ) : (
         <FlatList
@@ -476,7 +476,7 @@ export default function TeamMemberGrid({ navigation, route }) {
                 <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'NB'}
-                 
+
 
                     value={
                       value == 1
@@ -572,7 +572,7 @@ export default function TeamMemberGrid({ navigation, route }) {
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
-            
+
                 />
               </View>
             </View>

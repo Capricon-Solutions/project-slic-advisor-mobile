@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.background,
     left: 12,
     top: 8,
     zIndex: 999,

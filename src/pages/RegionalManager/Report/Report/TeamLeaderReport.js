@@ -148,7 +148,7 @@ export default function TeamLeaderReport({navigation, route}) {
   useFocusEffect(
     React.useCallback(() => {
       // When screen is focused
-      Orientation.lockToPortrait();
+     
       setIsLandscape(false);
 
       return () => {
@@ -159,11 +159,16 @@ export default function TeamLeaderReport({navigation, route}) {
     }, []),
   );
 
+   useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
+
   const toggleOrientation = () => {
+
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
-      Orientation.lockToLandscape(); // Lock screen to landscape mode
+      Orientation.lockToLandscapeLeft(); // Lock screen to landscape mode
     }
     setIsLandscape(!isLandscape);
   };
@@ -216,12 +221,18 @@ export default function TeamLeaderReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-            onPress={() => navigation.goBack()}
+           onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
           />
         ) : (
           <Header
             Title={Title + ' Report'}
-            onPress={() => navigation.goBack()}
+           onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
             haveFilters={false}
             haveWhatsapp={false}
             haveMenu={false}
