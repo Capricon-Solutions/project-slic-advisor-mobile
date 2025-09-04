@@ -63,6 +63,8 @@ const DropdownComponent = ({
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
         disable={disabled}
+
+        
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}

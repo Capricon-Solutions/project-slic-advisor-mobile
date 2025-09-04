@@ -14,6 +14,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     elevation: 5,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     padding: 15,
     marginTop: 15,
     paddingBottom: 10,

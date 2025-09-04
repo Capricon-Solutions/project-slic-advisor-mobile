@@ -420,10 +420,13 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderRadius: 10,
     shadowColor: '#000',
+    
     shadowOffset: {
       width: 0,
       height: 2,
     },
+     shadowOpacity: 0.3, // add opacity
+    shadowRadius: 4.84,  // add blur radius
   },
   subLine: {
     flexDirection: 'row',

@@ -28,6 +28,12 @@ const ECMotorRenewal = React.memo(({item, navigation}) => {
         padding: 10,
         backgroundColor: COLORS.white,
         elevation: 10,
+         shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
         borderRadius: 12,
         marginHorizontal: 10,
         marginTop: 5,

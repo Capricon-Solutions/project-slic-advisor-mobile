@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Platform} from 'react-native';
 import {Checkbox} from 'react-native-paper';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
@@ -43,11 +43,28 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
         <View style={{alignItems: 'flex-end'}}>
           <TouchableOpacity onPress={() => handleCheckboxToggle(index)}>
             <View style={{transform: [{scale: 1.2}]}}>
+                <View style={{ position: 'relative' }}>
+            {Platform.OS === 'ios' &&
+              <View style={{
+                width: 21,
+                height: 21,
+                borderRadius: 2.5,
+                borderWidth: 2.2,
+                borderColor: activity?.checked ? COLORS.primary : COLORS.subtext,
+                position: 'absolute',
+                alignSelf: 'center',
+                top: '50%',
+                transform: [{ translateY: -10.5 }],
+              }}>
+
+              </View>
+            }
               <Checkbox
                 uncheckedColor={COLORS.warmGray}
                 color={COLORS.primary}
                 status={activity?.checked ? 'checked' : 'unchecked'}
               />
+              </View>
             </View>
           </TouchableOpacity>
         </View>

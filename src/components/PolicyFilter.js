@@ -8,6 +8,7 @@ import {
   Modal,
   StyleSheet,
   ScrollView,
+  Platform,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DropdownComponentNoLabel from './DropdownComponentNoLabel';
@@ -206,7 +207,8 @@ export default function PolicyFilter({
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 15,
+              marginBottom: 10,
+              marginTop:Platform.OS ==='android'? 10:0
             }}>
             <Text style={styles.modalTitle}>{Name}</Text>
             <TouchableOpacity
@@ -404,7 +406,7 @@ export default function PolicyFilter({
               />
             </View>
 
-            <Text style={{marginTop: 25}}>To</Text>
+            <Text style={{marginTop: 25,color:COLORS.subtext,fontSize:Platform.OS === 'ios'? 13: 12}}>To</Text>
             {/* <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
                 // Title={StartToDt}
@@ -566,11 +568,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 5,
     elevation: 25,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     borderWidth: 1,
     borderColor: '#ddd',
   },
   modalTitle: {
-    fontSize: 17,
+    fontSize: Platform.OS == 'ios' ? 20: 18,
     color: '#000',
+    fontFamily:Fonts.Roboto.SemiBold
+    
   },
 });

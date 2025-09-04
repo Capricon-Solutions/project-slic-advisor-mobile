@@ -184,9 +184,11 @@ export default function ProductPortfolio({navigation}) {
             onChangeText={v => {
               setSearchText(v), handleSearch(v);
             }}
+            placeholderTextColor={ COLORS.warmGray}
             value={searchText}
             placeholder="Quick Search"
           />
+          
           <TouchableOpacity
             onPress={() => handleSearch2()}
             style={styles.searchButton}>

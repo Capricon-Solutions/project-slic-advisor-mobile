@@ -184,7 +184,9 @@ export default function ClubInformation({navigation}) {
                     /> */}
 
                       <Tooltip
+                        withPortal={false} 
                         enterTouchDelay={1}
+                        
                         leaveTouchDelay={1000}
                         title={currentClub?.toString() ?? 'Unavailable'}>
                         <OutlinedTextView

@@ -309,9 +309,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     flexDirection: 'row',
+     shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 3,
     },
   },
   progressBarContainer: {

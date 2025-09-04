@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
@@ -19,8 +19,20 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     elevation: 9,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     padding: 15,
     marginHorizontal: 10,
     marginVertical: 8,
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 });

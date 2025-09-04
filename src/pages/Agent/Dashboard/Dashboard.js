@@ -424,6 +424,7 @@ export default function Dashboard({navigation}) {
             totalNumberofRegions={totalNumberofRegions}
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
+             loading={achiveLoading}
             branchRank={branchRank}
             islandRank={islandRank}
             onPress={() => {
@@ -468,6 +469,7 @@ export default function Dashboard({navigation}) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
+             loading={achiveLoading}
             islandRank={islandRank}
             onPress={() => {
               navigation.navigate('SalesMeter');

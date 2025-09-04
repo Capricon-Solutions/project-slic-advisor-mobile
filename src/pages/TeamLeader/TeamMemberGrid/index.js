@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { Styles } from '../../../theme/Styles';
 import { FlatList } from 'react-native';
@@ -58,7 +59,7 @@ const data = [
 export default function TeamMemberGrid({ navigation, route }) {
   const { Title = '' } = route.params || {};
   const userCode = useSelector(state => state.Profile.userCode);
-  const [deviceOrientation, setDeviceOrientation] = useState(PORTRAIT);
+  const [deviceOrientation, setDeviceOrientation] = useState("PORTRAIT");
 
   const branchCode = useSelector(
     state => state.Profile.profile.user.branchCode,
@@ -147,20 +148,20 @@ export default function TeamMemberGrid({ navigation, route }) {
       ).toLocaleString() ?? '',
   ]);
 
-useEffect(() => {
-   console.log("test work here");
-  const handleOrientationChange = orientation => {
-    console.log("Current orientation:", orientation); 
-    // values: "PORTRAIT", "LANDSCAPE-LEFT", "LANDSCAPE-RIGHT", "PORTRAIT-UPSIDEDOWN"
-    setDeviceOrientation(orientation);
-  };
+  // useEffect(() => {
+  //    console.log("test work here");
+  //   const handleOrientationChange = orientation => {
+  //     console.log("Current orientation:", orientation); 
+  //     // values: "PORTRAIT", "LANDSCAPE-LEFT", "LANDSCAPE-RIGHT", "PORTRAIT-UPSIDEDOWN"
+  //     setDeviceOrientation(orientation);
+  //   };
 
-  Orientation.addOrientationListener(handleOrientationChange);
+  //   Orientation.addOrientationListener(handleOrientationChange);
 
-  return () => {
-    Orientation.removeOrientationListener(handleOrientationChange);
-  };
-}, []);
+  //   return () => {
+  //     Orientation.removeOrientationListener(handleOrientationChange);
+  //   };
+  // }, []);
   // useEffect(() => {
   //   console.log("test work here");
   //   const listener = orientation => {
@@ -176,7 +177,17 @@ useEffect(() => {
   //   };
   // }, []);
 
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
+
   const toggleOrientation = () => {
+    // if (Platform.OS === 'ios'){
+    //   setIsLandscape(!isLandscape);
+    //   Orientation.lockToAllOrientationsButUpsideDown();
+
+    // }
+
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -184,7 +195,7 @@ useEffect(() => {
     }
     setIsLandscape(!isLandscape);
   };
-
+  console.log("test")
   const agentList =
     TeamLeaderReport && TeamLeaderReport.data
       ? TeamLeaderReport.data.map(item => ({
@@ -198,7 +209,7 @@ useEffect(() => {
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-    
+
       <ReportFilterTM
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -225,12 +236,18 @@ useEffect(() => {
           <LandscapeHeader
             haveSearch={false}
             Title={'Team Member Report'}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
           />
         ) : (
           <Header
             Title={'Team Member Report'}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
             haveFilters={false}
             haveWhatsapp={false}
             haveMenu={false}
@@ -389,13 +406,7 @@ useEffect(() => {
                 }
               />
             </View>
-            {/* <View style={{ flex: 0.19, marginHorizontal: 2 }}>
-              <DropdownComponent
-                label={'Agent'}
-                mode={'modal'}
-                dropdownData={dropdownOptions}
-              />
-            </View> */}
+
             <View style={{ flex: 0.13, marginHorizontal: 2 }}>
               <Button Title={'Apply'} />
             </View>
@@ -456,6 +467,12 @@ useEffect(() => {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3,  // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>
@@ -647,7 +664,8 @@ useEffect(() => {
           />
         </View>
       )}
-        {isLandscape && !(deviceOrientation === "LANDSCAPE-LEFT" || deviceOrientation === "LANDSCAPE-RIGHT") && (
+      {/* {isLandscape && !(deviceOrientation === "LANDSCAPE-LEFT" || deviceOrientation === "LANDSCAPE-RIGHT") && (
+     
         <View
           style={{
             position: 'absolute',
@@ -673,12 +691,12 @@ useEffect(() => {
               textAlign: 'center',
               paddingHorizontal: 20,
             }}>
-            Please rotate the screen to show content
+            Please rotate left the screen to show content
           </Text>
               </View>
           
         </View>
-      )}
+      )} */}
     </View>
   );
 }

@@ -9,7 +9,8 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import FileViewer from 'react-native-file-viewer';
 import {Linking} from 'react-native';
 import RNFS from 'react-native-fs'; // File system for downloads
 import COLORS from '../theme/colors';
@@ -81,58 +82,112 @@ export default function OtherListItem({item, onPress}) {
     return true;
   };
 
-  const openDocument = async url => {
-    if (!url) {
-      console.log('No document URL available');
-      return;
-    }
+  // const openDocument = async url => {
+  //   if (!url) {
+  //     console.log('No document URL available');
+  //     return;
+  //   }
 
-    const fileName = url.split('/').pop(); // Extract file name from URL
-    const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+  //   const fileName = url.split('/').pop(); // Extract file name from URL
+  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      Alert.alert(
-        'Permission Denied',
-        'Storage permission is required to download files.',
-      );
-      return;
-    } else {
-      setLoading(true);
-    }
+  //   const hasPermission = await requestStoragePermission();
+  //   if (!hasPermission) {
+  //     Alert.alert(
+  //       'Permission Denied',
+  //       'Storage permission is required to download files.',
+  //     );
+  //     return;
+  //   } else {
+  //     setLoading(true);
+  //   }
 
-    RNFS.downloadFile({
-      fromUrl: url,
-      toFile: localFilePath,
-      progress: res => {
-        console.log(
-          `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
-        );
-        const progressPercent = (res.bytesWritten / res.contentLength) * 100;
-        setProgress(progressPercent);
-      },
+  //   RNFS.downloadFile({
+  //     fromUrl: url,
+  //     toFile: localFilePath,
+  //     progress: res => {
+  //       console.log(
+  //         `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
+  //       );
+  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
+  //       setProgress(progressPercent);
+  //     },
+  //   })
+  //     .promise.then(() => {
+  //       setLoading(false);
+  //       // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
+  //       ToastAndroid.show(
+  //         `Download Complete: File saved to ${localFilePath}`,
+  //         ToastAndroid.LONG,
+  //       );
+
+  //       Linking.openURL(url).catch(err =>
+  //         console.error("Couldn't open URL", err),
+  //       );
+  //     })
+  //     .catch(error => {
+  //       console.error('Download failed', error);
+  //       setLoading(false);
+  //       Alert.alert(
+  //         'Download Failed',
+  //         'There was an error downloading the file.',
+  //       );
+  //     });
+  // };
+
+const openDocument = async (url) => {
+  if (!url) {
+    console.log('No document URL available');
+    return;
+  }
+
+  const fileName = url.split('/').pop();
+  const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+
+  const hasPermission = await requestStoragePermission();
+  if (!hasPermission) {
+    Alert.alert(
+      'Permission Denied',
+      'Storage permission is required to download files.',
+    );
+    return;
+  }
+
+  try {
+    setLoading(true);
+    setProgress(0);
+
+    const res = await ReactNativeBlobUtil.config({
+      fileCache: true,
+      path: localFilePath,
     })
-      .promise.then(() => {
-        setLoading(false);
-        // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
-        ToastAndroid.show(
-          `Download Complete: File saved to ${localFilePath}`,
-          ToastAndroid.LONG,
-        );
-
-        Linking.openURL(url).catch(err =>
-          console.error("Couldn't open URL", err),
-        );
-      })
-      .catch(error => {
-        console.error('Download failed', error);
-        setLoading(false);
-        Alert.alert(
-          'Download Failed',
-          'There was an error downloading the file.',
-        );
+      .fetch('GET', url)
+      .progress({ count: 10 }, (received, total) => {
+        const progress = received / total;
+        setProgress(progress * 100); // percent
+        console.log(`Download progress: ${(progress * 100).toFixed(2)}%`);
       });
-  };
+
+    setLoading(false);
+
+    ToastAndroid.show(
+      `Download Complete: File saved to ${localFilePath}`,
+      ToastAndroid.LONG,
+    );
+
+    // Open with FileViewer (better than Linking for local files)
+    await FileViewer.open(res.path(), {
+      showOpenWithDialog: true,
+    });
+  } catch (error) {
+    console.error('Download/Open error:', error);
+    setLoading(false);
+    Alert.alert(
+      'Download Failed',
+      'There was an error downloading the file.',
+    );
+  }
+};
 
   return (
     <TouchableOpacity
@@ -151,6 +206,12 @@ export default function OtherListItem({item, onPress}) {
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 3,
+          shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
       }}>
       <View
         style={{

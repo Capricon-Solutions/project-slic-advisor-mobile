@@ -268,6 +268,12 @@ const styles = StyleSheet.create({
 
     elevation: 25,
     borderWidth: 1,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     borderColor: COLORS.lightBorder,
   },
   modalTitle: {

@@ -912,6 +912,12 @@ export default function LeadCreation({navigation, route}) {
             paddingHorizontal: 10,
             paddingVertical: 6,
             elevation: 10,
+              shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
           }}>
           <Text style={{color: COLORS.textColor}}>Select Event</Text>
           <View

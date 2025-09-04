@@ -43,7 +43,7 @@ function AgengNavigator({state, descriptors, navigation}) {
       <StatusBar
         backgroundColor={COLORS.TopBackColor}
         
-        // barStyle="dark-content"
+         barStyle="dark-content"
       />
 
       {state.routes.map((route, index) => {

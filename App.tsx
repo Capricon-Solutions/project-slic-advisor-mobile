@@ -184,7 +184,7 @@ function App(): React.JSX.Element {
         name="TeamPerformance"
         component={TeamPerformance}
       />
-      <Stack.Screen name="TeamMemberGrid" component={TeamMemberGrid} />
+      <Stack.Screen name="TeamMemberGrid" component={TeamMemberGrid} options={{ orientation:'all' }}/>
       <Stack.Screen name="BPlanner" component={BPlanner} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="LeadSearch" component={LeadSearch} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="LeadCreation" component={LeadCreation} options={{ orientation: 'portrait' }}/>
