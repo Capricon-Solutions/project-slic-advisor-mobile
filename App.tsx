@@ -145,7 +145,7 @@ function App(): React.JSX.Element {
         component={AgentNavigator}
         options={{
           gestureEnabled: false, // Disable swipe back
-           orientation: 'portrait'
+           orientation:'all' 
         }}
       />
       <Stack.Screen name="Profile" component={Profile}  options={{ orientation: 'portrait' }} />
@@ -190,45 +190,50 @@ function App(): React.JSX.Element {
       <Stack.Screen name="LeadCreation" component={LeadCreation} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="MonthlyPlan" component={MonthlyPlan} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ orientation: 'portrait' }}/>
-      <Stack.Screen name="Report" component={Report} />
+      <Stack.Screen name="Report" component={Report} options={{ orientation:'all' }}/>
       <Stack.Screen name="ECorner" component={ECorner}options={{ orientation: 'portrait' }} />
       <Stack.Screen name="KPISummary" component={KPISummary}options={{ orientation: 'portrait' }} />
       <Stack.Screen name="DUESSummary" component={DUESSummary} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="ClassSummary" component={ClassSummary} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="RegionSummary" component={RegionSummary} options={{ orientation: 'portrait' }}/>
       <Stack.Screen name="BranchSummary" component={BranchSummary} options={{ orientation: 'portrait' }}/>
-      <Stack.Screen name="Competition" component={Competition} />
-      <Stack.Screen name="LeadInformation" component={LeadInformation} />
-      <Stack.Screen name="MotorRenewal" component={MotorRenewal} />
-      <Stack.Screen name="EDocument" component={EDocument} />
-      <Stack.Screen name="MotorRenewalLetter" component={MotorRenewalLetter} />
+      <Stack.Screen name="Competition" component={Competition} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="LeadInformation" component={LeadInformation}options={{ orientation: 'portrait' }} />
+      <Stack.Screen name="MotorRenewal" component={MotorRenewal} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="EDocument" component={EDocument} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="MotorRenewalLetter" component={MotorRenewalLetter} options={{ orientation: 'portrait' }}/>
       <Stack.Screen
         name="AdvisorReport"
         // options={{orientation: 'landscape'}}
         component={AdvisorReport}
+        options={{ orientation:'all' }}
       />
-      <Stack.Screen name="DirectReport" component={DirectReport} />
-      <Stack.Screen name="MeReport" component={MeReport} />
-      <Stack.Screen name="TeamLeaderReport" component={TeamLeaderReport} />
+      <Stack.Screen name="DirectReport" component={DirectReport} options={{ orientation:'all' }}/>
+      <Stack.Screen name="MeReport" component={MeReport} options={{ orientation:'all' }}/>
+      <Stack.Screen name="TeamLeaderReport" component={TeamLeaderReport} options={{ orientation:'all' }}/>
       <Stack.Screen
         name="CommissionStatement"
         component={CommissionStatement}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="MotorRenewalCompact"
         component={MotorRenewalCompact}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="NonMotorRenewalCompact"
         component={NonMotorRenewalCompact}
+        options={{ orientation: 'portrait' }}
       />
-      <Stack.Screen name="PendingClaims" component={PendingClaims} />
-      <Stack.Screen name="ClaimDetails" component={ClaimDetails} />
+      <Stack.Screen name="PendingClaims" component={PendingClaims} options={{ orientation: 'portrait' }}/>
+      <Stack.Screen name="ClaimDetails" component={ClaimDetails} options={{ orientation: 'portrait' }}/>
       <Stack.Screen
         name="DebitSettlementRenewal"
         component={DebitSettlementRenewal}
+        options={{ orientation: 'portrait' }}
       />
-      <Stack.Screen name="ReportSwitch" component={ReportSwitch} />
+      <Stack.Screen name="ReportSwitch" component={ReportSwitch} options={{ orientation: 'portrait' }}/>
     </Stack.Navigator>
   );
   function SafeAreaViewWithInsets() {

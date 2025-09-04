@@ -97,15 +97,11 @@ export default function TeamMemberGrid({ navigation, route }) {
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
     endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
-    // endMonth:
-    //   SelectedMonth == '00'
-    //     ? '12'
-    //     : String(parseInt(SelectedMonth, 10) + 1).padStart(2, '0'),
+   
 
     type: value,
   });
-  // console.log('Team Member  Report', TeamLeaderReport);
-  // console.log('Team Member ReportLoading', TeamLeaderReportLoading);
+ 
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
@@ -115,8 +111,7 @@ export default function TeamMemberGrid({ navigation, route }) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-    // item?.nb?.toLocaleString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
+   
     {
       ppw:
         value == 1
@@ -148,50 +143,16 @@ export default function TeamMemberGrid({ navigation, route }) {
       ).toLocaleString() ?? '',
   ]);
 
-  // useEffect(() => {
-  //    console.log("test work here");
-  //   const handleOrientationChange = orientation => {
-  //     console.log("Current orientation:", orientation); 
-  //     // values: "PORTRAIT", "LANDSCAPE-LEFT", "LANDSCAPE-RIGHT", "PORTRAIT-UPSIDEDOWN"
-  //     setDeviceOrientation(orientation);
-  //   };
-
-  //   Orientation.addOrientationListener(handleOrientationChange);
-
-  //   return () => {
-  //     Orientation.removeOrientationListener(handleOrientationChange);
-  //   };
-  // }, []);
-  // useEffect(() => {
-  //   console.log("test work here");
-  //   const listener = orientation => {
-  //     console.log("test orientation",orientation)
-  //     setDeviceOrientation(orientation);
-  //   };
-
-  //   Orientation.addOrientationListener(listener);
-
-  //   // Cleanup
-  //   return () => {
-  //     Orientation.removeOrientationListener(listener);
-  //   };
-  // }, []);
-
   useEffect(() => {
     Orientation.lockToPortrait();
   }, []);
 
   const toggleOrientation = () => {
-    // if (Platform.OS === 'ios'){
-    //   setIsLandscape(!isLandscape);
-    //   Orientation.lockToAllOrientationsButUpsideDown();
-
-    // }
 
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
-      Orientation.lockToLandscape(); // Lock screen to landscape mode
+      Orientation.lockToLandscapeLeft(); // Lock screen to landscape mode
     }
     setIsLandscape(!isLandscape);
   };
@@ -430,13 +391,7 @@ export default function TeamMemberGrid({ navigation, route }) {
               columnWidths={columnWidths}
             />
           )}
-          {/* <HorizontalReportTable
-            onPress={() => navigation.navigate('PolicyDetails')}
-            haveTotal={false}
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-          /> */}
+       
         </View>
       ) : (
         <FlatList
@@ -521,14 +476,7 @@ export default function TeamMemberGrid({ navigation, route }) {
                 <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'NB'}
-                    // value={
-                    //   item?.nb !== null && item?.nb !== undefined
-                    //     ? Number(item?.nb).toLocaleString('en-US', {
-                    //         minimumFractionDigits: 2,
-                    //         maximumFractionDigits: 2,
-                    //       })
-                    //     : ''
-                    // }
+                 
 
                     value={
                       value == 1
@@ -624,23 +572,7 @@ export default function TeamMemberGrid({ navigation, route }) {
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
-                // value={
-                //   value == 1
-                //     ? (
-                //         (item?.renewal ?? 0) +
-                //         (item?.nb ?? 0) +
-                //         (item?.refundPpw ?? 0) +
-                //         (item?.refundOther ?? 0) +
-                //         (item?.endorsement ?? 0)
-                //       ).toLocaleString()
-                //     : (
-                //         (item?.nopRenewal ?? 0) +
-                //         (item?.nopPpw ?? 0) +
-                //         (item?.nb ?? 0) +
-                //         (item?.nopOtherRefund ?? 0) +
-                //         (item?.nopEndorsements ?? 0)
-                //       ).toLocaleString()
-                // }
+            
                 />
               </View>
             </View>
