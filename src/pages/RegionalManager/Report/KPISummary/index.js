@@ -218,6 +218,7 @@ export default function KPISummary({navigation}) {
                       alignItems: 'center',
                       marginBottom: 1,
                       marginTop: 3,
+                      marginBottom:20
                     }}>
                     <Progress.Bar
                       progress={item.progress}
@@ -228,9 +229,9 @@ export default function KPISummary({navigation}) {
                         item.progress >= 1 ? COLORS.primary : COLORS.primary
                       }
                     />
-                    <Text style={{fontSize: 10, marginTop: 4}}>
+                    {/* <Text style={{fontSize: 10, marginTop: 4}}>
                       Growth: {item.growthPercentage}% (LY: {item.lastYear})
-                    </Text>
+                    </Text> */}
                   </View>
                 </View>
               )}

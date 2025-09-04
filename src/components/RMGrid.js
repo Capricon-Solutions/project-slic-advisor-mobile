@@ -79,7 +79,7 @@ export default function RMGrid({
           <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
           <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
         </TouchableOpacity> */}
-        <View style={[Styles.iconGrid, {elevation: 0}]}></View>
+        <View style={[Styles.iconGrid, {elevation: 0,backgroundColor:'transparent'}]}></View>
       </View>
     </View>
   );
