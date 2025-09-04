@@ -19,15 +19,39 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     elevation: 10,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     padding: 15,
     marginHorizontal: 10,
     marginVertical: 8,
+      shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
   leadInfoCard: {
     backgroundColor: COLORS.white,
     elevation: 10,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
     padding: 15,
     borderRadius: 10,
     marginBottom: 15,
+      shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 });

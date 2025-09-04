@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import COLORS from '../../../theme/colors';
 
 const window = Dimensions.get('window');
@@ -14,5 +14,6 @@ export const Styles = StyleSheet.create({
     paddingVertical: window.height * 0.015,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: Platform.OS === 'ios' ? window.height*0.023 : 0
   },
 });

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,20 +9,29 @@ import {
   Dimensions,
   ScrollView,
   StatusBar,
+  Platform,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
-import {FlatList} from 'react-native';
-import {useSelector} from 'react-redux';
+import { Styles } from '../../../theme/Styles';
+import { FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 import Button from '../../../components/Button';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
+
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Orientation from 'react-native-orientation-locker';
+// import Orientation from 'react-native-orientation-locker';
+import Orientation, {
+  PORTRAIT,
+  LANDSCAPE_LEFT,
+  LANDSCAPE_RIGHT,
+} from 'react-native-orientation-locker';
 import Header from '../../../components/Header';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../components/LandscapeHeader';
 import Building from './../../../icons/Building.png';
+import Rotate from './../../../icons/Rotate.png';
 import HorizontalReportTable from '../../../components/HorizontalReportTable';
 import {
   useRmReportQuery,
@@ -37,24 +46,25 @@ import ReportFilterTM from '../../../components/ReportFilterTM';
 
 const window = Dimensions.get('window');
 const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
 ];
 
-export default function TeamMemberGrid({navigation, route}) {
-  const {Title = ''} = route.params || {};
+export default function TeamMemberGrid({ navigation, route }) {
+  const { Title = '' } = route.params || {};
   const userCode = useSelector(state => state.Profile.userCode);
+  const [deviceOrientation, setDeviceOrientation] = useState("PORTRAIT");
 
   const branchCode = useSelector(
     state => state.Profile.profile.user.branchCode,
   );
-  console.log('branchCode', branchCode);
+  // console.log('branchCode', branchCode);
   const [value, setValue] = useState(1);
   const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState('ALL');
@@ -87,15 +97,11 @@ export default function TeamMemberGrid({navigation, route}) {
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
     endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
-    // endMonth:
-    //   SelectedMonth == '00'
-    //     ? '12'
-    //     : String(parseInt(SelectedMonth, 10) + 1).padStart(2, '0'),
+
 
     type: value,
   });
-  console.log('Team Member  Report', TeamLeaderReport);
-  console.log('Team Member ReportLoading', TeamLeaderReportLoading);
+
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamMember?.toString() ?? '',
 
@@ -105,8 +111,7 @@ export default function TeamMemberGrid({navigation, route}) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-    // item?.nb?.toLocaleString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
+
     {
       ppw:
         value == 1
@@ -123,43 +128,49 @@ export default function TeamMemberGrid({navigation, route}) {
 
     value == 1
       ? (
-          item?.renewal +
-          item?.refundPpw +
-          item?.nb +
-          item?.refundOther +
-          item?.endorsement
-        ).toLocaleString() ?? ''
+        item?.renewal +
+        item?.refundPpw +
+        item?.nb +
+        item?.refundOther +
+        item?.endorsement
+      ).toLocaleString() ?? ''
       : (
-          item?.nopRenewal +
-          item?.nopPpw +
-          item?.nopNew +
-          item?.nopOtherRefund +
-          item?.nopEndorsements
-        ).toLocaleString() ?? '',
+        item?.nopRenewal +
+        item?.nopPpw +
+        item?.nopNew +
+        item?.nopOtherRefund +
+        item?.nopEndorsements
+      ).toLocaleString() ?? '',
   ]);
 
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
+
   const toggleOrientation = () => {
+
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
-      Orientation.lockToLandscape(); // Lock screen to landscape mode
+      Orientation.lockToLandscapeLeft(); // Lock screen to landscape mode
     }
     setIsLandscape(!isLandscape);
   };
-
+  console.log("test")
   const agentList =
     TeamLeaderReport && TeamLeaderReport.data
       ? TeamLeaderReport.data.map(item => ({
-          label: item.teamLeader,
-          value: item.teamLeader,
-        }))
+        label: item.teamLeader,
+        value: item.teamLeader,
+      }))
       : [];
 
-  const dropdownOptions = [{label: 'All', value: 'All'}, ...agentList];
+  const dropdownOptions = [{ label: 'All', value: 'All' }, ...agentList];
 
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+
       <ReportFilterTM
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -173,25 +184,31 @@ export default function TeamMemberGrid({navigation, route}) {
         }}
         onPressClear={() => console.log('clear ', policyValues)}
         Name="Report Filter"
-        initialValues={{type: SelectedType, month: SelectedMonth, view: value}}
+        initialValues={{ type: SelectedType, month: SelectedMonth, view: value }}
         onViewDetailsChange={value => setValue(value)}
         onTypeChange={value => setSelectedType(value)}
         onMonthChange={value => setSelectedMonth(value)}
 
-        // onBranchChange={value => setBranch(value)}
+      // onBranchChange={value => setBranch(value)}
       />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
+      <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
             Title={'Team Member Report'}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
           />
         ) : (
           <Header
             Title={'Team Member Report'}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
             haveFilters={false}
             haveWhatsapp={false}
             haveMenu={false}
@@ -210,9 +227,9 @@ export default function TeamMemberGrid({navigation, route}) {
           paddingRight: 20,
         }}>
         {isLandscape == false && (
-          <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+          <View style={{ alignItems: 'flex-end', marginHorizontal: 20 }}>
             <TouchableOpacity
-              style={{flexDirection: 'row', gap: 5}}
+              style={{ flexDirection: 'row', gap: 5 }}
               onPress={() => setModalVisible(true)}>
               <Text
                 style={{
@@ -232,7 +249,7 @@ export default function TeamMemberGrid({navigation, route}) {
         )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5}}>
+          style={{ flexDirection: 'row', gap: 5 }}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -266,7 +283,7 @@ export default function TeamMemberGrid({navigation, route}) {
               justifyContent: 'flex-end',
               marginTop: -5,
             }}>
-            <View style={{flex: 0.19, marginHorizontal: 2}}>
+            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
@@ -275,12 +292,12 @@ export default function TeamMemberGrid({navigation, route}) {
                 nonClearable={true}
                 onValueChange={setValue}
                 dropdownData={[
-                  {label: 'Value', value: 1},
-                  {label: 'NOP', value: 2},
+                  { label: 'Value', value: 1 },
+                  { label: 'NOP', value: 2 },
                 ]}
               />
             </View>
-            <View style={{flex: 0.2, marginHorizontal: 2}}>
+            <View style={{ flex: 0.2, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
@@ -297,12 +314,12 @@ export default function TeamMemberGrid({navigation, route}) {
                   // 👈 If value is null, use 'ALL'
                 }}
                 dropdownData={[
-                  {label: 'General Cumulative', value: 'G'},
-                  {label: 'Motor Monthly', value: 'M'},
+                  { label: 'General Cumulative', value: 'G' },
+                  { label: 'Motor Monthly', value: 'M' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.18, marginHorizontal: 2}}>
+            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
@@ -317,47 +334,41 @@ export default function TeamMemberGrid({navigation, route}) {
                 dropdownData={
                   SelectedType == 'M'
                     ? [
-                        {label: 'January', value: '01'},
-                        {label: 'February', value: '02'},
-                        {label: 'March', value: '03'},
-                        {label: 'April', value: '04'},
-                        {label: 'May', value: '05'},
-                        {label: 'June', value: '06'},
-                        {label: 'July', value: '07'},
-                        {label: 'August', value: '08'},
-                        {label: 'September', value: '09'},
-                        {label: 'October', value: '10'},
-                        {label: 'November', value: '11'},
-                        {label: 'December', value: '12'},
-                      ]
+                      { label: 'January', value: '01' },
+                      { label: 'February', value: '02' },
+                      { label: 'March', value: '03' },
+                      { label: 'April', value: '04' },
+                      { label: 'May', value: '05' },
+                      { label: 'June', value: '06' },
+                      { label: 'July', value: '07' },
+                      { label: 'August', value: '08' },
+                      { label: 'September', value: '09' },
+                      { label: 'October', value: '10' },
+                      { label: 'November', value: '11' },
+                      { label: 'December', value: '12' },
+                    ]
                     : SelectedType == 'G'
-                    ? [{label: 'Cumulative', value: '00'}]
-                    : [
-                        {label: 'Cumulative', value: '00'},
-                        {label: 'January', value: '01'},
-                        {label: 'February', value: '02'},
-                        {label: 'March', value: '03'},
-                        {label: 'April', value: '04'},
-                        {label: 'May', value: '05'},
-                        {label: 'June', value: '06'},
-                        {label: 'July', value: '07'},
-                        {label: 'August', value: '08'},
-                        {label: 'September', value: '09'},
-                        {label: 'October', value: '10'},
-                        {label: 'November', value: '11'},
-                        {label: 'December', value: '12'},
+                      ? [{ label: 'Cumulative', value: '00' }]
+                      : [
+                        { label: 'Cumulative', value: '00' },
+                        { label: 'January', value: '01' },
+                        { label: 'February', value: '02' },
+                        { label: 'March', value: '03' },
+                        { label: 'April', value: '04' },
+                        { label: 'May', value: '05' },
+                        { label: 'June', value: '06' },
+                        { label: 'July', value: '07' },
+                        { label: 'August', value: '08' },
+                        { label: 'September', value: '09' },
+                        { label: 'October', value: '10' },
+                        { label: 'November', value: '11' },
+                        { label: 'December', value: '12' },
                       ]
                 }
               />
             </View>
-            {/* <View style={{ flex: 0.19, marginHorizontal: 2 }}>
-              <DropdownComponent
-                label={'Agent'}
-                mode={'modal'}
-                dropdownData={dropdownOptions}
-              />
-            </View> */}
-            <View style={{flex: 0.13, marginHorizontal: 2}}>
+
+            <View style={{ flex: 0.13, marginHorizontal: 2 }}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -380,13 +391,7 @@ export default function TeamMemberGrid({navigation, route}) {
               columnWidths={columnWidths}
             />
           )}
-          {/* <HorizontalReportTable
-            onPress={() => navigation.navigate('PolicyDetails')}
-            haveTotal={false}
-            tableHead={tableHead}
-            tableData={tableData}
-            columnWidths={columnWidths}
-          /> */}
+
         </View>
       ) : (
         <FlatList
@@ -411,19 +416,25 @@ export default function TeamMemberGrid({navigation, route}) {
               )}
             </View>
           }
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View
               style={{
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3,  // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
-                  style={{height: 17, width: 17}}
+                  style={{ height: 17, width: 17 }}
                   source={Building}></Image>
                 <Text
                   style={{
@@ -444,86 +455,79 @@ export default function TeamMemberGrid({navigation, route}) {
                   gap: 10,
                   width: '100%',
                 }}>
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'Renewal'}
                     value={
                       value == 1
                         ? item?.renewal != null
                           ? Number(item.renewal).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopRenewal != null
-                        ? Number(item.nopRenewal).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopRenewal).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'NB'}
-                    // value={
-                    //   item?.nb !== null && item?.nb !== undefined
-                    //     ? Number(item?.nb).toLocaleString('en-US', {
-                    //         minimumFractionDigits: 2,
-                    //         maximumFractionDigits: 2,
-                    //       })
-                    //     : ''
-                    // }
+
 
                     value={
                       value == 1
                         ? item?.nb != null
                           ? Number(item.nb).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopNew != null
-                        ? Number(item.nopNew).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopNew).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
               </View>
 
               {/* Second Row */}
-              <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'PPW'}
                     value={
                       value == 1
                         ? item?.refundPpw != null
                           ? Number(item.refundPpw).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopPpw != null
-                        ? Number(item.nopPpw).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopPpw).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'Others'}
                     value={
                       value == 1
                         ? item?.refundOther != null
                           ? Number(item.refundOther).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopOtherRefund != null
-                        ? Number(item.nopOtherRefund).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopOtherRefund).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
@@ -537,13 +541,13 @@ export default function TeamMemberGrid({navigation, route}) {
                     value == 1
                       ? item?.endorsement != null
                         ? Number(item.endorsement).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
                         : ''
                       : item?.nopEndorsements != null
-                      ? Number(item.nopEndorsements).toLocaleString('en-US')
-                      : ''
+                        ? Number(item.nopEndorsements).toLocaleString('en-US')
+                        : ''
                   }
                 />
               </View>
@@ -554,37 +558,21 @@ export default function TeamMemberGrid({navigation, route}) {
                   value={Number(
                     value == 1
                       ? (item?.renewal ?? 0) +
-                          (item?.nb ?? 0) +
-                          (item?.refundPpw ?? 0) +
-                          (item?.refundOther ?? 0) +
-                          (item?.endorsement ?? 0)
+                      (item?.nb ?? 0) +
+                      (item?.refundPpw ?? 0) +
+                      (item?.refundOther ?? 0) +
+                      (item?.endorsement ?? 0)
                       : (item?.nopRenewal ?? 0) +
-                          (item?.nopPpw ?? 0) +
-                          (item?.nopNew ?? 0) +
-                          (item?.nopOtherRefund ?? 0) +
-                          (item?.nopEndorsements ?? 0),
+                      (item?.nopPpw ?? 0) +
+                      (item?.nopNew ?? 0) +
+                      (item?.nopOtherRefund ?? 0) +
+                      (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
 
-                  // value={
-                  //   value == 1
-                  //     ? (
-                  //         (item?.renewal ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.refundPpw ?? 0) +
-                  //         (item?.refundOther ?? 0) +
-                  //         (item?.endorsement ?? 0)
-                  //       ).toLocaleString()
-                  //     : (
-                  //         (item?.nopRenewal ?? 0) +
-                  //         (item?.nopPpw ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.nopOtherRefund ?? 0) +
-                  //         (item?.nopEndorsements ?? 0)
-                  //       ).toLocaleString()
-                  // }
+
                 />
               </View>
             </View>
@@ -602,12 +590,45 @@ export default function TeamMemberGrid({navigation, route}) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{width: 50, height: 50}}
+            style={{ width: 50, height: 50 }}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />
         </View>
       )}
+      {/* {isLandscape && !(deviceOrientation === "LANDSCAPE-LEFT" || deviceOrientation === "LANDSCAPE-RIGHT") && (
+     
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: COLORS.background,
+            justifyContent: 'center',
+            alignItems: 'center',
+           
+          }}>
+            <View style={{gap:25, justifyContent: 'center',
+            alignItems: 'center',marginBottom:20}}>
+              <Image
+                               style={{height: window.width*0.17, width: window.width*0.17,}}
+                               source={Rotate}></Image>
+          <Text
+            style={{
+              color: COLORS.primary,
+              fontSize: 17,
+              fontWeight: '600',
+              textAlign: 'center',
+              paddingHorizontal: 20,
+            }}>
+            Please rotate left the screen to show content
+          </Text>
+              </View>
+          
+        </View>
+      )} */}
     </View>
   );
 }

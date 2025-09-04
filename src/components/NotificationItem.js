@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {TouchableOpacity, Text, View, StyleSheet, Animated} from 'react-native';
-import {Swipeable} from 'react-native-gesture-handler'; // Import Swipeable
+import { TouchableOpacity, Text, View, StyleSheet, Animated, Platform } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler'; // Import Swipeable
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 import {
@@ -10,18 +10,18 @@ import {
 import moment from 'moment';
 import Fonts from '../theme/Fonts';
 
-export default function NotificationItem({item, navigation, onDelete}) {
+export default function NotificationItem({ item, navigation, onDelete }) {
   const [readNotification] = useReadNotificationMutation();
   const [deleteNotification] = useDeleteNotificationMutation();
 
   const handleReadNotification = async () => {
-    await readNotification({notificationId: [item?.notificationId]}); // API call
-    navigation.navigate('PolicyDetails', {policyNo: item.policyNo});
+    await readNotification({ notificationId: [item?.notificationId] }); // API call
+    navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
 
   const handleDeleteNotification = async () => {
     console.log('test', item.policyNo);
-    await deleteNotification({notificationId: [item?.notificationId]}); // API call
+    await deleteNotification({ notificationId: [item?.notificationId] }); // API call
     // navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
 
@@ -41,7 +41,7 @@ export default function NotificationItem({item, navigation, onDelete}) {
     //   </View>
     // );
     return (
-      <Animated.View style={[style.deleteButton, {transform: [{translateX}]}]}>
+      <Animated.View style={[style.deleteButton, { transform: [{ translateX }] }]}>
         <TouchableOpacity
           onPress={() => handleDeleteNotification()} // Trigger delete action
           style={style.deleteButtonContent}>
@@ -61,7 +61,16 @@ export default function NotificationItem({item, navigation, onDelete}) {
         onPress={() => handleReadNotification()}
         style={[
           style.cardWrap,
-          {elevation: 5, marginVertical: 10, marginHorizontal: 5},
+          {
+            elevation: 5,
+            shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+            marginVertical: 10, marginHorizontal: 5
+          },
         ]}>
         <View
           style={[
@@ -71,13 +80,18 @@ export default function NotificationItem({item, navigation, onDelete}) {
                 item.isRead == true ? COLORS.warmGray : COLORS.primaryGreen,
             },
           ]}></View>
-        <View style={{flex: 0.95}}>
-          <View style={{padding: 10}}>
+        <View style={{ flex: 0.95 }}>
+          <View style={{ padding: 10 }}>
             <View style={style.topline}>
-              <Text style={style.topic}>{item.title}</Text>
-              <Text style={style.date}>
+              <View style={{flex:0.63,}}>
+ <Text style={style.topic} numberOfLines={1}>{item.title}</Text>
+              </View>
+           <View style={{flex:0.37,alignItems:'flex-end'}}>
+ <Text style={style.date}>
                 {moment(item.eventDate).format('DD MMM YYYY, hh:mm A')}
               </Text>
+             </View>
+             
             </View>
 
             <Text style={style.name}>{item.name}</Text>
@@ -108,7 +122,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     // marginVertical: 7,
     borderRadius: 20,
-    overflow: 'hidden',
+   overflow: 'visible',
     backgroundColor: COLORS.white,
 
     // marginHorizontal: 5,
@@ -116,6 +130,9 @@ const style = StyleSheet.create({
   leftBorder: {
     flex: 0.05,
     backgroundColor: COLORS.primaryGreen,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius:20,
+    overflow:'hidden'
   },
   topic: {
     fontFamily: Fonts.Roboto.Bold,
@@ -123,7 +140,7 @@ const style = StyleSheet.create({
     fontSize: 16,
   },
   date: {
-    fontSize: 10,
+    fontSize: Platform.OS === 'ios'? 10: 9,
     color: COLORS.textColor,
     fontFamily: Fonts.Roboto.Regular,
   },

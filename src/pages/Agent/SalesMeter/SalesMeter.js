@@ -156,7 +156,7 @@ export default function SalesMeter({navigation}) {
           });
 
   tableData?.push(['Total', totalPremiumSum || 0, totalCommissionSum || 0]);
-  const columnWidths = [100, 110, 110];
+  const columnWidths = [80, 125, 125];
 
   // API Binds
 
@@ -290,6 +290,7 @@ export default function SalesMeter({navigation}) {
                       value={monthlySalePercentage || 0}
                       radius={63}
                       duration={2000}
+                        strokeLinecap='butt'
                       progressValueColor={COLORS.textColor}
                       maxValue={100}
                       activeStrokeWidth={15}

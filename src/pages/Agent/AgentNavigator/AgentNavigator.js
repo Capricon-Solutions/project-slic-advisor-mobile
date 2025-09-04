@@ -37,11 +37,13 @@ function AgengNavigator({state, descriptors, navigation}) {
         backgroundColor: colors.card,
         borderTopWidth: 1,
         borderColor: colors.border,
-        // paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+      
+        //  paddingBottom: Platform.OS === 'ios' ? 10 : 0,
       }}>
       <StatusBar
         backgroundColor={COLORS.TopBackColor}
-        barStyle="dark-content"
+        
+         barStyle="dark-content"
       />
 
       {state.routes.map((route, index) => {

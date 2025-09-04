@@ -262,7 +262,9 @@ export default function Dashboard({navigation}) {
       .join(''); // Join them together
   };
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0}]}>
+    <View style={[Styles.container, {paddingHorizontal: 0,  
+    marginTop: Platform.OS === 'ios' ? -10 : 0,
+    }]}>
       {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
 
       <BottomModal
@@ -422,6 +424,7 @@ export default function Dashboard({navigation}) {
             totalNumberofRegions={totalNumberofRegions}
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
+             loading={achiveLoading}
             branchRank={branchRank}
             islandRank={islandRank}
             onPress={() => {
@@ -466,6 +469,7 @@ export default function Dashboard({navigation}) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
+             loading={achiveLoading}
             islandRank={islandRank}
             onPress={() => {
               navigation.navigate('SalesMeter');

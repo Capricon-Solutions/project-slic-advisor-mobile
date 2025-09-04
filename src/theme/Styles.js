@@ -10,7 +10,7 @@ export const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    // paddingVertical: Platform.OS === 'ios' ? window.height*0.03 : 0
+    // paddingBottom: Platform.OS === 'ios' ? window.height*0.1 : 0
   },
   // Login
   customTheme: {
@@ -165,6 +165,18 @@ export const Styles = StyleSheet.create({
     width: squareSize,
     padding: 5,
     elevation: 7,
+      shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+     shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -186,8 +198,13 @@ export const Styles = StyleSheet.create({
     height: window.height * 0.29,
     marginVertical: window.height * 0.02,
     elevation: 10,
-
-    overflow: 'hidden',
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    // overflow: 'hidden',
     flexDirection: 'row',
   },
 
@@ -237,6 +254,12 @@ export const Styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 3,
+        shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
   departmentListWrap: {
     backgroundColor: COLORS.background,
@@ -258,6 +281,12 @@ export const Styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: COLORS.lightBorder,
     elevation: 3,
+       shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 
   leadSearchListWrap: {
@@ -277,6 +306,12 @@ export const Styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 3,
+        shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+     shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
   noticeContainer: {
     backgroundColor: COLORS.yellow,

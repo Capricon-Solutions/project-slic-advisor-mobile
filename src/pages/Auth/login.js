@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,9 +7,11 @@ import {
   Text,
   Dimensions,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import {TextInput, Checkbox} from 'react-native-paper';
-import Svg, {Path} from 'react-native-svg';
+import { TextInput, Checkbox } from 'react-native-paper';
+import Svg, { Path } from 'react-native-svg';
 import Logo from '../../icons/Logo.png'; // Replace with the actual logo path
 import COLORS from '../../theme/colors';
 import SquareTextBox from '../../components/SquareTextBox';
@@ -17,15 +19,15 @@ import Button from '../../components/Button';
 import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
-import {styles} from './styles';
+import { styles } from './styles';
 import {
   useChangePasswordMutation,
   useGetHelpQuery,
   useUserLoginMutation,
 } from '../../redux/services/loginSlice';
-import {showToast} from '../../components/ToastMessage';
+import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   GetprofileResponse,
   SetPersonalCode,
@@ -33,14 +35,14 @@ import {
   Settoken,
   SetUserCode,
 } from '../../redux/services/ProfileSlice';
-import {CommonActions} from '@react-navigation/native';
-import {GetuserType, SetagentCode} from '../../redux/services/userTypeSlice';
+import { CommonActions } from '@react-navigation/native';
+import { GetuserType, SetagentCode } from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 // const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
@@ -49,7 +51,7 @@ const LoginScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const [errorShow, setErrorShow] = useState(false);
-  const {data: help, isLoading, error} = useGetHelpQuery();
+  const { data: help, isLoading, error } = useGetHelpQuery();
 
   useEffect(() => {
     console.log('help response', help);
@@ -77,14 +79,14 @@ const LoginScreen = ({navigation}) => {
     loadUsername();
   }, []);
 
-  const [userLogin, {isLoading: loginLoading, error: loginError, data}] =
+  const [userLogin, { isLoading: loginLoading, error: loginError, data }] =
     useUserLoginMutation();
 
   function navigator() {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{name: 'NavigateToAppStack'}],
+        routes: [{ name: 'NavigateToAppStack' }],
         // The name of the Stack.Screen
       }),
     );
@@ -167,7 +169,7 @@ const LoginScreen = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.container}>
       {/* Rectangle with Curved Bottom */}
 
       <AboutModal
@@ -192,7 +194,7 @@ const LoginScreen = ({navigation}) => {
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
       {/* <Text>{username}</Text> */}
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         {/* <SquareTextBox
           Title={'Username'}
           value={username}
@@ -215,7 +217,7 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
 
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         <SquareTextBox
           Title={'Enter Password '}
           Secure={true}
@@ -230,25 +232,47 @@ const LoginScreen = ({navigation}) => {
       </View>
 
       {/* Remember Me and Forgot Password */}
-      <View style={styles.row}>
-        <View style={styles.rememberMe}>
-          <Checkbox
-            uncheckedColor={COLORS.subtext}
-            color={COLORS.primary}
-            status={rememberMe ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setRememberMe(!rememberMe);
-            }}
-          />
+      <View style={[styles.row, {}]}>
+        <TouchableOpacity onPress={() => {
+          setRememberMe(!rememberMe);
+        }} style={styles.rememberMe}>
+          <View style={{ position: 'relative' }}>
+            {Platform.OS === 'ios' &&
+              <View style={{
+                width: 21,
+                height: 21,
+                borderRadius: 2.5,
+                borderWidth: 2.2,
+                borderColor: rememberMe ? COLORS.primary : COLORS.subtext,
+                position: 'absolute',
+                alignSelf: 'center',
+                top: '50%',
+                transform: [{ translateY: -10.5 }],
+              }}>
+
+              </View>
+            }
+
+            <Checkbox
+
+              uncheckedColor={COLORS.subtext}
+              color={COLORS.primary}
+              status={rememberMe ? 'checked' : 'unchecked'}
+              onPress={() => {
+                setRememberMe(!rememberMe);
+              }}
+            />
+          </View>
+
           <Text style={styles.checkboxLabel}>Remember Me</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => setModalVisible2(true)}>
           <Text style={styles.forgotPassword}>Forgot Password ?</Text>
         </TouchableOpacity>
       </View>
 
       {/* Login Button */}
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{ width: '100%', alignItems: 'center' }}>
         <Button
           isLoading={loginLoading}
           onPress={() => handleSubmit()}
@@ -271,7 +295,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       } */}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

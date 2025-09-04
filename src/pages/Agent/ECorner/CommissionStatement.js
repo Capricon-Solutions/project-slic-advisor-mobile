@@ -29,6 +29,7 @@ import MonthYearPicker from '../../../components/MonthYearPicker';
 import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import moment from 'moment';
 import FileViewer from 'react-native-file-viewer';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import {showToast} from '../../../components/ToastMessage';
 import {useSelector} from 'react-redux';
@@ -189,93 +190,178 @@ export default function CommissionStatement({navigation}) {
   //     setLoading(false);
   //   }
   // };
-  const openDocument = async url => {
-    try {
-      console.log('Opening document from URL:', url);
-      if (!url) return;
+  // const openDocument = async url => {
+  //   try {
+  //     console.log('Opening document from URL:', url);
+  //     if (!url) return;
 
-      let fileName = url.split('/').pop() || 'document.pdf';
-      if (!fileName.endsWith('.pdf')) fileName += '.pdf';
-      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+  //     let fileName = url.split('/').pop() || 'document.pdf';
+  //     if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
-      const hasPermission = await requestStoragePermission();
-      if (!hasPermission) {
-        Alert.alert(
-          'Permission Denied',
-          'Storage permission is required to download files.',
-        );
-        return;
-      }
+  //     const hasPermission = await requestStoragePermission();
+  //     if (!hasPermission) {
+  //       Alert.alert(
+  //         'Permission Denied',
+  //         'Storage permission is required to download files.',
+  //       );
+  //       return;
+  //     }
 
-      setLoading(true);
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+  //     setLoading(true);
+  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
 
-      // 🔹 First, do a quick fetch to check if response is JSON error
-      const checkRes = await fetch(url, {
-        headers: {
-          'x-api-key': apiKey,
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const contentType = checkRes.headers.get('content-type') || '';
+  //     // 🔹 First, do a quick fetch to check if response is JSON error
+  //     const checkRes = await fetch(url, {
+  //       headers: {
+  //         'x-api-key': apiKey,
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     const contentType = checkRes.headers.get('content-type') || '';
 
-      if (contentType.includes('application/json')) {
-        const errorData = await checkRes.json();
-        showToast({
-          type: 'error',
-          text1: 'Request Failed',
-          text2: errorData?.message || 'No data found for this request',
-        });
-        return; // 🚫 stop here, don’t download
-      }
+  //     if (contentType.includes('application/json')) {
+  //       const errorData = await checkRes.json();
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'Request Failed',
+  //         text2: errorData?.message || 'No data found for this request',
+  //       });
+  //       return; // 🚫 stop here, don’t download
+  //     }
 
-      // 🔹 Continue with RNFS download since it's a PDF
-      const downloadJob = RNFS.downloadFile({
-        fromUrl: url,
-        toFile: localFilePath,
-        headers: {
-          'x-api-key': apiKey,
-          Authorization: `Bearer ${token}`,
-        },
-        progress: res => {
-          const percent = (res.bytesWritten / res.contentLength) * 100;
-          setProgress(percent);
-        },
-        progressDivider: 10,
-      });
+  //     // 🔹 Continue with RNFS download since it's a PDF
+  //     const downloadJob = RNFS.downloadFile({
+  //       fromUrl: url,
+  //       toFile: localFilePath,
+  //       headers: {
+  //         'x-api-key': apiKey,
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       progress: res => {
+  //         const percent = (res.bytesWritten / res.contentLength) * 100;
+  //         setProgress(percent);
+  //       },
+  //       progressDivider: 10,
+  //     });
 
-      await downloadJob.promise;
+  //     await downloadJob.promise;
 
-      await FileViewer.open(localFilePath, {
-        showOpenWithDialog: true,
-        showAppsSuggestions: true,
-        displayName: 'Your PDF Report',
-        mimeType: 'application/pdf',
-      });
+  //     await FileViewer.open(localFilePath, {
+  //       showOpenWithDialog: true,
+  //       showAppsSuggestions: true,
+  //       displayName: 'Your PDF Report',
+  //       mimeType: 'application/pdf',
+  //     });
 
-      console.log('File opened successfully');
-    } catch (err) {
-      console.error('openDocument error:', err);
+  //     console.log('File opened successfully');
+  //   } catch (err) {
+  //     console.error('openDocument error:', err);
 
-      if (/No app associated/i.test(err?.message)) {
-        showToast({
-          type: 'error',
-          text1: 'No PDF viewer found',
-          text2: 'Install a PDF reader and try again.',
-        });
-      } else {
-        showToast({
-          type: 'error',
-          text1: 'File Error',
-          text2: err?.message || 'Could not download or open the file.',
-        });
-      }
-    } finally {
-      setLoading(false);
-      setProgress(0);
+  //     if (/No app associated/i.test(err?.message)) {
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'No PDF viewer found',
+  //         text2: 'Install a PDF reader and try again.',
+  //       });
+  //     } else {
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'File Error',
+  //         text2: err?.message || 'Could not download or open the file.',
+  //       });
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //     setProgress(0);
+  //   }
+  // };
+const openDocument = async (url) => {
+  try {
+    console.log('Opening document from URL:', url);
+    if (!url) return;
+
+    let fileName = url.split('/').pop() || 'document.pdf';
+    if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+
+    const hasPermission = await requestStoragePermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Denied',
+        'Storage permission is required to download files.',
+      );
+      return;
     }
-  };
 
+    setLoading(true);
+    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+    // 🔹 Quick HEAD/GET to check if response is JSON error
+    const checkRes = await fetch(url, {
+      headers: {
+        'x-api-key': apiKey,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const contentType = checkRes.headers.get('content-type') || '';
+
+    if (contentType.includes('application/json')) {
+      const errorData = await checkRes.json();
+      showToast({
+        type: 'error',
+        text1: 'Request Failed',
+        text2: errorData?.message || 'No data found for this request',
+      });
+      return; // 🚫 stop here, don’t download
+    }
+
+    // 🔹 Use BlobUtil for reliable download + progress
+    const res = await ReactNativeBlobUtil.config({
+      fileCache: true,
+      path: localFilePath,
+    })
+      .fetch('GET', url, {
+        'x-api-key': apiKey,
+        Authorization: `Bearer ${token}`,
+      })
+      .progress({ count: 10 }, (received, total) => {
+        const percent = (received / total) * 100;
+        console.log(`Download progress: ${percent.toFixed(2)}%`);
+        setProgress(percent);
+      });
+
+    console.log('Download completed:', res.path());
+
+    await FileViewer.open(res.path(), {
+      showOpenWithDialog: true,
+      showAppsSuggestions: true,
+      displayName: 'Your PDF Report',
+      mimeType: 'application/pdf',
+    });
+
+    console.log('File opened successfully');
+  } catch (err) {
+    console.error('openDocument error:', err);
+
+    if (/No app associated/i.test(err?.message)) {
+      showToast({
+        type: 'error',
+        text1: 'No PDF viewer found',
+        text2: 'Install a PDF reader and try again.',
+      });
+    } else {
+      showToast({
+        type: 'error',
+        text1: 'File Error',
+        text2: err?.message || 'Could not download or open the file.',
+      });
+    }
+  } finally {
+    setLoading(false);
+    setProgress(0);
+  }
+};
   useEffect(() => {
     const formattedYear = moment(selectedDate, 'YYYY/MM').format('YYYY');
     const formattedMonth = moment(selectedDate, 'YYYY/MM').format('MMMM');
@@ -304,6 +390,12 @@ export default function CommissionStatement({navigation}) {
             borderRadius: 10,
             padding: 20,
             elevation: 5,
+              shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
             marginVertical: 5,
           }}>
           <Text
@@ -366,6 +458,12 @@ export default function CommissionStatement({navigation}) {
             borderRadius: 10,
             padding: 20,
             elevation: 5,
+              shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
             marginVertical: 10,
           }}>
           <Text

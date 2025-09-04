@@ -7,7 +7,7 @@ import {
   Image,
   Linking,
   StyleSheet,
-  SafeAreaView,
+
   Alert,
   PermissionsAndroid,
   Platform,
@@ -23,6 +23,7 @@ import {useSelector} from 'react-redux';
 import {showToast} from './ToastMessage';
 import Share from 'react-native-share'; // Ensure this is installed and imported
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const window = Dimensions.get('window');
 
@@ -33,7 +34,7 @@ export default function ELetterItems({item, navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      console.log('Requesting storage permission...');
+      // console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -59,84 +60,144 @@ export default function ELetterItems({item, navigation}) {
   };
 
   // Download and open PDF
-  const downloadAndOpenPDF = async path => {
-    console.log('test');
-    try {
-      const hasPermission = await requestStoragePermission();
-      if (!hasPermission) {
-        showToast({
-          type: 'error',
-          text1: 'Permission Denied',
-          text2:
-            'Storage permission is required to download and view the file.',
-        });
-        return;
-      }
-      showToast({
-        type: 'success',
-        text1: 'Download Started',
-        text2: 'Please wait until download and open the file.',
-      });
-      setIsDownloading(true);
-      setDownloadProgress(0);
-      const pdfUrl = path;
-      // let fileName = pdfUrl.split('/').pop();
-      let fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
-      if (!fileName.endsWith('.pdf')) {
-        fileName += '.pdf';
-      }
-      if (!fileName.endsWith('.pdf')) {
-        fileName += '.pdf';
-      }
-      const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-      console.log('Starting download from:', pdfUrl);
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-      const downloadOptions = {
-        fromUrl: pdfUrl,
-        toFile: localFilePath,
-        headers: {
-          'x-api-key': apiKey,
-          Authorization: `Bearer ${token}`,
-        },
-        progress: res => {
-          const progress = res.bytesWritten / res.contentLength;
-          setDownloadProgress(progress);
-        },
-        progressDivider: 10,
-      };
+  // const downloadAndOpenPDF = async path => {
+  //   // console.log('test');
+  //   try {
+  //     const hasPermission = await requestStoragePermission();
+  //     if (!hasPermission) {
+  //       showToast({
+  //         type: 'error',
+  //         text1: 'Permission Denied',
+  //         text2:
+  //           'Storage permission is required to download and view the file.',
+  //       });
+  //       return;
+  //     }
+  //     showToast({
+  //       type: 'success',
+  //       text1: 'Download Started',
+  //       text2: 'Please wait until download and open the file.',
+  //     });
+  //     setIsDownloading(true);
+  //     setDownloadProgress(0);
+  //     const pdfUrl = path;
+  //     // let fileName = pdfUrl.split('/').pop();
+  //     let fileName = pdfUrl.split('/').pop()?.split('?')[0] || 'file.pdf';
+  //     if (!fileName.endsWith('.pdf')) {
+  //       fileName += '.pdf';
+  //     }
+  //     if (!fileName.endsWith('.pdf')) {
+  //       fileName += '.pdf';
+  //     }
+  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+  //     // console.log('Starting download from:', pdfUrl);
+  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+  //     const downloadOptions = {
+  //       fromUrl: pdfUrl,
+  //       toFile: localFilePath,
+  //       headers: {
+  //         'x-api-key': apiKey,
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       progress: res => {
+  //         const progress = res.bytesWritten / res.contentLength;
+  //         setDownloadProgress(progress);
+  //       },
+  //       progressDivider: 10,
+  //     };
 
-      const download = RNFS.downloadFile(downloadOptions);
-      console.log('Download started:', download);
-      const result = await download.promise;
-      // Linking.openURL(localFilePath).catch();
-      console.log('Download completed:', result.statusCode);
+  //     const download = RNFS.downloadFile(downloadOptions);
+  //     console.log('Download started:', download);
+  //     const result = await download.promise;
+  //     // Linking.openURL(localFilePath).catch();
+  //     console.log('Download completed:', result.statusCode);
 
-      if (result.statusCode === 200) {
-        // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-        // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-        await FileViewer.open(localFilePath, {
-          showOpenWithDialog: true,
-          displayName: 'Your PDF Report',
-          mimeType: 'application/pdf',
-        });
-        console.log('PDF opened successfully!');
-      } else {
-        throw new Error(
-          `Download failed with status code ${result.statusCode}`,
-        );
-      }
-    } catch (error) {
-      console.error('Download/Open error:', error);
+  //     if (result.statusCode === 200) {
+  //       // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
+  //       // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
+  //       await FileViewer.open(localFilePath, {
+  //         showOpenWithDialog: true,
+  //         displayName: 'Your PDF Report',
+  //         mimeType: 'application/pdf',
+  //       });
+  //       // console.log('PDF opened successfully!');
+  //     } else {
+  //       throw new Error(
+  //         `Download failed with status code ${result.statusCode}`,
+  //       );
+  //     }
+  //   } catch (error) {
+  //     // console.error('Download/Open error:', error);
+  //     showToast({
+  //       type: 'error',
+  //       text1: 'Download Error',
+  //       text2: 'Failed to download or open the PDF file.',
+  //     });
+  //     // Alert.alert('Error', 'Failed to download or open the PDF file.');
+  //   } finally {
+  //     setIsDownloading(false);
+  //   }
+  // };
+const downloadAndOpenPDF = async (path) => {
+  try {
+    const hasPermission = await requestStoragePermission();
+    if (!hasPermission) {
       showToast({
         type: 'error',
-        text1: 'Download Error',
-        text2: 'Failed to download or open the PDF file.',
+        text1: 'Permission Denied',
+        text2: 'Storage permission is required to download and view the file.',
       });
-      // Alert.alert('Error', 'Failed to download or open the PDF file.');
-    } finally {
-      setIsDownloading(false);
+      return;
     }
-  };
+
+    showToast({
+      type: 'success',
+      text1: 'Download Started',
+      text2: 'Please wait until download and open the file.',
+    });
+
+    setIsDownloading(true);
+    setDownloadProgress(0);
+
+    let fileName = path.split('/').pop()?.split('?')[0] || 'file.pdf';
+    if (!fileName.endsWith('.pdf')) {
+      fileName += '.pdf';
+    }
+
+    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+
+    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+    const res = await ReactNativeBlobUtil.config({
+      fileCache: true,
+      path: localFilePath,
+    })
+      .fetch('GET', path, {
+        Authorization: `Bearer ${token}`,
+        'x-api-key': apiKey,
+      })
+      .progress({ count: 10 }, (received, total) => {
+        const progress = received / total;
+        setDownloadProgress(progress);
+      });
+
+    setIsDownloading(false);
+
+    await FileViewer.open(res.path(), {
+      showOpenWithDialog: true,
+      displayName: 'Your PDF Report',
+      mimeType: 'application/pdf',
+    });
+  } catch (error) {
+    console.error('Download/Open error:', error);
+    showToast({
+      type: 'error',
+      text1: 'Download Error',
+      text2: 'Failed to download or open the PDF file.',
+    });
+    setIsDownloading(false);
+  }
+};
 
   const sharePDF = async (pdfUrl, fileName, token, apiKey) => {
     try {
@@ -166,7 +227,7 @@ export default function ELetterItems({item, navigation}) {
           setDownloadProgress(progress);
         });
 
-      console.log('Sanitized file path:', res.path());
+      // console.log('Sanitized file path:', res.path());
       setIsDownloading(false);
       await Share.open({
         url: `file://${res.path()}`,
@@ -187,7 +248,7 @@ export default function ELetterItems({item, navigation}) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
           style={{
@@ -346,7 +407,7 @@ export default function ELetterItems({item, navigation}) {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -354,18 +415,18 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.background,
     marginTop: 15,
-
     padding: 10,
     justifyContent: 'space-between',
     elevation: 10,
     borderRadius: 10,
     shadowColor: '#000',
-
-    // height: 111,
+    
     shadowOffset: {
       width: 0,
       height: 2,
     },
+     shadowOpacity: 0.3, // add opacity
+    shadowRadius: 4.84,  // add blur radius
   },
   subLine: {
     flexDirection: 'row',

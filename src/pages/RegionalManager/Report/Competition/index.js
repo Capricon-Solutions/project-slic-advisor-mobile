@@ -122,6 +122,12 @@ export default function Competition({navigation}) {
           borderRadius: 10,
           backgroundColor: COLORS.lightBlue,
           elevation: 8,
+            shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
           marginBottom: 15,
           marginHorizontal: 20,
           marginTop: 3,

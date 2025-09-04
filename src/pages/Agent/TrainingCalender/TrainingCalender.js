@@ -269,6 +269,12 @@ export default function TrainingCalender({navigation}) {
               backgroundColor: COLORS.white,
               padding: 5,
               elevation: 5,
+                shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
               marginVertical: 15,
             }}>
             <Calendar

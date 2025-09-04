@@ -167,11 +167,16 @@ export default function MeReport({navigation, route}) {
   ]);
   console.log('MEReport', MEReport);
 
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
+
   const toggleOrientation = () => {
+
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
-      Orientation.lockToLandscape(); // Lock screen to landscape mode
+      Orientation.lockToLandscapeLeft(); // Lock screen to landscape mode
     }
     setIsLandscape(!isLandscape);
   };
@@ -227,12 +232,18 @@ export default function MeReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-            onPress={() => navigation.goBack()}
+             onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
           />
         ) : (
           <Header
             Title={Title + ' Report'}
-            onPress={() => navigation.goBack()}
+             onPress={() => {
+              navigation.goBack();
+              Orientation.lockToPortrait();
+            }}
             haveFilters={false}
             haveWhatsapp={false}
             haveMenu={false}
@@ -509,6 +520,12 @@ export default function MeReport({navigation, route}) {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
+                  shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
                 margin: 10,
                 padding: 15,
               }}>

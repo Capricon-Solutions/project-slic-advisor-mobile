@@ -226,6 +226,7 @@ export default function MotorRenewalLetter({navigation}) {
           <TextInput
             style={styles.textInput}
             value={searchText}
+            placeholderTextColor={ COLORS.warmGray}
             onChangeText={v => {
               setSearchText(v);
               handleClear(v); // Now works with latest value

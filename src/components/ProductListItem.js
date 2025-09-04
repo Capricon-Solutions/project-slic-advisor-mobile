@@ -40,6 +40,12 @@ export default function ProductListItem({item, onPress}) {
         // borderWidth: 1,
         // borderColor: COLORS.lightBorder,
         elevation: 3,
+          shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3,  // add blur radius
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
       }}>
       <View
         style={{

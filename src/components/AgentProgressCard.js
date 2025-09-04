@@ -47,7 +47,8 @@ export default function AgentProgressCard({
   const isDataIncomplete =
     !totalIslandRank || !totalNumberofRegions || !totalNumberofBranches;
 
-  if (loading || isDataIncomplete) {
+  // if (loading || isDataIncomplete) {
+  if (loading) {
     return (
       <View
         style={[

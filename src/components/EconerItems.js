@@ -151,9 +151,11 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     flexDirection: 'row',
     // height: 111,
+     shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 3,
     },
   },
 });
