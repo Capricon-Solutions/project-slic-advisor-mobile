@@ -169,7 +169,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.container}>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.container}>
       {/* Rectangle with Curved Bottom */}
 
       <AboutModal
