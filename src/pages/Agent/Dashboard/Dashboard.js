@@ -85,7 +85,7 @@ export default function Dashboard({navigation}) {
     id: usertype == 2 ? personalCode : userCode,
   });
   const regionName = profileResponse?.region;
-
+  console.log('CurrentMonthRank', CurrentMonthRank);
   const {
     data: RMSummeryData,
     error: RMSummeryError,
@@ -262,9 +262,11 @@ export default function Dashboard({navigation}) {
       .join(''); // Join them together
   };
   return (
-    <View style={[Styles.container, {paddingHorizontal: 0,  
-    marginTop: Platform.OS === 'ios' ? -10 : 0,
-    }]}>
+    <View
+      style={[
+        Styles.container,
+        {paddingHorizontal: 0, marginTop: Platform.OS === 'ios' ? -10 : 0},
+      ]}>
       {/* <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" /> */}
 
       <BottomModal
@@ -424,7 +426,7 @@ export default function Dashboard({navigation}) {
             totalNumberofRegions={totalNumberofRegions}
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
-             loading={achiveLoading}
+            loading={achiveLoading}
             branchRank={branchRank}
             islandRank={islandRank}
             onPress={() => {
@@ -469,7 +471,7 @@ export default function Dashboard({navigation}) {
             totalNumberofBranches={totalNumberofBranches}
             regionalRank={regionalRank}
             branchRank={branchRank}
-             loading={achiveLoading}
+            loading={achiveLoading}
             islandRank={islandRank}
             onPress={() => {
               navigation.navigate('SalesMeter');

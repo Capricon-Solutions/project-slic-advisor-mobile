@@ -69,7 +69,7 @@ export default function LeadCreation({navigation, route}) {
   const [isPickerVisible2, setPickerVisible2] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
-  console.log('eventDate', eventDate);
+  // console.log('eventDate', eventDate);
   const [event, setEvent] = useState(-1);
   const [leadType, setLeadType] = useState(null);
   const [policyNo, setPolicyNo] = useState(null);
@@ -912,8 +912,8 @@ export default function LeadCreation({navigation, route}) {
             paddingHorizontal: 10,
             paddingVertical: 6,
             elevation: 10,
-              shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
+            shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3, // add blur radius
             shadowOffset: {
               width: 0,
               height: 3,

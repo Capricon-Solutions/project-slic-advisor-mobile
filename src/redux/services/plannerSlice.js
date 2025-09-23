@@ -17,9 +17,9 @@ export const plannerSlice = baseApi.injectEndpoints({
     }),
     getLeads: builder.query({
       query: ({userCode}) => {
-        console.log('User Code test in url', userCode); // Logs userCode to console whenever the query runs
+        // console.log('User Code test in url', userCode); // Logs userCode to console whenever the query runs
         const url = `planner/GetPlannerLeadList?agentCode=${userCode}`;
-        console.log('Final URL:', url); // Logs to console whenever the query runs
+        // console.log('Final URL:', url); // Logs to console whenever the query runs
         return url;
       },
       providesTags: ['Events'],
@@ -27,7 +27,7 @@ export const plannerSlice = baseApi.injectEndpoints({
     getLeadById: builder.query({
       query: id => {
         const url = `planner/GetPlannerLeadById?Id=${id}`;
-        console.log('Final URL:', url);
+        // console.log('Final URL:', url);
         return url;
       },
     }),
@@ -38,7 +38,7 @@ export const plannerSlice = baseApi.injectEndpoints({
     activityDelete: builder.mutation({
       query: ({activityId, userCode}) => {
         const finalUrl = `planner/removePlannerActivity/${userCode}?activityId=${activityId}`;
-        console.log('Final URL:', finalUrl);
+        // console.log('Final URL:', finalUrl);
 
         return {
           url: finalUrl,

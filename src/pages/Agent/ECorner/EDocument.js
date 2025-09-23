@@ -35,7 +35,7 @@ export default function EDocument({navigation}) {
     if (SelectedType === 3) return EDocument.data.claims;
     return [];
   };
-
+  console.log('EDocument', EDocument);
   // useEffect(() => {
   //   const originalData = getCurrentData();
 
