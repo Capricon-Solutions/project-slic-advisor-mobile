@@ -24,7 +24,7 @@ const TableComponentPR = ({
 }) => {
   const handleCellPress = cellData => {
     navigation.navigate('PolicyDetails', {policyNo: cellData});
-    console.log('Clicked Cell:', cellData);
+    // console.log('Clicked Cell:', cellData);
   };
 
   return (

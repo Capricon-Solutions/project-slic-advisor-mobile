@@ -148,7 +148,7 @@ export default function LeadCreation({navigation, route}) {
   const handleNext = () => {
     // return;
     if (currentStep < StepperItems.length) {
-      console.log(currentStep);
+      // console.log(currentStep);
 
       if (currentStep === 1) {
         if (leadType === 'G') {
@@ -163,15 +163,15 @@ export default function LeadCreation({navigation, route}) {
           }
         }
       } else if (currentStep === 2) {
-        console.log(currentStep);
+        // console.log(currentStep);
         if (validateForm2()) {
-          console.log('trigger2');
+          // console.log('trigger2');
           setCurrentStep(3);
         }
       } else if (currentStep === 3) {
-        console.log('sssef', currentStep);
+        // console.log('sssef', currentStep);
         if (validateForm3()) {
-          console.log('trigger');
+          // console.log('trigger');
           setCurrentStep(4);
         }
       }
@@ -276,7 +276,7 @@ export default function LeadCreation({navigation, route}) {
       // !selectedDate ||
       // !refNo
     ) {
-      console.log('test errors');
+      // console.log('test errors');
       showToast({
         type: 'error',
         text1: 'Validation Error',
@@ -306,7 +306,7 @@ export default function LeadCreation({navigation, route}) {
       return false;
     }
     if (yom && yom.length != 4) {
-      console.log('yom', yom.length);
+      // console.log('yom', yom.length);
       setFormError({
         yom: 'Year of manufacture must be 4 digits.',
       });
@@ -405,7 +405,7 @@ export default function LeadCreation({navigation, route}) {
   const handleLeadCreate = async () => {
     if (!validateForm4()) {
       // Stop if validation fails
-      console.log('work');
+      // console.log('work');
 
       return;
     }
@@ -428,10 +428,10 @@ export default function LeadCreation({navigation, route}) {
     }
 
     try {
-      console.log('body', body);
+      // console.log('body', body);
       const response = await leadCreate(body);
       // setModalVisible(false);
-      console.log('lead Created:', response);
+      // console.log('lead Created:', response);
       if (response?.data?.success == true) {
         showToast({
           type: 'success',

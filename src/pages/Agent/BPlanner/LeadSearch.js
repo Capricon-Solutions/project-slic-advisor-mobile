@@ -43,7 +43,7 @@ export default function LeadSearch({navigation}) {
   );
   const [SelectedType, setSelectedType] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  console.log('userCode', userCode);
+  // console.log('userCode', userCode);
   const SELF = Leads?.data?.filter(lead => lead.leadSource === 'BCON') || [];
   const SLIC = Leads?.data?.filter(lead => lead.leadSource === 'CAMP') || [];
 
@@ -118,7 +118,7 @@ export default function LeadSearch({navigation}) {
         .sort((a, b) => a.priority - b.priority)
     : SLIC;
 
-  console.log('filteredSLIC', filteredSLIC);
+  // console.log('filteredSLIC', filteredSLIC);
 
   const renderDepartmentItem = ({item}) => (
     <LeadSearchItem

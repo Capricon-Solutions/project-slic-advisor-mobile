@@ -76,8 +76,8 @@ export default function IndividualStatistics({navigation}) {
       ? moment().format('YYYY-MM-DD') // today if current month
       : moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD')
     : currentMonthEnd;
-  console.log('selectedDate', selectedDate);
-  console.log('fromDate', fromDate, 'toDate', toDate);
+  // console.log('selectedDate', selectedDate);
+  // console.log('fromDate', fromDate, 'toDate', toDate);
   const {
     data: individualPerf,
     error,
@@ -96,7 +96,7 @@ export default function IndividualStatistics({navigation}) {
       setSelectedYearName(yearName);
     }
   }, [selectedDate]);
-  console.log('selectedMonthName', selectedMonthName);
+  // console.log('selectedMonthName', selectedMonthName);
   const formatNumber = value => Number(value || 0).toLocaleString();
 
   const tableData = [

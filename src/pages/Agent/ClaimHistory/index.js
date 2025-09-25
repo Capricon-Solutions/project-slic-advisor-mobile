@@ -42,7 +42,7 @@ export default function ClaimHistory({navigation, route}) {
   });
   const claimHistoryResponse = ClaimHistory?.data;
 
-  console.log('claimHistoryResponse', ClaimHistory);
+  // console.log('claimHistoryResponse', ClaimHistory);
 
   const DetailLine = ({Title, detail}) => {
     return (

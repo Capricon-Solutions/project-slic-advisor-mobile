@@ -5,7 +5,7 @@ export const ppwSlice = baseApi.injectEndpoints({
     getPPWCanceledList: builder.query({
       query: ({id, pType, fromDate, toDate}) => {
         const url = `agent/getPPWCancelledList/${id}?pType=${pType}&fromDate=${fromDate}&toDate=${toDate}`;
-        console.log('Final URL (PPW Canceled List):', url); // Log the final URL
+        // console.log('Final URL (PPW Canceled List):', url); // Log the final URL
         return url;
       },
     }),
@@ -13,7 +13,7 @@ export const ppwSlice = baseApi.injectEndpoints({
     getPPWReminderList: builder.query({
       query: ({id, pType, fromDate, toDate}) => {
         const url = `agent/getPPWReminder/${id}?pType=${pType}&fromDate=${fromDate}&toDate=${toDate}`;
-        console.log('Final URL (PPW Reminder List):', url); // Log the final URL
+        // console.log('Final URL (PPW Reminder List):', url); // Log the final URL
         return url;
       },
     }),

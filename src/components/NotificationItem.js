@@ -27,7 +27,7 @@ export default function NotificationItem({item, navigation, onDelete}) {
   };
 
   const handleDeleteNotification = async () => {
-    console.log('test', item.policyNo);
+    // console.log('test', item.policyNo);
     await deleteNotification({notificationId: [item?.notificationId]}); // API call
     // navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };

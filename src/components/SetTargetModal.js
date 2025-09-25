@@ -45,13 +45,13 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
     currentDate.getMonth() + 1,
   ).padStart(2, '0')}`;
   const currentTargetDate = moment().format('YYYY/MMMM');
-  console.log('userCode', userCode);
+  // console.log('userCode', userCode);
   const body = {
     agentCode: usertype == 2 ? personalCode : userCode,
     yearMonth: yearMonth,
     target: inputValue,
   };
-  console.log('body', body);
+  // console.log('body', body);
   const handlePostRequest = async () => {
     if (!inputValue) {
       showToast({
@@ -65,7 +65,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
       setInputValue(null);
       setModalVisible(false);
-      console.log('Response:', response.success); // Handle success response
+      // console.log('Response:', response.success); // Handle success response
       if (response.success === true) {
         showToast({
           type: 'success',
@@ -243,12 +243,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     elevation: 10,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: COLORS.lightBorder,

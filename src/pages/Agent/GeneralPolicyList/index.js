@@ -87,16 +87,16 @@ export default function GeneralPolicyList({navigation}) {
   };
 
   useEffect(() => {
-    console.log('searchType', searchType);
+    // console.log('searchType', searchType);
 
     const selectedSearchParam = {
       ...(searchParamMap[searchType] || SearchParams.AllSearch),
       AgentCode: usertype == 2 ? personalCode : userCode, // override AgentCode
     };
-    console.log('selectedSearchParam', selectedSearchParam);
+    // console.log('selectedSearchParam', selectedSearchParam);
     PolicyListResponse(selectedSearchParam)
       .then(response => {
-        console.log('Response:', response);
+        // console.log('Response:', response);
       })
       .catch(err => {
         console.log('Error:', err);
@@ -136,7 +136,7 @@ export default function GeneralPolicyList({navigation}) {
   useEffect(() => {
     // console.log('policyValues', policyValues);
     // console.log('PolicyList', PolicyList);
-    console.log('PolicyListResponse', PolicyListData);
+    // console.log('PolicyListResponse', PolicyListData);
   }, [searchType, PolicyListData]);
 
   const PolicyList = error ? [] : PolicyListData?.data;

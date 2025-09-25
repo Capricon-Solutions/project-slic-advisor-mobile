@@ -103,7 +103,7 @@ export default function Settings({navigation}) {
       CurrentPassword: currentPassword,
       NewPassword: newPassword,
     };
-    console.log('Request body:', body);
+    // console.log('Request body:', body);
     try {
       const response = await changePassword(body).unwrap();
       console.log('Password changed successfully:', response);
@@ -178,7 +178,10 @@ export default function Settings({navigation}) {
             Secure={!showCurrentPassword}
             value={currentPassword}
             setValue={text => {
-              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              const newText = text.replace(
+                /[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g,
+                '',
+              );
               setCurrentPassword(newText);
             }}
             RightIcon={
@@ -205,7 +208,10 @@ export default function Settings({navigation}) {
             Secure={!showNewPassword}
             value={newPassword}
             setValue={text => {
-              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              const newText = text.replace(
+                /[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g,
+                '',
+              );
               setNewPassword(newText);
             }}
             RightIcon={
@@ -255,7 +261,10 @@ export default function Settings({navigation}) {
             Secure={!showConfirmPassword}
             value={confirmPassword}
             setValue={text => {
-              const newText = text.replace(/[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g, '');
+              const newText = text.replace(
+                /[^a-zA-Z0-9!@#$%^&*(),.?":{}|<>]/g,
+                '',
+              );
               setConfirmPassword(newText);
             }}
             RightIcon={

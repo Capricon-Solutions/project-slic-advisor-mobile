@@ -79,13 +79,13 @@ export default function EventCreation({
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      console.log('Creating event with body:', body);
+      // console.log('Creating event with body:', body);
       const response = await EventCreate({
         body,
         userCode: usertype == 2 ? personalCode : userCode,
       });
 
-      console.log('Activity Created test', response);
+      // console.log('Activity Created test', response);
       showToast({
         type: 'success',
         text1: 'Event Created',
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.lightBorder,
     alignItems: 'center',
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

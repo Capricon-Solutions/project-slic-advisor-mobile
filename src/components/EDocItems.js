@@ -38,7 +38,7 @@ export default function EDocItems({item, navigation, onPress}) {
 
         if (apiLevel >= 29) {
           // Scoped storage — permission not required
-          console.log('API 29+ detected. Skipping storage permission.');
+          // console.log('API 29+ detected. Skipping storage permission.');
           return true;
         }
 
@@ -52,7 +52,7 @@ export default function EDocItems({item, navigation, onPress}) {
           },
         );
 
-        console.log('Permission result:', granted);
+        // console.log('Permission result:', granted);
 
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
@@ -128,63 +128,64 @@ export default function EDocItems({item, navigation, onPress}) {
   //     setIsDownloading(false);
   //   }
   // };
-const downloadAndOpenPDF = async (path) => {
-  try {
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
+  const downloadAndOpenPDF = async path => {
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
+        return;
+      }
+
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
+      let fileName = path.endsWith('.pdf') ? path : `${path}.pdf`;
+      const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+
+      // console.log('Starting download from:', pdfUrl);
+
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: localFilePath,
+      })
+        .fetch('GET', pdfUrl, {
+          Authorization: `Bearer ${token}`,
+          'x-api-key': apiKey,
+        })
+        .progress({count: 10}, (received, total) => {
+          const progress = received / total;
+          setDownloadProgress(progress);
+          // console.log('Progress:', progress);
+        });
+
+      // console.log('Download completed:', res.path());
+
+      await FileViewer.open(res.path(), {
+        showOpenWithDialog: true,
+        displayName: 'Your PDF Report',
+        mimeType: 'application/pdf',
+      });
+
+      // console.log('PDF opened successfully!');
+    } catch (error) {
+      console.error('Download/Open error:', error);
       showToast({
         type: 'error',
-        text1: 'Permission Denied',
-        text2: 'Storage permission is required to download and view the file.',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
       });
-      return;
+    } finally {
+      setIsDownloading(false);
     }
-
-    setIsDownloading(true);
-    setDownloadProgress(0);
-
-    const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-    let fileName = path.endsWith('.pdf') ? path : `${path}.pdf`;
-    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
-
-    console.log('Starting download from:', pdfUrl);
-
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-    const res = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: localFilePath,
-    })
-      .fetch('GET', pdfUrl, {
-        Authorization: `Bearer ${token}`,
-        'x-api-key': apiKey,
-      })
-      .progress({ count: 10 }, (received, total) => {
-        const progress = received / total;
-        setDownloadProgress(progress);
-        // console.log('Progress:', progress);
-      });
-
-    console.log('Download completed:', res.path());
-
-    await FileViewer.open(res.path(), {
-      showOpenWithDialog: true,
-      displayName: 'Your PDF Report',
-      mimeType: 'application/pdf',
-    });
-
-    console.log('PDF opened successfully!');
-  } catch (error) {
-    console.error('Download/Open error:', error);
-    showToast({
-      type: 'error',
-      text1: 'Download Error',
-      text2: 'Failed to download or open the PDF file.',
-    });
-  } finally {
-    setIsDownloading(false);
-  }
-};
+  };
   return (
     <TouchableOpacity
       onPress={() => downloadAndOpenPDF(item?.path)}
@@ -309,8 +310,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     flexDirection: 'row',
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

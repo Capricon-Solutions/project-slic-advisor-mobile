@@ -61,20 +61,20 @@ export default function ClubInformation({navigation}) {
     isFetching: isNextFetching,
     error: nextError,
   } = useGetNextClubQuery(usertype == 2 ? personalCode : userCode);
-  console.log('userCode', userCode);
-  console.log('userCodebbbbbbb', usertype == 2 ? personalCode : userCode);
-  console.log('usertype', usertype);
+  // console.log('userCode', userCode);
+  // console.log('userCodebbbbbbb', usertype == 2 ? personalCode : userCode);
+  // console.log('usertype', usertype);
   const clubInfoResponse = clubInfo?.data;
   // const clubInfoResponse = useSelector(
   //   state => state.clubInfo.clubInfoResponse.data,
   // );
-  console.log('nextClubInfo 333', nextClubInfo);
+  // console.log('nextClubInfo 333', nextClubInfo);
   // const nextClubTable = nextClubInfo?.data[0]?.last5Years;
   const nextClubTable = nextClubInfo?.data?.[0]?.last5Years;
   const tableHead = ['Income Year', 'Comm. Income'];
 
   const columnWidths = [window.width * 0.41, window.width * 0.41];
-  console.log('nextClubTable', nextClubInfo?.data?.[0]?.last5Years);
+  // console.log('nextClubTable', nextClubInfo?.data?.[0]?.last5Years);
   const tableData = nextClubTable?.map(item => [
     item?.year?.toString() ?? '',
     item?.amount != null
@@ -121,7 +121,7 @@ export default function ClubInformation({navigation}) {
       : 'Unavailable';
 
   const annualIncomeUpto = tableData?.[0]?.[1] || '0.00';
-  console.log('clubInfoResponse', clubInfoResponse);
+  // console.log('clubInfoResponse', clubInfoResponse);
   return (
     <PaperProvider>
       <View style={[Styles.container, {paddingHorizontal: 10}]}>
@@ -184,9 +184,8 @@ export default function ClubInformation({navigation}) {
                     /> */}
 
                       <Tooltip
-                        withPortal={false} 
+                        withPortal={false}
                         enterTouchDelay={1}
-                        
                         leaveTouchDelay={1000}
                         title={currentClub?.toString() ?? 'Unavailable'}>
                         <OutlinedTextView

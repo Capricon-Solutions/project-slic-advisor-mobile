@@ -63,7 +63,7 @@ export default function DebitSettlement({navigation, route}) {
   );
 
   useEffect(() => {
-    console.log('DebitSettlement', DebitSettlement);
+    // console.log('DebitSettlement', DebitSettlement);
     if (phone) setMobileNo(phone);
     if (
       DebitSettlement?.data?.premiumNetValue &&
@@ -106,7 +106,7 @@ export default function DebitSettlement({navigation, route}) {
 
     try {
       const response = await debitSettlementSms(body).unwrap();
-      console.log('response', response);
+      // console.log('response', response);
       if (response?.success == true) {
         showToast({
           type: 'success',
@@ -119,7 +119,7 @@ export default function DebitSettlement({navigation, route}) {
         }, 800);
       }
     } catch (err) {
-      console.log('err', err);
+      // console.log('err', err);
       showToast({
         type: 'error',
         text1: 'Failed',

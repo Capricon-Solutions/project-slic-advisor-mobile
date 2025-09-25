@@ -217,7 +217,7 @@ export default function DUESSummary({navigation}) {
   ];
 
   const DataSet = SelectedType == 1 ? motorData : nonmotorData;
-  console.log('DuesSummeryData', DuesSummeryData);
+  // console.log('DuesSummeryData', DuesSummeryData);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
@@ -270,12 +270,12 @@ export default function DUESSummary({navigation}) {
               padding: 10,
               backgroundColor: COLORS.white,
               elevation: 10,
-                shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+              shadowOpacity: 0.2, // add opacity
+              shadowRadius: 3, // add blur radius
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
               marginBottom: 20,
             }}>
             <View style={{flexDirection: 'row', marginBottom: 10}}>
@@ -333,12 +333,12 @@ export default function DUESSummary({navigation}) {
                       borderRadius: 13,
                       backgroundColor: COLORS.white,
                       elevation: 10,
-                        shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                      shadowOpacity: 0.2, // add opacity
+                      shadowRadius: 3, // add blur radius
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
                       marginTop: 10,
                       marginBottom: 10,
                       marginHorizontal: 10,
@@ -423,12 +423,12 @@ export default function DUESSummary({navigation}) {
                       borderRadius: 13,
                       backgroundColor: COLORS.white,
                       elevation: 10,
-                        shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                      shadowOpacity: 0.2, // add opacity
+                      shadowRadius: 3, // add blur radius
+                      shadowOffset: {
+                        width: 0,
+                        height: 3,
+                      },
                       marginTop: 10,
                       marginBottom: 10,
                       marginHorizontal: 10,

@@ -24,9 +24,9 @@ const SalesTableComponent = ({
 }) => {
   const handleCellPress = cellData => {
     navigation.navigate('PolicyDetails', {policyNo: cellData});
-    console.log('Clicked Cell:', cellData);
+    // console.log('Clicked Cell:', cellData);
   };
-  console.log('Table Data:', tableData);
+  // console.log('Table Data:', tableData);
 
   return (
     <View>

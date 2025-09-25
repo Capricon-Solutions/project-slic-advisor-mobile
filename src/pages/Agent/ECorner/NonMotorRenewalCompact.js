@@ -212,73 +212,74 @@ export default function NonMotorRenewalCompact({navigation}) {
   //     setIsDownloading(false);
   //   }
   // };
-const downloadAndOpenPDF = async (path) => {
-  console.log('test');
-  try {
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
+  const downloadAndOpenPDF = async path => {
+    // console.log('test');
+    try {
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        showToast({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2:
+            'Storage permission is required to download and view the file.',
+        });
+        return;
+      }
+
+      showToast({
+        type: 'success',
+        text1: 'Download Started',
+        text2: 'Please wait until download and open the file.',
+      });
+
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      const pdfUrl = motorRenewalsList?.data?.path; // or use the `path` param if preferred
+      let fileName = pdfUrl.split('/').pop() || 'file.pdf';
+      if (!fileName.endsWith('.pdf')) {
+        fileName += '.pdf';
+      }
+
+      const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
+      // console.log('Starting download from:', pdfUrl);
+
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: localFilePath,
+      })
+        .fetch('GET', pdfUrl, {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        })
+        .progress({count: 10}, (received, total) => {
+          const progress = received / total;
+          // console.log('progress', progress);
+          setDownloadProgress(progress);
+        });
+
+      // console.log('Download completed:', res.path());
+
+      await FileViewer.open(res.path(), {
+        showOpenWithDialog: true,
+        displayName: 'Your PDF Report',
+        mimeType: 'application/pdf',
+      });
+
+      // console.log('PDF opened successfully!');
+    } catch (error) {
+      console.error('Download/Open error:', error);
       showToast({
         type: 'error',
-        text1: 'Permission Denied',
-        text2: 'Storage permission is required to download and view the file.',
+        text1: 'Download Error',
+        text2: 'Failed to download or open the PDF file.',
       });
-      return;
+    } finally {
+      setIsDownloading(false);
     }
-
-    showToast({
-      type: 'success',
-      text1: 'Download Started',
-      text2: 'Please wait until download and open the file.',
-    });
-
-    setIsDownloading(true);
-    setDownloadProgress(0);
-
-    const pdfUrl = motorRenewalsList?.data?.path; // or use the `path` param if preferred
-    let fileName = pdfUrl.split('/').pop() || 'file.pdf';
-    if (!fileName.endsWith('.pdf')) {
-      fileName += '.pdf';
-    }
-
-    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-    console.log('Starting download from:', pdfUrl);
-
-    const res = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: localFilePath,
-    })
-      .fetch('GET', pdfUrl, {
-        'x-api-key': apiKey,
-        Authorization: `Bearer ${token}`,
-      })
-      .progress({ count: 10 }, (received, total) => {
-        const progress = received / total;
-        console.log('progress', progress);
-        setDownloadProgress(progress);
-      });
-
-    console.log('Download completed:', res.path());
-
-    await FileViewer.open(res.path(), {
-      showOpenWithDialog: true,
-      displayName: 'Your PDF Report',
-      mimeType: 'application/pdf',
-    });
-
-    console.log('PDF opened successfully!');
-  } catch (error) {
-    console.error('Download/Open error:', error);
-    showToast({
-      type: 'error',
-      text1: 'Download Error',
-      text2: 'Failed to download or open the PDF file.',
-    });
-  } finally {
-    setIsDownloading(false);
-  }
-};
+  };
   return (
     <View style={Styles.container}>
       <MonthYearPicker

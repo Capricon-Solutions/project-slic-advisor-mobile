@@ -122,7 +122,7 @@ export default function MonthlyPlan({navigation}) {
     // if (!validateForm()) return; // Stop if validation fails
 
     // console.log('body');
-    console.log('proposals', proposals);
+    // console.log('proposals', proposals);
 
     // if (
     //   !meetings ||
@@ -164,10 +164,10 @@ export default function MonthlyPlan({navigation}) {
 
     try {
       const response = await MonthlyCreate({body, userCode});
-      console.log('Activity Created:', response);
+      // console.log('Activity Created:', response);
 
       if (response?.error?.status == '500') {
-        console.log('something went wrong', response?.error);
+        // console.log('something went wrong', response?.error);
         showToast({
           type: 'error',
           text1: 'Monthly Plan Not Created',

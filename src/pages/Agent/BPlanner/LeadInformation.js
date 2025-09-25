@@ -54,8 +54,8 @@ export default function LeadInformation({navigation, route}) {
   );
 
   const leadInfo = leadData?.data;
-  console.log('leadInfo', leadInfo);
-  console.log('LeadActivitie', LeadActivitie);
+  // console.log('leadInfo', leadInfo);
+  // console.log('LeadActivitie', LeadActivitie);
 
   const test = LeadActivitie?.data;
 

@@ -85,7 +85,7 @@ export default function Dashboard({navigation}) {
     id: usertype == 2 ? personalCode : userCode,
   });
   const regionName = profileResponse?.region;
-  console.log('CurrentMonthRank', CurrentMonthRank);
+  // console.log('CurrentMonthRank', CurrentMonthRank);
   const {
     data: RMSummeryData,
     error: RMSummeryError,
@@ -136,20 +136,20 @@ export default function Dashboard({navigation}) {
 
       // dispatch(SetdefaultImageUrl(`file://${filePath}`));
 
-      console.log('url', url);
-      console.log('filePath', filePath);
-      console.log('token', token);
+      // console.log('url', url);
+      // console.log('filePath', filePath);
+      // console.log('token', token);
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
         headers: {'x-api-key': apiKey, Authorization: `Bearer ${token}`},
       }).promise;
-      console.log('work here');
+      // console.log('work here');
       if (response.statusCode === 200) {
         dispatch(SetdefaultImageUrl(`file://${filePath}`));
         // setImageUri(`file://${filePath}`);
       } else {
-        console.log('Failed to fetch image', response.statusCode);
+        // console.log('Failed to fetch image', response.statusCode);
       }
     } catch (error) {
       console.error('Error fetching image:', error);

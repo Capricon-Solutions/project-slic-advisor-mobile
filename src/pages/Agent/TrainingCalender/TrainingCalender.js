@@ -118,7 +118,7 @@ export default function TrainingCalender({navigation}) {
     type,
     userCode: usertype == 2 ? personalCode : userCode,
   });
-  console.log('TrainingList testtt', TrainingList);
+  // console.log('TrainingList testtt', TrainingList);
 
   useFocusEffect(
     useCallback(() => {
@@ -161,7 +161,7 @@ export default function TrainingCalender({navigation}) {
   }, [TrainingList?.data]);
 
   const handleDayPress = day => {
-    console.log('Selected day:', day);
+    // console.log('Selected day:', day);
     const dateStr = day.dateString;
     // const dateStr = '2025-09-05';
     setSelectedDate(dateStr);
@@ -252,7 +252,7 @@ export default function TrainingCalender({navigation}) {
                 placeholder="Select Training Type"
                 onSelect={value => {
                   value ? setType(value) : setType('A');
-                  console.log('Selected Type:', value);
+                  // console.log('Selected Type:', value);
                 }}
                 dropdownData={[
                   {label: 'All', value: 'A'},
@@ -269,12 +269,12 @@ export default function TrainingCalender({navigation}) {
               backgroundColor: COLORS.white,
               padding: 5,
               elevation: 5,
-                shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+              shadowOpacity: 0.2, // add opacity
+              shadowRadius: 3, // add blur radius
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
               marginVertical: 15,
             }}>
             <Calendar
@@ -527,7 +527,7 @@ export default function TrainingCalender({navigation}) {
                           //     });
                           // }}
                           onPress={() => {
-                            console.log('training.trainId', training);
+                            // console.log('training.trainId', training);
 
                             approveTraining({
                               id: training.trainId,

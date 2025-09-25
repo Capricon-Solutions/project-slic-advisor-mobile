@@ -7,7 +7,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     salesIncome: builder.query({
       query: ({id}) => {
         const url = `salesIncome/getIncome/${id}`;
-        console.log('Fetching  from:', url);
+        // console.log('Fetching  from:', url);
         return url;
       },
       providesTags: ['SetTarget'],
@@ -16,7 +16,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getAgentCurrentMonthAchievement: builder.query({
       query: ({id}) => {
         const url = `agent/getAgentCurrentMonthAchievement/${id}`;
-        console.log('Fetching  from:', url);
+        // console.log('Fetching  from:', url);
         return url;
       },
       providesTags: ['SetTarget'],
@@ -25,7 +25,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getAgentCurrentMonthIncome: builder.query({
       query: ({id}) => {
         const url = `agent/getAgentCurrentMonthIncome/${id}`;
-        console.log('Fetching  from:', url);
+        // console.log('Fetching  from:', url);
         return url;
       },
     }),
@@ -34,7 +34,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getCurrentMonthRank: builder.query({
       query: ({id}) => {
         const url = `agent/getCurrentMonthRank/${id}`;
-        console.log('Fetching  from: getCurrentMonthRank', url);
+        // console.log('Fetching  from: getCurrentMonthRank', url);
         return url;
       },
     }),
@@ -42,14 +42,14 @@ export const SalesMeterApi = baseApi.injectEndpoints({
     getRMSummery: builder.query({
       query: ({month, region}) => {
         const url = `general/getGeneralTotalRm/${region}?month=${month}`;
-        console.log('Fetching  from: getRMSummery', url);
+        // console.log('Fetching  from: getRMSummery', url);
         return url;
       },
     }),
 
     setTarget: builder.mutation({
       query: ({body}) => {
-        console.log('POST request payload:', body);
+        // console.log('POST request payload:', body);
         return {
           url: 'salesIncome/setTarget',
           method: 'POST',

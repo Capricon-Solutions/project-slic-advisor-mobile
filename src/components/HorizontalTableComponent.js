@@ -20,7 +20,7 @@ const HorizontalTableComponent = ({
 }) => {
   const handleCellPress = cellData => {
     onPress?.();
-    console.log('Clicked Cell:', cellData);
+    // console.log('Clicked Cell:', cellData);
   };
 
   return (

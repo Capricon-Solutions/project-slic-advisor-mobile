@@ -8,7 +8,7 @@ export const ReportApi = baseApi.injectEndpoints({
       query: ({branch, region, startMonth, year, endMonth, type, value}) => {
         const url = `report/rmReport?year=${year}&type=${type}&startMonth=${startMonth}&endMonth=${endMonth}&region=${region}&branch=${branch}&dept=${type}`;
         // http://api.slicgeneral.com:2001/api/report/rmReport?year=2025&startMonth=3&endMonth=3&region=Western%203&dept=ALL
-        console.log('Fetching Report from:', url);
+        // console.log('Fetching Report from:', url);
 
         return url;
       },
@@ -17,7 +17,7 @@ export const ReportApi = baseApi.injectEndpoints({
     MarketingReport: builder.query({
       query: ({branch, startMonth, year, endMonth, type, value}) => {
         const url = `report/meReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
-        console.log('Fetching Report from:', url);
+        // console.log('Fetching Report from:', url);
         return url;
       },
     }),
@@ -27,8 +27,8 @@ export const ReportApi = baseApi.injectEndpoints({
     AdvisorReport: builder.query({
       query: ({branch, startMonth, year, endMonth, type, value}) => {
         const url = `report/advisorReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
-        console.log('Fetching Report from:', url);
-        console.log('startMonthfff', startMonth);
+        // console.log('Fetching Report from:', url);
+        // console.log('startMonthfff', startMonth);
         return url;
       },
     }),
@@ -38,7 +38,7 @@ export const ReportApi = baseApi.injectEndpoints({
       query: ({branch, startMonth, year, endMonth, type, value}) => {
         const url = `report/teamLeaderReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
         //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
-        console.log('Fetching Report from:', url);
+        // console.log('Fetching Report from:', url);
         return url;
       },
     }),
@@ -47,7 +47,7 @@ export const ReportApi = baseApi.injectEndpoints({
       query: ({year, dept, startMonth, endMonth, type, userCode}) => {
         const url = `agent/GetTMReport?agentCode=${userCode}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${dept}&reportType=${type}`;
         //  `report/teamLeaderReport?category=ss&reportType=ss&month=${month}&role=${branch}`;
-        console.log('Fetching Report from:', url);
+        // console.log('Fetching Report from:', url);
         return url;
       },
     }),
@@ -56,7 +56,7 @@ export const ReportApi = baseApi.injectEndpoints({
     DirectReport: builder.query({
       query: ({branch, startMonth, year, endMonth, type, value}) => {
         const url = `report/directReport?branchCode=${branch}&year=${year}&startMonth=${startMonth}&endMonth=${endMonth}&dept=${type}`;
-        console.log('Fetching Report from:', url);
+        // console.log('Fetching Report from:', url);
         return url;
       },
     }),

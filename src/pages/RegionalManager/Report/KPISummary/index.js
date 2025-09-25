@@ -45,11 +45,11 @@ export default function KPISummary({navigation}) {
     regionName: regionName,
   });
 
-  useEffect(() => {
-    console.log('regionName', regionName);
-    console.log('KpiSummery', KpiSummery);
-    console.log('KpiSummeryError', KpiSummeryError);
-  }, [KpiSummery, KpiSummeryError]);
+  // useEffect(() => {
+  //   console.log('regionName', regionName);
+  //   console.log('KpiSummery', KpiSummery);
+  //   console.log('KpiSummeryError', KpiSummeryError);
+  // }, [KpiSummery, KpiSummeryError]);
 
   // Format number to LKR currency with commas
   const formatCurrency = value => {
@@ -141,12 +141,12 @@ export default function KPISummary({navigation}) {
               padding: 10,
               backgroundColor: COLORS.white,
               elevation: 10,
-                shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+              shadowOpacity: 0.2, // add opacity
+              shadowRadius: 3, // add blur radius
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
               marginBottom: 20,
             }}>
             <View style={{flexDirection: 'row', marginBottom: 10}}>
@@ -218,7 +218,7 @@ export default function KPISummary({navigation}) {
                       alignItems: 'center',
                       marginBottom: 1,
                       marginTop: 3,
-                      marginBottom:20
+                      marginBottom: 20,
                     }}>
                     <Progress.Bar
                       progress={item.progress}

@@ -84,13 +84,13 @@ export default function PPWCancellation({navigation}) {
   const columnWidths2 = [180, 150, 110, 110, 130, 110, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
-  console.log('personalCode', personalCode);
+  // console.log('personalCode', personalCode);
   const lastMonthStart = moment()
     .subtract(2, 'month')
     .startOf('month')
     .format('YYYY-MM-DD');
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
-  console.log('currentMonthEnd', currentMonthEnd);
+  // console.log('currentMonthEnd', currentMonthEnd);
   const [fromDate, toDate] = selectedDate
     ? selectedDate.split(' to ')
     : [lastMonthStart, currentMonthEnd];
@@ -119,14 +119,14 @@ export default function PPWCancellation({navigation}) {
     fromDate: fromDate,
     toDate: toDate,
   });
-  console.log('PPWReminderList', PPWReminderList);
+  // console.log('PPWReminderList', PPWReminderList);
   const handleSelect = value => {
     setSelectedValue(value);
   };
 
   useEffect(() => {
-    console.log('error', error);
-    console.log('errorC', errorC);
+    // console.log('error', error);
+    // console.log('errorC', errorC);
   }, [PPWCanceledList, PPWReminderList, error, errorC]);
 
   const tableData = PPWReminderList?.data?.map(item => [

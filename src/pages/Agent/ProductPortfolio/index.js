@@ -39,7 +39,7 @@ export default function ProductPortfolio({navigation}) {
     <ProductListItem
       item={item}
       onPress={() => {
-        console.log('Navigating with item:', item); // Debugging
+        // console.log('Navigating with item:', item); // Debugging
         navigation.navigate('ProductDetails', {item});
       }}
     />
@@ -101,7 +101,7 @@ export default function ProductPortfolio({navigation}) {
     }
   };
   const handleSearch2 = () => {
-    console.log('searchText', searchText);
+    // console.log('searchText', searchText);
 
     if (searchText === '') {
       setFilteredData(products?.data || []); // Reset to show all products
@@ -128,7 +128,7 @@ export default function ProductPortfolio({navigation}) {
   };
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
-  console.log('res', products);
+  // console.log('res', products);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
@@ -184,11 +184,11 @@ export default function ProductPortfolio({navigation}) {
             onChangeText={v => {
               setSearchText(v), handleSearch(v);
             }}
-            placeholderTextColor={ COLORS.warmGray}
+            placeholderTextColor={COLORS.warmGray}
             value={searchText}
             placeholder="Quick Search"
           />
-          
+
           <TouchableOpacity
             onPress={() => handleSearch2()}
             style={styles.searchButton}>

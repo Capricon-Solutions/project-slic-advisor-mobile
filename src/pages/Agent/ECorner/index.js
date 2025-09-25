@@ -35,12 +35,12 @@ export default function ECorner({navigation}) {
   const {data: GogreenDetailsAll} = useGetGetGogreenDetailsAllQuery(userCode);
 
   useEffect(() => {
-    console.log('GogreenDetailsAll', GogreenDetailsAll);
+    // console.log('GogreenDetailsAll', GogreenDetailsAll);
   }, [GogreenDetailsAll]);
 
-  console.log('GogreenDetailsAll', GogreenDetailsAll?.data?.[0].kpiTotalUsers);
+  // console.log('GogreenDetailsAll', GogreenDetailsAll?.data?.[0].kpiTotalUsers);
   const counts = GogreenDetailsAll?.data;
-  console.log('counts', counts);
+  // console.log('counts', counts);
   const data = [
     {
       id: 1,
