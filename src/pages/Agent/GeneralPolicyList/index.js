@@ -232,6 +232,8 @@ export default function GeneralPolicyList({navigation}) {
                     paddingHorizontal: 15,
                   }}
                   renderItem={renderPolicyItem}
+                  maxToRenderPerBatch={50}
+                  initialNumToRender={20}
                   // keyExtractor={item => item.id.toString()}
                 />
               ) : (

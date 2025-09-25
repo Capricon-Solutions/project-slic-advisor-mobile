@@ -19,6 +19,7 @@ export const SalesMeterApi = baseApi.injectEndpoints({
         console.log('Fetching  from:', url);
         return url;
       },
+      providesTags: ['SetTarget'],
     }),
     // getAgentCurrentMonthAchievement
     getAgentCurrentMonthIncome: builder.query({

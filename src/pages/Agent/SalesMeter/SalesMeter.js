@@ -290,13 +290,17 @@ export default function SalesMeter({navigation}) {
                       value={monthlySalePercentage || 0}
                       radius={63}
                       duration={2000}
-                        strokeLinecap='butt'
+                      strokeLinecap="butt"
                       progressValueColor={COLORS.textColor}
                       maxValue={100}
                       activeStrokeWidth={15}
                       inActiveStrokeWidth={15}
                       activeStrokeColor={COLORS.primary}
-                      inActiveStrokeColor={COLORS.lightBorder}
+                      inActiveStrokeColor={
+                        monthlySalePercentage < 100
+                          ? COLORS.lightBorder
+                          : COLORS.primaryOrange
+                      }
                       // title={'Progress'}
                       valueSuffix={'%'}
                       // titleColor={'red'}

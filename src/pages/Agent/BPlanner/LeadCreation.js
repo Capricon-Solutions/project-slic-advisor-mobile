@@ -939,7 +939,7 @@ export default function LeadCreation({navigation, route}) {
                 disabledButton={event ? false : true}
                 disabledColor={event ? false : true}
                 onPress={() => clearEvents()}
-                Title={'Set as Default'}
+                Title={'Clear'}
               />
             </View>
           </View>

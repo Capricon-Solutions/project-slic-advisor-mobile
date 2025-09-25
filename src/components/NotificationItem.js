@@ -114,8 +114,7 @@ export default function NotificationItem({item, navigation, onDelete}) {
             </View>
 
             <Text style={style.name}>
-              Claim Initiated on{' '}
-              {moment(item.intimatedDate).format('DD MMM YYYY')}
+              Incident on {moment(item.intimatedDate).format('DD MMM YYYY')}
             </Text>
 
             <Text style={style.name}>{item.phone}</Text>

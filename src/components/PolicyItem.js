@@ -117,8 +117,10 @@ export default function PolicyItem({item, navigation}) {
             outlineColor={COLORS.lightBorder}
             value={item.vehicleNo}
           /> */}
+          {item.department == 'M' && (
+            <OutlinedTextView Title={'Vehicle Number'} value={item.vehicleNo} />
+          )}
 
-          <OutlinedTextView Title={'Vehicle Number'} value={item.vehicleNo} />
           <View
             style={{
               flexDirection: 'row',

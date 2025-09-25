@@ -48,6 +48,7 @@ export default function PolicyDetails({navigation, route}) {
     .filter(line => line.trim() !== '')
     .join('\n');
   const phone = policyDetailsResponse?.mobileNumber;
+  const department = policyDetailsResponse?.department;
   const startDate = policyDetailsResponse?.startDate;
   const endDate = policyDetailsResponse?.endDate;
   const sumInsured = policyDetailsResponse?.sumInsured;
@@ -153,26 +154,27 @@ export default function PolicyDetails({navigation, route}) {
               ))}
             />
           </View>
-
-          <View style={[styles.card, {marginTop: 10}]}>
-            <View>
-              <Text
-                style={{
-                  fontFamily: Fonts.Roboto.Regular,
-                  fontSize: 16,
-                  marginBottom: 3,
-                  color: COLORS.textColor,
-                }}>
-                Vehicle Information
-              </Text>
+          {department == 'M' && (
+            <View style={[styles.card, {marginTop: 10}]}>
+              <View>
+                <Text
+                  style={{
+                    fontFamily: Fonts.Roboto.Regular,
+                    fontSize: 16,
+                    marginBottom: 3,
+                    color: COLORS.textColor,
+                  }}>
+                  Vehicle Information
+                </Text>
+              </View>
+              <DetailLine Title={'Vehicle No.'} detail={vehicleNo || 'N/A'} />
+              <DetailLine Title={'Make Year'} detail={makeYear || 'N/A'} />
+              <DetailLine Title={'Make'} detail={brand || 'N/A'} />
+              <DetailLine Title={'Chasis No.'} detail={chasisNo || 'N/A'} />
+              <DetailLine Title={'Engine No.'} detail={engineNo || 'N/A'} />
+              <DetailLine Title={'Engine Cap.'} detail={capacity || 'N/A'} />
             </View>
-            <DetailLine Title={'Vehicle No.'} detail={vehicleNo || 'N/A'} />
-            <DetailLine Title={'Make Year'} detail={makeYear || 'N/A'} />
-            <DetailLine Title={'Make'} detail={brand || 'N/A'} />
-            <DetailLine Title={'Chasis No.'} detail={chasisNo || 'N/A'} />
-            <DetailLine Title={'Engine No.'} detail={engineNo || 'N/A'} />
-            <DetailLine Title={'Engine Cap.'} detail={capacity || 'N/A'} />
-          </View>
+          )}
 
           <View
             style={{marginHorizontal: window.width * 0.07, marginVertical: 10}}>
