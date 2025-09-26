@@ -267,6 +267,21 @@ export default function LeadCreation({navigation, route}) {
   //   return emailRegex.test(email) && !hasCapitalLetter;
   // };
 
+  // Linear-time thousand separator
+  function formatWithCommas(str) {
+    if (!str) return '';
+    let result = '';
+    let count = 0;
+    for (let i = str.length - 1; i >= 0; i--) {
+      result = str[i] + result;
+      count++;
+      if (count % 3 === 0 && i !== 0) {
+        result = ',' + result;
+      }
+    }
+    return result;
+  }
+
   const isValidEmail = email => {
     const MAX_EMAIL_LENGTH = 254; // RFC guideline
     if (typeof email !== 'string' || email.length > MAX_EMAIL_LENGTH) {
@@ -673,10 +688,13 @@ export default function LeadCreation({navigation, route}) {
               mediumFont={true}
               Label={'Vehicle Value *'}
               keyboardType={'number-pad'}
-              value={vehicleValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              value={formatWithCommas(vehicleValue)}
               borderColor={COLORS.warmGray}
               setValue={text => {
+                // remove non-digit characters
                 const numericText = text.replace(/[^0-9]/g, '');
+
+                // limit to 10 digits
                 if (numericText.length <= 10) {
                   setVehicleValue(numericText);
                 }
