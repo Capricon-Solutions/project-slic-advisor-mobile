@@ -36,7 +36,6 @@ export default function ReportFilterTM({
   const [type, setType] = React.useState(initialValues.type);
   const [month, setMonth] = React.useState(initialValues.month);
   const [branch, setBranch] = React.useState(initialValues.branch);
-  // console.log('typeh', type);
   // Animation setup
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
