@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   Animated,
-  Dimensions,
   Text,
   View,
-  Image,
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -13,20 +11,14 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
-import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import Feather from 'react-native-vector-icons/Feather';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import LoaderKit from 'react-native-loader-kit';
 
-import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import SquareTextBox from './SquareTextBox';
-import Button from './Button';
 import AlertButton from './AlertButton';
-import AlertButtonWhite from './AlertButtonWhite';
-import MonthYearPicker from './MonthYearPicker';
+
 import {useEventCreationMutation} from '../redux/services/plannerSlice';
 import moment from 'moment';
-import Toast from 'react-native-toast-message';
 import {showToast, ToastMessage} from './ToastMessage';
 import {useSelector} from 'react-redux';
 
@@ -159,12 +151,7 @@ export default function EventCreation({
             minimumDate={new Date()}
             onCancel={hideDatePicker}
           />
-          {/* <MonthYearPicker
-            visible={isPickerVisible}
-            onClose={() => setPickerVisible(false)}
-            onSelect={v => setSelectedDate(v)}
-            onSelectText={v => setSelectedDate(v)}
-          /> */}
+
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <TouchableOpacity

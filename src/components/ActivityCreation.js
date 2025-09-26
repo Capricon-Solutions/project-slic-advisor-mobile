@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   Animated,
-  Dimensions,
   Text,
   View,
-  Image,
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -13,17 +11,12 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
-import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import Feather from 'react-native-vector-icons/Feather';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 import SquareTextBox from './SquareTextBox';
-import Button from './Button';
 import AlertButton from './AlertButton';
-import AlertButtonWhite from './AlertButtonWhite';
 import DropdownFilled from './DropdownFilled';
-import MonthYearPicker from './MonthYearPicker';
 import moment from 'moment';
 import {useActivityCreationMutation} from '../redux/services/plannerSlice';
 import {showToast, ToastMessage} from './ToastMessage';
@@ -51,7 +44,6 @@ export default function ActivityCreation({
   const [description, setDescription] = useState('');
   const [meetWith, setMeetWith] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-  // const [selectedTime, setSelectedTime] = useState(null);
   const body = {
     leadId: selectedLead,
     activityType: selectedType,
@@ -62,15 +54,6 @@ export default function ActivityCreation({
     proposalNo: '',
     description: description,
   };
-  // useEffect(() => {
-  //   console.log('test', {
-  //     selectedLead,
-  //     selectedType,
-  //     description,
-  //     meetWith,
-  //     selectedDate,
-  //   });
-  // }, []);
 
   const validateForm = () => {
     if (
@@ -97,9 +80,7 @@ export default function ActivityCreation({
       const response = await ActivityCreate({
         body,
         userCode: usertype == 2 ? personalCode : userCode,
-      }).then(res => {
-        // console.log('res', res);
-      });
+      }).then(res => {});
       showToast({
         type: 'success',
         text1: 'Activity Created',
@@ -115,7 +96,6 @@ export default function ActivityCreation({
         setSelectedDate(null);
         setModalVisible(false);
       }, 900);
-      // console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
     }
@@ -124,9 +104,7 @@ export default function ActivityCreation({
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
-  // const showTimePicker = () => {
-  //   setTimePickerVisibility(true);
-  // };
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
@@ -139,11 +117,6 @@ export default function ActivityCreation({
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
     hideDatePicker();
   };
-
-  // const handleTimeConfirm = date => {
-  //   setSelectedTime(moment(date).format('HH:mm A'));
-  //   hideTimePicker();
-  // };
 
   React.useEffect(() => {
     if (modalVisible) {
@@ -201,18 +174,7 @@ export default function ActivityCreation({
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
-          {/* <DateTimePickerModal
-            isVisible={isTimePickerVisible}
-            mode="time"
-            onConfirm={handleTimeConfirm}
-            onCancel={hideTimePicker}
-          /> */}
-          {/* <MonthYearPicker
-            visible={isPickerVisible}
-            onClose={() => setPickerVisible(false)}
-            onSelect={v => setSelectedDate(v)}
-            onSelectText={v => setSelectedDate(v)}
-          /> */}
+
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <TouchableOpacity
@@ -238,28 +200,14 @@ export default function ActivityCreation({
                   }}>
                   Lead <Text style={{color: COLORS.red}}>*</Text>
                 </Text>
-                {/* <DropdownFilled
-                  placeholder={'Select Lead'}
-                  dropdownData={[
-                    { label: 'Appointment', value: '1' },
-                    { label: 'Pending', value: '2' },
-                    { label: 'Complete', value: '3' },
-                  ]}
-                /> */}
+
                 <DropdownFilled
-                  // mode={"modal"}
                   placeholder={'Select Lead'}
                   dropdownData={leadsData?.map(item => ({
                     label: item.customerName,
                     value: item.leadId,
                   }))}
-                  // dropdownData={[
-                  //   {label: 'John Doe', value: '1'},
-                  //   {label: 'Jane Smith', value: '2'},
-                  //   {label: 'Michael Johnson', value: '3'},
-                  // ]}
                   onSelect={v => setSelectedLead(v)}
-                  // onSelect={v => console.log('v', v)}
                 />
               </View>
               <View style={{width: '100%'}}>
@@ -329,29 +277,6 @@ export default function ActivityCreation({
                   <Feather name="calendar" color={COLORS.primary} size={20} />
                 </TouchableOpacity>
               </TouchableOpacity>
-              {/* <View style={{flexDirection: 'row', position: 'relative'}}>
-                <SquareTextBox
-                  LabelColor={COLORS.ashBlue}
-                  Label={'Time *'}
-                  Title={'12 : 00 Am'}
-                  value={selectedTime}
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    // setPickerVisible(true)
-                    showTimePicker()
-                  }
-                  style={[
-                    styles.searchButton,
-                    {
-                      position: 'absolute',
-                      bottom: 15,
-                      right: 15,
-                    },
-                  ]}>
-                  <Feather name="clock" color={COLORS.primary} size={20} />
-                </TouchableOpacity>
-              </View> */}
 
               <View
                 style={{

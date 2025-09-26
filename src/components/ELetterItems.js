@@ -4,10 +4,7 @@ import {
   Dimensions,
   Text,
   View,
-  Image,
-  Linking,
   StyleSheet,
-  Alert,
   PermissionsAndroid,
   Platform,
 } from 'react-native';
@@ -15,17 +12,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../theme/colors';
 
-import {Styles} from '../theme/Styles';
-import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Fonts from '../theme/Fonts';
 import {useSelector} from 'react-redux';
 import {showToast} from './ToastMessage';
 import Share from 'react-native-share'; // Ensure this is installed and imported
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {API_KEY} from '@env';
-const window = Dimensions.get('window');
 
 export default function ELetterItems({item, navigation}) {
   const [downloadProgress, setDownloadProgress] = React.useState(0);

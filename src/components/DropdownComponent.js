@@ -28,12 +28,9 @@ const DropdownComponent = ({
   const [searchText, setSearchText] = useState('');
 
   const renderLabel = () => {
-    // if (value || isFocus) {
     return (
       <Text style={[styles.label, isFocus && {color: 'blue'}]}>{label}</Text>
     );
-    // }
-    // return null;
   };
   const handleChange = item => {
     setValue(item.value);
@@ -63,8 +60,6 @@ const DropdownComponent = ({
       <Dropdown
         mode={mode == 'modal' ? 'modal' : 'auto'}
         disable={disabled}
-
-        
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}

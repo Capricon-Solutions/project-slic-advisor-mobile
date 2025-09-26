@@ -1,31 +1,12 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  Linking,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {TouchableOpacity, Dimensions, Text, View} from 'react-native';
+
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import LoaderKit from 'react-native-loader-kit';
 
-import Button from './Button';
-import SmallButton from './SmallButton';
-import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
-import RegionSummery from '../icons/RegionSummery.png'; // Replace with the actual logo path
-import KpiSummery from '../icons/KpiSummery.png'; // Replace with the actual logo path
-import DuesSummery from '../icons/DuesSummery.png'; // Replace with the actual logo path
-import ClassSummery from '../icons/ClassSummery.png'; // Replace with the actual logo path
-import Competition from '../icons/Competition.png'; // Replace with the actual logo path
-// import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
-// import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
 
 export default function AgentProgressCard({
@@ -36,12 +17,7 @@ export default function AgentProgressCard({
   totalNumberofBranches,
   branchRank,
   regionalRank,
-  onSalesClick,
-  onGeneralClick,
-  onClubClick,
-  onBplannerClick,
-  onEConnerClick,
-  onProductPortfolioClick,
+
   loading,
 }) {
   const isDataIncomplete =

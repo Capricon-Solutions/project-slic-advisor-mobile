@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   TouchableOpacity,
   Animated,
-  Dimensions,
   Text,
   View,
   Image,
@@ -13,11 +12,10 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
-import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
 
-export default function AboutModal({ modalVisible, setModalVisible, data }) {
+export default function AboutModal({modalVisible, setModalVisible, data}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -52,10 +50,12 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
   };
 
   const handleEmail = (email, subject = '', body = '') => {
-    const emailURL = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const emailURL = `mailto:${email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
 
     Linking.openURL(emailURL).catch(err =>
-      console.error('Failed to send email:', err)
+      console.error('Failed to send email:', err),
     );
   };
 
@@ -70,7 +70,7 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
           setModalVisible(false);
         }}
         activeOpacity={1}
-        style={{ flex: 1 }}>
+        style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -90,9 +90,11 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
               />
             </TouchableOpacity>
             <Image source={Contacts} style={styles.avatar} />
-            <Text style={styles.modalTitle}>Get Access To GI Sales Connect</Text>
+            <Text style={styles.modalTitle}>
+              Get Access To GI Sales Connect
+            </Text>
             <Text style={styles.contactText}>Please Contact: {data?.name}</Text>
-            <View style={{ width: '70%', alignItems: 'center' }}>
+            <View style={{width: '70%', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={() => handleCall(data?.telephone)}
                 style={styles.contactItem}>
@@ -106,7 +108,8 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => handleEmail(data?.email)} style={styles.contactItem}>
+                onPress={() => handleEmail(data?.email)}
+                style={styles.contactItem}>
                 <MaterialCommunityIcons
                   name="email"
                   size={20}
@@ -117,7 +120,7 @@ export default function AboutModal({ modalVisible, setModalVisible, data }) {
             </View>
 
             <Text style={styles.note}>
-              <Text style={{ color: COLORS.errorBorder }}>Note:</Text> Send the
+              <Text style={{color: COLORS.errorBorder}}>Note:</Text> Send the
               Request With Your Agency Code
             </Text>
           </View>
@@ -139,8 +142,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     elevation: 10,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

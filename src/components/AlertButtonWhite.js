@@ -1,19 +1,9 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
-import {TouchableRipple} from 'react-native-paper';
-import Fonts from '../theme/Fonts';
 
-// import { useSelector } from "react-redux";
+import Fonts from '../theme/Fonts';
 
 export default function AlertButtonWhite({
   Title,

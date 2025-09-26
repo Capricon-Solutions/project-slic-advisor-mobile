@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   TouchableOpacity,
   Animated,
-  Dimensions,
   Text,
   View,
   Image,
@@ -10,13 +9,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Foundation from 'react-native-vector-icons/Foundation';
+
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import individualPerforamance from '../icons/individualPerforamance.png'; // Replace with the actual logo path
-import teamPerformance from '../icons/teamPerformance.png'; // Replace with the actual logo path
 
 export default function IndividualModal({modalVisible, setModalVisible}) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
@@ -211,8 +207,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     elevation: 25,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

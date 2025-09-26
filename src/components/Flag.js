@@ -2,22 +2,16 @@ import * as React from 'react';
 import {
   TouchableOpacity,
   Animated,
-  Dimensions,
   Text,
   View,
-  Image,
   Modal,
   StyleSheet,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import Foundation from 'react-native-vector-icons/Foundation';
+
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import SquareTextBox from './SquareTextBox';
-import SquareTextBoxOutlined from './SquareTextBoxOutlined';
-import SmallButton from './SmallButton';
+
 import AlertButton from './AlertButton';
 import AlertButtonWhite from './AlertButtonWhite';
 import {TextInput} from 'react-native-paper';
@@ -176,8 +170,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 10,
     elevation: 25,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

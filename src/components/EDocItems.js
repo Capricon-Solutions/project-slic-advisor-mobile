@@ -4,24 +4,18 @@ import {
   Dimensions,
   Text,
   View,
-  Image,
-  Linking,
   StyleSheet,
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
-  Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import {API_KEY} from '@env';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import VisitsIcon from './../icons/Visits.png';
 import {useSelector} from 'react-redux';
 import {showToast} from './ToastMessage';
 const window = Dimensions.get('window');
