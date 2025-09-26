@@ -1,20 +1,10 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 import COLORS from '../theme/colors';
-import { Styles } from '../theme/Styles';
-import { TouchableRipple } from 'react-native-paper';
+
 import Fonts from '../theme/Fonts';
 import LoaderKit from 'react-native-loader-kit';
-
-// import { useSelector } from "react-redux";
 
 export default function AlertButton({
   Title,
@@ -36,7 +26,7 @@ export default function AlertButton({
       ]}>
       {isLoading == true ? (
         <LoaderKit
-          style={{ width: 25, height: 25 }}
+          style={{width: 25, height: 25}}
           name={'BallPulse'} // Optional: see list of animations below
           color={COLORS.white} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
         />

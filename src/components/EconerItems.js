@@ -5,14 +5,12 @@ import {
   Text,
   View,
   Image,
-  Linking,
   StyleSheet,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 import VisitsIcon from './../icons/Visits.png';
 const window = Dimensions.get('window');
@@ -150,9 +148,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000',
     flexDirection: 'row',
-    // height: 111,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

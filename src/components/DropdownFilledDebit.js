@@ -1,11 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
@@ -115,7 +109,6 @@ const styles = StyleSheet.create({
   dropdown: {
     height: 45,
     borderColor: COLORS.warmGray,
-    // borderWidth: 0.5,
     backgroundColor: COLORS.warmGray,
     borderRadius: 8,
     paddingHorizontal: 8,

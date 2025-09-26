@@ -1,11 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
@@ -15,7 +9,7 @@ const window = Dimensions.get('window');
 const DropdownFilled = ({
   dropdownData = [],
   mode,
-  label,
+
   placeholder,
   Color,
   search,
@@ -108,105 +102,6 @@ const DropdownFilled = ({
 
 export default DropdownFilled;
 
-// import React, {useState} from 'react';
-// import {
-//   Dimensions,
-//   StyleSheet,
-//   Text,
-//   TouchableOpacity,
-//   View,
-// } from 'react-native';
-// import {Dropdown} from 'react-native-element-dropdown';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import COLORS from '../theme/colors';
-
-// const window = Dimensions.get('window');
-
-// const DropdownFilled = ({
-//   dropdownData,
-//   mode,
-//   label,
-//   placeholder,
-//   Color,
-//   search,
-//   onSelect,
-// }) => {
-//   const [value, setValue] = useState(null);
-//   const [isFocus, setIsFocus] = useState(false);
-
-//   return (
-//     <View style={styles.container}>
-//       <Dropdown
-//         mode={mode == 'modal' ? 'modal' : 'auto'}
-//         style={[
-//           styles.dropdown,
-//           isFocus && {borderColor: 'blue'},
-//           {backgroundColor: Color ? Color : COLORS.lightBorder},
-//         ]}
-//         placeholderStyle={styles.placeholderStyle}
-//         selectedTextStyle={styles.selectedTextStyle}
-//         selectedStyle={{color: 'red'}}
-//         itemTextStyle={{color: COLORS.textColor, fontSize: 14}}
-//         activeColor={COLORS.lightPrimary}
-//         inputSearchStyle={styles.inputSearchStyle}
-//         iconStyle={styles.iconStyle}
-//         containerStyle={{fontSize: 12}}
-//         data={dropdownData}
-//         search={search === undefined ? true : search}
-
-//         maxHeight={300}
-//         labelField="label"
-//         valueField="value"
-//         placeholder={!isFocus ? placeholder : '...'}
-//         searchPlaceholder="Search..."
-//         value={value}
-//         onFocus={() => setIsFocus(true)}
-//         onBlur={() => setIsFocus(false)}
-//         onChange={item => {
-//           setValue(item.value);
-//           setIsFocus(false);
-//           if (onSelect) {
-//             onSelect(item.value);
-//           }
-//         }}
-//         renderLeftIcon={() => (
-//           <MaterialCommunityIcons
-//             style={styles.icon}
-//             color={isFocus ? 'blue' : 'black'}
-//             name="menu-down"
-//             size={20}
-//           />
-//         )}
-//         renderRightIcon={item => {
-//           return (
-//             <>
-//               {value && (
-//                 // <TouchableOpacity onPress={() => setValue(null)}>
-//                 <TouchableOpacity
-//                   onPress={() => {
-//                     setValue(null);
-//                     if (onSelect) {
-//                       onSelect(null); // Notify parent to clear its state
-//                     }
-//                   }}>
-//                   <MaterialCommunityIcons
-//                     style={styles.icon}
-//                     color={COLORS.primaryRed}
-//                     name="close-thick"
-//                     size={14}
-//                   />
-//                 </TouchableOpacity>
-//               )}
-//             </>
-//           );
-//         }}
-//       />
-//     </View>
-//   );
-// };
-
-// export default DropdownFilled;
-
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 0,
@@ -214,7 +109,6 @@ const styles = StyleSheet.create({
   dropdown: {
     height: 43,
     borderColor: 'gray',
-    // borderWidth: 0.5,
     backgroundColor: COLORS.lightBorder,
     borderRadius: 8,
     paddingHorizontal: 8,

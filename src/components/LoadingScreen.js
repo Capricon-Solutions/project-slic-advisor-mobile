@@ -1,25 +1,12 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Dimensions, View, StyleSheet} from 'react-native';
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
-import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import LoaderKit from 'react-native-loader-kit';
 
-import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import { ActivityIndicator } from 'react-native-paper';
 const window = Dimensions.get('window');
 
-export default function LoadingScreen({ isLoading }) {
+export default function LoadingScreen({isLoading}) {
   return (
     <View
       style={{
@@ -33,7 +20,7 @@ export default function LoadingScreen({ isLoading }) {
       <View style={{}}>
         {/* <ActivityIndicator color={COLORS.primary} size={'large'} /> */}
         <LoaderKit
-          style={{ width: 50, height: 50 }}
+          style={{width: 50, height: 50}}
           name={'LineScalePulseOutRapid'} // Optional: see list of animations below
           color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
         />
@@ -57,8 +44,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     elevation: 10,
     borderWidth: 1,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

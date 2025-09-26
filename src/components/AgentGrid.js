@@ -1,28 +1,13 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  Linking,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import COLORS from '../theme/colors';
+import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
+
 import {Styles} from '../theme/Styles';
-import Fonts from '../theme/Fonts';
-import Button from './Button';
-import SmallButton from './SmallButton';
-import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
 import SALES_PERFORMANCE from '../icons/SALES_PERFORMANCE.png'; // Replace with the actual logo path
 import GENERAL from '../icons/GENERAL.png'; // Replace with the actual logo path
 import PRODUCT_PORTFOLIO from '../icons/PRODUCT_PORTFOLIO.png'; // Replace with the actual logo path
 import E_CORNER from '../icons/E-CORNER.png'; // Replace with the actual logo path
 import CLUB from '../icons/CLUB.png'; // Replace with the actual logo path
 import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
-// import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
 
 export default function AgentGrid({

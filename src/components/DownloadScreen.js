@@ -1,21 +1,9 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  Modal,
-  StyleSheet,
-} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Dimensions, Text, View, StyleSheet} from 'react-native';
 import COLORS from '../theme/colors'; // Update with your color theme file
 import Fonts from '../theme/Fonts'; // Update with your fonts file
-import avatar from '../images/avatar.png'; // Replace with the actual logo path
 import LoaderKit from 'react-native-loader-kit';
-import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import {ActivityIndicator} from 'react-native-paper';
+
 const window = Dimensions.get('window');
 
 export default function DownloadScreen({isDownloading, downloadProgress}) {

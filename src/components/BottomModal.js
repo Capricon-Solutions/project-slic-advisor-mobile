@@ -12,9 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
-import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 const window = Dimensions.get('window');
 
@@ -78,9 +76,7 @@ export default function BottomModal({
           marginVertical: 10,
         }}
         onPress={() => {
-          // console.log(onPress.Value);
           if (onPress === 'expand') {
-            // console.log(onPress);
             setVisible(!visible);
           } else if (typeof onPress === 'function') {
             onPress();
@@ -151,26 +147,6 @@ export default function BottomModal({
                 </Text>
               </TouchableOpacity>
             ))}
-            {/* <View
-              style={{
-                borderWidth: 1,
-                flex: 0.4,
-                padding: 10,
-                borderColor: COLORS.primary,
-                borderRadius: 5,
-              }}>
-              <Text style={{textAlign: 'center'}}>Team Statistics</Text>
-            </View>
-            <View
-              style={{
-                borderWidth: 1,
-                flex: 0.4,
-                padding: 10,
-                borderColor: COLORS.primary,
-                borderRadius: 5,
-              }}>
-              <Text style={{textAlign: 'center'}}>Team Statistics</Text>
-            </View> */}
           </View>
         )}
       </TouchableOpacity>
@@ -185,7 +161,6 @@ export default function BottomModal({
       onRequestClose={() => setModalVisible(false)}>
       <TouchableOpacity
         onPress={() => {
-          // setModalVisible(false);
           hide();
         }}
         activeOpacity={1}

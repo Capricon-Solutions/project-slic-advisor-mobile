@@ -16,14 +16,7 @@ import {
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
-import {
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-  StatusBar,
-  Platform,
-} from 'react-native';
+import {View} from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
@@ -36,7 +29,7 @@ import PremiumHistory from './src/pages/Agent/PremiumHistory';
 import DebitSettlement from './src/pages/Agent/DebitSettlement';
 import ProductPortfolio from './src/pages/Agent/ProductPortfolio';
 import ClubInformation from './src/pages/Agent/ClubInformation';
-import {Provider, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import {store} from './src/redux/services/store';
 import PolicyRenewals from './src/pages/Agent/PolicyRenewals';
 import TrainingList from './src/pages/Agent/TrainingList/TrainingList';
@@ -75,14 +68,13 @@ import PendingClaims from './src/pages/Agent/PendingClaims';
 import ClaimDetails from './src/pages/Agent/ClaimHistory/ClaimDetails';
 import DebitSettlementRenewal from './src/pages/Agent/DebitSettlementRenewal';
 import ReportSwitch from './src/pages/RegionalManager/Report/ReportSwitch';
-import {ToastMessage} from './src/components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdvisorReport from './src/pages/RegionalManager/Report/Report/AdvisorReport';
 import DirectReport from './src/pages/RegionalManager/Report/Report/DirectReport';
 import MeReport from './src/pages/RegionalManager/Report/Report/MeReport';
 import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLeaderReport';
 import {navigationRef} from './src/navigation/RootNavigation';
-import HeaderBackground from './src/components/HeaderBackground';
+
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
@@ -100,7 +92,6 @@ function App(): React.JSX.Element {
         } else {
           setIsLoggedIn(false);
         }
-        // console.log('Stored Username:', storedloggedIn);
       } catch (error) {
         console.error('Error retrieving username:', error);
       }
@@ -139,8 +130,6 @@ function App(): React.JSX.Element {
         headerShown: false,
         animation: 'slide_from_right',
       }}>
-      {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-
       <Stack.Screen
         name="NavigateToAuthStack"
         options={{headerShown: false, orientation: 'portrait'}}
@@ -414,20 +403,16 @@ function App(): React.JSX.Element {
           edges={['top', 'left']}
           style={{
             flex: 1,
-            //  marginTop: Platform.OS === 'ios' ? -10 : 0,
-            // marginBottom: Platform.OS === 'ios' ? -15 : 0,
+
             backgroundColor: COLORS.TopBackColor,
           }}>
           <Provider store={store}>
-            {/* <SafeAreaView style={{ flex: 1 }}> */}
-
             <NavigationContainer ref={navigationRef}>
               <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="AuthStack" component={AuthStack} />
               </Stack.Navigator>
             </NavigationContainer>
             <Toast visibilityTime={2000} />
-            {/* </SafeAreaView> */}
           </Provider>
         </SafeAreaView>
       </View>
@@ -436,9 +421,6 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
       <View style={{flex: 1}}>
-        {/* <HeaderBackground Title={undefined} /> */}
-
-        {/* Now you can safely use useSafeAreaInsets */}
         <SafeAreaViewWithInsets />
       </View>
     </SafeAreaProvider>

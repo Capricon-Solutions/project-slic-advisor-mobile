@@ -4,13 +4,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
@@ -117,12 +111,9 @@ const DropdownComponentNoLabel = forwardRef(
 export default DropdownComponentNoLabel;
 
 const styles = StyleSheet.create({
-  container: {
-    // paddingVertical: 15,
-  },
+  container: {},
   dropdown: {
     height: 43,
-    // borderColor: 'gray',
     borderWidth: 0.8,
     borderRadius: 8,
     paddingHorizontal: 8,

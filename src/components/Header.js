@@ -11,11 +11,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import Button from './Button';
 import SmallButton from './SmallButton';
-import {Checkbox, Menu, Divider, PaperProvider} from 'react-native-paper';
+import {Menu, Divider} from 'react-native-paper';
 import PDF from '../icons/pdf.png';
 // import { useSelector } from "react-redux";
 const window = Dimensions.get('window');

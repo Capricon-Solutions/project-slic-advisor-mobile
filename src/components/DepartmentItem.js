@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  TouchableOpacity,
-  Dimensions,
-  Text,
-  View,
-  Image,
-  Linking,
-} from 'react-native';
+import {TouchableOpacity, Text, View, Linking} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';

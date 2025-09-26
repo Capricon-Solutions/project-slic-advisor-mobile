@@ -4,7 +4,6 @@ import {
   Dimensions,
   Text,
   View,
-  Image,
   TextInput,
   Linking,
   StyleSheet,
@@ -14,9 +13,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../theme/colors';
 import Feather from 'react-native-vector-icons/Feather';
-import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
-import Button from './Button';
 import SmallButton from './SmallButton';
 
 // import { useSelector } from "react-redux";
