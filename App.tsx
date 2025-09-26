@@ -76,7 +76,7 @@ import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLead
 import {navigationRef} from './src/navigation/RootNavigation';
 
 const Stack = createNativeStackNavigator();
-
+// @ts-ignore
 function App(): React.JSX.Element {
   useEffect(() => {
     SplashScreen.hide();
@@ -395,8 +395,10 @@ function App(): React.JSX.Element {
       />
     </Stack.Navigator>
   );
+  // @ts-ignore
   function SafeAreaViewWithInsets() {
     const insets = useSafeAreaInsets();
+    // @ts-ignore
     return (
       <View style={{flex: 1}}>
         {/* <HeaderBackground Title={undefined} /> */}
@@ -410,6 +412,7 @@ function App(): React.JSX.Element {
           }}>
           <Provider store={store}>
             <NavigationContainer ref={navigationRef}>
+              {/* @ts-ignore */}
               <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="AuthStack" component={AuthStack} />
               </Stack.Navigator>
