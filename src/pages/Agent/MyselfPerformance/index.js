@@ -89,7 +89,7 @@ export default function MyselfPerformance({navigation}) {
       setSelectedYearName(yearName);
     }
   }, [selectedDate]);
-  console.log('selectedMonthName', selectedMonthName);
+  // console.log('selectedMonthName', selectedMonthName);
   const formatNumber = value => Number(value || 0).toLocaleString();
 
   const tableData = [

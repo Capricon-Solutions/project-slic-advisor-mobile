@@ -23,7 +23,7 @@ const TableComponentSalvage = ({
   touchable,
 }) => {
   const handleCellPress = cellData => {
-    console.log('Clicked Cell:', cellData);
+    // console.log('Clicked Cell:', cellData);
   };
   return (
     <View>

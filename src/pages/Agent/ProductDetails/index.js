@@ -37,7 +37,7 @@ const window = Dimensions.get('window');
 export default function ProductDetails({navigation, route}) {
   const {item} = route.params; // Extract item from params
 
-  console.log('itemvvvvvv', item);
+  // console.log('itemvvvvvv', item);
   const [SelectedType, setSelectedType] = useState(1);
   const {data: products, isLoading, error} = useGetProductListQuery();
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
@@ -49,7 +49,7 @@ export default function ProductDetails({navigation, route}) {
   const renderItem = ({item}) => <ProductListItem item={item} />;
 
   const renderDepartmentItem = ({item}) => <OtherListItem item={item} />;
-  console.log('item?.imageUrl', item?.imageUrl);
+  // console.log('item?.imageUrl', item?.imageUrl);
 
   useEffect(() => {
     const list = [];
@@ -102,7 +102,7 @@ export default function ProductDetails({navigation, route}) {
     if (searchText === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      console.log('searchText', searchText);
+      // console.log('searchText', searchText);
       // return;
       const filtered = products?.data?.filter(item =>
         item.productName.toLowerCase().includes(searchText.toLowerCase()),
@@ -121,7 +121,7 @@ export default function ProductDetails({navigation, route}) {
       </Text>
     );
   };
-  console.log('brochureList', brochureList);
+  // console.log('brochureList', brochureList);
   return (
     <PaperProvider>
       <View style={Styles.container}>

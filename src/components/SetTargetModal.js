@@ -45,13 +45,13 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
     currentDate.getMonth() + 1,
   ).padStart(2, '0')}`;
   const currentTargetDate = moment().format('YYYY/MMMM');
-  console.log('userCode', userCode);
+  // console.log('userCode', userCode);
   const body = {
     agentCode: usertype == 2 ? personalCode : userCode,
     yearMonth: yearMonth,
     target: inputValue,
   };
-  console.log('body', body);
+  // console.log('body', body);
   const handlePostRequest = async () => {
     if (!inputValue) {
       showToast({
@@ -65,7 +65,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
       setInputValue(null);
       setModalVisible(false);
-      console.log('Response:', response.success); // Handle success response
+      // console.log('Response:', response.success); // Handle success response
       if (response.success === true) {
         showToast({
           type: 'success',
@@ -115,6 +115,27 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       useNativeDriver: false,
     }).start();
     setTimeout(() => setModalVisible(false), 300);
+  }
+
+  // Helper: linear-time thousand-separator (no backtracking / no complex regex)
+  function formatWithThousandSeparators(str) {
+    if (!str) return '';
+    const parts = str.split('.');
+    let intPart = parts[0];
+    const decPart = parts[1] ?? '';
+
+    // handle optional leading minus if you ever want it (not used here)
+    const sign = intPart.startsWith('-') ? '-' : '';
+    if (sign) intPart = intPart.slice(1);
+
+    // Reverse-chunk approach (linear)
+    let rev = '';
+    for (let i = intPart.length - 1, cnt = 0; i >= 0; i--, cnt++) {
+      rev = intPart[i] + rev;
+      if ((cnt + 1) % 3 === 0 && i !== 0) rev = ',' + rev;
+    }
+
+    return decPart ? `${sign}${rev}.${decPart}` : `${sign}${rev}`;
   }
 
   return (
@@ -173,37 +194,46 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 activeOutlineColor={COLORS.primary}
                 outlineColor="transparent"
                 textColor={COLORS.textColor}
-                value={inputValue?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                // onChangeText={text => {
-                //   let sanitizedText = text.replace(/[^0-9.]/g, '');
-
-                //   // Ensure only one decimal point is allowed
-                //   const parts = sanitizedText.split('.');
-                //   if (parts.length > 2) {
-                //     sanitizedText = parts[0] + '.' + parts.slice(1).join('');
-                //   }
-
-                //   setInputValue(sanitizedText);
-                // }}
+                // show formatted value (commas inserted by safe function)
+                value={formatWithThousandSeparators(inputValue)}
                 onChangeText={text => {
-                  // Remove all non-numeric characters except the decimal point
-                  let sanitizedText = text.replace(/[^0-9.]/g, '');
+                  // QUICK GUARDS (prevent huge inputs)
+                  const MAX_TOTAL_LENGTH = 30; // absolutely forbid >30 chars (tunable)
+                  const MAX_INT_DIGITS = 10; // your existing requirement
+                  const MAX_DECIMAL_DIGITS = 6; // optional: limit decimal precision
 
-                  // Ensure only one decimal point is allowed
-                  const parts = sanitizedText.split('.');
-                  if (parts.length > 2) {
-                    sanitizedText = parts[0] + '.' + parts.slice(1).join('');
+                  if (!text) {
+                    setInputValue('');
+                    return;
                   }
 
-                  // Limit to 10 digits before the decimal
-                  const integerPart = parts[0].slice(0, 10); // max 10 digits before decimal
-                  const decimalPart = parts[1] || '';
+                  // remove all but digits and dot (linear, safe)
+                  let sanitized = text.replace(/[^0-9.]/g, '');
 
-                  sanitizedText = decimalPart
+                  // ensure at most one dot
+                  const dotIndex = sanitized.indexOf('.');
+                  if (dotIndex !== -1) {
+                    // keep first dot only, remove others
+                    sanitized =
+                      sanitized.slice(0, dotIndex + 1) +
+                      sanitized.slice(dotIndex + 1).replace(/\./g, '');
+                  }
+
+                  // enforce max total length (early cutoff protects from huge input)
+                  if (sanitized.length > MAX_TOTAL_LENGTH) {
+                    sanitized = sanitized.slice(0, MAX_TOTAL_LENGTH);
+                  }
+
+                  // split to integer and decimal parts and apply limits
+                  const [rawInt, rawDec = ''] = sanitized.split('.');
+                  const integerPart = rawInt.slice(0, MAX_INT_DIGITS);
+                  const decimalPart = rawDec.slice(0, MAX_DECIMAL_DIGITS);
+
+                  const finalValue = decimalPart
                     ? `${integerPart}.${decimalPart}`
                     : integerPart;
 
-                  setInputValue(sanitizedText);
+                  setInputValue(finalValue);
                 }}
                 style={{
                   backgroundColor: COLORS.lightBorder,
@@ -243,12 +273,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     elevation: 10,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: COLORS.lightBorder,

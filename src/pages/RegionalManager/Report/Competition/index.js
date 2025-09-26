@@ -56,8 +56,8 @@ export default function Competition({navigation}) {
   }, [Competition]);
 
   const filterCompetitionsByDate = data => {
-    console.log('selectedYear', selectedYear);
-    console.log('selectedMonth', selectedMonth);
+    // console.log('selectedYear', selectedYear);
+    // console.log('selectedMonth', selectedMonth);
     if (!data) return {};
 
     const filterFunc = items =>
@@ -90,7 +90,7 @@ export default function Competition({navigation}) {
         : SelectedType === 3
         ? filtered.annualAwards
         : filtered.other;
-    console.log('selectedFilteredData', selectedFilteredData);
+    // console.log('selectedFilteredData', selectedFilteredData);
     // setFilteredData(selectedFilteredData);
     setFilteredData(filtered);
   };
@@ -122,12 +122,12 @@ export default function Competition({navigation}) {
           borderRadius: 10,
           backgroundColor: COLORS.lightBlue,
           elevation: 8,
-            shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+          shadowOpacity: 0.2, // add opacity
+          shadowRadius: 3, // add blur radius
+          shadowOffset: {
+            width: 0,
+            height: 3,
+          },
           marginBottom: 15,
           marginHorizontal: 20,
           marginTop: 3,

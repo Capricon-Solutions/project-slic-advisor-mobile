@@ -30,7 +30,7 @@ import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import moment from 'moment';
 import FileViewer from 'react-native-file-viewer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-
+import {API_KEY} from '@env';
 import {showToast} from '../../../components/ToastMessage';
 import {useSelector} from 'react-redux';
 import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
@@ -44,10 +44,6 @@ export default function CommissionStatement({navigation}) {
   const [selectedType, setSelectedType] = useState(null);
   const [selectedCode, setSelectedCode] = useState(null);
   const token = useSelector(state => state.Profile.token);
-
-  // const usertype = useSelector(state => state.userType.userType);
-  // const personalCode = useSelector(state => state.Profile.personalCode);
-  // const userCode = useSelector(state => state.Profile.userCode);
 
   const [
     GetCommissionStatement,
@@ -63,13 +59,13 @@ export default function CommissionStatement({navigation}) {
 
   const handlegetCommission = async () => {
     try {
-      console.log('test values', {selectedDate, selectedType, selectedCode});
+      // console.log('test values', {selectedDate, selectedType, selectedCode});
       const response = await GetCommissionStatement({
         selectedDate,
         selectedType,
         selectedCode,
       });
-      console.log('response?.data?.success ', response);
+      // console.log('response?.data?.success ', response);
       if (response?.data?.success == false) {
         // Alert.alert('Error', response?.data?.message || 'Something went wrong');
         showToast({
@@ -80,14 +76,8 @@ export default function CommissionStatement({navigation}) {
         return;
       } else {
         const url = response?.data?.data;
-        console.log('Document response:', response?.data);
         openDocument(url);
-
-        // openDocument(
-        //   'https://gisalesappapi.slicgeneral.com/api/print/getMotorRenewalsPdf?fromDate=20250401&toDate=20250731',
-        // );
       }
-      // console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
     }
@@ -95,7 +85,7 @@ export default function CommissionStatement({navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      console.log('Requesting storage permission...');
+      // console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -120,248 +110,92 @@ export default function CommissionStatement({navigation}) {
     return true; // iOS or other platforms
   };
 
-  // const openDocument = async url => {
-  //   try {
-  //     console.log('Opening document from URL:', url);
-  //     if (!url) return;
+  const openDocument = async url => {
+    try {
+      // console.log('Opening document from URL:', url);
+      if (!url) return;
 
-  //     // ── Build file path ────────────────────────────────────────────────
-  //     let fileName = url.split('/').pop() || 'document.pdf';
-  //     if (!fileName.endsWith('.pdf')) fileName += '.pdf';
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+      let fileName = url.split('/').pop() || 'document.pdf';
+      if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+      const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
 
-  //     // ── Check / request storage permission (Android ≤ 10) ─────────────
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       Alert.alert(
-  //         'Permission Denied',
-  //         'Storage permission is required to download files.',
-  //       );
-  //       return;
-  //     }
+      const hasPermission = await requestStoragePermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Permission Denied',
+          'Storage permission is required to download files.',
+        );
+        return;
+      }
 
-  //     // ── Start download ────────────────────────────────────────────────
-  //     setLoading(true);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      setLoading(true);
+      const apiKey = API_KEY;
 
-  //     const downloadJob = RNFS.downloadFile({
-  //       fromUrl: url,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const percent = (res.bytesWritten / res.contentLength) * 100;
-  //         setProgress(percent);
-  //       },
-  //       progressInterval: 250, // update UI every 250 ms
-  //     });
-
-  //     await downloadJob.promise; // <──── await instead of .then()
-
-  //     // ── Open the file with an external viewer ─────────────────────────
-  //     await FileViewer.open(localFilePath, {
-  //       showOpenWithDialog: true, // chooser if more than one app
-  //       showAppsSuggestions: true, // jumps to Play Store if none
-  //       displayName: 'Your PDF Report',
-  //       mimeType: 'application/pdf',
-  //     });
-
-  //     console.log('File opened successfully');
-  //   } catch (err) {
-  //     console.error('openDocument error:', err);
-
-  //     if (/No app associated/i.test(err?.message)) {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'No PDF viewer found',
-  //         text2: 'Install a PDF reader and try again.',
-  //       });
-  //     } else {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'File Error',
-  //         text2: err?.message || 'Could not download or open the file.',
-  //       });
-  //     }
-  //   } finally {
-  //     // Always reset loading state, even on error
-  //     setLoading(false);
-  //   }
-  // };
-  // const openDocument = async url => {
-  //   try {
-  //     console.log('Opening document from URL:', url);
-  //     if (!url) return;
-
-  //     let fileName = url.split('/').pop() || 'document.pdf';
-  //     if (!fileName.endsWith('.pdf')) fileName += '.pdf';
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       Alert.alert(
-  //         'Permission Denied',
-  //         'Storage permission is required to download files.',
-  //       );
-  //       return;
-  //     }
-
-  //     setLoading(true);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-  //     // 🔹 First, do a quick fetch to check if response is JSON error
-  //     const checkRes = await fetch(url, {
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     const contentType = checkRes.headers.get('content-type') || '';
-
-  //     if (contentType.includes('application/json')) {
-  //       const errorData = await checkRes.json();
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Request Failed',
-  //         text2: errorData?.message || 'No data found for this request',
-  //       });
-  //       return; // 🚫 stop here, don’t download
-  //     }
-
-  //     // 🔹 Continue with RNFS download since it's a PDF
-  //     const downloadJob = RNFS.downloadFile({
-  //       fromUrl: url,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const percent = (res.bytesWritten / res.contentLength) * 100;
-  //         setProgress(percent);
-  //       },
-  //       progressDivider: 10,
-  //     });
-
-  //     await downloadJob.promise;
-
-  //     await FileViewer.open(localFilePath, {
-  //       showOpenWithDialog: true,
-  //       showAppsSuggestions: true,
-  //       displayName: 'Your PDF Report',
-  //       mimeType: 'application/pdf',
-  //     });
-
-  //     console.log('File opened successfully');
-  //   } catch (err) {
-  //     console.error('openDocument error:', err);
-
-  //     if (/No app associated/i.test(err?.message)) {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'No PDF viewer found',
-  //         text2: 'Install a PDF reader and try again.',
-  //       });
-  //     } else {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'File Error',
-  //         text2: err?.message || 'Could not download or open the file.',
-  //       });
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //     setProgress(0);
-  //   }
-  // };
-const openDocument = async (url) => {
-  try {
-    console.log('Opening document from URL:', url);
-    if (!url) return;
-
-    let fileName = url.split('/').pop() || 'document.pdf';
-    if (!fileName.endsWith('.pdf')) fileName += '.pdf';
-    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
-
-    const hasPermission = await requestStoragePermission();
-    if (!hasPermission) {
-      Alert.alert(
-        'Permission Denied',
-        'Storage permission is required to download files.',
-      );
-      return;
-    }
-
-    setLoading(true);
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-
-    // 🔹 Quick HEAD/GET to check if response is JSON error
-    const checkRes = await fetch(url, {
-      headers: {
-        'x-api-key': apiKey,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const contentType = checkRes.headers.get('content-type') || '';
-
-    if (contentType.includes('application/json')) {
-      const errorData = await checkRes.json();
-      showToast({
-        type: 'error',
-        text1: 'Request Failed',
-        text2: errorData?.message || 'No data found for this request',
+      // 🔹 Quick HEAD/GET to check if response is JSON error
+      const checkRes = await fetch(url, {
+        headers: {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        },
       });
-      return; // 🚫 stop here, don’t download
-    }
+      const contentType = checkRes.headers.get('content-type') || '';
 
-    // 🔹 Use BlobUtil for reliable download + progress
-    const res = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: localFilePath,
-    })
-      .fetch('GET', url, {
-        'x-api-key': apiKey,
-        Authorization: `Bearer ${token}`,
+      if (contentType.includes('application/json')) {
+        const errorData = await checkRes.json();
+        showToast({
+          type: 'error',
+          text1: 'Request Failed',
+          text2: errorData?.message || 'No data found for this request',
+        });
+        return; // 🚫 stop here, don’t download
+      }
+
+      // 🔹 Use BlobUtil for reliable download + progress
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: localFilePath,
       })
-      .progress({ count: 10 }, (received, total) => {
-        const percent = (received / total) * 100;
-        console.log(`Download progress: ${percent.toFixed(2)}%`);
-        setProgress(percent);
+        .fetch('GET', url, {
+          'x-api-key': apiKey,
+          Authorization: `Bearer ${token}`,
+        })
+        .progress({count: 10}, (received, total) => {
+          const percent = (received / total) * 100;
+          // console.log(`Download progress: ${percent.toFixed(2)}%`);
+          setProgress(percent);
+        });
+
+      // console.log('Download completed:', res.path());
+
+      await FileViewer.open(res.path(), {
+        showOpenWithDialog: true,
+        showAppsSuggestions: true,
+        displayName: 'Your PDF Report',
+        mimeType: 'application/pdf',
       });
 
-    console.log('Download completed:', res.path());
+      // console.log('File opened successfully');
+    } catch (err) {
+      console.error('openDocument error:', err);
 
-    await FileViewer.open(res.path(), {
-      showOpenWithDialog: true,
-      showAppsSuggestions: true,
-      displayName: 'Your PDF Report',
-      mimeType: 'application/pdf',
-    });
-
-    console.log('File opened successfully');
-  } catch (err) {
-    console.error('openDocument error:', err);
-
-    if (/No app associated/i.test(err?.message)) {
-      showToast({
-        type: 'error',
-        text1: 'No PDF viewer found',
-        text2: 'Install a PDF reader and try again.',
-      });
-    } else {
-      showToast({
-        type: 'error',
-        text1: 'File Error',
-        text2: err?.message || 'Could not download or open the file.',
-      });
+      if (/No app associated/i.test(err?.message)) {
+        showToast({
+          type: 'error',
+          text1: 'No PDF viewer found',
+          text2: 'Install a PDF reader and try again.',
+        });
+      } else {
+        showToast({
+          type: 'error',
+          text1: 'File Error',
+          text2: err?.message || 'Could not download or open the file.',
+        });
+      }
+    } finally {
+      setLoading(false);
+      setProgress(0);
     }
-  } finally {
-    setLoading(false);
-    setProgress(0);
-  }
-};
+  };
   useEffect(() => {
     const formattedYear = moment(selectedDate, 'YYYY/MM').format('YYYY');
     const formattedMonth = moment(selectedDate, 'YYYY/MM').format('MMMM');
@@ -390,8 +224,8 @@ const openDocument = async (url) => {
             borderRadius: 10,
             padding: 20,
             elevation: 5,
-              shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
+            shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3, // add blur radius
             shadowOffset: {
               width: 0,
               height: 3,
@@ -458,8 +292,8 @@ const openDocument = async (url) => {
             borderRadius: 10,
             padding: 20,
             elevation: 5,
-              shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
+            shadowOpacity: 0.2, // add opacity
+            shadowRadius: 3, // add blur radius
             shadowOffset: {
               width: 0,
               height: 3,

@@ -49,7 +49,7 @@ export default function Profile({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const profile = useSelector(state => state.Profile.profile);
   const profileResponse = profile?.user;
-  console.log('profileResponse', profileResponse);
+  // console.log('profileResponse', profileResponse);
   const defaultImageUrl = useSelector(state => state.Profile.defaultImageUrl);
   const [image, setImage] = useState();
   const [imageUri, setImageUri] = useState(null);
@@ -65,17 +65,17 @@ export default function Profile({navigation}) {
   } = useGetImageQuery({
     id: userCode,
   });
-  useEffect(() => {
-    console.log('ProfilePic lllllll', ProfilePic);
-  }, [ProfilePic]);
+  // useEffect(() => {
+  //   console.log('ProfilePic lllllll', ProfilePic);
+  // }, [ProfilePic]);
 
   const handleUpload = async uri => {
     const agencyCode = userCode;
     const imageFile = uri;
-    console.log('imageFilePicker', imageFile);
+    // console.log('imageFilePicker', imageFile);
     try {
       const response = await uploadImage({agencyCode, imageFile}).unwrap();
-      console.log('Image uploaded successfully:', response);
+      // console.log('Image uploaded successfully:', response);
       // refetch();
     } catch (err) {
       console.error('Image upload failed:', err);
@@ -83,7 +83,7 @@ export default function Profile({navigation}) {
   };
 
   const attachmentPicker = async () => {
-    console.log('test');
+    // console.log('test');
 
     try {
       const [result] = await pick({
@@ -93,8 +93,8 @@ export default function Profile({navigation}) {
         quality: 0.4,
       });
       setImage(result.uri);
-      console.log(result);
-      console.log('result.uri', result.uri);
+      // console.log(result);
+      // console.log('result.uri', result.uri);
 
       // dispatch(SetdefaultImageUrl(result.uri));
       const uri = result;
@@ -126,9 +126,9 @@ export default function Profile({navigation}) {
       .join(''); // Join them together
   };
 
-  useEffect(() => {
-    console.log('defaultImageUrl', defaultImageUrl);
-  }, [defaultImageUrl]);
+  // useEffect(() => {
+  //   console.log('defaultImageUrl', defaultImageUrl);
+  // }, [defaultImageUrl]);
 
   async function handleLogout() {
     await AsyncStorage.removeItem('username');

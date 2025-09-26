@@ -76,10 +76,10 @@ export default function AdvisorReport({navigation, route}) {
     state => state.teamStat.reportResponse.data,
   );
 
-  useEffect(() => {
-    console.log('SelectedType', SelectedType);
-  }, [SelectedType]);
-  console.log('regionName', regionName);
+  // useEffect(() => {
+  //   console.log('SelectedType', SelectedType);
+  // }, [SelectedType]);
+  // console.log('regionName', regionName);
   const {
     data: AdvisorReport,
     error: AdvisorReportError,
@@ -94,7 +94,7 @@ export default function AdvisorReport({navigation, route}) {
     type: SelectedType,
     value: value,
   });
-  console.log('AdvisorReport', AdvisorReport?.data);
+  // console.log('AdvisorReport', AdvisorReport?.data);
   const tableData = AdvisorReport?.data?.map(item => [
     item?.advisor?.toString() ?? '',
     value == 1
@@ -146,7 +146,6 @@ export default function AdvisorReport({navigation, route}) {
   }, []);
 
   const toggleOrientation = () => {
-
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -205,7 +204,7 @@ export default function AdvisorReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
- onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -213,7 +212,7 @@ export default function AdvisorReport({navigation, route}) {
         ) : (
           <Header
             Title={Title + ' Report'}
-           onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -453,12 +452,12 @@ export default function AdvisorReport({navigation, route}) {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>

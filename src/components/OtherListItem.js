@@ -135,59 +135,59 @@ export default function OtherListItem({item, onPress}) {
   //     });
   // };
 
-const openDocument = async (url) => {
-  if (!url) {
-    console.log('No document URL available');
-    return;
-  }
+  const openDocument = async url => {
+    if (!url) {
+      // console.log('No document URL available');
+      return;
+    }
 
-  const fileName = url.split('/').pop();
-  const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
+    const fileName = url.split('/').pop();
+    const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
 
-  const hasPermission = await requestStoragePermission();
-  if (!hasPermission) {
-    Alert.alert(
-      'Permission Denied',
-      'Storage permission is required to download files.',
-    );
-    return;
-  }
+    const hasPermission = await requestStoragePermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Denied',
+        'Storage permission is required to download files.',
+      );
+      return;
+    }
 
-  try {
-    setLoading(true);
-    setProgress(0);
+    try {
+      setLoading(true);
+      setProgress(0);
 
-    const res = await ReactNativeBlobUtil.config({
-      fileCache: true,
-      path: localFilePath,
-    })
-      .fetch('GET', url)
-      .progress({ count: 10 }, (received, total) => {
-        const progress = received / total;
-        setProgress(progress * 100); // percent
-        console.log(`Download progress: ${(progress * 100).toFixed(2)}%`);
+      const res = await ReactNativeBlobUtil.config({
+        fileCache: true,
+        path: localFilePath,
+      })
+        .fetch('GET', url)
+        .progress({count: 10}, (received, total) => {
+          const progress = received / total;
+          setProgress(progress * 100); // percent
+          // console.log(`Download progress: ${(progress * 100).toFixed(2)}%`);
+        });
+
+      setLoading(false);
+
+      ToastAndroid.show(
+        `Download Complete: File saved to ${localFilePath}`,
+        ToastAndroid.LONG,
+      );
+
+      // Open with FileViewer (better than Linking for local files)
+      await FileViewer.open(res.path(), {
+        showOpenWithDialog: true,
       });
-
-    setLoading(false);
-
-    ToastAndroid.show(
-      `Download Complete: File saved to ${localFilePath}`,
-      ToastAndroid.LONG,
-    );
-
-    // Open with FileViewer (better than Linking for local files)
-    await FileViewer.open(res.path(), {
-      showOpenWithDialog: true,
-    });
-  } catch (error) {
-    console.error('Download/Open error:', error);
-    setLoading(false);
-    Alert.alert(
-      'Download Failed',
-      'There was an error downloading the file.',
-    );
-  }
-};
+    } catch (error) {
+      console.error('Download/Open error:', error);
+      setLoading(false);
+      Alert.alert(
+        'Download Failed',
+        'There was an error downloading the file.',
+      );
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -206,12 +206,12 @@ const openDocument = async (url) => {
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 3,
-          shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+        shadowOpacity: 0.2, // add opacity
+        shadowRadius: 3, // add blur radius
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
       }}>
       <View
         style={{

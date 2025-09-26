@@ -69,9 +69,9 @@ export default function TrainingList({navigation}) {
     userCode: usertype == 2 ? personalCode : userCode,
   });
 
-  useEffect(() => {
-    console.log('TrainingList', TrainingList);
-  }, [TrainingList]);
+  // useEffect(() => {
+  //   console.log('TrainingList', TrainingList);
+  // }, [TrainingList]);
 
   const tableData = TrainingList?.data?.map(item => [
     item?.trainId?.toString() ?? '',
@@ -90,8 +90,8 @@ export default function TrainingList({navigation}) {
   const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
 
   const handleLoad = (from, to) => {
-    console.log('Selected From:', from);
-    console.log('Selected To:', to);
+    // console.log('Selected From:', from);
+    // console.log('Selected To:', to);
   };
 
   return (

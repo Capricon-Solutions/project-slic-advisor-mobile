@@ -269,7 +269,7 @@ export default function ReportFilter({
               onValueChange={value => {
                 if (value == null) {
                   setBranch('');
-                  console.log('value', value);
+                  // console.log('value', value);
                 } else {
                   setBranch(value);
                 }
@@ -305,12 +305,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 15,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
   header: {
     flexDirection: 'row',

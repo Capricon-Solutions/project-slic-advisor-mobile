@@ -71,7 +71,7 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     DebitSettlementSms: builder.mutation({
       query: body => {
         const url = 'salesIncome/DebitSettlementSms';
-        console.log('body:', body);
+        // console.log('body:', body);
         return {
           url,
           method: 'POST',
@@ -81,7 +81,7 @@ export const policyDetailsApi = baseApi.injectEndpoints({
     }),
     getClaimDetails: builder.query({
       query: ({id}) => {
-        console.log('url:', id);
+        // console.log('url:', id);
         const url = `motor/getMotorClaimsDocuments?claimId=${id}`;
         return url;
       },

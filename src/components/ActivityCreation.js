@@ -98,7 +98,7 @@ export default function ActivityCreation({
         body,
         userCode: usertype == 2 ? personalCode : userCode,
       }).then(res => {
-        console.log('res', res);
+        // console.log('res', res);
       });
       showToast({
         type: 'success',
@@ -115,7 +115,7 @@ export default function ActivityCreation({
         setSelectedDate(null);
         setModalVisible(false);
       }, 900);
-      console.log('Activity Created:', response);
+      // console.log('Activity Created:', response);
     } catch (err) {
       console.error('Error creating activity:', err);
     }
@@ -391,8 +391,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     elevation: 10,
-     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

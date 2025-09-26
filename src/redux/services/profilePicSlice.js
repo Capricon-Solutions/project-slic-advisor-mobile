@@ -5,7 +5,7 @@ export const profilePicSlice = baseApi.injectEndpoints({
     getImage: builder.query({
       query: ({id}) => {
         const url = `image/get/${id}`;
-        console.log('getImage URL: kkkkkktest', url);
+        // console.log('getImage URL: kkkkkktest', url);
         return url;
       },
       providesTags: ['ProfilePic'],
@@ -13,7 +13,7 @@ export const profilePicSlice = baseApi.injectEndpoints({
 
     getImageUrl: builder.query({
       query: ({url}) => {
-        console.log('Final API URL: runs fffffff', url); // Log the final URL inside the query function
+        // console.log('Final API URL: runs fffffff', url); // Log the final URL inside the query function
         return url;
       },
     }),
@@ -22,8 +22,8 @@ export const profilePicSlice = baseApi.injectEndpoints({
         const formData = new FormData();
         formData.append('AgencyCode', agencyCode); // Add agency code as text
         formData.append('ImageFile', imageFile); // Add image file
-        console.log('AgencyCodeccccccccccccccccccccc', agencyCode);
-        console.log('ImageFilecccccccccccccc  kkkkkktest', imageFile);
+        // console.log('AgencyCodeccccccccccccccccccccc', agencyCode);
+        // console.log('ImageFilecccccccccccccc  kkkkkktest', imageFile);
         return {
           url: 'image/upload',
           method: 'POST',

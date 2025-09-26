@@ -63,7 +63,7 @@ export default function DebitSettlement({navigation, route}) {
   );
 
   useEffect(() => {
-    console.log('DebitSettlement', DebitSettlement);
+    // console.log('DebitSettlement', DebitSettlement);
     if (phone) setMobileNo(phone);
     if (
       DebitSettlement?.data?.premiumNetValue &&
@@ -89,6 +89,24 @@ export default function DebitSettlement({navigation, route}) {
 
   // }, [DebitSettlement]);
 
+  // Linear-time thousands separator
+  function formatWithCommas(str) {
+    if (!str) return '';
+    const [integerPart, decimalPart] = str.split('.');
+    let intStr = '';
+    let count = 0;
+
+    for (let i = integerPart.length - 1; i >= 0; i--) {
+      intStr = integerPart[i] + intStr;
+      count++;
+      if (count % 3 === 0 && i !== 0) {
+        intStr = ',' + intStr;
+      }
+    }
+
+    return decimalPart !== undefined ? `${intStr}.${decimalPart}` : intStr;
+  }
+
   const handleSubmit = async () => {
     if (mobileNo === null || mobileNo === '') {
       showToast({
@@ -106,7 +124,7 @@ export default function DebitSettlement({navigation, route}) {
 
     try {
       const response = await debitSettlementSms(body).unwrap();
-      console.log('response', response);
+      // console.log('response', response);
       if (response?.success == true) {
         showToast({
           type: 'success',
@@ -119,7 +137,7 @@ export default function DebitSettlement({navigation, route}) {
         }, 800);
       }
     } catch (err) {
-      console.log('err', err);
+      // console.log('err', err);
       showToast({
         type: 'error',
         text1: 'Failed',
@@ -217,48 +235,7 @@ export default function DebitSettlement({navigation, route}) {
               {label: 'Payment', value: 'Payment'},
             ]}
           />
-          {/* <AutocompleteDropdown
-            clearOnFocus={true}
-            closeOnBlur={true}
-            showClear={false}
-            useFilter={false}
-            style={{}}
-            textInputProps={{
-              autoCorrect: false,
-              autoCapitalize: 'none',
-              style: {
-                color: COLORS.textColor,
-              },
-            }}
-            containerStyle={{}}
-            contentContainerStyle={{color: 'red'}}
-            closeOnSubmit={false}
-            initialValue={{id: selectedItem}} // or just '2'
-            onSelectItem={v => {
-              setSelectedItem(v?.id);
-              console.log('v:', v?.id);
-            }}
-            dataSet={[
-              {id: 'Debit Settlement', title: 'Debit Settlement'},
-              {id: 'Payment', title: 'Payment'},
-            ]}
-          /> */}
-          {/* <Text style={{color: 'red'}}>{selectedItem}</Text> */}
-          {/* <SquareTextBox
-            keyboardType={'numeric'}
-            Title={`LKR ${Number(
-              DebitSettlement?.data?.premiumNetValue || 0,
-            ).toLocaleString('en-US', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`}
-            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            setValue={text => {
-              const raw = text.replace(/[^0-9]/g, ''); // remove commas
-              setAmount(raw);
-            }}
-            Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
-          /> */}
+
           <SquareTextBox
             keyboardType={'numeric'}
             Title={`LKR ${Number(
@@ -267,19 +244,27 @@ export default function DebitSettlement({navigation, route}) {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}`}
-            value={amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            value={formatWithCommas(amount)}
             setValue={text => {
-              let raw = text.replace(/[^0-9.]/g, ''); // allow digits and decimal point
+              // Remove non-digit characters except decimal point
+              let raw = text.replace(/[^0-9.]/g, '');
+
+              // Keep only first decimal point
               const parts = raw.split('.');
               if (parts.length > 2) {
-                raw = parts[0] + '.' + parts[1]; // keep only first decimal point
+                raw = parts[0] + '.' + parts[1];
               }
+
+              // Limit to 2 decimal places
               if (parts[1]?.length > 2) {
-                raw = parts[0] + '.' + parts[1].slice(0, 2); // max 2 decimals
+                raw = parts[0] + '.' + parts[1].slice(0, 2);
               }
+
               setAmount(raw);
             }}
-            Label={selectedItem?.id == 1 ? 'Outstanding Due' : 'Renewal Amount'}
+            Label={
+              selectedItem?.id === 1 ? 'Outstanding Due' : 'Renewal Amount'
+            }
           />
 
           <SquareTextBoxOutlinedDate

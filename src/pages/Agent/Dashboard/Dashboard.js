@@ -45,6 +45,7 @@ import {
   useGetCurrentMonthRankQuery,
   useGetRMSummeryQuery,
 } from '../../../redux/services/SalesMeterApiSlice';
+import {API_KEY} from '@env';
 
 const window = Dimensions.get('window');
 
@@ -85,7 +86,7 @@ export default function Dashboard({navigation}) {
     id: usertype == 2 ? personalCode : userCode,
   });
   const regionName = profileResponse?.region;
-  console.log('CurrentMonthRank', CurrentMonthRank);
+  // console.log('CurrentMonthRank', CurrentMonthRank);
   const {
     data: RMSummeryData,
     error: RMSummeryError,
@@ -126,7 +127,7 @@ export default function Dashboard({navigation}) {
     dispatch(SetdefaultImageUrl(null));
     if (!ProfilePic?.data?.urlPath) return;
     const url = `https://gisalesappapi.slicgeneral.com${urlPath}`;
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+    const apiKey = API_KEY; // Replace with your actual API key
 
     try {
       // const filePath = `${RNFS.DocumentDirectoryPath}/profile.png`;
@@ -136,20 +137,20 @@ export default function Dashboard({navigation}) {
 
       // dispatch(SetdefaultImageUrl(`file://${filePath}`));
 
-      console.log('url', url);
-      console.log('filePath', filePath);
-      console.log('token', token);
+      // console.log('url', url);
+      // console.log('filePath', filePath);
+      // console.log('token', token);
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
         headers: {'x-api-key': apiKey, Authorization: `Bearer ${token}`},
       }).promise;
-      console.log('work here');
+      // console.log('work here');
       if (response.statusCode === 200) {
         dispatch(SetdefaultImageUrl(`file://${filePath}`));
         // setImageUri(`file://${filePath}`);
       } else {
-        console.log('Failed to fetch image', response.statusCode);
+        // console.log('Failed to fetch image', response.statusCode);
       }
     } catch (error) {
       console.error('Error fetching image:', error);

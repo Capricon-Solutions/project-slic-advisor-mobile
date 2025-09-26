@@ -65,7 +65,7 @@ export default function SalesMeter({navigation}) {
   const salesMeterResponse = useSelector(
     state => state.SalesMeter.SalesMeterResponse.data,
   );
-  console.log('usertypevv', usertype);
+  // console.log('usertypevv', usertype);
   const {
     data: CurrentMonthIncome,
     error,
@@ -91,14 +91,14 @@ export default function SalesMeter({navigation}) {
   } = useSalesIncomeQuery({
     id: usertype == 2 ? personalCode : userCode,
   });
-  console.log('CurrentMonthAchievement', CurrentMonthAchievement);
-  console.log('CurrentMonthIncome', CurrentMonthIncome);
-  console.log('salesIncome', salesIncome);
+  // console.log('CurrentMonthAchievement', CurrentMonthAchievement);
+  // console.log('CurrentMonthIncome', CurrentMonthIncome);
+  // console.log('salesIncome', salesIncome);
   const filterdData =
     type == 'M'
       ? CurrentMonthAchievement?.data?.monthly
       : CurrentMonthAchievement?.data?.cumulative;
-  console.log('filterdData', filterdData);
+  // console.log('filterdData', filterdData);
   const tableHead = ['Type', 'Premium', 'Income'];
   const tableData =
     type == 'M'
@@ -185,7 +185,7 @@ export default function SalesMeter({navigation}) {
   const [visible, setVisible] = React.useState(false);
 
   useEffect(() => {
-    console.log('filterdData', filterdData);
+    // console.log('filterdData', filterdData);
   }, []);
   const menuItems = [
     {

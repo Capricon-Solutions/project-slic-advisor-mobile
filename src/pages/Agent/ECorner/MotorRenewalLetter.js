@@ -178,10 +178,10 @@ export default function MotorRenewalLetter({navigation}) {
   useEffect(() => {
     refetch;
     setFilteredData(motorRenewalsList?.data?.motorRenewals);
-    console.log(
-      'motorRenewalsList?.data',
-      motorRenewalsList?.data?.motorRenewals,
-    );
+    // console.log(
+    //   'motorRenewalsList?.data',
+    //   motorRenewalsList?.data?.motorRenewals,
+    // );
   }, [motorRenewalsList]);
 
   useEffect(() => {
@@ -226,7 +226,7 @@ export default function MotorRenewalLetter({navigation}) {
           <TextInput
             style={styles.textInput}
             value={searchText}
-            placeholderTextColor={ COLORS.warmGray}
+            placeholderTextColor={COLORS.warmGray}
             onChangeText={v => {
               setSearchText(v);
               handleClear(v); // Now works with latest value

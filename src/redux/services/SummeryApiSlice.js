@@ -8,7 +8,7 @@ export const SummeryApi = baseApi.injectEndpoints({
       query: ({month, regionName}) => {
         const encodedRegion = encodeURIComponent(regionName);
         const url = `general/getRegionalKpiSummary/${encodedRegion}?month=${month}`;
-        console.log('Fetching Notifications from:', url);
+        // console.log('Fetching Notifications from:', url);
         return url;
       },
     }),
@@ -18,7 +18,7 @@ export const SummeryApi = baseApi.injectEndpoints({
       query: ({month, regionName}) => {
         const encodedRegion = encodeURIComponent(regionName);
         const url = `general/getRegionalClassSummary/${encodedRegion}?year=2025&month=${month}`;
-        console.log('Fetching Notifications from:', url);
+        // console.log('Fetching Notifications from:', url);
         return url;
       },
     }),
@@ -28,7 +28,7 @@ export const SummeryApi = baseApi.injectEndpoints({
       query: ({month, regionName}) => {
         const encodedRegion = encodeURIComponent(regionName);
         const url = `general/getGeneralRegionalDueSummary/${encodedRegion}?year=2025&month=${month}`;
-        console.log('Fetching Notifications from:', url);
+        // console.log('Fetching Notifications from:', url);
         return url;
       },
     }),
@@ -37,7 +37,7 @@ export const SummeryApi = baseApi.injectEndpoints({
     RegionalSummery: builder.query({
       query: ({month}) => {
         const url = `general/getRegionalSummary/${month}`;
-        console.log('Fetching Notifications from:', url);
+        // console.log('Fetching Notifications from:', url);
         return url;
       },
     }),
@@ -51,4 +51,3 @@ export const {
   useDuesSummeryQuery,
   useRegionalSummeryQuery,
 } = SummeryApi;
-

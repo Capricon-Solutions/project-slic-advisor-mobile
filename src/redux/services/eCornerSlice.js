@@ -5,14 +5,14 @@ export const eCornerSlice = baseApi.injectEndpoints({
     getGetGogreenDetailsAll: builder.query({
       query: userCode => {
         const url = `agent/GetGogreenDetailsAll/${userCode}`;
-        console.log('Fetching URL test', url);
+        // console.log('Fetching URL test', url);
         return url;
       },
     }),
     getEDocument: builder.query({
       query: () => {
         const url = `print/edocuments`;
-        console.log('Fetching URL test', url);
+        // console.log('Fetching URL test', url);
         return url;
       },
     }),

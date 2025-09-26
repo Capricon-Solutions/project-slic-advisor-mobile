@@ -55,9 +55,9 @@ export default function ClassSummary({navigation}) {
     month: currentMonthNumber,
     regionName: regionName,
   });
-  useEffect(() => {
-    console.log('ClassSummery', ClassSummery);
-  }, [ClassSummery]);
+  // useEffect(() => {
+  //   console.log('ClassSummery', ClassSummery);
+  // }, [ClassSummery]);
 
   const DataSet =
     SelectedType == 1
@@ -65,7 +65,22 @@ export default function ClassSummary({navigation}) {
       : ClassSummery?.data?.cumulative;
   const formatCurrency = value => {
     const num = Number(value || 0);
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Split integer and decimal parts
+    const [integerPart, decimalPart] = num.toFixed(2).split('.');
+
+    // Insert commas in linear time
+    let intStr = '';
+    let count = 0;
+    for (let i = integerPart.length - 1; i >= 0; i--) {
+      intStr = integerPart[i] + intStr;
+      count++;
+      if (count % 3 === 0 && i !== 0) {
+        intStr = ',' + intStr;
+      }
+    }
+
+    return `${intStr}.${decimalPart}`;
   };
   const AmountFields = ({title, amount, icon}) => {
     return (
@@ -153,12 +168,12 @@ export default function ClassSummary({navigation}) {
               padding: 10,
               backgroundColor: COLORS.white,
               elevation: 10,
-                shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+              shadowOpacity: 0.2, // add opacity
+              shadowRadius: 3, // add blur radius
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
               marginBottom: 20,
               marginTop: 8,
             }}>
@@ -247,12 +262,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -303,12 +318,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -359,12 +374,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -419,12 +434,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -475,12 +490,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -531,12 +546,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>
@@ -587,12 +602,12 @@ export default function ClassSummary({navigation}) {
               style={{
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 borderRadius: 10,
                 paddingVertical: 10,
               }}>

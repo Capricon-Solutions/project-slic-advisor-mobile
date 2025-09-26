@@ -56,11 +56,11 @@ export default function ActivityDetails({navigation, route}) {
     skip: !item?.leadId, // Prevent query if leadId is not available
   });
 
-  console.log('ActivityDetails item', item);
+  // console.log('ActivityDetails item', item);
 
   useEffect(() => {
     if (item?.leadId) {
-      console.log('leadData', leadData);
+      // console.log('leadData', leadData);
     }
   }, [item?.leadId]);
 
@@ -75,7 +75,7 @@ export default function ActivityDetails({navigation, route}) {
   //   }
   // };
 
-  console.log('leadInfo', leadInfo);
+  // console.log('leadInfo', leadInfo);
   const DetailLine = ({Title, detail}) => {
     return (
       <View

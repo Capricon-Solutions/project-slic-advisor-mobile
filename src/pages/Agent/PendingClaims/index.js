@@ -64,7 +64,7 @@ export default function PendingClaims({navigation, route}) {
   });
   const claimHistoryResponse = ClaimHistory?.data;
 
-  console.log('PendingClaims test', ClaimHistory);
+  // console.log('PendingClaims test', ClaimHistory);
 
   const DetailLine = ({Title, detail}) => {
     return (

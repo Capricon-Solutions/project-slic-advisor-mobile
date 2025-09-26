@@ -47,7 +47,7 @@ export default function Contacts({navigation}) {
     useCallback(() => {
       dispatch(Getpath(0));
       setSearchQuery('');
-      console.log('test conact');
+      // console.log('test conact');
     }, []),
   );
 
@@ -73,7 +73,7 @@ export default function Contacts({navigation}) {
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase()); // fallback alphabetical
         });
 
-      console.log('filteredBranches', filtered);
+      // console.log('filteredBranches', filtered);
       setFilteredBranches(filtered);
     }
   }, [branches, searchQuery, search]);
@@ -102,7 +102,7 @@ export default function Contacts({navigation}) {
             .localeCompare(b.contactName.toLowerCase()); // fallback alphabetical sort
         });
 
-      console.log('filteredDepartments', filtered);
+      // console.log('filteredDepartments', filtered);
       setFilteredDepartments(filtered);
     }
   }, [departments, searchQuery, search]);

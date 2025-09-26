@@ -135,9 +135,9 @@ export default function BPlanner({navigation}) {
   });
 
   const date = selectedDate;
-  console.log('userCode1', userCode);
-  console.log('usertype', usertype);
-  console.log('personalCode', personalCode);
+  // console.log('userCode1', userCode);
+  // console.log('usertype', usertype);
+  // console.log('personalCode', personalCode);
   const {
     data: PlannerActivities,
     isFetching,
@@ -147,7 +147,7 @@ export default function BPlanner({navigation}) {
     date,
     userCode: usertype == 2 ? personalCode : userCode,
   });
-  console.log('PlannerActivities', PlannerActivities);
+  // console.log('PlannerActivities', PlannerActivities);
   const {data: Leads} = useGetLeadsQuery(
     {date, userCode: usertype == 2 ? personalCode : userCode},
     {refetchOnMountOrArgChange: false},
@@ -190,10 +190,10 @@ export default function BPlanner({navigation}) {
   });
   useEffect(() => {
     setActivities(updatedActivities);
-    console.log('Activities updated:', updatedActivities);
+    // console.log('Activities updated:', updatedActivities);
   }, [isFetching]);
   useEffect(() => {
-    console.log('Leads:', Leads);
+    // console.log('Leads:', Leads);
 
     if (Leads?.data && Array.isArray(Leads.data)) {
       setLeadList(Leads.data);
@@ -234,11 +234,11 @@ export default function BPlanner({navigation}) {
         type: item.type,
       })); // Extract both activityId and type
 
-    console.log('checkedActivities', checkedActivities);
-    console.log(
-      'checkedActivities[0].activityId',
-      checkedActivities[0].activityId,
-    );
+    // console.log('checkedActivities', checkedActivities);
+    // console.log(
+    //   'checkedActivities[0].activityId',
+    //   checkedActivities[0].activityId,
+    // );
 
     try {
       if (checkedActivities[0].type == 'Event') {
@@ -246,7 +246,7 @@ export default function BPlanner({navigation}) {
           activityId: checkedActivities[0].activityId,
           userCode: usertype == 2 ? personalCode : userCode,
         });
-        console.log('Event Deleted:', response);
+        // console.log('Event Deleted:', response);
         if (response?.data?.success === true) {
           showToast({
             type: 'success',
@@ -260,13 +260,13 @@ export default function BPlanner({navigation}) {
             text2: 'Failed to delete item 🚨',
           });
         }
-        console.log('Event Deleted:', response);
+        // console.log('Event Deleted:', response);
       } else {
-        console.log('userCode2', userCode);
-        console.log(
-          'checkedActivities[0].activityId',
-          checkedActivities[0].activityId,
-        );
+        // console.log('userCode2', userCode);
+        // console.log(
+        //   'checkedActivities[0].activityId',
+        //   checkedActivities[0].activityId,
+        // );
         const response = await DeleteActivity({
           activityId: checkedActivities[0].activityId,
           userCode: usertype == 2 ? personalCode : userCode,
@@ -276,7 +276,7 @@ export default function BPlanner({navigation}) {
           text1: 'Deleted',
           text2: 'Activity deleted Successfully.',
         });
-        console.log('Activity Deleted:', response);
+        // console.log('Activity Deleted:', response);
       }
     } catch (err) {
       console.error('Error deleting activity:', err);
@@ -327,7 +327,7 @@ export default function BPlanner({navigation}) {
                 selectedColor: 'blue', // Change this color if needed
               },
             });
-            console.log('Event created for date:', date);
+            // console.log('Event created for date:', date);
           }}
         />
         <ActivityCreation
@@ -343,7 +343,7 @@ export default function BPlanner({navigation}) {
                 selectedColor: 'blue', // Change this color if needed
               },
             });
-            console.log('Event created for date:', date);
+            // console.log('Event created for date:', date);
           }}
         />
         <HeaderBackground />
@@ -367,17 +367,17 @@ export default function BPlanner({navigation}) {
                 backgroundColor: COLORS.white,
                 padding: 5,
                 elevation: 5,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 marginVertical: 15,
               }}>
               <Calendar
                 onDayPress={day => {
-                  console.log('test', day.dateString);
+                  // console.log('test', day.dateString);
                   setSelectedDate(day.dateString);
                   setSelected({
                     [day.dateString]: {
