@@ -71,13 +71,11 @@ export default function EventCreation({
     if (!validateForm()) return; // Stop if validation fails
 
     try {
-      // console.log('Creating event with body:', body);
       const response = await EventCreate({
         body,
         userCode: usertype == 2 ? personalCode : userCode,
       });
 
-      // console.log('Activity Created test', response);
       showToast({
         type: 'success',
         text1: 'Event Created',

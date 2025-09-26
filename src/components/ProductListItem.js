@@ -37,15 +37,14 @@ export default function ProductListItem({item, onPress}) {
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        // borderWidth: 1,
-        // borderColor: COLORS.lightBorder,
+
         elevation: 3,
-          shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+        shadowOpacity: 0.2, // add opacity
+        shadowRadius: 3, // add blur radius
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
       }}>
       <View
         style={{
@@ -66,7 +65,6 @@ export default function ProductListItem({item, onPress}) {
             borderRadius: 5,
             paddingHorizontal: 4,
             backgroundColor: COLORS.lightBlue,
-            // height: '100%',
           }}>
           <Image
             style={{height: '100%', width: '100%', resizeMode: 'contain'}}

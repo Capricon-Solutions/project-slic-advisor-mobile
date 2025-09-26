@@ -82,22 +82,6 @@ export default function MeReport({navigation, route}) {
   const IndividualStatResponse = useSelector(
     state => state.teamStat.reportResponse.data,
   );
-  // const {
-  //   data: MEReport,
-  //   error: MEReportError,
-  //   isLoading: MEReportLoading,
-  //   isFetching: MEReportFetching,
-  // } = useMarketingReportQuery({
-  //   branch: branch,
-  //   // type: type,
-  //   startMonth: selectedMonth === 0 ? 1 : selectedMonth,
-  //   endMonth: selectedMonth === 0 ? 12 : selectedMonth,
-  //   // month: selectedMonth,
-  //   year: new Date().getFullYear(),
-  //   type: SelectedType,
-  //   value: value,
-  //   region: regionName,
-  // });
 
   const {
     data: MEReport,
@@ -113,19 +97,7 @@ export default function MeReport({navigation, route}) {
     type: SelectedType,
     value: value,
   });
-  // const tableData = MEReport?.data?.map(item => [
-  //   item?.direct?.toString() ?? '',
 
-  //   item?.renewal?.toString() ?? '',
-  //   item?.nb?.toString() ?? '',
-  //   // item?.refundPpw?.toString() ?? '',
-  //   {
-  //     ppw: item?.refundPpw?.toString() ?? '',
-  //     other: item?.refundOther?.toString() ?? '',
-  //   },
-  //   item?.endorsement?.toString() ?? '',
-  //   item?.total?.toString() ?? '',
-  // ]);
   const tableData = MEReport?.data?.map(item => [
     item?.me?.toString() ?? '',
     value == 1
@@ -134,7 +106,6 @@ export default function MeReport({navigation, route}) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
     {
       ppw:
         value == 1
@@ -172,7 +143,6 @@ export default function MeReport({navigation, route}) {
   }, []);
 
   const toggleOrientation = () => {
-
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -209,7 +179,6 @@ export default function MeReport({navigation, route}) {
         dropdownOptions={dropdownOptions}
         lastTitle={'Agent'}
         onPressSearch={() => {
-          // PolicyListResponse(searchData);
           setModalVisible(false);
           refetch();
         }}
@@ -232,7 +201,7 @@ export default function MeReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-             onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -240,7 +209,7 @@ export default function MeReport({navigation, route}) {
         ) : (
           <Header
             Title={Title + ' Report'}
-             onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -269,7 +238,6 @@ export default function MeReport({navigation, route}) {
                 style={{
                   color: COLORS.textColor,
                   fontFamily: Fonts.Roboto.Bold,
-                  // fontSize: 13
                 }}>
                 Filter By
               </Text>
@@ -309,7 +277,6 @@ export default function MeReport({navigation, route}) {
             flex: 1,
             paddingHorizontal: 1,
             paddingTop: 0,
-            // backgroundColor: 'red',
           }}>
           <View
             style={{
@@ -317,8 +284,6 @@ export default function MeReport({navigation, route}) {
               alignItems: 'center',
               flexDirection: 'row',
               justifyContent: 'flex-end',
-              // backgroundColor: 'red',
-              // marginVertical: 5,
             }}>
             <View style={{flex: 0.19, marginHorizontal: 2}}>
               <DropdownComponent
@@ -335,18 +300,6 @@ export default function MeReport({navigation, route}) {
               />
             </View>
             <View style={{flex: 0.2, marginHorizontal: 2}}>
-              {/* <DropdownComponent
-                  label={'Type'}
-                  mode={'modal'}
-                  search={false}
-                  onValueChange={value => {
-                    setSelectedType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
-                  }}
-                  dropdownData={[
-                    {label: 'General Cumulative', value: 'G'},
-                    {label: 'Motor Monthly', value: 'M'},
-                  ]}
-                /> */}
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
@@ -369,31 +322,6 @@ export default function MeReport({navigation, route}) {
               />
             </View>
             <View style={{flex: 0.18, marginHorizontal: 2}}>
-              {/* <DropdownComponent
-                  label={'Month'}
-                  mode={'modal'}
-                  value={selectedMonth}
-                  nonClearable={true}
-                  // onValueChange={setSelectedMonth}
-                  onValueChange={value => {
-                    setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
-                  }}
-                  dropdownData={[
-                    {label: 'Cumulative', value: '00'},
-                    {label: 'January', value: '01'},
-                    {label: 'February', value: '02'},
-                    {label: 'March', value: '03'},
-                    {label: 'April', value: '04'},
-                    {label: 'May', value: '05'},
-                    {label: 'June', value: '06'},
-                    {label: 'July', value: '07'},
-                    {label: 'August', value: '08'},
-                    {label: 'September', value: '09'},
-                    {label: 'October', value: '10'},
-                    {label: 'November', value: '11'},
-                    {label: 'December', value: '12'},
-                  ]}
-                /> */}
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
@@ -520,12 +448,12 @@ export default function MeReport({navigation, route}) {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>
@@ -667,24 +595,6 @@ export default function MeReport({navigation, route}) {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
-
-                  // value={
-                  //   value == 1
-                  //     ? (
-                  //         (item?.renewal ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.refundPpw ?? 0) +
-                  //         (item?.refundOther ?? 0) +
-                  //         (item?.endorsement ?? 0)
-                  //       ).toLocaleString()
-                  //     : (
-                  //         (item?.nopRenewal ?? 0) +
-                  //         (item?.nopPpw ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.nopOtherRefund ?? 0) +
-                  //         (item?.nopEndorsements ?? 0)
-                  //       ).toLocaleString()
-                  // }
                 />
               </View>
             </View>

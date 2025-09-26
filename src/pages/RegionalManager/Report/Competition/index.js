@@ -56,8 +56,6 @@ export default function Competition({navigation}) {
   }, [Competition]);
 
   const filterCompetitionsByDate = data => {
-    // console.log('selectedYear', selectedYear);
-    // console.log('selectedMonth', selectedMonth);
     if (!data) return {};
 
     const filterFunc = items =>
@@ -90,8 +88,7 @@ export default function Competition({navigation}) {
         : SelectedType === 3
         ? filtered.annualAwards
         : filtered.other;
-    // console.log('selectedFilteredData', selectedFilteredData);
-    // setFilteredData(selectedFilteredData);
+
     setFilteredData(filtered);
   };
 
@@ -103,11 +100,6 @@ export default function Competition({navigation}) {
       : SelectedType === 3
       ? filteredData?.annualAwards
       : filteredData?.other;
-
-  // useEffect(() => {
-  //   // Reset filtered data when type changes
-  //   setFilteredData(null);
-  // }, [SelectedType]);
 
   const CompetitionItem = ({item}) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -177,11 +169,6 @@ export default function Competition({navigation}) {
           </View>
 
           {showSeeMore && (
-            // <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-            //   <Text style={{color: 'blue', marginTop: 4}}>
-
-            //   </Text>
-            // </TouchableOpacity>
             <TouchableOpacity
               style={{
                 backgroundColor: '#00796B',

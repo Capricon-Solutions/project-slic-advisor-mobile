@@ -12,10 +12,7 @@ import COLORS from '../../../theme/colors';
 
 export default function Badvisor({navigation}) {
   const dispatch = useDispatch();
-  //   useFocusEffect();
-  // useCallback(() => {
-  //   dispatch(Getpath(0));
-  // }, []),
+
   const token = useSelector(state => state.Profile.token);
   const {data: ReturnUrl, isLoading, error} = useGetBusinessAdvisorQuery(token);
 

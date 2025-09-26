@@ -24,7 +24,6 @@ const TableComponent = ({
 }) => {
   const handleCellPress = cellData => {
     navigation.navigate('PolicyDetails', {policyNo: cellData});
-    // console.log('Clicked Cell:', cellData);
   };
 
   return (
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,
-    // textAlign: 'left',
   },
 });
 

@@ -8,7 +8,6 @@ import Fonts from '../theme/Fonts';
 import {Styles} from '../theme/Styles';
 
 const window = Dimensions.get('window');
-// import { useSelector } from "react-redux";
 
 export default function OutlinedTextBox({
   Label,
@@ -29,7 +28,6 @@ export default function OutlinedTextBox({
       <TextInput
         mode="outlined"
         label={Title}
-        // readOnly
         readOnly={readOnly}
         style={{marginVertical: 3, fontSize: 12, width: '100%'}}
         textColor={COLORS.ashBlue}

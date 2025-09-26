@@ -262,10 +262,7 @@ export default function ActivityCreation({
                 />
 
                 <TouchableOpacity
-                  onPress={() =>
-                    // setPickerVisible(true)
-                    showDatePicker()
-                  }
+                  onPress={() => showDatePicker()}
                   style={[
                     styles.searchButton,
                     {

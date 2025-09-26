@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,44 +13,24 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
-
-// import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
+import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 
 const window = Dimensions.get('window');
 
-export default function DebitSettlementRenewal({ navigation }) {
+export default function DebitSettlementRenewal({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
-  // API Binds
-
-  // const apiUrl = `http://122.255.4.181:2001/api/debit_settlement/${policyId}`;
-
-  // const headers = {
-  //   Authorization: `Bearer ${token}`,
-  //   'Content-Type': 'application/json',
-  // };
-
-  // const method ='POST';
-
-  // const body = {
-  //   type: 'Debit settlement',
-  //   Outstanding_due: '36000',
-  //   due_date: '2025/02/24',
-  //   contact: '0145245875',
-  // };
 
   return (
     <View style={Styles.container}>
@@ -69,7 +49,7 @@ export default function DebitSettlementRenewal({ navigation }) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
         <View style={styles.card}>
           <Text
             style={{
@@ -83,17 +63,17 @@ export default function DebitSettlementRenewal({ navigation }) {
             clearOnFocus={true}
             closeOnBlur={true}
             closeOnSubmit={false}
-            initialValue={{ id: '1' }} // or just '2'
+            initialValue={{id: '1'}} // or just '2'
             onSelectItem={setSelectedItem}
             dataSet={[
-              { id: '1', title: 'Debit Settlement' },
-              { id: '2', title: 'Payment' },
+              {id: '1', title: 'Debit Settlement'},
+              {id: '2', title: 'Payment'},
             ]}
           />
 
           <SquareTextBox Title={'LKR 360000.00'} Label={'Renewal Amount'} />
           <SquareTextBox Title={'2025/01/25'} Label={'Renewal Date'} />
-          <View style={{ marginTop: 15 }}>
+          <View style={{marginTop: 15}}>
             <Button
               onPress={() => setModalVisible(true)}
               Title={'Send Payment Link'}

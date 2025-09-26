@@ -1,15 +1,10 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 
 const window = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  // container: {
-  //     flex: 1,
-  //     backgroundColor: COLORS.background,
-  //     paddingHorizontal: 20,
-  // },
   smallButton: {
     backgroundColor: '#00796B',
     flexDirection: 'row',
@@ -24,12 +19,12 @@ export const styles = StyleSheet.create({
   leadInfoCard: {
     backgroundColor: COLORS.white,
     elevation: 10,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     padding: 15,
     borderRadius: 10,
     marginBottom: 15,

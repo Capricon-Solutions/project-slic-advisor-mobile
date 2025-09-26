@@ -130,16 +130,9 @@ export default function Dashboard({navigation}) {
     const apiKey = API_KEY; // Replace with your actual API key
 
     try {
-      // const filePath = `${RNFS.DocumentDirectoryPath}/profile.png`;
       const timestamp = Date.now(); // current time in ms
       const filePath = `${RNFS.CachesDirectoryPath}/profile_${timestamp}.png`;
-      // const filePath = `${RNFS.CachesDirectoryPath}/profile_${userCode}.png`;
 
-      // dispatch(SetdefaultImageUrl(`file://${filePath}`));
-
-      // console.log('url', url);
-      // console.log('filePath', filePath);
-      // console.log('token', token);
       const response = await RNFS.downloadFile({
         fromUrl: url,
         toFile: filePath,
@@ -535,16 +528,6 @@ export default function Dashboard({navigation}) {
         )}
 
         {usertype == 2 && (
-          // <AgentGrid
-          //   onSalesClick={() => setModalVisible(true)}
-          //   onGeneralClick={() => setgeneraModalVisible(true)}
-          //   onClubClick={() => navigation.navigate('ClubInformation')}
-          //   onBplannerClick={() => navigation.navigate('BPlanner')}
-          //   onEConnerClick={() => navigation.navigate('ECorner')}
-          //   onProductPortfolioClick={() =>
-          //     navigation.navigate('ProductPortfolio')
-          //   }
-          // />
           <AgentGrid
             onSalesClick={() => {
               setModalVisible(true);
@@ -593,16 +576,6 @@ export default function Dashboard({navigation}) {
         )}
 
         {usertype == 5 && (
-          // <AgentGrid
-          //   onSalesClick={() => setModalVisible(true)}
-          //   onGeneralClick={() => setgeneraModalVisible(true)}
-          //   onClubClick={() => navigation.navigate('ClubInformation')}
-          //   onBplannerClick={() => navigation.navigate('BPlanner')}
-          //   onEConnerClick={() => navigation.navigate('ECorner')}
-          //   onProductPortfolioClick={() =>
-          //     navigation.navigate('ProductPortfolio')
-          //   }
-          // />
           <AgentGrid
             onSalesClick={() => {
               setModalVisible(true);

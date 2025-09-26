@@ -22,8 +22,7 @@ export const profilePicSlice = baseApi.injectEndpoints({
         const formData = new FormData();
         formData.append('AgencyCode', agencyCode); // Add agency code as text
         formData.append('ImageFile', imageFile); // Add image file
-        // console.log('AgencyCodeccccccccccccccccccccc', agencyCode);
-        // console.log('ImageFilecccccccccccccc  kkkkkktest', imageFile);
+
         return {
           url: 'image/upload',
           method: 'POST',

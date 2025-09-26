@@ -507,25 +507,6 @@ export default function TrainingCalender({navigation}) {
                                 // ? true
                                 true
                           }
-                          // onPress={() => {
-                          //   console.log(' training.trainId', training.trainId);
-                          //   // Call the approveTraining mutation with the training ID
-                          //   approveTraining({id: training.trainId, userCode})
-                          //     .unwrap()
-                          //     .then(() => {
-                          //       // On success, remove the training from the list
-                          //       // setSelectedTrainings(prev =>
-                          //       //   prev.filter((_, i) => i !== index),
-                          //       // );
-                          //     })
-                          //     .catch(error => {
-                          //       console.error(
-                          //         'Failed to approve training:',
-                          //         error,
-                          //       );
-                          //       // You might want to show an error message to the user here
-                          //     });
-                          // }}
                           onPress={() => {
                             // console.log('training.trainId', training);
 

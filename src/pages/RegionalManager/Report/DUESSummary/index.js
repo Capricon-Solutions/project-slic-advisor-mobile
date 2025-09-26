@@ -38,8 +38,7 @@ const window = Dimensions.get('window');
 
 export default function DUESSummary({navigation}) {
   const [SelectedType, setSelectedType] = useState(1);
-  // const motorData = useSelector(state => state.DUES.motorData);
-  // const nonmotorData = useSelector(state => state.DUES.nonmotorData);
+
   const currentMonthNumber = moment().month() + 1; // +1 because Moment.js months are 0-indexed
   const currentMonthName = moment().format('MMMM');
   const profile = useSelector(state => state.Profile.profile);

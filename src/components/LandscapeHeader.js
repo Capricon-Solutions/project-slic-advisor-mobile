@@ -16,7 +16,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import Fonts from '../theme/Fonts';
 import SmallButton from './SmallButton';
 
-// import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
 
 export default function LandscapeHeader({

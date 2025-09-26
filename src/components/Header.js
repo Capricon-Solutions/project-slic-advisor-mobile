@@ -15,7 +15,6 @@ import Fonts from '../theme/Fonts';
 import SmallButton from './SmallButton';
 import {Menu, Divider} from 'react-native-paper';
 import PDF from '../icons/pdf.png';
-// import { useSelector } from "react-redux";
 const window = Dimensions.get('window');
 
 export default function Header({
@@ -218,18 +217,8 @@ export default function Header({
             visible={visible}
             onDismiss={closeDMenu}
             anchor={
-              // <TouchableOpacity onPress={openDMenu} style={{marginLeft: 5}}>
-              //   <View style={{}}>
-              //     <MaterialIcons
-              //       name="more-vert"
-              //       color={COLORS.black}
-              //       size={27}
-              //     />
-              //   </View>
-              // </TouchableOpacity>
               <View style={{width: '100%'}}>
                 <TouchableOpacity
-                  // disabled={disabledButton}
                   onPress={openDMenu}
                   style={{
                     backgroundColor: COLORS.primaryGreen,
@@ -266,7 +255,6 @@ export default function Header({
                     item.onPress();
                     closeDMenu();
                   }}
-                  // titleFontSize={'5'}
                   title={item.title}
                 />
                 {index !== downloadItems.length - 1 && <Divider />}

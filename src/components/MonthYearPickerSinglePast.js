@@ -35,10 +35,7 @@ const MonthYearPickerSinglePast = ({visible, onClose, onSelect}) => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedDate, setSelectedDate] = useState(null);
-  // const monthDate = moment({year: selectedYear, month: index, day: 1});
-  // const now = moment().startOf('month');
-  // const isSelected = selectedDate && monthDate.isSame(selectedDate, 'month');
-  // const isDisabled = monthDate.isSameOrAfter(now); // disable current and fut
+
   const handleMonthSelection = (year, month) => {
     setSelectedDate(moment({year, month: month, day: 1}));
   };
@@ -118,38 +115,6 @@ const MonthYearPickerSinglePast = ({visible, onClose, onSelect}) => {
                 </TouchableOpacity>
               );
             }}
-
-            // renderItem={({item, index}) => {
-            //   const monthDate = moment({
-            //     year: selectedYear,
-            //     month: index,
-            //     day: 1,
-            //   });
-            //   const now = moment().startOf('month');
-            //   const isSelected =
-            //     selectedDate && monthDate.isSame(selectedDate, 'month');
-            //   const isDisabled = monthDate.isSameOrAfter(now); // current or future months
-
-            //   return (
-            //     <TouchableOpacity
-            //       disabled={isDisabled}
-            //       style={[
-            //         styles.monthButton,
-            //         isSelected ? styles.selectedMonth : {},
-            //         isDisabled ? styles.disabledMonth : {},
-            //       ]}
-            //       onPress={() => handleMonthSelection(selectedYear, index)}>
-            //       <Text
-            //         style={[
-            //           styles.monthText,
-            //           isSelected ? styles.selectedMonthText : {},
-            //           isDisabled ? styles.disabledMonthText : {},
-            //         ]}>
-            //         {item}
-            //       </Text>
-            //     </TouchableOpacity>
-            //   );
-            // }}
           />
 
           {/* Footer Buttons */}

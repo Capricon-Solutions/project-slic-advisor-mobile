@@ -76,10 +76,6 @@ export default function AdvisorReport({navigation, route}) {
     state => state.teamStat.reportResponse.data,
   );
 
-  // useEffect(() => {
-  //   console.log('SelectedType', SelectedType);
-  // }, [SelectedType]);
-  // console.log('regionName', regionName);
   const {
     data: AdvisorReport,
     error: AdvisorReportError,
@@ -134,12 +130,6 @@ export default function AdvisorReport({navigation, route}) {
           item?.nopEndorsements
         ).toLocaleString() ?? '',
   ]);
-
-  // useEffect(() => {
-  //   Orientation.lockToPortrait();
-  //   console.log('run here');
-  //   // console.log("Orientation",Orientation)
-  // }, []);
 
   useEffect(() => {
     Orientation.lockToPortrait();
@@ -599,24 +589,6 @@ export default function AdvisorReport({navigation, route}) {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
-
-                  // value={
-                  //   value == 1
-                  //     ? (
-                  //         (item?.renewal ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.refundPpw ?? 0) +
-                  //         (item?.refundOther ?? 0) +
-                  //         (item?.endorsement ?? 0)
-                  //       ).toLocaleString()
-                  //     : (
-                  //         (item?.nopRenewal ?? 0) +
-                  //         (item?.nopPpw ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.nopOtherRefund ?? 0) +
-                  //         (item?.nopEndorsements ?? 0)
-                  //       ).toLocaleString()
-                  // }
                 />
               </View>
             </View>

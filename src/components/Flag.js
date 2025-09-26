@@ -26,7 +26,6 @@ export default function Flag({
 
   React.useEffect(() => {
     if (modalVisible) {
-      // Animate to visible
       Animated.timing(backgroundOpacity, {
         toValue: 0.2,
         duration: 1000,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,10 +10,10 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import { Styles } from '../../../../theme/Styles';
-import { FlatList } from 'react-native';
-import { styles } from './styles';
-import { useSelector } from 'react-redux';
+import {Styles} from '../../../../theme/Styles';
+import {FlatList} from 'react-native';
+import {styles} from './styles';
+import {useSelector} from 'react-redux';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import Button from '../../../../components/Button';
 import COLORS from '../../../../theme/colors';
@@ -31,29 +31,29 @@ import OutlinedTextBox from '../../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../../components/LandscapeHeader';
 import Building from './../../../../icons/Building.png';
 import HorizontalReportTable from '../../../../components/HorizontalReportTable';
-import { useRmReportQuery } from '../../../../redux/services/ReportApiSlice';
+import {useRmReportQuery} from '../../../../redux/services/ReportApiSlice';
 import ReportFilter from '../../../../components/ReportFilter';
 import OutlinedTextView from '../../../../components/OutlinedTextView';
 import LoaderKit from 'react-native-loader-kit';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
 ];
 
-export default function Report({ navigation, route }) {
+export default function Report({navigation, route}) {
   const profile = useSelector(state => state.Profile.profile);
   const profileResponse = profile?.user;
   const regionName = profileResponse?.region;
-  const { Title = '' } = route.params || {};
+  const {Title = ''} = route.params || {};
   const [value, setValue] = useState(1);
   const [SelectedType, setSelectedType] = useState('ALL');
   const [selectedMonth, setSelectedmonth] = useState('00');
@@ -98,8 +98,7 @@ export default function Report({ navigation, route }) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-    // item?.nb?.toLocaleString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
+
     {
       ppw:
         value == 1
@@ -115,19 +114,19 @@ export default function Report({ navigation, route }) {
       : item?.nopEndorsements?.toLocaleString() ?? '',
     value == 1
       ? (
-        item?.renewal +
-        item?.refundPpw +
-        item?.nb +
-        item?.refundOther +
-        item?.endorsement
-      ).toLocaleString() ?? ''
+          item?.renewal +
+          item?.refundPpw +
+          item?.nb +
+          item?.refundOther +
+          item?.endorsement
+        ).toLocaleString() ?? ''
       : (
-        item?.nopRenewal +
-        item?.nopPpw +
-        item?.nopNew +
-        item?.nopOtherRefund +
-        item?.nopEndorsements
-      ).toLocaleString() ?? '',
+          item?.nopRenewal +
+          item?.nopPpw +
+          item?.nopNew +
+          item?.nopOtherRefund +
+          item?.nopEndorsements
+        ).toLocaleString() ?? '',
 
     // item?.total?.toLocaleString() ?? '',
   ]);
@@ -135,12 +134,12 @@ export default function Report({ navigation, route }) {
   const branchList =
     RmReport && RmReport.data
       ? RmReport.data.map(item => ({
-        label: item.branch,
-        value: item.branch,
-      }))
+          label: item.branch,
+          value: item.branch,
+        }))
       : [];
 
-  const dropdownOptions = [{ label: 'All', value: '' }, ...branchList];
+  const dropdownOptions = [{label: 'All', value: ''}, ...branchList];
   useEffect(() => {
     const isValid = dropdownOptions.some(option => option.value === branch);
     if (!isValid && branch !== '') {
@@ -151,13 +150,11 @@ export default function Report({ navigation, route }) {
   useFocusEffect(
     React.useCallback(() => {
       // When screen is focused
-    
+
       setIsLandscape(false);
       setSelectedType('ALL');
       setSelectedmonth('00');
 
-      // if (branch !== '') {
-      //   console.log('branch', branch);
       setBranch('');
       // }
       return () => {
@@ -167,12 +164,11 @@ export default function Report({ navigation, route }) {
       };
     }, []),
   );
- useEffect(() => {
+  useEffect(() => {
     Orientation.lockToPortrait();
   }, []);
 
   const toggleOrientation = () => {
-
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -209,12 +205,12 @@ export default function Report({ navigation, route }) {
         onBranchChange={value => setBranch(value)}
       />
 
-      <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
+      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-           onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -244,9 +240,9 @@ export default function Report({ navigation, route }) {
             paddingRight: 20,
           }}>
           {isLandscape == false && (
-            <View style={{ alignItems: 'flex-end', marginHorizontal: 20 }}>
+            <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
               <TouchableOpacity
-                style={{ flexDirection: 'row', gap: 5 }}
+                style={{flexDirection: 'row', gap: 5}}
                 onPress={() => setModalVisible(true)}>
                 <Text
                   style={{
@@ -266,7 +262,7 @@ export default function Report({ navigation, route }) {
           )}
           <TouchableOpacity
             onPress={toggleOrientation}
-            style={{ flexDirection: 'row', gap: 5 }}>
+            style={{flexDirection: 'row', gap: 5}}>
             <Text
               style={{
                 color: COLORS.textColor,
@@ -302,7 +298,7 @@ export default function Report({ navigation, route }) {
                   flexDirection: 'row',
                   justifyContent: 'flex-end',
                 }}>
-                <View style={{ flex: 0.19, marginHorizontal: 2 }}>
+                <View style={{flex: 0.19, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'View Details'}
                     mode={'modal'}
@@ -311,12 +307,12 @@ export default function Report({ navigation, route }) {
                     nonClearable={true}
                     onValueChange={setValue}
                     dropdownData={[
-                      { label: 'Value', value: 1 },
-                      { label: 'NOP', value: 2 },
+                      {label: 'Value', value: 1},
+                      {label: 'NOP', value: 2},
                     ]}
                   />
                 </View>
-                <View style={{ flex: 0.2, marginHorizontal: 2 }}>
+                <View style={{flex: 0.2, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Type'}
                     mode={'modal'}
@@ -332,12 +328,12 @@ export default function Report({ navigation, route }) {
                       }
                     }}
                     dropdownData={[
-                      { label: 'General Cumulative', value: 'G' },
-                      { label: 'Motor Monthly', value: 'M' },
+                      {label: 'General Cumulative', value: 'G'},
+                      {label: 'Motor Monthly', value: 'M'},
                     ]}
                   />
                 </View>
-                <View style={{ flex: 0.18, marginHorizontal: 2 }}>
+                <View style={{flex: 0.18, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Month'}
                     mode={'modal'}
@@ -351,40 +347,40 @@ export default function Report({ navigation, route }) {
                     dropdownData={
                       SelectedType == 'M'
                         ? [
-                          { label: 'January', value: '01' },
-                          { label: 'February', value: '02' },
-                          { label: 'March', value: '03' },
-                          { label: 'April', value: '04' },
-                          { label: 'May', value: '05' },
-                          { label: 'June', value: '06' },
-                          { label: 'July', value: '07' },
-                          { label: 'August', value: '08' },
-                          { label: 'September', value: '09' },
-                          { label: 'October', value: '10' },
-                          { label: 'November', value: '11' },
-                          { label: 'December', value: '12' },
-                        ]
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
+                          ]
                         : SelectedType == 'G'
-                          ? [{ label: 'Cumulative', value: '00' }]
-                          : [
-                            { label: 'Cumulative', value: '00' },
-                            { label: 'January', value: '01' },
-                            { label: 'February', value: '02' },
-                            { label: 'March', value: '03' },
-                            { label: 'April', value: '04' },
-                            { label: 'May', value: '05' },
-                            { label: 'June', value: '06' },
-                            { label: 'July', value: '07' },
-                            { label: 'August', value: '08' },
-                            { label: 'September', value: '09' },
-                            { label: 'October', value: '10' },
-                            { label: 'November', value: '11' },
-                            { label: 'December', value: '12' },
+                        ? [{label: 'Cumulative', value: '00'}]
+                        : [
+                            {label: 'Cumulative', value: '00'},
+                            {label: 'January', value: '01'},
+                            {label: 'February', value: '02'},
+                            {label: 'March', value: '03'},
+                            {label: 'April', value: '04'},
+                            {label: 'May', value: '05'},
+                            {label: 'June', value: '06'},
+                            {label: 'July', value: '07'},
+                            {label: 'August', value: '08'},
+                            {label: 'September', value: '09'},
+                            {label: 'October', value: '10'},
+                            {label: 'November', value: '11'},
+                            {label: 'December', value: '12'},
                           ]
                     }
                   />
                 </View>
-                <View style={{ flex: 0.19, marginHorizontal: 2 }}>
+                <View style={{flex: 0.19, marginHorizontal: 2}}>
                   <DropdownComponent
                     label={'Branch'}
                     mode={'modal'}
@@ -402,7 +398,7 @@ export default function Report({ navigation, route }) {
                     }} // ✅ Captures selection
                   />
                 </View>
-                <View style={{ flex: 0.13, marginHorizontal: 10 }}>
+                <View style={{flex: 0.13, marginHorizontal: 10}}>
                   <Button Title={'Apply'} />
                 </View>
               </View>
@@ -461,14 +457,14 @@ export default function Report({ navigation, route }) {
                   )}
                 </View>
               }
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <View
                   style={{
                     borderRadius: 15,
                     backgroundColor: COLORS.white,
                     elevation: 10,
                     shadowOpacity: 0.2, // add opacity
-                    shadowRadius: 3,  // add blur radius
+                    shadowRadius: 3, // add blur radius
                     shadowOffset: {
                       width: 0,
                       height: 3,
@@ -476,10 +472,10 @@ export default function Report({ navigation, route }) {
                     margin: 10,
                     padding: 15,
                   }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                     <Image
-                      style={{ height: 17, width: 17 }}
+                      style={{height: 17, width: 17}}
                       source={Building}></Image>
                     <Text
                       style={{
@@ -500,82 +496,82 @@ export default function Report({ navigation, route }) {
                       gap: 10,
                       width: '100%',
                     }}>
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'Renewal'}
                         value={
                           value == 1
                             ? item?.renewal != null
                               ? Number(item.renewal).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : ''
                             : item?.nopRenewal != null
-                              ? Number(item.nopRenewal).toLocaleString('en-US')
-                              : ''
+                            ? Number(item.nopRenewal).toLocaleString('en-US')
+                            : ''
                         }
                       />
                     </View>
 
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'NB'}
                         value={
                           value == 1
                             ? item?.nb != null
                               ? Number(item.nb).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : ''
                             : item?.nopNew != null
-                              ? Number(item.nopNew).toLocaleString('en-US')
-                              : ''
+                            ? Number(item.nopNew).toLocaleString('en-US')
+                            : ''
                         }
                       />
                     </View>
                   </View>
 
                   {/* Second Row */}
-                  <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
-                    <View style={{ flex: 1 }}>
+                  <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
+                    <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'PPW'}
                         value={
                           value == 1
                             ? item?.refundPpw != null
                               ? Number(item.refundPpw).toLocaleString('en-US', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : ''
                             : item?.nopPpw != null
-                              ? Number(item.nopPpw).toLocaleString('en-US')
-                              : ''
+                            ? Number(item.nopPpw).toLocaleString('en-US')
+                            : ''
                         }
                       />
                     </View>
 
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <OutlinedTextView
                         Title={'Others'}
                         value={
                           value == 1
                             ? item?.refundOther != null
                               ? Number(item.refundOther).toLocaleString(
-                                'en-US',
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                },
-                              )
+                                  'en-US',
+                                  {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  },
+                                )
                               : ''
                             : item?.nopOtherRefund != null
-                              ? Number(item.nopOtherRefund).toLocaleString(
+                            ? Number(item.nopOtherRefund).toLocaleString(
                                 'en-US',
                               )
-                              : ''
+                            : ''
                         }
                       />
                     </View>
@@ -589,13 +585,13 @@ export default function Report({ navigation, route }) {
                         value == 1
                           ? item?.endorsement != null
                             ? Number(item.endorsement).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
                             : ''
                           : item?.nopEndorsements != null
-                            ? Number(item.nopEndorsements).toLocaleString('en-US')
-                            : ''
+                          ? Number(item.nopEndorsements).toLocaleString('en-US')
+                          : ''
                       }
                     />
                   </View>
@@ -606,15 +602,15 @@ export default function Report({ navigation, route }) {
                       value={Number(
                         value == 1
                           ? (item?.renewal ?? 0) +
-                          (item?.nb ?? 0) +
-                          (item?.refundPpw ?? 0) +
-                          (item?.refundOther ?? 0) +
-                          (item?.endorsement ?? 0)
+                              (item?.nb ?? 0) +
+                              (item?.refundPpw ?? 0) +
+                              (item?.refundOther ?? 0) +
+                              (item?.endorsement ?? 0)
                           : (item?.nopRenewal ?? 0) +
-                          (item?.nopPpw ?? 0) +
-                          (item?.nopNew ?? 0) +
-                          (item?.nopOtherRefund ?? 0) +
-                          (item?.nopEndorsements ?? 0),
+                              (item?.nopPpw ?? 0) +
+                              (item?.nopNew ?? 0) +
+                              (item?.nopOtherRefund ?? 0) +
+                              (item?.nopEndorsements ?? 0),
                       ).toLocaleString('en-US', {
                         minimumFractionDigits: value == 1 ? 2 : 0,
                         maximumFractionDigits: value == 1 ? 2 : 0,
@@ -638,7 +634,7 @@ export default function Report({ navigation, route }) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{ width: 50, height: 50 }}
+            style={{width: 50, height: 50}}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />

@@ -28,8 +28,6 @@ import {useGetLeadByIdQuery} from '../../../redux/services/plannerSlice';
 import LoaderKit from 'react-native-loader-kit';
 import moment from 'moment';
 
-// import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
-
 const window = Dimensions.get('window');
 
 export default function ActivityDetails({navigation, route}) {
@@ -56,26 +54,13 @@ export default function ActivityDetails({navigation, route}) {
     skip: !item?.leadId, // Prevent query if leadId is not available
   });
 
-  // console.log('ActivityDetails item', item);
-
   useEffect(() => {
     if (item?.leadId) {
-      // console.log('leadData', leadData);
     }
   }, [item?.leadId]);
 
   const leadInfo = leadData?.data;
-  // const fetchLeadById = async leadId => {
-  //   try {
-  //     console.log('item?.leadId', item?.leadId);
-  //     await LeadById(item?.leadId);
-  //     console.log('leadData', leadData);
-  //   } catch (error) {
-  //     console.error('Error fetching lead details:', error);
-  //   }
-  // };
 
-  // console.log('leadInfo', leadInfo);
   const DetailLine = ({Title, detail}) => {
     return (
       <View
@@ -109,10 +94,6 @@ export default function ActivityDetails({navigation, route}) {
         Title={item?.type + ' Details'}
         onPress={() => navigation.goBack()}
         haveFilters={false}
-        // haveWhatsapp={true}
-        // whatsappNo={phone}
-        // haveCall={true}
-        // callNo={phone}
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />

@@ -83,13 +83,7 @@ export default function DebitSettlement({navigation, route}) {
 
   const [debitSettlementSms, {isLoading, error}] =
     useDebitSettlementSmsMutation();
-  // useEffect(() => {
 
-  //   setSelectedItem(DebitSettlement?.data?.paymentType);
-
-  // }, [DebitSettlement]);
-
-  // Linear-time thousands separator
   function formatWithCommas(str) {
     if (!str) return '';
     const [integerPart, decimalPart] = str.split('.');
@@ -156,14 +150,6 @@ export default function DebitSettlement({navigation, route}) {
       return false;
     }
 
-    // if (!amount || amount === '') {
-    //   showToast({
-    //     type: 'error',
-    //     text1: 'Validation Error',
-    //     text2: 'Enter a Valid Amount to Proceed',
-    //   });
-    //   return false;
-    // }
     if (!amount || amount === '' || parseFloat(amount) === 0) {
       showToast({
         type: 'error',
@@ -172,15 +158,6 @@ export default function DebitSettlement({navigation, route}) {
       });
       return false;
     }
-
-    // if (!date || date === '') {
-    //   showToast({
-    //     type: 'error',
-    //     text1: 'Validation Error',
-    //     text2: 'Please fill in all required fields. 🚨',
-    //   });
-    //   return false;
-    // }
 
     return true;
   };

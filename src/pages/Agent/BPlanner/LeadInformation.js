@@ -54,14 +54,11 @@ export default function LeadInformation({navigation, route}) {
   );
 
   const leadInfo = leadData?.data;
-  // console.log('leadInfo', leadInfo);
-  // console.log('LeadActivitie', LeadActivitie);
 
   const test = LeadActivitie?.data;
 
   const tableData = LeadActivitie?.data?.map(item => [
     item.activityId,
-    // item.activityDate,
     moment(item?.activityDate).format('YYYY-MM-DD'),
     item.activityType,
     item.description,
@@ -139,7 +136,6 @@ export default function LeadInformation({navigation, route}) {
                   value={String(
                     leadTypeMap[leadInfo?.leadType] ?? 'Unavailable',
                   )}
-                  // value={leadInfo?.leadType}
                   borderColor={COLORS.warmGray}
                 />
                 <SquareTextBoxOutlined
@@ -204,7 +200,6 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Date Of Birth'}
                   readOnly={true}
-                  // value={String(leadInfo?.dateOfBirth ?? 'Unavailable')}
                   value={
                     leadInfo?.dateOfBirth
                       ? moment(leadInfo.dateOfBirth).format('YYYY/MM/DD')
@@ -423,9 +418,7 @@ export default function LeadInformation({navigation, route}) {
                 }}>
                 Vehicle Info
               </Text>
-              <View
-                // onPress={() => (expanded !== 5 ? setExpanded(5) : setExpanded(0))}
-                style={{alignItems: 'center', padding: 3}}>
+              <View style={{alignItems: 'center', padding: 3}}>
                 <Octicons
                   name={expanded == 5 ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -453,7 +446,6 @@ export default function LeadInformation({navigation, route}) {
                   mediumFont={true}
                   Label={'Vehicle Value'}
                   readOnly={true}
-                  // value={String(leadInfo?.vehicleValue ?? 'Unavailable')}
                   value={
                     leadInfo?.vehicleValue != null
                       ? leadInfo.vehicleValue.toLocaleString('en-US', {

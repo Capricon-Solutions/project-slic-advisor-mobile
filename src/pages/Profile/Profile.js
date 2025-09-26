@@ -65,9 +65,6 @@ export default function Profile({navigation}) {
   } = useGetImageQuery({
     id: userCode,
   });
-  // useEffect(() => {
-  //   console.log('ProfilePic lllllll', ProfilePic);
-  // }, [ProfilePic]);
 
   const handleUpload = async uri => {
     const agencyCode = userCode;
@@ -75,8 +72,6 @@ export default function Profile({navigation}) {
     // console.log('imageFilePicker', imageFile);
     try {
       const response = await uploadImage({agencyCode, imageFile}).unwrap();
-      // console.log('Image uploaded successfully:', response);
-      // refetch();
     } catch (err) {
       console.error('Image upload failed:', err);
     }
@@ -93,10 +88,7 @@ export default function Profile({navigation}) {
         quality: 0.4,
       });
       setImage(result.uri);
-      // console.log(result);
-      // console.log('result.uri', result.uri);
 
-      // dispatch(SetdefaultImageUrl(result.uri));
       const uri = result;
       handleUpload(uri);
     } catch (err) {
@@ -125,10 +117,6 @@ export default function Profile({navigation}) {
       .map(word => word.charAt(0).toUpperCase()) // Get first letter and uppercase
       .join(''); // Join them together
   };
-
-  // useEffect(() => {
-  //   console.log('defaultImageUrl', defaultImageUrl);
-  // }, [defaultImageUrl]);
 
   async function handleLogout() {
     await AsyncStorage.removeItem('username');

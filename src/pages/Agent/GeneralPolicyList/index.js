@@ -103,41 +103,7 @@ export default function GeneralPolicyList({navigation}) {
       });
   }, [searchType]); // include searchData if it's used in 'Filter'
 
-  // useEffect(() => {
-  //   console.log('searchType', searchType);
-  //   // return;
-  //   PolicyListResponse(
-  //     searchType === 'A'
-  //       ? SearchParams.AllSearch
-  //       : searchType === 'M'
-  //       ? SearchParams.MotorSearch
-  //       : searchType === 'G'
-  //       ? SearchParams.NonMotorSearch
-  //       : searchType === 'P'
-  //       ? SearchParams.premiumPending
-  //       : searchType === 'D'
-  //       ? SearchParams.debitOutstanding
-  //       : searchType === 'C'
-  //       ? SearchParams.claimPending
-  //       : searchType === 'F'
-  //       ? SearchParams.remindersSet
-  //       : searchType === 'Filter'
-  //       ? searchData
-  //       : SearchParams.AllSearch,
-  //   )
-  //     .then(response => {
-  //       console.log('Response:', response);
-  //     })
-  //     .catch(err => {
-  //       console.log('Error:', err);
-  //     });
-  // }, [searchType]);
-
-  useEffect(() => {
-    // console.log('policyValues', policyValues);
-    // console.log('PolicyList', PolicyList);
-    // console.log('PolicyListResponse', PolicyListData);
-  }, [searchType, PolicyListData]);
+  useEffect(() => {}, [searchType, PolicyListData]);
 
   const PolicyList = error ? [] : PolicyListData?.data;
   const renderPolicyItem = ({item}) => (
@@ -256,12 +222,3 @@ export default function GeneralPolicyList({navigation}) {
     </PaperProvider>
   );
 }
-
-//////////////
-// const {
-//   data: PolicyListResponse,
-//   isLoading,
-//   error,
-//   refetch,
-//   diperror,
-// } = useGetPolicyListQuery({id: 360115, filterText: searchType});

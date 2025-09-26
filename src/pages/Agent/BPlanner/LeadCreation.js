@@ -69,7 +69,6 @@ export default function LeadCreation({navigation, route}) {
   const [isPickerVisible2, setPickerVisible2] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
-  // console.log('eventDate', eventDate);
   const [event, setEvent] = useState(-1);
   const [leadType, setLeadType] = useState(null);
   const [policyNo, setPolicyNo] = useState(null);
@@ -109,15 +108,7 @@ export default function LeadCreation({navigation, route}) {
     {id: 3, Title: 'Customer Basic Info'},
     {id: 4, Title: 'Customer Contact Info'},
   ];
-  // const isValidSriLankanNumber = number => {
-  //   const cleaned = number.replace(/[^0-9]/g, '');
 
-  //   // Accept either 10-digit local format or international format with +94
-  //   const localPattern = /^(07\d{8}|0\d{9})$/;
-  //   const intlPattern = /^94\d{9}$/;
-
-  //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
-  // };
   const validateYOM = yearString => {
     const year = parseInt(yearString, 10);
     const currentYear = new Date().getFullYear();
@@ -163,20 +154,14 @@ export default function LeadCreation({navigation, route}) {
           }
         }
       } else if (currentStep === 2) {
-        // console.log(currentStep);
         if (validateForm2()) {
-          // console.log('trigger2');
           setCurrentStep(3);
         }
       } else if (currentStep === 3) {
-        // console.log('sssef', currentStep);
         if (validateForm3()) {
-          // console.log('trigger');
           setCurrentStep(4);
         }
       }
-
-      // setCurrentStep(prevStep => prevStep + 1);
     } else {
       handleLeadCreate();
     }
@@ -216,13 +201,6 @@ export default function LeadCreation({navigation, route}) {
   const hideDatePicker2 = () => {
     setDatePickerVisibility2(false);
   };
-  // useEffect(() => {
-  //   showToast({
-  //     type: 'error',
-  //     text1: 'Validation Error',
-  //     text2: 'Please fill in all required fields. 🚨',
-  //   });
-  // }, [])
 
   // API Intergration
 
@@ -260,13 +238,6 @@ export default function LeadCreation({navigation, route}) {
     VehicleManuf: yom,
   };
 
-  // const isValidEmail = email => {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  //   const hasCapitalLetter = /[A-Z]/.test(email);
-  //   return emailRegex.test(email) && !hasCapitalLetter;
-  // };
-
   // Linear-time thousand separator
   function formatWithCommas(str) {
     if (!str) return '';
@@ -298,14 +269,7 @@ export default function LeadCreation({navigation, route}) {
   };
 
   const validateForm1 = () => {
-    if (
-      !leadType
-      // !policyNo ||
-      // !insCom ||
-      // !premium ||
-      // !selectedDate ||
-      // !refNo
-    ) {
+    if (!leadType) {
       // console.log('test errors');
       showToast({
         type: 'error',
@@ -434,20 +398,9 @@ export default function LeadCreation({navigation, route}) {
   };
   const handleLeadCreate = async () => {
     if (!validateForm4()) {
-      // Stop if validation fails
-      // console.log('work');
-
       return;
     }
 
-    // if (!isValidEmail(email)) {
-    //   showToast({
-    //     type: 'error',
-    //     text1: 'Invalid Email',
-    //     text2: 'Please enter a valid email address. 📧',
-    //   });
-    //   return;
-    // }
     if (email && !isValidEmail(email)) {
       showToast({
         type: 'error',
@@ -458,17 +411,14 @@ export default function LeadCreation({navigation, route}) {
     }
 
     try {
-      // console.log('body', body);
       const response = await leadCreate(body);
-      // setModalVisible(false);
-      // console.log('lead Created:', response);
+
       if (response?.data?.success == true) {
         showToast({
           type: 'success',
           text1: 'Lead Created Successfully',
           text2: response?.data?.message,
         });
-        // navigation.navigate('BPlanner');
         navigation.goBack();
       } else {
         showToast({
@@ -577,27 +527,6 @@ export default function LeadCreation({navigation, route}) {
               Label={'Vehicle Number *'}
               borderColor={COLORS.warmGray}
               value={vehicleNo}
-              // setValue={text => {
-              //   54;
-              //   const cleanedText = text.replace(/[^A-Za-z0-9\ ]/g, '').trim().toLowerCase();
-
-              //   if (cleanedText.length >= 5 && cleanedText.length <= 8) {
-              //     setVehicleNo(cleanedText);
-              //     setFormError({});
-              //   } else if (cleanedText.length > 8) {
-              //     52;
-              //     setVehicleNo(cleanedText.slice(0, 8));
-              //   } else if (cleanedText.length < 5 && cleanedText.length > 0) {
-              //     setVehicleNo(cleanedText);
-              //     setFormError({
-              //       vehicleNo:
-              //         'Vehicle number must be between 5 and 8 characters.',
-              //     });
-              //     1;
-              //   } else {
-              //     setVehicleNo('');
-              //   }
-              // }}
               setValue={text => {
                 // Allow only letters, numbers and space (but do not trim)
                 const cleaned = text.replace(/[^a-zA-Z0-9 ]/g, '');
@@ -707,13 +636,6 @@ export default function LeadCreation({navigation, route}) {
               keyboardType={'number-pad'}
               errorMessage={yomError + '\n' + (formError.yom || '')}
               borderColor={COLORS.warmGray}
-              // setValue={text => {
-              //   const numericText = text.replace(/[^0-9]/g, '');
-              //   if (numericText.length <= 4) {
-              //     setYom(numericText);
-              //     setFormError({});
-              //   }
-              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 4);
                 setYom(formatted);
@@ -735,9 +657,6 @@ export default function LeadCreation({navigation, route}) {
                 }));
               }}
             />
-            {/* {formError.yom && (
-              <Text style={{color: 'red'}}>{formError.yom}</Text>
-            )} */}
           </View>
         );
       case 3:
@@ -755,14 +674,7 @@ export default function LeadCreation({navigation, route}) {
                 new Date(new Date().setDate(new Date().getDate() - 1))
               }
             />
-            {/* <DateTimePickerModal
-              isVisible={isDatePickerVisible2}
-              mode="date"
-              style={{ backgroundColor: 'red' }}
-              datePickerModeAndorid={'spinner'}
-              onConfirm={handleConfirm2}
-              onCancel={hideDatePicker2}
-            /> */}
+
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Customer Name *'}
@@ -822,10 +734,6 @@ export default function LeadCreation({navigation, route}) {
               value={homeNumber}
               errorMessage={homeNumberError}
               borderColor={COLORS.warmGray}
-              // setValue={text => {
-              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
-              //   setHomeNumber(formatted);
-              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setHomeNumber(formatted);
@@ -845,10 +753,6 @@ export default function LeadCreation({navigation, route}) {
               value={mobileNumber}
               borderColor={COLORS.warmGray}
               errorMessage={mobileNumberError}
-              // setValue={text => {
-              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
-              //   setMobileNumber(formatted);
-              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setMobileNumber(formatted);
@@ -868,10 +772,6 @@ export default function LeadCreation({navigation, route}) {
               value={workNumber}
               errorMessage={workNumberError}
               borderColor={COLORS.warmGray}
-              // setValue={text => {
-              //   const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
-              //   setWorkNumber(formatted);
-              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setWorkNumber(formatted);

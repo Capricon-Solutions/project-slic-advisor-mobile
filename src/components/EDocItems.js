@@ -31,8 +31,6 @@ export default function EDocItems({item, navigation, onPress}) {
         const apiLevel = Platform.Version;
 
         if (apiLevel >= 29) {
-          // Scoped storage — permission not required
-          // console.log('API 29+ detected. Skipping storage permission.');
           return true;
         }
 
@@ -45,8 +43,6 @@ export default function EDocItems({item, navigation, onPress}) {
             buttonNegative: 'Cancel',
           },
         );
-
-        // console.log('Permission result:', granted);
 
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
@@ -78,8 +74,6 @@ export default function EDocItems({item, navigation, onPress}) {
       let fileName = path.endsWith('.pdf') ? path : `${path}.pdf`;
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
 
-      // console.log('Starting download from:', pdfUrl);
-
       const apiKey = API_KEY;
 
       const res = await ReactNativeBlobUtil.config({
@@ -93,18 +87,13 @@ export default function EDocItems({item, navigation, onPress}) {
         .progress({count: 10}, (received, total) => {
           const progress = received / total;
           setDownloadProgress(progress);
-          // console.log('Progress:', progress);
         });
-
-      // console.log('Download completed:', res.path());
 
       await FileViewer.open(res.path(), {
         showOpenWithDialog: true,
         displayName: 'Your PDF Report',
         mimeType: 'application/pdf',
       });
-
-      // console.log('PDF opened successfully!');
     } catch (error) {
       console.error('Download/Open error:', error);
       showToast({

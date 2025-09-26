@@ -31,27 +31,18 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
-  // const [setTarget, {data, isLoading, error}] = useSetTargetMutation(); // Use the correct mutation hook
   const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
-  // const handlePostRequest = () => {
-  //   setTarget({
-  //     agentCode: 2147483647,
-  //     yearMonth: '02/2025',
-  //     target: inputValue,
-  //   });
-  // };
+
   const currentDate = new Date();
   const yearMonth = `${currentDate.getFullYear()}/${String(
     currentDate.getMonth() + 1,
   ).padStart(2, '0')}`;
   const currentTargetDate = moment().format('YYYY/MMMM');
-  // console.log('userCode', userCode);
   const body = {
     agentCode: usertype == 2 ? personalCode : userCode,
     yearMonth: yearMonth,
     target: inputValue,
   };
-  // console.log('body', body);
   const handlePostRequest = async () => {
     if (!inputValue) {
       showToast({
@@ -295,7 +286,6 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 17,
     textAlign: 'left',
-    // marginTop: 15,
     fontFamily: Fonts.Roboto.Bold,
     color: COLORS.textColor,
   },

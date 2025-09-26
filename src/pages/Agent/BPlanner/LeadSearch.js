@@ -43,32 +43,8 @@ export default function LeadSearch({navigation}) {
   );
   const [SelectedType, setSelectedType] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  // console.log('userCode', userCode);
   const SELF = Leads?.data?.filter(lead => lead.leadSource === 'BCON') || [];
   const SLIC = Leads?.data?.filter(lead => lead.leadSource === 'CAMP') || [];
-
-  // Filter both SELF and SLIC based on searchQuery
-  // const filteredSELF = SELF.filter(lead =>
-  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  // );
-  // const filteredSLIC = SLIC.filter(lead =>
-  //   lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  // );
-
-  // const filteredSELF = searchQuery
-  //   ? SELF.filter(lead =>
-  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     )
-  //   : SELF;
-
-  // const filteredSELF = searchQuery
-  //   ? SELF.filter(lead =>
-  //       lead.customerName
-  //         .toLowerCase()
-  //         .split(' ')
-  //         .some(word => word.startsWith(searchQuery.toLowerCase())),
-  //     )
-  //   : SELF;
 
   const filteredSELF = searchQuery
     ? SELF.map(lead => {
@@ -91,12 +67,6 @@ export default function LeadSearch({navigation}) {
         .sort((a, b) => a.priority - b.priority)
     : SELF;
 
-  // const filteredSLIC = searchQuery
-  //   ? SLIC.filter(lead =>
-  //       lead.customerName.toLowerCase().includes(searchQuery.toLowerCase()),
-  //     )
-  //   : SLIC;
-
   const filteredSLIC = searchQuery
     ? SLIC.map(lead => {
         const nameParts = lead.customerName.trim().toLowerCase().split(/\s+/);
@@ -117,8 +87,6 @@ export default function LeadSearch({navigation}) {
         .filter(lead => lead.priority !== 999) // remove non-matching
         .sort((a, b) => a.priority - b.priority)
     : SLIC;
-
-  // console.log('filteredSLIC', filteredSLIC);
 
   const renderDepartmentItem = ({item}) => (
     <LeadSearchItem

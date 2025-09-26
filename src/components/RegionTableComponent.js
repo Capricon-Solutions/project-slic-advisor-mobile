@@ -211,7 +211,6 @@ const styles = StyleSheet.create({
   },
   text: {
     marginVertical: 6,
-    // marginHorizontal: 10, // Add horizontal margin to create spacing between columns
     textAlign: 'center',
     fontSize: 13,
     color: COLORS.textColor,
@@ -220,7 +219,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     paddingLeft: 10, // Ensure proper spacing
     fontSize: 13,
-    //  color: 'red',
   },
   centerAlignedText: {
     textAlign: 'center',

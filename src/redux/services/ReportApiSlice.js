@@ -7,8 +7,6 @@ export const ReportApi = baseApi.injectEndpoints({
     RmReport: builder.query({
       query: ({branch, region, startMonth, year, endMonth, type, value}) => {
         const url = `report/rmReport?year=${year}&type=${type}&startMonth=${startMonth}&endMonth=${endMonth}&region=${region}&branch=${branch}&dept=${type}`;
-        // http://api.slicgeneral.com:2001/api/report/rmReport?year=2025&startMonth=3&endMonth=3&region=Western%203&dept=ALL
-        // console.log('Fetching Report from:', url);
 
         return url;
       },
@@ -21,7 +19,6 @@ export const ReportApi = baseApi.injectEndpoints({
         return url;
       },
     }),
-    // http://122.255.4.181:2001/api/report/meReport?branchCode=26&year=2025&startMonth=3&endMonth=3&dept=All
 
     // AdvisorReport
     AdvisorReport: builder.query({
@@ -32,7 +29,6 @@ export const ReportApi = baseApi.injectEndpoints({
         return url;
       },
     }),
-    // http://122.255.4.181:2001/api/report/advisorReport?branchCode=26&year=2025&startMonth=3&endMonth=3&dept=all
     // TeamLeaderReport
     TeamLeaderReport: builder.query({
       query: ({branch, startMonth, year, endMonth, type, value}) => {

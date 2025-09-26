@@ -80,21 +80,7 @@ export default function MotorRenewalLetter({navigation}) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [filteredData, setFilteredData] = useState(data);
-  // const handleSearch = v => {
-  //   const query = v.toLowerCase();
 
-  //   const filtered = motorRenewalsList?.data?.motorRenewals?.filter(
-  //     item =>
-  //       item.policyNo?.toLowerCase().includes(query) ||
-  //       item.customerName
-  //         ?.toLowerCase()
-  //         .split(/\W+/)
-  //         .some(word => word.startsWith(query)) ||
-  //       item.vehicleNo?.toLowerCase().includes(query),
-  //   );
-
-  //   setFilteredData(filtered);
-  // };
   const handleSearch = v => {
     const query = v.toLowerCase();
 
@@ -178,10 +164,6 @@ export default function MotorRenewalLetter({navigation}) {
   useEffect(() => {
     refetch;
     setFilteredData(motorRenewalsList?.data?.motorRenewals);
-    // console.log(
-    //   'motorRenewalsList?.data',
-    //   motorRenewalsList?.data?.motorRenewals,
-    // );
   }, [motorRenewalsList]);
 
   useEffect(() => {

@@ -93,19 +93,7 @@ export default function TeamLeaderReport({navigation, route}) {
     value: value,
   });
   console.log('TeamLeaderReport', TeamLeaderReport);
-  // const tableData = TeamLeaderReport?.data?.map(item => [
-  //   item?.teamLeader?.toString() ?? '',
 
-  //   item?.renewal?.toString() ?? '',
-  //   item?.nb?.toString() ?? '',
-  //   // item?.refundPpw?.toString() ?? '',
-  //   {
-  //     ppw: item?.refundPpw?.toString() ?? '',
-  //     other: item?.refundOther?.toString() ?? '',
-  //   },
-  //   item?.endorsement?.toString() ?? '',
-  //   item?.total?.toString() ?? '',
-  // ]);
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamLeader?.toString() ?? '',
     value == 1
@@ -114,7 +102,6 @@ export default function TeamLeaderReport({navigation, route}) {
     value == 1
       ? item?.nb?.toLocaleString() ?? ''
       : item?.nopNew?.toLocaleString() ?? '',
-    // item?.refundPpw?.toString() ?? '',
     {
       ppw:
         value == 1
@@ -148,7 +135,7 @@ export default function TeamLeaderReport({navigation, route}) {
   useFocusEffect(
     React.useCallback(() => {
       // When screen is focused
-     
+
       setIsLandscape(false);
 
       return () => {
@@ -159,12 +146,11 @@ export default function TeamLeaderReport({navigation, route}) {
     }, []),
   );
 
-   useEffect(() => {
+  useEffect(() => {
     Orientation.lockToPortrait();
   }, []);
 
   const toggleOrientation = () => {
-
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -221,7 +207,7 @@ export default function TeamLeaderReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-           onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -229,7 +215,7 @@ export default function TeamLeaderReport({navigation, route}) {
         ) : (
           <Header
             Title={Title + ' Report'}
-           onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -460,12 +446,12 @@ export default function TeamLeaderReport({navigation, route}) {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>
@@ -607,24 +593,6 @@ export default function TeamLeaderReport({navigation, route}) {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
-
-                  // value={
-                  //   value == 1
-                  //     ? (
-                  //         (item?.renewal ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.refundPpw ?? 0) +
-                  //         (item?.refundOther ?? 0) +
-                  //         (item?.endorsement ?? 0)
-                  //       ).toLocaleString()
-                  //     : (
-                  //         (item?.nopRenewal ?? 0) +
-                  //         (item?.nopPpw ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.nopOtherRefund ?? 0) +
-                  //         (item?.nopEndorsements ?? 0)
-                  //       ).toLocaleString()
-                  // }
                 />
               </View>
             </View>

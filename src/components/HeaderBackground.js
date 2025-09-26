@@ -7,8 +7,6 @@ import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 const window = Dimensions.get('window');
 
-// import { useSelector } from "react-redux";
-
 export default function HeaderBackground({Title}) {
   return (
     <Svg

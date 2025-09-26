@@ -30,13 +30,6 @@ export default function ReportFilter({
   initialValues = {},
   notbranchVisible,
 }) {
-  // State for dropdown selections with initial values
-  // const [viewDetails, setViewDetails] = React.useState(
-  //   initialValues.viewDetails || '1',
-  // );
-  // const [type, setType] = React.useState(initialValues.type || '1');
-  // const [month, setMonth] = React.useState(initialValues.month || '00');
-  // const [branch, setBranch] = React.useState(initialValues.branch || '');
   const [viewDetails, setViewDetails] = React.useState(initialValues.view);
   const [type, setType] = React.useState(initialValues.type);
   const [month, setMonth] = React.useState(initialValues.month);
@@ -182,31 +175,6 @@ export default function ReportFilter({
             ]}
           />
 
-          {/* <DropdownComponent
-            label={'Month'}
-            mode={'modal'}
-            value={month}
-            nonClearable={true}
-            // onValueChange={setSelectedMonth}
-            onValueChange={value => {
-              setMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
-            }}
-            dropdownData={[
-              {label: 'Cumulative', value: '00'},
-              {label: 'January', value: '01'},
-              {label: 'February', value: '02'},
-              {label: 'March', value: '03'},
-              {label: 'April', value: '04'},
-              {label: 'May', value: '05'},
-              {label: 'June', value: '06'},
-              {label: 'July', value: '07'},
-              {label: 'August', value: '08'},
-              {label: 'September', value: '09'},
-              {label: 'October', value: '10'},
-              {label: 'November', value: '11'},
-              {label: 'December', value: '12'},
-            ]}
-          /> */}
           <DropdownComponent
             label={'Month'}
             mode={'modal'}
@@ -214,7 +182,6 @@ export default function ReportFilter({
             value={month}
             search={type == 'M' ? true : type == 'G' ? false : true}
             nonClearable={true}
-            // onValueChange={setSelectedMonth}
             onValueChange={value => {
               setMonth(value ?? '00'); // 👈 If value is null, use 'ALL'
             }}
@@ -260,16 +227,9 @@ export default function ReportFilter({
               value={branch}
               dropdownData={dropdownOptions}
               selectedValue={branch}
-              // onValueChange={{setBranch;
-              //    if (value == null) {
-              //           setBranch('');
-              //           console.log('value', value);
-              //         }
-              // }}
               onValueChange={value => {
                 if (value == null) {
                   setBranch('');
-                  // console.log('value', value);
                 } else {
                   setBranch(value);
                 }

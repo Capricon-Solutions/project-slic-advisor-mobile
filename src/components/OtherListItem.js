@@ -21,40 +21,6 @@ export default function OtherListItem({item, onPress}) {
   const [loading, setLoading] = useState(false);
   const [Progress, setProgress] = useState(0);
 
-  // const requestStoragePermission = async () => {
-  //   if (Platform.OS === 'android') {
-  //     try {
-  //       if (Platform.Version < 33) {
-  //         // Android 13+ doesn't need WRITE_EXTERNAL_STORAGE
-  //         const granted = await PermissionsAndroid.request(
-  //           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-  //           {
-  //             title: 'Storage Permission Required',
-  //             message: 'This app needs access to storage to download files.',
-  //             buttonPositive: 'OK',
-  //             buttonNegative: 'Cancel',
-  //           },
-  //         );
-
-  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //           console.log('Storage permission granted');
-  //           return true;
-  //         } else {
-  //           console.log('Storage permission denied');
-  //           return false;
-  //         }
-  //       } else {
-  //         console.log('No need to request storage permission on Android 13+');
-  //         return true;
-  //       }
-  //     } catch (err) {
-  //       console.warn(err);
-  //       return false;
-  //     }
-  //   }
-  //   return true; // iOS doesn't require storage permission for downloads
-  // };
-
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -82,62 +48,8 @@ export default function OtherListItem({item, onPress}) {
     return true;
   };
 
-  // const openDocument = async url => {
-  //   if (!url) {
-  //     console.log('No document URL available');
-  //     return;
-  //   }
-
-  //   const fileName = url.split('/').pop(); // Extract file name from URL
-  //   const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-
-  //   const hasPermission = await requestStoragePermission();
-  //   if (!hasPermission) {
-  //     Alert.alert(
-  //       'Permission Denied',
-  //       'Storage permission is required to download files.',
-  //     );
-  //     return;
-  //   } else {
-  //     setLoading(true);
-  //   }
-
-  //   RNFS.downloadFile({
-  //     fromUrl: url,
-  //     toFile: localFilePath,
-  //     progress: res => {
-  //       console.log(
-  //         `Download progress: ${(res.bytesWritten / res.contentLength) * 100}%`,
-  //       );
-  //       const progressPercent = (res.bytesWritten / res.contentLength) * 100;
-  //       setProgress(progressPercent);
-  //     },
-  //   })
-  //     .promise.then(() => {
-  //       setLoading(false);
-  //       // Alert.alert('Download Complete', `File saved to ${localFilePath}`);
-  //       ToastAndroid.show(
-  //         `Download Complete: File saved to ${localFilePath}`,
-  //         ToastAndroid.LONG,
-  //       );
-
-  //       Linking.openURL(url).catch(err =>
-  //         console.error("Couldn't open URL", err),
-  //       );
-  //     })
-  //     .catch(error => {
-  //       console.error('Download failed', error);
-  //       setLoading(false);
-  //       Alert.alert(
-  //         'Download Failed',
-  //         'There was an error downloading the file.',
-  //       );
-  //     });
-  // };
-
   const openDocument = async url => {
     if (!url) {
-      // console.log('No document URL available');
       return;
     }
 
@@ -165,7 +77,6 @@ export default function OtherListItem({item, onPress}) {
         .progress({count: 10}, (received, total) => {
           const progress = received / total;
           setProgress(progress * 100); // percent
-          // console.log(`Download progress: ${(progress * 100).toFixed(2)}%`);
         });
 
       setLoading(false);

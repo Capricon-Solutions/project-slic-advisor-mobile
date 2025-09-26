@@ -77,16 +77,6 @@ export default function MonthlyPlan({navigation}) {
     monthDate: moment().format('YYYY/MM'),
   };
 
-  //   const body = {
-  //     numberOfMeetings: meetings,
-  //     numberOfPresents: presentations,
-  //     numberOfQuotations: quotations,
-  //     numberOfProposals: proposals,
-  //     numberOfClosed: closed,
-  //     numberOfLeads: leads,
-  //     monthDate: moment().format('YYYY/MM'),
-  //   };
-
   const validateForm = () => {
     const newErrors = {};
 
@@ -119,33 +109,6 @@ export default function MonthlyPlan({navigation}) {
   };
 
   const handleActivityCreate = async () => {
-    // if (!validateForm()) return; // Stop if validation fails
-
-    // console.log('body');
-    // console.log('proposals', proposals);
-
-    // if (
-    //   !meetings ||
-    //   meetings === '' ||
-    //   !presentations ||
-    //   presentations === '' ||
-    //   !quotations ||
-    //   quotations === '' ||
-    //   !proposals ||
-    //   proposals === '' ||
-    //   !closed ||
-    //   closed === '' ||
-    //   !leads ||
-    //   leads === ''
-    // ) {
-    //   showToast({
-    //     type: 'error',
-    //     text1: 'Please enter a valid value for all fields',
-    //     text2: 'Fields cannot be empty',
-    //   });
-    //   return;
-    // }
-
     if (
       (!meetings || meetings === '') &&
       (!presentations || presentations === '') &&

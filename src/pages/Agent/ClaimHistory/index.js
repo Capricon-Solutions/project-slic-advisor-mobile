@@ -24,14 +24,10 @@ import SmallButton from '../../../components/SmallButton';
 import {useSelector} from 'react-redux';
 import {useGetClaimHistoryQuery} from '../../../redux/services/policyDetailsSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
-// import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
 export default function ClaimHistory({navigation, route}) {
-  // const claimHistoryResponse = useSelector(
-  //   state => state.claimHistory.claimHistoryResponse.data,
-  // );
   const {policyNo} = route.params;
   const {
     data: ClaimHistory,
@@ -41,8 +37,6 @@ export default function ClaimHistory({navigation, route}) {
     id: policyNo, // Dynamic ID
   });
   const claimHistoryResponse = ClaimHistory?.data;
-
-  // console.log('claimHistoryResponse', ClaimHistory);
 
   const DetailLine = ({Title, detail}) => {
     return (
@@ -176,7 +170,6 @@ export default function ClaimHistory({navigation, route}) {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingHorizontal: 0}}
                 renderItem={({item}) => <Card item={item} />}
-                // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <View

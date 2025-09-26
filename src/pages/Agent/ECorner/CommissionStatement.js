@@ -284,8 +284,6 @@ export default function CommissionStatement({navigation}) {
           </TouchableOpacity>
         </View>
 
-        {/* //////// */}
-
         <View
           style={{
             backgroundColor: COLORS.white,

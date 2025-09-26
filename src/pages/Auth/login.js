@@ -39,7 +39,6 @@ import {CommonActions} from '@react-navigation/native';
 import {GetuserType, SetagentCode} from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
-// const { width } = Dimensions.get('window');
 const window = Dimensions.get('window');
 
 const LoginScreen = ({navigation}) => {
@@ -52,10 +51,6 @@ const LoginScreen = ({navigation}) => {
   const [modalVisible2, setModalVisible2] = useState(false);
   const [errorShow, setErrorShow] = useState(false);
   const {data: help, isLoading, error} = useGetHelpQuery();
-
-  // useEffect(() => {
-  //   console.log('help response', help);
-  // }, []);
 
   useEffect(() => {
     const loadUsername = async () => {
@@ -96,8 +91,7 @@ const LoginScreen = ({navigation}) => {
     dispatch(SetUserCode(response?.user?.userCode));
     dispatch(SetPersonalCode(response?.user?.personalCode));
     dispatch(Settoken(response?.token));
-    // console.log('response', response?.user?.userType);
-    // console.log('token', response?.token);
+
     if (response?.user?.userType == 'A') {
       dispatch(GetuserType(1));
       navigator();
@@ -154,14 +148,6 @@ const LoginScreen = ({navigation}) => {
         await AsyncStorage.setItem('password', password);
         // await AsyncStorage.setItem("loggedIn", true);
         userManagement(response);
-
-        // navigation.navigate("TypeTest");
-        // navigation.dispatch(
-        //   CommonActions.reset({
-        //     index: 0,
-        //     routes: [{ name: 'AppStack' }],
-        //   })
-        // );
       }
     } catch (error) {
       console.error('Error saving data:', error);

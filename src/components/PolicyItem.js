@@ -32,7 +32,6 @@ export default function PolicyItem({item, navigation}) {
       console.error('Failed to make a call:', err),
     );
   };
-  // console.log('item', item);
   return (
     <View style={Styles.contactlistWrap}>
       <TouchableOpacity
@@ -128,34 +127,12 @@ export default function PolicyItem({item, navigation}) {
               flex: 1,
             }}>
             <View style={{flex: 0.48}}>
-              {/* <TextInput
-                mode="outlined"
-                label="Start"
-                readOnly
-                theme={Styles.customTheme}
-                style={{marginVertical: 3}}
-                textColor={COLORS.ashBlue}
-                outlineStyle={{borderRadius: 10}}
-                outlineColor={COLORS.lightBorder}
-                value={moment(item.startDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
-              /> */}
               <OutlinedTextView
                 Title={'Start'}
                 value={moment(item.startDate).format('YYYY/MM/DD')}
               />
             </View>
             <View style={{flex: 0.48}}>
-              {/* <TextInput
-                mode="outlined"
-                label="End"
-                readOnly
-                style={{marginVertical: 3}}
-                theme={Styles.customTheme}
-                textColor={COLORS.ashBlue}
-                outlineStyle={{borderRadius: 10}}
-                outlineColor={COLORS.lightBorder}
-                value={moment(item.endDate).format('YYYY/MM/DD')} // Formats to 2025/11/26
-              /> */}
               <OutlinedTextView
                 Title={'End'}
                 value={moment(item.endDate).format('YYYY/MM/DD')}

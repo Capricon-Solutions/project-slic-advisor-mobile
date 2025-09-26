@@ -1,7 +1,7 @@
 // store.js
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { baseApi } from '../services/api'; // Import the base API
+import {configureStore} from '@reduxjs/toolkit';
+import {setupListeners} from '@reduxjs/toolkit/query';
+import {baseApi} from '../services/api'; // Import the base API
 import profileReducer from './ProfileSlice'; // Import the reducer from the slice
 import notificationsReducer from './NotificationSlice'; // Import the reducer from the slice
 import SalesMeterReducer from './SalesMeterSlice';
@@ -15,8 +15,6 @@ import userTypeReducer from './userTypeSlice';
 import teamStatReducer from './teamStatSlice';
 import DUESReducer from './DUESSlice';
 import NavControllerReducer from './NavControllerSlice';
-// import policyRenewalsReducer from './policyRenewalsSlice';
-// import ppwCancelationReducr from './ppwCancelationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -33,13 +31,9 @@ export const store = configureStore({
     userType: userTypeReducer,
     teamStat: teamStatReducer,
     DUES: DUESReducer,
-    NavController: NavControllerReducer
-    // policyRenewals: policyRenewalsReducer,
-    // ppwCancelation: ppwCancelationReducr,
+    NavController: NavControllerReducer,
   },
-  //   middleware: getDefaultMiddleware =>
-  //     getDefaultMiddleware().concat(baseApi.middleware),
-  // });
+
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       immutableCheck: false, // Disable immutable state check

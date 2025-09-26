@@ -24,84 +24,73 @@ const SalesTableComponent = ({
 }) => {
   const handleCellPress = cellData => {
     navigation.navigate('PolicyDetails', {policyNo: cellData});
-    // console.log('Clicked Cell:', cellData);
   };
-  // console.log('Table Data:', tableData);
 
   return (
     <View>
-      {
-        tableData ? (
-          <ScrollView horizontal>
-            <View style={styles.container}>
-              <View style={styles.tableWrapper}>
-                <Table
-                  borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
-                  {/* Table Header */}
+      {tableData ? (
+        <ScrollView horizontal>
+          <View style={styles.container}>
+            <View style={styles.tableWrapper}>
+              <Table borderStyle={{borderWidth: 1, borderColor: COLORS.white}}>
+                {/* Table Header */}
+                <Row
+                  data={tableHead}
+                  widthArr={columnWidths}
+                  style={styles.head}
+                  textStyle={styles.headText}
+                />
+                {/* Table Rows */}
+                {tableData?.map((rowData, rowIndex) => (
                   <Row
-                    data={tableHead}
-                    widthArr={columnWidths}
-                    style={styles.head}
-                    textStyle={styles.headText}
-                  />
-                  {/* Table Rows */}
-                  {tableData?.map((rowData, rowIndex) => (
-                    <Row
-                      key={rowIndex}
-                      data={rowData?.map((cellData, cellIndex) =>
-                        clickableColumns.includes(cellIndex) ? (
-                          <TouchableOpacity
-                            key={cellIndex}
-                            onPress={() => handleCellPress(cellData)}>
-                            <Text
-                              style={[
-                                styles.text,
-                                cellIndex === 0
-                                  ? styles.firstColumnText
-                                  : styles.otherColumnsText,
-                              ]}>
-                              {cellData}
-                            </Text>
-                          </TouchableOpacity>
-                        ) : (
+                    key={rowIndex}
+                    data={rowData?.map((cellData, cellIndex) =>
+                      clickableColumns.includes(cellIndex) ? (
+                        <TouchableOpacity
+                          key={cellIndex}
+                          onPress={() => handleCellPress(cellData)}>
                           <Text
-                            key={cellIndex}
                             style={[
                               styles.text,
                               cellIndex === 0
                                 ? styles.firstColumnText
                                 : styles.otherColumnsText,
-                              haveTotal &&
-                                rowIndex === tableData.length - 1 &&
-                                styles.boldText, // Apply boldText to the last row if haveTotal is true
                             ]}>
                             {cellData}
                           </Text>
-                        ),
-                      )}
-                      widthArr={columnWidths}
-                      style={[
-                        styles.row,
-                        rowIndex % 2 === 0 ? styles.rowGray : styles.rowWhite,
-                      ]}
-                    />
-                  ))}
-                </Table>
-              </View>
+                        </TouchableOpacity>
+                      ) : (
+                        <Text
+                          key={cellIndex}
+                          style={[
+                            styles.text,
+                            cellIndex === 0
+                              ? styles.firstColumnText
+                              : styles.otherColumnsText,
+                            haveTotal &&
+                              rowIndex === tableData.length - 1 &&
+                              styles.boldText, // Apply boldText to the last row if haveTotal is true
+                          ]}>
+                          {cellData}
+                        </Text>
+                      ),
+                    )}
+                    widthArr={columnWidths}
+                    style={[
+                      styles.row,
+                      rowIndex % 2 === 0 ? styles.rowGray : styles.rowWhite,
+                    ]}
+                  />
+                ))}
+              </Table>
             </View>
-          </ScrollView>
-        ) : (
-          // tableData?.length == 0 ?
-          <View style={styles.emptyContainer}>
-            <Text style={styles.errorText}>Sorry, No Data found</Text>
           </View>
-        )
-        //  : (
-        //   <View style={styles.emptyContainer}>
-        //     <Text style={styles.errorText}>{Error}</Text>
-        //   </View>
-        // )
-      }
+        </ScrollView>
+      ) : (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.errorText}>Sorry, No Data found</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -145,7 +134,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,
-    // textAlign: 'left',
   },
 });
 

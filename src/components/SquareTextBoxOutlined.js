@@ -32,17 +32,6 @@ export default function SquareTextBoxOutlined({
   };
   return (
     <View style={{width: '100%', marginTop: window.height * 0.01}}>
-      {/* {Label && (
-        <Text
-          style={{
-            marginBottom: 5,
-            fontSize: 12.5,
-            fontFamily: mediumFont ? Fonts.Roboto.Medium : Fonts.Roboto.Bold,
-            color: COLORS.ashBlue,
-          }}>
-          {Label}
-        </Text>
-      )} */}
       {Label && (
         <Text
           style={{
@@ -79,7 +68,6 @@ export default function SquareTextBoxOutlined({
 
             {
               height: 38,
-              // paddingRight: window.width * 0.07 + 10, // Adjust for icon size and padding
               borderColor: errorBorder
                 ? COLORS.errorBorder
                 : COLORS.borderColor,
@@ -94,13 +82,6 @@ export default function SquareTextBoxOutlined({
           value={value}
           secureTextEntry={Secure && !showPassword}
           keyboardType={keyboardType}
-          // onChangeText={text => {
-          //   const sanitizedText = text.replace(
-          //     /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,
-          //     '',
-          //   );
-          //   setValue(sanitizedText);
-          // }}
           onChangeText={text => {
             let sanitizedText = text;
 

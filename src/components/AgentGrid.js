@@ -46,10 +46,7 @@ export default function AgentGrid({
           justifyContent: 'space-around',
           marginVertical: 10,
         }}>
-        <TouchableOpacity
-          onPress={onBplannerClick}
-          // BPlanner
-          style={Styles.iconGrid}>
+        <TouchableOpacity onPress={onBplannerClick} style={Styles.iconGrid}>
           <Image style={Styles.gridIcon} source={B_PLANNER}></Image>
           <Text style={Styles.gridText}>B-PLANNER</Text>
         </TouchableOpacity>

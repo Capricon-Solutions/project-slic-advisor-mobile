@@ -95,9 +95,6 @@ export default function PPWCancellation({navigation}) {
     ? selectedDate.split(' to ')
     : [lastMonthStart, currentMonthEnd];
 
-  // const ppwCancelationReminderResponse = useSelector(
-  //   state => state.ppwCancelation.ppwCancelationReminderResponse.data,
-  // );
   const {
     data: PPWCanceledList,
     error: errorC,
@@ -124,10 +121,7 @@ export default function PPWCancellation({navigation}) {
     setSelectedValue(value);
   };
 
-  useEffect(() => {
-    // console.log('error', error);
-    // console.log('errorC', errorC);
-  }, [PPWCanceledList, PPWReminderList, error, errorC]);
+  useEffect(() => {}, [PPWCanceledList, PPWReminderList, error, errorC]);
 
   const tableData = PPWReminderList?.data?.map(item => [
     item?.policyNo?.toString() ?? 'N/A',

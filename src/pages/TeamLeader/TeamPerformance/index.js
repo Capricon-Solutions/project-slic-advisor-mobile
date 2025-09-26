@@ -48,8 +48,6 @@ export default function TeamPerformance({navigation}) {
     refetch,
   } = useGetteamCurrentPerfMonthQuery({
     id: userCode, // Dynamic ID
-    //  fromDate: fromDate,
-    //  toDate: toDate,
   });
   console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const {
@@ -58,8 +56,6 @@ export default function TeamPerformance({navigation}) {
     isFetching: yearFetching,
   } = useGetteamCurrentPerfYearQuery({
     id: userCode, // Dynamic ID
-    //  fromDate: fromDate,
-    //  toDate: toDate,
   });
   console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const IndividualStatResponse = useSelector(
@@ -117,7 +113,11 @@ export default function TeamPerformance({navigation}) {
         />
       </View>
 
-      <View style={[styles.mainWrap, {marginTop: 1,backgroundColor:COLORS.background}]}>
+      <View
+        style={[
+          styles.mainWrap,
+          {marginTop: 1, backgroundColor: COLORS.background},
+        ]}>
         <TouchableOpacity
           onPress={() => setSelectedType(1)}
           style={{

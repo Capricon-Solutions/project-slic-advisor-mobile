@@ -8,7 +8,6 @@ import Fonts from '../theme/Fonts';
 import {Styles} from '../theme/Styles';
 
 const window = Dimensions.get('window');
-// import { useSelector } from "react-redux";
 
 export default function OutlinedTextView({
   Title,

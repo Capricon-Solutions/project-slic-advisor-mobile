@@ -445,7 +445,7 @@ export default function SalesMeter({navigation}) {
                             style={styles.cardiconimage}></Image>
                         </View>
                       </View>
-                      {/* ///////////////// */}
+
                       <View
                         style={{
                           flex: 0.74,
@@ -471,7 +471,6 @@ export default function SalesMeter({navigation}) {
                           {currentYearAchivement || 0}%
                         </Text>
                       </View>
-                      {/* //////////// */}
                     </View>
                     <View
                       style={{
@@ -491,7 +490,7 @@ export default function SalesMeter({navigation}) {
                             style={styles.cardiconimage}></Image>
                         </View>
                       </View>
-                      {/* ///////////////// */}
+
                       <View
                         style={{
                           flex: 0.74,
@@ -517,7 +516,6 @@ export default function SalesMeter({navigation}) {
                           {currentYearGrowth || 0}%
                         </Text>
                       </View>
-                      {/* //////////// */}
                     </View>
                   </View>
                 </View>

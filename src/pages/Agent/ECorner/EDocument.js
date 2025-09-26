@@ -35,22 +35,6 @@ export default function EDocument({navigation}) {
     if (SelectedType === 3) return EDocument.data.claims;
     return [];
   };
-  // console.log('EDocument', EDocument);
-  // useEffect(() => {
-  //   const originalData = getCurrentData();
-
-  //   if (searchText.trim() === '') {
-  //     setFilteredData(originalData);
-  //   } else {
-  //     // const filtered = originalData.filter(item =>
-  //     //   item?.docName?.toLowerCase().includes(searchText.toLowerCase()),
-  //     // );
-  //     const filtered = originalData.filter(item =>
-  //       item?.docName?.toLowerCase().startsWith(searchText.toLowerCase()),
-  //     );
-  //     setFilteredData(filtered);
-  //   }
-  // }, [searchText, SelectedType, EDocument]);
 
   useEffect(() => {
     const originalData = getCurrentData();

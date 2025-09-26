@@ -7,8 +7,6 @@ import {TouchableRipple} from 'react-native-paper';
 import LoaderKit from 'react-native-loader-kit';
 import Fonts from '../theme/Fonts';
 
-// import { useSelector } from "react-redux";
-
 export default function Button({
   Title,
   onPress,

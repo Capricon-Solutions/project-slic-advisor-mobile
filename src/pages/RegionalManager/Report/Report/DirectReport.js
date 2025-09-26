@@ -90,19 +90,6 @@ export default function DirectReport({navigation, route}) {
     type: SelectedType,
     value: value,
   });
-  // const tableData = RmReport?.data?.map(item => [
-  //   item?.branch?.toString() ?? '',
-
-  //   item?.renewal?.toString() ?? '',
-  //   item?.nb?.toString() ?? '',
-  //   // item?.refundPpw?.toString() ?? '',
-  //   {
-  //     ppw: item?.refundPpw?.toString() ?? '',
-  //     other: item?.refundOther?.toString() ?? '',
-  //   },
-  //   item?.endorsement?.toString() ?? '',
-  //   item?.total?.toString() ?? '',
-  // ]);
 
   const tableData = RmReport?.data?.map(item => [
     item?.direct?.toString() ?? '',
@@ -152,16 +139,6 @@ export default function DirectReport({navigation, route}) {
         }))
       : [];
 
-  // {
-  //   "branch": 412,
-  //   "renewal": "Athurugiriya",
-  //   "nb": 8252093.38,
-  //   "refundPpw": 12022791.43,
-  //   "refundOther": 2303109.63,
-  //   "endorsement": 0,
-  //   "total": 0,
-  // }
-
   const dropdownOptions = [{label: 'All', value: 'All'}, ...branchList];
   useEffect(() => {
     const isValid = dropdownOptions.some(option => option.value === branch);
@@ -176,7 +153,6 @@ export default function DirectReport({navigation, route}) {
   }, []);
 
   const toggleOrientation = () => {
-
     if (isLandscape) {
       Orientation.lockToPortrait(); // Lock screen to portrait mode
     } else {
@@ -218,7 +194,7 @@ export default function DirectReport({navigation, route}) {
           <LandscapeHeader
             haveSearch={false}
             Title={Title + ' Report'}
-           onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -226,7 +202,7 @@ export default function DirectReport({navigation, route}) {
         ) : (
           <Header
             Title={Title + ' Report'}
-             onPress={() => {
+            onPress={() => {
               navigation.goBack();
               Orientation.lockToPortrait();
             }}
@@ -463,12 +439,12 @@ export default function DirectReport({navigation, route}) {
                 borderRadius: 15,
                 backgroundColor: COLORS.white,
                 elevation: 10,
-                  shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+                shadowOpacity: 0.2, // add opacity
+                shadowRadius: 3, // add blur radius
+                shadowOffset: {
+                  width: 0,
+                  height: 3,
+                },
                 margin: 10,
                 padding: 15,
               }}>
@@ -610,24 +586,6 @@ export default function DirectReport({navigation, route}) {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
                   })}
-
-                  // value={
-                  //   value == 1
-                  //     ? (
-                  //         (item?.renewal ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.refundPpw ?? 0) +
-                  //         (item?.refundOther ?? 0) +
-                  //         (item?.endorsement ?? 0)
-                  //       ).toLocaleString()
-                  //     : (
-                  //         (item?.nopRenewal ?? 0) +
-                  //         (item?.nopPpw ?? 0) +
-                  //         (item?.nb ?? 0) +
-                  //         (item?.nopOtherRefund ?? 0) +
-                  //         (item?.nopEndorsements ?? 0)
-                  //       ).toLocaleString()
-                  // }
                 />
               </View>
             </View>

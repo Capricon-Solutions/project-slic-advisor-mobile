@@ -37,24 +37,6 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  // const handleMonthSelection = monthIndex => {
-  //   const selectedDate = moment(
-  //     `${selectedYear}-${monthIndex + 1}-01`,
-  //     'YYYY-MM-DD',
-  //   );
-  //   if (!startDate || (startDate && endDate)) {
-  //     setStartDate(selectedDate);
-  //     setEndDate(null);
-  //   } else if (startDate && !endDate) {
-
-  //     if (selectedDate.isBefore(startDate)) {
-  //       setStartDate(selectedDate);
-  //     } else {
-  //       setEndDate(selectedDate);
-  //     }
-  //   }
-  // };
-
   const handleMonthSelection = monthIndex => {
     const selectedDate = moment(
       `${selectedYear}-${monthIndex + 1}-01`,
@@ -65,7 +47,6 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
       setStartDate(selectedDate);
       setEndDate(null);
     } else if (startDate && !endDate) {
-      // If same month selected again, reset selection
       if (selectedDate.isSame(startDate, 'month')) {
         setStartDate(null);
       } else if (selectedDate.isBefore(startDate)) {
@@ -202,7 +183,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 5,
     justifyContent: 'space-evenly',
-    // width: '80%',
   },
   monthButton: {
     marginHorizontal: 5,

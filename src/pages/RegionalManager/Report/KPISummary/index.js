@@ -45,13 +45,6 @@ export default function KPISummary({navigation}) {
     regionName: regionName,
   });
 
-  // useEffect(() => {
-  //   console.log('regionName', regionName);
-  //   console.log('KpiSummery', KpiSummery);
-  //   console.log('KpiSummeryError', KpiSummeryError);
-  // }, [KpiSummery, KpiSummeryError]);
-
-  // Format number to LKR currency with commas
   const formatCurrency = value => {
     return `LKR ${value.toLocaleString('en-US')}.00`;
   };

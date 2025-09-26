@@ -4,8 +4,6 @@ import {TouchableOpacity, Dimensions, Text, View, Image} from 'react-native';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 
-// import { useSelector } from "react-redux";
-
 export default function SmallButton({
   Title,
   onPress,

@@ -8,7 +8,6 @@ import Fonts from '../theme/Fonts';
 import {Styles} from '../theme/Styles';
 
 const window = Dimensions.get('window');
-// import { useSelector } from "react-redux";
 
 export default function SquareTextBox({
   Label,
@@ -27,17 +26,6 @@ export default function SquareTextBox({
   };
   return (
     <View style={{width: '100%', marginTop: window.height * 0.015}}>
-      {/* {Label && (
-        <Text
-          style={{
-            marginBottom: 5,
-            fontFamily: Fonts.Roboto.Bold,
-            color: LabelColor ? LabelColor : COLORS.textColor,
-            fontSize: window.width * 0.035,
-          }}>
-          {Label}
-        </Text>
-      )} */}
       {Label && (
         <Text
           style={{
@@ -83,7 +71,6 @@ export default function SquareTextBox({
           value={value}
           secureTextEntry={Secure && !showPassword}
           keyboardType={keyboardType}
-          // onChangeText={setValue}
           onChangeText={text => {
             const sanitizedText = text.replace(
               /([\p{Emoji_Presentation}\p{Extended_Pictographic}\u200D\uFE0F])/gu,

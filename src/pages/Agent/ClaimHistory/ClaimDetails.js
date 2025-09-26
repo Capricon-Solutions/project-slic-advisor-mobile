@@ -34,8 +34,6 @@ const window = Dimensions.get('window');
 export default function ClaimDetails({navigation, route}) {
   const {claimId} = route.params;
 
-  // console.log('claimId', claimId);
-
   const {
     data: ClaimDetails,
     error,
@@ -43,8 +41,6 @@ export default function ClaimDetails({navigation, route}) {
   } = useGetClaimDetailsQuery({
     id: claimId, // Dynamic ID
   });
-  // 'V/CH/1/010/1027110/2017'
-  // console.log('ClaimDetails', ClaimDetails);
 
   const tableHead = ['Document', 'Status'];
   const Data = ClaimDetails?.data?.documents;

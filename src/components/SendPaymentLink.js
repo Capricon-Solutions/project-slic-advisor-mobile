@@ -31,63 +31,6 @@ export default function SendPaymentLink({
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [mobileNumberError, setMobileNumberError] = useState('');
 
-  // const isValidSriLankanNumber = number => {
-  //   const cleaned = number.replace(/[^0-9]/g, '');
-
-  //   // If it's empty, skip validation (considered optional)
-  //   if (cleaned.length === 0) return true;
-
-  //   // Must be either valid local or international format
-  //   const localPattern = /^(07\d{8}|0\d{9})$/;
-  //   const intlPattern = /^94\d{9}$/;
-
-  //   return localPattern.test(cleaned) || intlPattern.test(cleaned);
-  // };
-
-  // const isValidSriLankanNumber = number => {
-  //   const cleaned = number.replace(/[^0-9+]/g, '');
-
-  //   // Normalize to numeric-only without + sign
-  //   let normalized = cleaned;
-  //   if (normalized.startsWith('+94')) {
-  //     normalized = normalized.replace('+94', '94');
-  //   } else if (normalized.startsWith('0')) {
-  //     normalized = '94' + normalized.substring(1);
-  //   } else if (/^[7|1|2]\d{8}$/.test(normalized)) {
-  //     // If it's missing leading 0 but starts with valid digit
-  //     normalized = '94' + normalized;
-  //   }
-
-  //   // Patterns
-  //   const mobilePattern = /^947[0-9]{8}$/;
-  //   const landlinePattern = /^94(1\d{8}|2\d{8})$/; // landlines like 011xxxxxxx or 021xxxxxxx
-
-  //   return mobilePattern.test(normalized) || landlinePattern.test(normalized);
-  // };
-  // const isValidSriLankanNumber = number => {
-  //   // 1. Remove all non-numeric except leading +
-  //   const cleaned = number.replace(/[^0-9+]/g, '');
-
-  //   let normalized = cleaned;
-
-  //   // 2. Normalize to start with 94
-  //   if (normalized.startsWith('+94')) {
-  //     normalized = '94' + normalized.substring(3);
-  //   } else if (normalized.startsWith('0')) {
-  //     normalized = '94' + normalized.substring(1);
-  //   } else if (/^7\d{8}$/.test(normalized)) {
-  //     // Missing leading 0 for mobile numbers
-  //     normalized = '94' + normalized;
-  //   }
-
-  //   // 3. Patterns
-  //   const mobilePattern = /^947\d{8}$/; // 94 + 7xxxxxxxx
-  //   const landlinePattern = /^94(1\d{8}|2\d{8})$/; // 94 + (1xxxxxxxx or 2xxxxxxxx)
-
-  //   // 4. Validate
-  //   return mobilePattern.test(normalized) || landlinePattern.test(normalized);
-  // };
-
   const isValidSriLankanNumber = number => {
     // Remove all non-digits except leading +
     const cleaned = number.replace(/[^0-9+]/g, '');
@@ -146,12 +89,7 @@ export default function SendPaymentLink({
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <TouchableOpacity
-        // onPress={() => {
-        //   setModalVisible(false);
-        // }}
-        activeOpacity={1}
-        style={{flex: 1}}>
+      <TouchableOpacity activeOpacity={1} style={{flex: 1}}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -174,25 +112,11 @@ export default function SendPaymentLink({
               <Text style={styles.modalTitle}>Send Payment Link</Text>
             </View>
 
-            {/* <SquareTextBox Label={'Contact Number'} Title={phone} /> */}
-            {/* <SquareTextBox
-              Label={'Contact Number'}
-              Title={'Enter phone number'} // placeholder
-              value={phone}                // value to display
-              setValue={setPhone}          // updater function to allow editing
-              keyboardType="phone-pad"
-            /> */}
             <SquareTextBox
               Label={'Mobile Number'}
               Title={'Enter phone number'}
               value={phone}
               errorBorder={mobileNumberError}
-              // setValue={v => {
-              //   const cleaned = v.replace(/[^0-9]/g, ''); // Remove non-digit characters
-              //   if (cleaned.length <= 12) {
-              //     setPhone(cleaned);
-              //   }
-              // }}
               setValue={text => {
                 const formatted = text.replace(/[^0-9+]/g, '').slice(0, 12);
                 setPhone(formatted);
@@ -214,9 +138,6 @@ export default function SendPaymentLink({
                 marginTop: 15,
                 justifyContent: 'space-evenly',
               }}>
-              {/* <View style={{ flex: 0.35 }}>
-                <AlertButtonWhite Title={'Update'} />
-              </View> */}
               <View style={{flex: 0.35}}>
                 <AlertButton
                   isLoading={loading}
@@ -249,12 +170,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.lightBorder,
     alignItems: 'center',
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
   closeButton: {
     position: 'absolute',

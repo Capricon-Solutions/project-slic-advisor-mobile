@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import COLORS from './colors';
 import Fonts from './Fonts';
 
@@ -166,7 +166,7 @@ export const Styles = StyleSheet.create({
     padding: 5,
     elevation: 7,
     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,
@@ -193,7 +193,7 @@ export const Styles = StyleSheet.create({
     marginVertical: window.height * 0.02,
     elevation: 10,
     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,
@@ -249,7 +249,7 @@ export const Styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 3,
     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,
@@ -272,11 +272,10 @@ export const Styles = StyleSheet.create({
 
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    // borderWidth: 1,
-    // borderColor: COLORS.lightBorder,
+
     elevation: 3,
     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,
@@ -301,7 +300,7 @@ export const Styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 3,
     shadowOpacity: 0.2, // add opacity
-    shadowRadius: 3,  // add blur radius
+    shadowRadius: 3, // add blur radius
     shadowOffset: {
       width: 0,
       height: 3,

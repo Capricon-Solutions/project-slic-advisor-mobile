@@ -19,7 +19,6 @@ const HorizontalReportTable = ({
 }) => {
   const handleCellPress = cellData => {
     onPress?.();
-    // console.log('Clicked Cell:', cellData);
   };
 
   return (

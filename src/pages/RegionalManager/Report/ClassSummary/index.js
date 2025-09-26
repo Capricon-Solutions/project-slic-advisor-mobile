@@ -55,9 +55,6 @@ export default function ClassSummary({navigation}) {
     month: currentMonthNumber,
     regionName: regionName,
   });
-  // useEffect(() => {
-  //   console.log('ClassSummery', ClassSummery);
-  // }, [ClassSummery]);
 
   const DataSet =
     SelectedType == 1
@@ -256,7 +253,6 @@ export default function ClassSummary({navigation}) {
             </Text>
           </View>
 
-          {/* ///// MOTOR ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -312,7 +308,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// Fire ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -368,7 +363,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// ACCIDENT ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -428,7 +422,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// Marine ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -484,7 +477,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// Legal ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -540,7 +532,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// Wci ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{
@@ -596,7 +587,6 @@ export default function ClassSummary({navigation}) {
             </View>
           </View>
 
-          {/* ///// Esi ///// */}
           <View style={{paddingVertical: 5}}>
             <View
               style={{

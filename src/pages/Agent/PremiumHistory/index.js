@@ -30,9 +30,6 @@ const window = Dimensions.get('window');
 
 export default function PremiumHistory({navigation, route}) {
   const {policyNo} = route.params;
-  // const premiumPaymentResponse = useSelector(
-  //   state => state.premiumPayment.premiumPaymentResponse.data,
-  // );
 
   const {
     data: PremiumHistory,

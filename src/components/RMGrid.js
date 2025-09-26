@@ -21,8 +21,7 @@ import KpiSummery from '../icons/KpiSummery.png'; // Replace with the actual log
 import DuesSummery from '../icons/DuesSummery.png'; // Replace with the actual logo path
 import ClassSummery from '../icons/ClassSummery.png'; // Replace with the actual logo path
 import Competition from '../icons/Competition.png'; // Replace with the actual logo path
-// import B_PLANNER from '../icons/B-PLANNER.png'; // Replace with the actual logo path
-// import { useSelector } from "react-redux";
+
 const window = Dimensions.get('window');
 
 export default function RMGrid({
@@ -79,7 +78,11 @@ export default function RMGrid({
           <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
           <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
         </TouchableOpacity> */}
-        <View style={[Styles.iconGrid, {elevation: 0,backgroundColor:'transparent'}]}></View>
+        <View
+          style={[
+            Styles.iconGrid,
+            {elevation: 0, backgroundColor: 'transparent'},
+          ]}></View>
       </View>
     </View>
   );

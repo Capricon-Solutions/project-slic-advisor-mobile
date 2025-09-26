@@ -63,20 +63,6 @@ export default function ProductPortfolio({navigation}) {
     }
   }, [searchText]);
 
-  // const handleSearch = v => {
-  //   // return;
-  //   // setSearchText(searchText);
-  //   if (v === '') {
-  //     setFilteredData(products?.data || []); // Reset to show all products
-  //   } else {
-  //     // console.log('searchText', searchText);
-  //     // return;
-  //     const filtered = products?.data?.filter(item =>
-  //       item.productName.toLowerCase().includes(v?.toLowerCase()),
-  //     );
-  //     setFilteredData(filtered);
-  //   }
-  // };
   const handleSearch = v => {
     if (v === '') {
       setFilteredData(products?.data || []); // Reset to show all products
@@ -177,10 +163,6 @@ export default function ProductPortfolio({navigation}) {
         <View style={[styles.searchWrap, {marginVertical: 12}]}>
           <TextInput
             style={styles.textInput}
-            // onChangeText={v => {
-            //   const searchText = v.replace(/[^a-zA-Z]/g, '');
-            //   setSearchText(searchText), handleSearch(searchText);
-            // }}
             onChangeText={v => {
               setSearchText(v), handleSearch(v);
             }}

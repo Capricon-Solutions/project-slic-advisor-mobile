@@ -45,16 +45,8 @@ export default function PendingClaims({navigation, route}) {
   ];
   const columnWidths = [138, 138];
 
-  // const claimHistoryResponse = useSelector(
-  //   state => state.claimHistory.claimHistoryResponse.data,
-  // );
   const {policyNo} = route.params;
-  // const {
-  //   data: ClaimHistory,
 
-  // } = useGetClaimHistoryQuery({
-  //   id: policyNo, // Dynamic ID
-  // });
   const {
     data: ClaimHistory,
     error,

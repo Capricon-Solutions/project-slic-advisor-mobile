@@ -75,13 +75,6 @@ export default function ProductDetails({navigation, route}) {
         onPress: () => item.brochTamil && Linking.openURL(item.brochTamil),
       });
     }
-    // if (item?.documentUrl) {
-    //   list.push({
-    //     title: 'PDF',
-    //     url: item.documentUrl,
-    //     onPress: () => item.documentUrl && Linking.openURL(item.documentUrl),
-    //   });
-    // }
 
     setBrochureList(list); // remove current items and set new
   }, [item]);

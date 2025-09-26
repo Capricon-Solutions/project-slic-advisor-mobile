@@ -75,17 +75,6 @@ export default function MotorRenewal({navigation}) {
     ? selectedDate.split(' to ')
     : [lastMonthStart, currentMonthEnd];
 
-  // const {
-  //   data: motorRenewalsList,
-  //   error,
-  //   isFetching,
-  //   refetch,
-  // } = useGetprintMotorRenewalsListQuery({
-  //   id: userCode, // Dynamic ID
-  //   fromDate: fromDate,
-  //   toDate: toDate,
-  // });
-
   const {
     data: motorRenewalsList,
     error,
@@ -146,80 +135,6 @@ export default function MotorRenewal({navigation}) {
     return true; // iOS or other platforms
   };
 
-  // Download and open PDF
-  // const downloadAndOpenPDF = async path => {
-  //   console.log('test');
-  //   try {
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Permission Denied',
-  //         text2:
-  //           'Storage permission is required to download and view the file.',
-  //       });
-  //       return;
-  //     }
-  //     showToast({
-  //       type: 'success',
-  //       text1: 'Download Started',
-  //       text2: 'Please wait until download and open the file.',
-  //     });
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-  //     const pdfUrl = motorRenewalsList?.data?.path;
-  //     let fileName = pdfUrl.split('/').pop();
-
-  //     if (!fileName.endsWith('.pdf')) {
-  //       fileName += '.pdf';
-  //     }
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-  //     console.log('Starting download from:', pdfUrl);
-
-  //     const downloadOptions = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         console.log('progress', progress);
-  //         setDownloadProgress(progress);
-  //       },
-  //       progressDivider: 10,
-  //     };
-
-  //     const download = RNFS.downloadFile(downloadOptions);
-  //     console.log('Download started:', download);
-  //     const result = await download.promise;
-  //     console.log('Download completed:', result.statusCode);
-
-  //     if (result.statusCode === 200) {
-  //       await FileViewer.open(localFilePath, {
-  //         showOpenWithDialog: true, // chooser if more than one app
-  //         showAppsSuggestions: true, // jumps to Play Store if none
-  //         displayName: 'Your PDF Report',
-  //         mimeType: 'application/pdf',
-  //       });
-  //       console.log('PDF opened successfully!');
-  //     } else {
-  //       throw new Error(
-  //         `Download failed with status code ${result.statusCode}`,
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Download/Open error:', error);
-  //     showToast({
-  //       type: 'error',
-  //       text1: 'Download Error',
-  //       text2: 'Failed to download or open the PDF file.',
-  //     });
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const downloadAndOpenPDF = async () => {
     // console.log('test');
     try {
@@ -397,25 +312,6 @@ export default function MotorRenewal({navigation}) {
               004
             </Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() => setSelectedType(5)}
-            style={{
-              backgroundColor:
-                SelectedType == 5 ? COLORS.primary : COLORS.white,
-              borderRadius: 15,
-              flex: 0.2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 6,
-            }}>
-            <Text
-              style={{
-                color: SelectedType == 5 ? COLORS.white : COLORS.black,
-                fontFamily: Fonts.Roboto.SemiBold,
-              }}>
-              005
-            </Text>
-          </TouchableOpacity> */}
         </View>
         {isFetching ? (
           <View

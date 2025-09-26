@@ -49,12 +49,7 @@ export default function MyselfPerformance({navigation}) {
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
   const [selectedMonthName, setSelectedMonthName] = useState(null);
   const [selectedYearName, setSelectedYearName] = useState(null);
-  // const [fromDate, toDate] = selectedDate
-  //   ? [
-  //       moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
-  //       moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
-  //     ]
-  //   : [lastMonthStart, currentMonthEnd];
+
   const isCurrentMonth = moment(selectedDate, 'YYYY/MM').isSame(
     moment(),
     'month',
@@ -138,40 +133,7 @@ export default function MyselfPerformance({navigation}) {
       total: formatNumber(individualPerf?.data?.yearly.noOfPoliciesForTotal),
     },
   ];
-  // const tableData = [
-  //   {
-  //     title: 'Premium for November',
-  //     renewal: individualPerf?.data?.monthly.premiumForRenewal,
-  //     new: individualPerf?.data.monthly.premiumForNew,
-  //     refund: individualPerf?.data.monthly.premiumForRefund,
-  //     endorsement: individualPerf?.data.monthly.premiumForEndorsement,
-  //     total: individualPerf?.data.monthly.premiumForTotal,
-  //   },
-  //   {
-  //     title: 'Premium for 2024',
-  //     renewal: individualPerf?.data.yearly.premiumForRenewal,
-  //     new: individualPerf?.data.yearly.premiumForNew,
-  //     refund: individualPerf?.data.yearly.premiumForRefund,
-  //     endorsement: individualPerf?.data.yearly.premiumForEndorsement,
-  //     total: individualPerf?.data.yearly.premiumForTotal,
-  //   },
-  //   {
-  //     title: 'No. of Policies for November',
-  //     renewal: individualPerf?.data.monthly.noOfPoliciesForRenewal,
-  //     new: individualPerf?.data.monthly.noOfPoliciesForNew,
-  //     refund: individualPerf?.data.monthly.noOfPoliciesForRefund,
-  //     endorsement: individualPerf?.data.monthly.noOfPoliciesForEndorsement,
-  //     total: individualPerf?.data.monthly.noOfPoliciesForTotal,
-  //   },
-  //   {
-  //     title: 'No. of Policies for 2024',
-  //     renewal: individualPerf?.data.yearly.noOfPoliciesForRenewal,
-  //     new: individualPerf?.data.yearly.noOfPoliciesForNew,
-  //     refund: individualPerf?.data.yearly.noOfPoliciesForRefund,
-  //     endorsement: individualPerf?.data.yearly.noOfPoliciesForEndorsement,
-  //     total: individualPerf?.data.yearly.noOfPoliciesForTotal,
-  //   },
-  // ];
+
   const tableDataFinal = tableData?.map(item => [
     item?.title?.toString() ?? '',
     item?.renewal?.toString() ?? '',

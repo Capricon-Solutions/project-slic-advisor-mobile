@@ -5,8 +5,7 @@ export const clubSlice = baseApi.injectEndpoints({
     getClub: builder.query({
       query: userCode => {
         const url = `club/GetTheClubSelection/${userCode}`;
-        // console.log('Fetching URL hhhhh:', url);
-        // console.log('Fetching URL userCode:', userCode);
+
         return url;
       },
     }),

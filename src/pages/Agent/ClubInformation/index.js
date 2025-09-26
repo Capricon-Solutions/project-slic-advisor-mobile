@@ -61,20 +61,13 @@ export default function ClubInformation({navigation}) {
     isFetching: isNextFetching,
     error: nextError,
   } = useGetNextClubQuery(usertype == 2 ? personalCode : userCode);
-  // console.log('userCode', userCode);
-  // console.log('userCodebbbbbbb', usertype == 2 ? personalCode : userCode);
-  // console.log('usertype', usertype);
+
   const clubInfoResponse = clubInfo?.data;
-  // const clubInfoResponse = useSelector(
-  //   state => state.clubInfo.clubInfoResponse.data,
-  // );
-  // console.log('nextClubInfo 333', nextClubInfo);
-  // const nextClubTable = nextClubInfo?.data[0]?.last5Years;
+
   const nextClubTable = nextClubInfo?.data?.[0]?.last5Years;
   const tableHead = ['Income Year', 'Comm. Income'];
 
   const columnWidths = [window.width * 0.41, window.width * 0.41];
-  // console.log('nextClubTable', nextClubInfo?.data?.[0]?.last5Years);
   const tableData = nextClubTable?.map(item => [
     item?.year?.toString() ?? '',
     item?.amount != null
@@ -84,7 +77,6 @@ export default function ClubInformation({navigation}) {
         })
       : '0.00',
   ]);
-  // console.log("clubInfoResponse", clubInfoResponse);
 
   // API Binds
 
@@ -227,11 +219,6 @@ export default function ClubInformation({navigation}) {
                     </View>
 
                     <View style={{flex: 1}}>
-                      {/* <OutlinedTextBox
-                      Title={'Gen. Persistency'}
-                      readOnly={true}
-                      value={generalPersistency?.toString() ?? ''}
-                    /> */}
                       <OutlinedTextView
                         Title={'Gen. Persistency'}
                         value={generalPersistency?.toString() ?? ''}

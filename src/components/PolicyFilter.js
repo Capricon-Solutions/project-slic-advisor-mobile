@@ -100,7 +100,6 @@ export default function PolicyFilter({
 
     if (StartFromDt || StartToDt) {
       if (!StartFromDt || !StartToDt) {
-        // alert('Please select both Start Date and End Date.');
         showToast({
           type: 'error',
           text1: 'Please select both Start Date and End Date.',
@@ -108,7 +107,6 @@ export default function PolicyFilter({
         return;
       }
       if (StartFromDt > StartToDt) {
-        // alert('Start Date cannot be later than End Date.');
         showToast({
           type: 'error',
           text1: 'Start Date cannot be later than End Date.',
@@ -393,7 +391,6 @@ export default function PolicyFilter({
             }}>
             <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
-                // Title={StartFromDt}
                 Label="Start Date"
                 ref={sDateRef}
                 maximumDate={
@@ -417,17 +414,6 @@ export default function PolicyFilter({
               }}>
               To
             </Text>
-            {/* <View style={{flex: 0.45}}>
-              <SquareTextBoxOutlinedDate
-                // Title={StartToDt}
-                ref={eDateRef}
-                Label="End Date"
-                minimumDate={StartFromDt ? StartFromDt : null}
-                setValue={text => setEDate(text)}
-                keyboardType="numeric"
-                value={StartToDt}
-              />
-            </View> */}
 
             <View style={{flex: 0.45}}>
               <SquareTextBoxOutlinedDate
@@ -538,7 +524,6 @@ export default function PolicyFilter({
             <AlertButtonWhite
               onPress={() => {
                 clearFields(); // Clear all fields
-                // console.log('Fields cleared');
                 onPressClear();
               }}
               Title="Clear"

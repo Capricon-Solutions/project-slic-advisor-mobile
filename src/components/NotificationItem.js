@@ -27,9 +27,7 @@ export default function NotificationItem({item, navigation, onDelete}) {
   };
 
   const handleDeleteNotification = async () => {
-    // console.log('test', item.policyNo);
     await deleteNotification({notificationId: [item?.notificationId]}); // API call
-    // navigation.navigate('PolicyDetails', { policyNo: item.policyNo });
   };
 
   const renderRightActions = (progress, dragX) => {
@@ -38,15 +36,7 @@ export default function NotificationItem({item, navigation, onDelete}) {
       outputRange: [0, 100], // Define how far the button moves
       extrapolate: 'clamp', // Prevents going out of bounds
     });
-    // return (
-    //   <View style={style.deleteButton}>
-    //     <TouchableOpacity
-    //       onPress={() => onDelete(item.notificationId)} // Trigger delete action
-    //       style={style.deleteButtonContent}>
-    //       <MaterialCommunityIcons name="trash-can" size={25} color={COLORS.white} />
-    //     </TouchableOpacity>
-    //   </View>
-    // );
+
     return (
       <Animated.View style={[style.deleteButton, {transform: [{translateX}]}]}>
         <TouchableOpacity
@@ -128,12 +118,9 @@ export default function NotificationItem({item, navigation, onDelete}) {
 const style = StyleSheet.create({
   cardWrap: {
     flexDirection: 'row',
-    // marginVertical: 7,
     borderRadius: 20,
     overflow: 'visible',
     backgroundColor: COLORS.white,
-
-    // marginHorizontal: 5,
   },
   leftBorder: {
     flex: 0.05,

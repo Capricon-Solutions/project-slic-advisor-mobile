@@ -53,15 +53,7 @@ export default function IndividualStatistics({navigation}) {
     .startOf('month')
     .format('YYYY-MM-DD');
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
-  // const [fromDate, toDate] = selectedDate
-  //   ? selectedDate.split(' to ')
-  //   : [lastMonthStart, currentMonthEnd];
-  // const [fromDate, toDate] = selectedDate
-  //   ? [
-  //       moment(selectedDate, 'YYYY/MM').startOf('month').format('YYYY-MM-DD'),
-  //       moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD'),
-  //     ]
-  //   : [lastMonthStart, currentMonthEnd];
+
   const isCurrentMonth = moment(selectedDate, 'YYYY/MM').isSame(
     moment(),
     'month',
@@ -76,8 +68,7 @@ export default function IndividualStatistics({navigation}) {
       ? moment().format('YYYY-MM-DD') // today if current month
       : moment(selectedDate, 'YYYY/MM').endOf('month').format('YYYY-MM-DD')
     : currentMonthEnd;
-  // console.log('selectedDate', selectedDate);
-  // console.log('fromDate', fromDate, 'toDate', toDate);
+
   const {
     data: individualPerf,
     error,

@@ -69,10 +69,6 @@ export default function TrainingList({navigation}) {
     userCode: usertype == 2 ? personalCode : userCode,
   });
 
-  // useEffect(() => {
-  //   console.log('TrainingList', TrainingList);
-  // }, [TrainingList]);
-
   const tableData = TrainingList?.data?.map(item => [
     item?.trainId?.toString() ?? '',
     item?.topic?.toString() ?? '',

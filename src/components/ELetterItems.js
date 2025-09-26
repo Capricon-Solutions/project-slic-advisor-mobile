@@ -27,7 +27,6 @@ export default function ELetterItems({item, navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      // console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -142,7 +141,6 @@ export default function ELetterItems({item, navigation}) {
           setDownloadProgress(progress);
         });
 
-      // console.log('Sanitized file path:', res.path());
       setIsDownloading(false);
       await Share.open({
         url: `file://${res.path()}`,

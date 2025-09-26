@@ -103,6 +103,7 @@ function App(): React.JSX.Element {
   // **Auth Stack (Contains Only Login)**
 
   const AuthStack = () => (
+    // @ts-ignore
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen
         options={{
@@ -123,6 +124,7 @@ function App(): React.JSX.Element {
   // **App Stack (Contains All Screens)**
 
   const AppStack = () => (
+    // @ts-ignore
     <Stack.Navigator
       initialRouteName="AgentNavigator"
       screenOptions={{
