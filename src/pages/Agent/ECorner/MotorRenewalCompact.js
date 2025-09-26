@@ -25,6 +25,7 @@ import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
+import {API_KEY} from '@env';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
@@ -141,82 +142,6 @@ export default function MotorRenewalCompact({navigation}) {
     return true; // iOS or other platforms
   };
 
-  // Download and open PDF
-  // const downloadAndOpenPDF = async path => {
-  //   console.log('test');
-  //   try {
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Permission Denied',
-  //         text2:
-  //           'Storage permission is required to download and view the file.',
-  //       });
-  //       return;
-  //     }
-  //     showToast({
-  //       type: 'success',
-  //       text1: 'Download Started',
-  //       text2: 'Please wait until download and open the file.',
-  //     });
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-  //     const pdfUrl = motorRenewalsList?.data?.path;
-  //     let fileName = pdfUrl.split('/').pop();
-
-  //     if (!fileName.endsWith('.pdf')) {
-  //       fileName += '.pdf';
-  //     }
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-  //     console.log('Starting download from:', pdfUrl);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
-  //     const downloadOptions = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         setDownloadProgress(progress);
-  //       },
-  //       progressDivider: 10,
-  //     };
-
-  //     const download = RNFS.downloadFile(downloadOptions);
-  //     console.log('Download started:', download);
-  //     const result = await download.promise;
-  //     // Linking.openURL(localFilePath).catch();
-  //     console.log('Download completed:', result.statusCode);
-
-  //     if (result.statusCode === 200) {
-  //       // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-  //       // await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-  //       await FileViewer.open(localFilePath, {
-  //         showOpenWithDialog: true,
-  //         displayName: 'Your PDF Report',
-  //         mimeType: 'application/pdf',
-  //       });
-  //       console.log('PDF opened successfully!');
-  //     } else {
-  //       throw new Error(
-  //         `Download failed with status code ${result.statusCode}`,
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Download/Open error:', error);
-  //     showToast({
-  //       type: 'error',
-  //       text1: 'Download Error',
-  //       text2: 'Failed to download or open the PDF file.',
-  //     });
-  //     // Alert.alert('Error', 'Failed to download or open the PDF file.');
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const downloadAndOpenPDF = async path => {
     // console.log('test');
     try {
@@ -249,7 +174,7 @@ export default function MotorRenewalCompact({navigation}) {
       }
 
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      const apiKey = API_KEY;
 
       // console.log('Starting download from:', pdfUrl);
 

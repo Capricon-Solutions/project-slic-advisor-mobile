@@ -28,6 +28,7 @@ import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
 import {styles} from './styles';
+import {API_KEY} from '@env';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
@@ -44,6 +45,7 @@ import SmallButton from '../../../components/SmallButton';
 import BPMotorRenewal from '../../../components/ECMotorRenewal';
 import ECMotorRenewal from '../../../components/ECMotorRenewal';
 import MonthYearPicker from '../../../components/MonthYearPicker';
+
 import {
   useGetmotorRenewalsListQuery,
   useGetprintMotorRenewalsListQuery,
@@ -173,7 +175,7 @@ export default function MotorRenewal({navigation}) {
   //     }
   //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
   //     console.log('Starting download from:', pdfUrl);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+
   //     const downloadOptions = {
   //       fromUrl: pdfUrl,
   //       toFile: localFilePath,
@@ -249,7 +251,7 @@ export default function MotorRenewal({navigation}) {
       }
 
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      const apiKey = API_KEY;
 
       // console.log('Starting download from:', pdfUrl);
 

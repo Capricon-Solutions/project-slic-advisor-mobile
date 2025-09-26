@@ -45,6 +45,7 @@ import {
   useGetCurrentMonthRankQuery,
   useGetRMSummeryQuery,
 } from '../../../redux/services/SalesMeterApiSlice';
+import {API_KEY} from '@env';
 
 const window = Dimensions.get('window');
 
@@ -126,7 +127,7 @@ export default function Dashboard({navigation}) {
     dispatch(SetdefaultImageUrl(null));
     if (!ProfilePic?.data?.urlPath) return;
     const url = `https://gisalesappapi.slicgeneral.com${urlPath}`;
-    const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
+    const apiKey = API_KEY; // Replace with your actual API key
 
     try {
       // const filePath = `${RNFS.DocumentDirectoryPath}/profile.png`;

@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-
+import {API_KEY} from '@env';
 import COLORS from '../theme/colors';
 import {Styles} from '../theme/Styles';
 import Fonts from '../theme/Fonts';
@@ -64,70 +64,6 @@ export default function EDocItems({item, navigation, onPress}) {
     return true; // iOS or other platforms
   };
 
-  // Download and open PDF
-  // const downloadAndOpenPDF = async path => {
-  //   try {
-  //     const hasPermission = await requestStoragePermission();
-  //     if (!hasPermission) {
-  //       // Alert.alert(
-  //       //   'Permission Denied',
-  //       //   'Storage permission is required to download and view the file.',
-  //       // );
-  //       showToast({
-  //         type: 'error',
-  //         text1: 'Permission Denied',
-  //         text2:
-  //           'Storage permission is required to download and view the file.',
-  //       });
-  //       return;
-  //     }
-  //     setIsDownloading(true);
-  //     setDownloadProgress(0);
-  //     const pdfUrl = `https://gisalesappapi.slicgeneral.com/api/print/${path}`;
-  //     const localFilePath = `${RNFS.DocumentDirectoryPath}/${path}`;
-  //     console.log('Starting download from:', pdfUrl);
-  //     const apiKey = '12345abcde67890fghijklmnoprstuvwxz'; // Replace with your actual API key
-  //     const downloadOptions = {
-  //       fromUrl: pdfUrl,
-  //       toFile: localFilePath,
-  //       headers: {
-  //         'x-api-key': apiKey,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       progress: res => {
-  //         const progress = res.bytesWritten / res.contentLength;
-  //         setDownloadProgress(progress);
-  //       },
-  //       progressDivider: 10,
-  //     };
-
-  //     const download = RNFS.downloadFile(downloadOptions);
-  //     console.log('Download started:', download);
-  //     const result = await download.promise;
-  //     // Linking.openURL(localFilePath).catch();
-  //     console.log('Download completed:', result.statusCode);
-
-  //     if (result.statusCode === 200) {
-  //       // ToastAndroid.show(`File saved to ${localFilePath}`, ToastAndroid.LONG);
-  //       await FileViewer.open(localFilePath, {showOpenWithDialog: true});
-  //       console.log('PDF opened successfully!');
-  //     } else {
-  //       throw new Error(
-  //         `Download failed with status code ${result.statusCode}`,
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Download/Open error:', error);
-  //     showToast({
-  //       type: 'error',
-  //       text1: 'Download Error',
-  //       text2: 'Failed to download or open the PDF file.',
-  //     });
-  //     // Alert.alert('Error', 'Failed to download or open the PDF file.');
-  //   } finally {
-  //     setIsDownloading(false);
-  //   }
-  // };
   const downloadAndOpenPDF = async path => {
     try {
       const hasPermission = await requestStoragePermission();
@@ -150,7 +86,7 @@ export default function EDocItems({item, navigation, onPress}) {
 
       // console.log('Starting download from:', pdfUrl);
 
-      const apiKey = '12345abcde67890fghijklmnoprstuvwxz';
+      const apiKey = API_KEY;
 
       const res = await ReactNativeBlobUtil.config({
         fileCache: true,
