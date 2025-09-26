@@ -14,6 +14,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import COLORS from '../theme/colors';
+
 import {Styles} from '../theme/Styles';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
@@ -285,14 +286,7 @@ export default function ELetterItems({item, navigation}) {
             )}
             {item?.path && (
               <TouchableOpacity
-                onPress={() =>
-                  sharePDF(
-                    item?.path,
-                    null,
-                    token,
-                    '12345abcde67890fghijklmnoprstuvwxz',
-                  )
-                }
+                onPress={() => sharePDF(item?.path, null, token, API_KEY)}
                 style={{
                   height: 30,
                   width: 30,

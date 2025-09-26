@@ -2,6 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigate} from '../../navigation/RootNavigation'; // adjust path as needed
 import {showToast} from '../../components/ToastMessage';
+import {API_KEY} from '@env';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://gisalesappapi.slicgeneral.com/api/',
@@ -13,7 +14,7 @@ const baseQuery = fetchBaseQuery({
       headers.set('Authorization', `Bearer ${token}`);
     }
 
-    headers.set('x-api-key', '12345abcde67890fghijklmnoprstuvwxz');
+    headers.set('x-api-key', API_KEY);
     return headers;
   },
 });
