@@ -65,7 +65,22 @@ export default function ClassSummary({navigation}) {
       : ClassSummery?.data?.cumulative;
   const formatCurrency = value => {
     const num = Number(value || 0);
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    // Split integer and decimal parts
+    const [integerPart, decimalPart] = num.toFixed(2).split('.');
+
+    // Insert commas in linear time
+    let intStr = '';
+    let count = 0;
+    for (let i = integerPart.length - 1; i >= 0; i--) {
+      intStr = integerPart[i] + intStr;
+      count++;
+      if (count % 3 === 0 && i !== 0) {
+        intStr = ',' + intStr;
+      }
+    }
+
+    return `${intStr}.${decimalPart}`;
   };
   const AmountFields = ({title, amount, icon}) => {
     return (
