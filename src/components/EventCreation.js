@@ -168,7 +168,7 @@ export default function EventCreation({
               </View>
               <TouchableOpacity
                 style={{flexDirection: 'row', position: 'relative'}}
-                onPress={() => showDatePicker(true)}>
+                onPress={() => showDatePicker()}>
                 <SquareTextBox
                   Label={'Date *'}
                   readOnly={true}
@@ -176,7 +176,7 @@ export default function EventCreation({
                   Title={'DD/MM/YYYY'}
                 />
                 <TouchableOpacity
-                  onPress={() => showDatePicker(true)}
+                  onPress={() => showDatePicker()}
                   style={[
                     styles.searchButton,
                     {

@@ -114,13 +114,16 @@ export default function ProductDetails({navigation, route}) {
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
 
-  _renderRevealedFooter = handlePress => {
-    return (
-      <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
-        Show less
-      </Text>
-    );
-  };
+  const renderTruncatedFooter = handlePress => (
+    <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
+      Show more
+    </Text>
+  );
+  const renderRevealedFooter = handlePress => (
+    <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
+      Show less
+    </Text>
+  );
   // console.log('brochureList', brochureList);
   return (
     <PaperProvider>
@@ -217,8 +220,8 @@ export default function ProductDetails({navigation, route}) {
           <View style={{marginBottom: 20}}>
             <ReadMore
               numberOfLines={5}
-              renderTruncatedFooter={this._renderTruncatedFooter}
-              renderRevealedFooter={this._renderRevealedFooter}
+              renderTruncatedFooter={renderTruncatedFooter}
+              renderRevealedFooter={renderRevealedFooter}
               onReady={this._handleTextReady}>
               <Text
                 style={{

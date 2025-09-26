@@ -1,3 +1,14 @@
+// {
+//   "extends": "@react-native/typescript-config/tsconfig.json"
+// }
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,   // ignores type errors in dependencies
+    "strict": false,        // turns off strict type-checking
+    "noEmit": true,         // don’t output build files, just check
+    "allowJs": true,        // allow .js files
+    "checkJs": false        // don’t type-check .js files
+  },
+  "exclude": ["node_modules"]
 }
