@@ -260,10 +260,25 @@ export default function LeadCreation({navigation, route}) {
     VehicleManuf: yom,
   };
 
-  const isValidEmail = email => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // const isValidEmail = email => {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  //   const hasCapitalLetter = /[A-Z]/.test(email);
+  //   return emailRegex.test(email) && !hasCapitalLetter;
+  // };
+
+  const isValidEmail = email => {
+    const MAX_EMAIL_LENGTH = 254; // RFC guideline
+    if (typeof email !== 'string' || email.length > MAX_EMAIL_LENGTH) {
+      return false;
+    }
+
+    // Safe linear-time regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
+    // Ensure no uppercase letters
     const hasCapitalLetter = /[A-Z]/.test(email);
+
     return emailRegex.test(email) && !hasCapitalLetter;
   };
 
