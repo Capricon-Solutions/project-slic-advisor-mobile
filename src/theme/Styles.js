@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import COLORS from './colors';
 import Fonts from './Fonts';
 
@@ -10,7 +10,6 @@ export const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    // paddingBottom: Platform.OS === 'ios' ? window.height*0.1 : 0
   },
   // Login
   customTheme: {
