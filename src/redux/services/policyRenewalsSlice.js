@@ -1,11 +1,10 @@
-import {baseApi} from './api';
+import { baseApi } from './api';
 
-// console.log('working');
 
 export const motorRenewalsSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getprintMotorRenewalsList: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         const finalUrl = `agent/getPrintMotorRenewal/${id}?fromDate=${fromDate}&toDate=${toDate}`;
 
         return finalUrl;
@@ -13,7 +12,7 @@ export const motorRenewalsSlice = baseApi.injectEndpoints({
     }),
 
     getmotorRenewalsList: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         const finalUrl = `agent/getMotorRenewals/${id}?fromDate=${fromDate}&toDate=${toDate}`;
 
         return finalUrl;
@@ -21,9 +20,8 @@ export const motorRenewalsSlice = baseApi.injectEndpoints({
     }),
 
     getnonMotorRenewalsList: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         const finalUrl = `agent/getNonMotorRenewals/${id}?fromDate=${fromDate}&toDate=${toDate}`;
-        // console.log('Final URL:', finalUrl);
 
         return finalUrl;
       },

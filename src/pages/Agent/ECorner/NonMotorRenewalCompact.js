@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,21 +11,21 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
-import {API_KEY} from '@env';
+import { API_KEY } from '@env';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
@@ -36,17 +36,17 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import {useGetnonMotorRenewalsListQuery} from '../../../redux/services/policyRenewalsSlice';
+import { useGetnonMotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
 import TableComponentPR from '../../../components/TableComponentPR';
-import {useSelector} from 'react-redux';
-import {showToast} from '../../../components/ToastMessage';
+import { useSelector } from 'react-redux';
+import { showToast } from '../../../components/ToastMessage';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
-export default function NonMotorRenewalCompact({navigation}) {
+export default function NonMotorRenewalCompact({ navigation }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
@@ -71,7 +71,6 @@ export default function NonMotorRenewalCompact({navigation}) {
     toDate: toDate,
   });
   const motorRenewalsResponse = motorRenewalsList?.data;
-  console.log('motorRenewalsResponse', motorRenewalsResponse);
   const tableHead = [
     'Due Date',
     'Customer Name',
@@ -91,15 +90,15 @@ export default function NonMotorRenewalCompact({navigation}) {
     // item?.ncbPerc?.toString() ?? '',
     item?.sumInsured != null
       ? Number(item.sumInsured).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : '0.00',
     item?.totalAmount != null
       ? Number(item.totalAmount).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : '0.00',
     item?.isPaid?.toString() ?? '',
   ]);
@@ -112,7 +111,6 @@ export default function NonMotorRenewalCompact({navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -138,7 +136,6 @@ export default function NonMotorRenewalCompact({navigation}) {
   };
 
   const downloadAndOpenPDF = async path => {
-    // console.log('test');
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
@@ -169,7 +166,6 @@ export default function NonMotorRenewalCompact({navigation}) {
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
       const apiKey = API_KEY;
 
-      // console.log('Starting download from:', pdfUrl);
 
       const res = await ReactNativeBlobUtil.config({
         fileCache: true,
@@ -179,13 +175,11 @@ export default function NonMotorRenewalCompact({navigation}) {
           'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         })
-        .progress({count: 10}, (received, total) => {
+        .progress({ count: 10 }, (received, total) => {
           const progress = received / total;
-          // console.log('progress', progress);
           setDownloadProgress(progress);
         });
 
-      // console.log('Download completed:', res.path());
 
       await FileViewer.open(res.path(), {
         showOpenWithDialog: true,
@@ -193,7 +187,6 @@ export default function NonMotorRenewalCompact({navigation}) {
         mimeType: 'application/pdf',
       });
 
-      // console.log('PDF opened successfully!');
     } catch (error) {
       console.error('Download/Open error:', error);
       showToast({
@@ -223,9 +216,9 @@ export default function NonMotorRenewalCompact({navigation}) {
       />
 
       <ScrollView>
-        <View style={{paddingHorizontal: 20}}>
+        <View style={{ paddingHorizontal: 20 }}>
           <View
-            style={[styles.searchWrap, {marginHorizontal: 0, marginBottom: 3}]}>
+            style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
             <TextInput
               style={styles.textInput}
               value={fromDate + ' - ' + toDate}

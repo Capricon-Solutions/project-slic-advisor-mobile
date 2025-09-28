@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import { Table, Row, Rows } from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 const window = Dimensions.get('window');
@@ -21,9 +21,7 @@ const RegionTableComponent = ({
   navigation,
   touchable,
 }) => {
-  const handleCellPress = cellData => {
-    // console.log('Clicked Cell:', cellData);
-  };
+
   return (
     <View>
       {tableData?.length > 0 ? (
@@ -66,7 +64,8 @@ const RegionTableComponent = ({
                     data={rowData.map((cellData, cellIndex) => (
                       <View
                         key={cellIndex}
-                        onPress={() => handleCellPress(cellData)}>
+
+                      >
                         {cellIndex == 0 && (
                           <TouchableOpacity
                             disabled={!touchable}
@@ -83,8 +82,8 @@ const RegionTableComponent = ({
                                     ? styles.leftAlignedText
                                     : styles.centerAlignedText, // Align first column left
                                   haveTotal &&
-                                    index === tableData.length - 1 &&
-                                    styles.boldText,
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
                                 ]}>
                                 {cellData}
                               </Text>
@@ -100,28 +99,28 @@ const RegionTableComponent = ({
                                   cellIndex === 0
                                     ? styles.leftAlignedText
                                     : cellIndex === 3
-                                    ? [
+                                      ? [
                                         styles.centerAlignedText,
                                         {
                                           color: COLORS.primaryGreen,
                                           fontFamily: Fonts.Roboto.SemiBold,
                                         },
                                       ]
-                                    : cellIndex === 5
-                                    ? [
-                                        styles.centerAlignedText,
-                                        {
-                                          color:
-                                            cellData < 0
-                                              ? COLORS.primaryRed
-                                              : COLORS.primaryGreen,
-                                          fontFamily: Fonts.Roboto.SemiBold,
-                                        },
-                                      ]
-                                    : styles.centerAlignedText, // Align first column left
+                                      : cellIndex === 5
+                                        ? [
+                                          styles.centerAlignedText,
+                                          {
+                                            color:
+                                              cellData < 0
+                                                ? COLORS.primaryRed
+                                                : COLORS.primaryGreen,
+                                            fontFamily: Fonts.Roboto.SemiBold,
+                                          },
+                                        ]
+                                        : styles.centerAlignedText, // Align first column left
                                   haveTotal &&
-                                    index === tableData.length - 1 &&
-                                    styles.boldText,
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
                                 ]}>
                                 {cellData}
                               </Text>
@@ -138,8 +137,8 @@ const RegionTableComponent = ({
                     textStyle={[
                       styles.text,
                       haveTotal &&
-                        index === tableData.length - 1 &&
-                        styles.boldText, // Apply boldText only if hasTotal is true
+                      index === tableData.length - 1 &&
+                      styles.boldText, // Apply boldText only if hasTotal is true
                     ]}
                   />
                 ))}
@@ -192,7 +191,7 @@ const RegionTableComponent = ({
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
+  container: { padding: 0 },
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -225,9 +224,9 @@ const styles = StyleSheet.create({
     color: COLORS.ashBlue,
     fontSize: 13,
   },
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
-  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
+  row: { height: 50 },
+  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
+  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

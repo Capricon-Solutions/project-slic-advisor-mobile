@@ -16,22 +16,22 @@ import Fonts from '../theme/Fonts'; // Update with your fonts file
 import avatar from '../images/avatar.png'; // Replace with the actual logo path
 
 import Contacts from '../icons/Contacts.png'; // Replace with the actual logo path
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import Button from './Button';
-import {useSetTargetMutation} from '../redux/services/SalesMeterApiSlice';
-import {showToast, ToastMessage} from './ToastMessage';
+import { useSetTargetMutation } from '../redux/services/SalesMeterApiSlice';
+import { showToast, ToastMessage } from './ToastMessage';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const window = Dimensions.get('window');
 
-export default function SetTargetModal({modalVisible, setModalVisible}) {
+export default function SetTargetModal({ modalVisible, setModalVisible }) {
   const backgroundOpacity = React.useRef(new Animated.Value(0)).current;
   const [inputValue, setInputValue] = React.useState(null);
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
-  const [setTarget, {data, isLoading, error}] = useSetTargetMutation();
+  const [setTarget, { data, isLoading, error }] = useSetTargetMutation();
 
   const currentDate = new Date();
   const yearMonth = `${currentDate.getFullYear()}/${String(
@@ -53,10 +53,9 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       return;
     }
     try {
-      const response = await setTarget({body}).unwrap(); // Unwraps the Promise to get response directly
+      const response = await setTarget({ body }).unwrap(); // Unwraps the Promise to get response directly
       setInputValue(null);
       setModalVisible(false);
-      // console.log('Response:', response.success); // Handle success response
       if (response.success === true) {
         showToast({
           type: 'success',
@@ -138,7 +137,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
       <TouchableOpacity
         onPress={() => hide()}
         activeOpacity={1}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         <Animated.View
           style={[
             styles.modalOverlay,
@@ -235,7 +234,7 @@ export default function SetTargetModal({modalVisible, setModalVisible}) {
                 }}
               />
 
-              <View style={{paddingHorizontal: window.width * 0.05}}>
+              <View style={{ paddingHorizontal: window.width * 0.05 }}>
                 <Button
                   Title={'Set Target'}
                   onPress={() => {

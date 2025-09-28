@@ -13,7 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Octicons from 'react-native-vector-icons/Octicons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import COLORS from '../theme/colors';
-import {Styles} from '../theme/Styles';
+import { Styles } from '../theme/Styles';
 import Fonts from '../theme/Fonts';
 const window = Dimensions.get('window');
 
@@ -65,14 +65,14 @@ export default function ReportBottomModal({
     }
   }
 
-  const PolicyItem = ({title, icon, subButtons, onPress, expandable}) => {
+  const PolicyItem = ({ title, icon, subButtons, onPress, expandable }) => {
     const [visible, setVisible] = React.useState(false);
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log('test', onPress.Value);
+
           if (onPress === 'expand') {
-            console.log(onPress);
+
             setVisible(!visible);
           } else if (typeof onPress === 'function') {
             onPress();
@@ -91,14 +91,14 @@ export default function ReportBottomModal({
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <View style={{flex: 0.15, alignItems: 'center'}}>
+          <View style={{ flex: 0.15, alignItems: 'center' }}>
             <Image
               source={icon}
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
             />
           </View>
 
-          <View style={{flex: 0.7}}>
+          <View style={{ flex: 0.7 }}>
             <Text
               style={{
                 fontSize: window.width * 0.038,
@@ -108,11 +108,11 @@ export default function ReportBottomModal({
               {title}
             </Text>
           </View>
-          <View style={{flex: 0.15}}>
+          <View style={{ flex: 0.15 }}>
             {expandable && (
               <TouchableOpacity
                 onPress={() => setVisible(!visible)}
-                style={{alignItems: 'center'}}>
+                style={{ alignItems: 'center' }}>
                 <Octicons
                   name={visible == true ? 'chevron-up' : 'chevron-down'}
                   color={COLORS.black}
@@ -189,7 +189,7 @@ export default function ReportBottomModal({
           navigation.goBack();
         }}
         activeOpacity={1}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         <Animated.View
           onPress={() => setModalVisible(false)}
           style={[
@@ -209,7 +209,7 @@ export default function ReportBottomModal({
                 alignItems: 'center',
                 marginBottom: 15,
               }}>
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={styles.modalTitle}>{Name}</Text>
               </View>
               <TouchableOpacity
@@ -268,12 +268,12 @@ const styles = StyleSheet.create({
 
     elevation: 25,
     borderWidth: 1,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3,  // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     borderColor: COLORS.lightBorder,
   },
   modalTitle: {

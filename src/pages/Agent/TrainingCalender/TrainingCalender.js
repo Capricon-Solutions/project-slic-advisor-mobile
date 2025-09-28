@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,20 +9,20 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import {
   Calendar,
   CalendarList,
@@ -34,14 +34,14 @@ import NotAttending from '../../../components/NotAttending';
 import Button from '../../../components/Button';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
 import DropdownFilled from '../../../components/DropdownFilled';
-import {Getpath} from '../../../redux/services/NavControllerSlice';
-import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   useApproveTrainingMutation,
   useGetTrainingListQuery,
 } from '../../../redux/services/trainingSlice';
-import {showToast} from '../../../components/ToastMessage';
+import { showToast } from '../../../components/ToastMessage';
 
 const window = Dimensions.get('window');
 
@@ -89,7 +89,7 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-export default function TrainingCalender({navigation}) {
+export default function TrainingCalender({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -118,7 +118,6 @@ export default function TrainingCalender({navigation}) {
     type,
     userCode: usertype == 2 ? personalCode : userCode,
   });
-  // console.log('TrainingList testtt', TrainingList);
 
   useFocusEffect(
     useCallback(() => {
@@ -131,7 +130,7 @@ export default function TrainingCalender({navigation}) {
       setMarkedDates(prevMarkedDates => {
         const updated = {};
         Object.keys(prevMarkedDates || {}).forEach(date => {
-          const {selected, selectedColor, ...rest} = prevMarkedDates[date];
+          const { selected, selectedColor, ...rest } = prevMarkedDates[date];
           updated[date] = rest;
         });
         return updated;
@@ -142,7 +141,7 @@ export default function TrainingCalender({navigation}) {
     }, []),
   );
 
-  const [approveTraining, {isLoading: isApproving, error: approveError}] =
+  const [approveTraining, { isLoading: isApproving, error: approveError }] =
     useApproveTrainingMutation();
 
   useEffect(() => {
@@ -151,7 +150,7 @@ export default function TrainingCalender({navigation}) {
       const dates = {};
       TrainingList.data.forEach(item => {
         const dateStr = item.trainDate.split('T')[0]; // Get just the date part
-        dates[dateStr] = {marked: true, dotColor: COLORS.primary};
+        dates[dateStr] = { marked: true, dotColor: COLORS.primary };
       });
       setMarkedDates(dates);
     } else if (TrainingList?.data == null) {
@@ -161,7 +160,6 @@ export default function TrainingCalender({navigation}) {
   }, [TrainingList?.data]);
 
   const handleDayPress = day => {
-    // console.log('Selected day:', day);
     const dateStr = day.dateString;
     // const dateStr = '2025-09-05';
     setSelectedDate(dateStr);
@@ -178,7 +176,7 @@ export default function TrainingCalender({navigation}) {
     }
 
     // First, clear any existing selections
-    const updatedMarkedDates = {...markedDates};
+    const updatedMarkedDates = { ...markedDates };
 
     // Remove selection from all dates
     Object.keys(updatedMarkedDates).forEach(date => {
@@ -224,15 +222,15 @@ export default function TrainingCalender({navigation}) {
         setModalVisible={setModalVisible}
         selectedId={selectedId}
       />
-      <View style={[Styles.container, {overflow: 'scroll'}]}>
+      <View style={[Styles.container, { overflow: 'scroll' }]}>
         <HeaderBackground />
         <Header Title="Training Calender" onPress={() => navigation.goBack()} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
           style={{}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 14,
@@ -241,7 +239,7 @@ export default function TrainingCalender({navigation}) {
               }}>
               Select User Type
             </Text>
-            <View style={{width: '60%', marginLeft: 20}}>
+            <View style={{ width: '60%', marginLeft: 20 }}>
               <DropdownFilled
                 Color={COLORS.white}
                 BorderColor={COLORS.textColor}
@@ -252,12 +250,11 @@ export default function TrainingCalender({navigation}) {
                 placeholder="Select Training Type"
                 onSelect={value => {
                   value ? setType(value) : setType('A');
-                  // console.log('Selected Type:', value);
                 }}
                 dropdownData={[
-                  {label: 'All', value: 'A'},
-                  {label: 'Motor', value: 'M'},
-                  {label: 'Non-Motor', value: 'G'},
+                  { label: 'All', value: 'A' },
+                  { label: 'Motor', value: 'M' },
+                  { label: 'Non-Motor', value: 'G' },
                 ]}
               />
             </View>
@@ -394,7 +391,7 @@ export default function TrainingCalender({navigation}) {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                    <View style={{flex: 0.6}}>
+                    <View style={{ flex: 0.6 }}>
                       <Text
                         style={{
                           color: COLORS.textColor,
@@ -497,18 +494,17 @@ export default function TrainingCalender({navigation}) {
                             training?.statusCode == 0
                               ? false
                               : // : training?.statusCode == 3
-                                // ? true
-                                true
+                              // ? true
+                              true
                           }
                           disabledColor={
                             training?.statusCode == 0
                               ? false
                               : // : training?.statusCode == 3
-                                // ? true
-                                true
+                              // ? true
+                              true
                           }
                           onPress={() => {
-                            // console.log('training.trainId', training);
 
                             approveTraining({
                               id: training.trainId,
@@ -516,10 +512,7 @@ export default function TrainingCalender({navigation}) {
                             })
                               .unwrap()
                               .then(response => {
-                                console.log(
-                                  'response.success',
-                                  response.success,
-                                );
+
                                 if (response.success) {
                                   // alert('✅ Training approved successfully!');
                                   showToast({
@@ -529,16 +522,12 @@ export default function TrainingCalender({navigation}) {
                                   });
                                   setSelectedTrainings(prev =>
                                     prev.map((t, i) =>
-                                      i === index ? {...t, statusCode: 1} : t,
+                                      i === index ? { ...t, statusCode: 1 } : t,
                                     ),
                                   );
                                   // Optionally remove the approved training from list
-                                  // setSelectedTrainings(prev => prev.filter((_, i) => i !== index));
                                 } else {
-                                  // alert(
-                                  //   '❌ Training approval failed: ' +
-                                  //     response.message,
-                                  // );
+
                                   showToast({
                                     type: 'error',
                                     text1: 'Failed',
@@ -578,7 +567,7 @@ export default function TrainingCalender({navigation}) {
                       </TouchableOpacity>
 
                       <TouchableOpacity
-                        style={{marginTop: 5}}
+                        style={{ marginTop: 5 }}
                         onPress={() => {
                           setExpanded(!expanded);
                         }}>

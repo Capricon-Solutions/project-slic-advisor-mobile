@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,46 +9,45 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import ProductListItem from '../../../components/ProductListItem';
 import Motorplus from '../../../icons/Motorplus.png'; // Replace with the actual logo path
 import MotorLady from '../../../icons/MotorLady.png'; // Replace with the actual logo path
 import OtherListItem from '../../../components/OtherListItem';
-import {useGetProductListQuery} from '../../../redux/services/productSlice';
+import { useGetProductListQuery } from '../../../redux/services/productSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 
 const window = Dimensions.get('window');
 
-export default function ProductPortfolio({navigation}) {
+export default function ProductPortfolio({ navigation }) {
   const [SelectedType, setSelectedType] = useState(1);
-  const {data: products, isLoading, error} = useGetProductListQuery();
+  const { data: products, isLoading, error } = useGetProductListQuery();
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(productList);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <ProductListItem
       item={item}
       onPress={() => {
-        // console.log('Navigating with item:', item); // Debugging
-        navigation.navigate('ProductDetails', {item});
+        navigation.navigate('ProductDetails', { item });
       }}
     />
   );
 
-  const renderDepartmentItem = ({item}) => (
+  const renderDepartmentItem = ({ item }) => (
     <OtherListItem
       item={item}
-      onPress={() => navigation.navigate('ProductDetails', {item})}
+      onPress={() => navigation.navigate('ProductDetails', { item })}
     />
   );
 
@@ -87,7 +86,6 @@ export default function ProductPortfolio({navigation}) {
     }
   };
   const handleSearch2 = () => {
-    // console.log('searchText', searchText);
 
     if (searchText === '') {
       setFilteredData(products?.data || []); // Reset to show all products
@@ -114,13 +112,12 @@ export default function ProductPortfolio({navigation}) {
   };
   const otherList = filteredData?.filter(item => item.documentUrl);
   const productList = filteredData?.filter(item => !item.documentUrl);
-  // console.log('res', products);
   return (
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Product Portfolio" onPress={() => navigation.goBack()} />
-      <View style={{paddingHorizontal: 20}}>
-        <View style={[styles.mainWrap, {marginTop: 10}]}>
+      <View style={{ paddingHorizontal: 20 }}>
+        <View style={[styles.mainWrap, { marginTop: 10 }]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -160,7 +157,7 @@ export default function ProductPortfolio({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.searchWrap, {marginVertical: 12}]}>
+        <View style={[styles.searchWrap, { marginVertical: 12 }]}>
           <TextInput
             style={styles.textInput}
             onChangeText={v => {
@@ -179,7 +176,7 @@ export default function ProductPortfolio({navigation}) {
         </View>
 
         {isLoading == true ? (
-          <View style={{height: window.height * 0.6}}>
+          <View style={{ height: window.height * 0.6 }}>
             <LoadingScreen />
           </View>
         ) : (
@@ -194,7 +191,7 @@ export default function ProductPortfolio({navigation}) {
                   paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderItem}
-                // keyExtractor={item => item.id.toString()}
+              // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <FlatList
@@ -206,7 +203,7 @@ export default function ProductPortfolio({navigation}) {
                   paddingBottom: window.height * 0.5,
                 }}
                 renderItem={renderDepartmentItem}
-                // keyExtractor={item => item.id.toString()}
+              // keyExtractor={item => item.id.toString()}
               />
             )}
           </View>

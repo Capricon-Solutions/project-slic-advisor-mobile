@@ -64,7 +64,6 @@ export default function TeamMemberGrid({ navigation, route }) {
   const branchCode = useSelector(
     state => state.Profile.profile.user.branchCode,
   );
-  // console.log('branchCode', branchCode);
   const [value, setValue] = useState(1);
   const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState('ALL');
@@ -156,7 +155,6 @@ export default function TeamMemberGrid({ navigation, route }) {
     }
     setIsLandscape(!isLandscape);
   };
-  console.log("test")
   const agentList =
     TeamLeaderReport && TeamLeaderReport.data
       ? TeamLeaderReport.data.map(item => ({

@@ -7,7 +7,7 @@ import {
   Text,
   Dimensions,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
+import { Table, Row, Rows } from 'react-native-table-component';
 import COLORS from '../theme/colors';
 import Fonts from '../theme/Fonts';
 import TableComponent from './TableComponent';
@@ -22,9 +22,7 @@ const TableComponentDoc = ({
   navigation,
   touchable,
 }) => {
-  const handleCellPress = cellData => {
-    // console.log('Clicked Cell:', cellData);
-  };
+
   return (
     <View>
       {tableData?.length > 0 ? (
@@ -66,9 +64,10 @@ const TableComponentDoc = ({
                     key={index}
                     data={rowData.map((cellData, cellIndex) => (
                       <View
-                        style={{flex: 1, justifyContent: 'center'}}
+                        style={{ flex: 1, justifyContent: 'center' }}
                         key={cellIndex}
-                        onPress={() => handleCellPress(cellData)}>
+
+                      >
                         {cellIndex == 0 && (
                           <TouchableOpacity
                             disabled={!touchable}
@@ -77,8 +76,8 @@ const TableComponentDoc = ({
                                 title: cellData,
                               })
                             }
-                            style={{flex: 1}}>
-                            <View style={{flex: 1, justifyContent: 'center'}}>
+                            style={{ flex: 1 }}>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
                               <Text
                                 numberOfLines={1}
                                 style={[
@@ -87,8 +86,8 @@ const TableComponentDoc = ({
                                     ? styles.leftAlignedText
                                     : styles.centerAlignedText, // Align first column left
                                   haveTotal &&
-                                    index === tableData.length - 1 &&
-                                    styles.boldText,
+                                  index === tableData.length - 1 &&
+                                  styles.boldText,
                                 ]}>
                                 {cellData}
                               </Text>
@@ -111,10 +110,10 @@ const TableComponentDoc = ({
                                     ? cellData === 'Document Received'
                                       ? COLORS.lightGreen
                                       : cellData === 'Document Pending'
-                                      ? COLORS.backcard
-                                      : cellData === 'Document Rejected'
-                                      ? COLORS.tableRed
-                                      : 'transparent'
+                                        ? COLORS.backcard
+                                        : cellData === 'Document Rejected'
+                                          ? COLORS.tableRed
+                                          : 'transparent'
                                     : 'transparent',
                               }}>
                               <Text
@@ -127,10 +126,10 @@ const TableComponentDoc = ({
                                         ? cellData === 'Document Received'
                                           ? COLORS.primaryGreen
                                           : cellData === 'Document Pending'
-                                          ? COLORS.tableOrange
-                                          : cellData === 'Document Rejected'
-                                          ? COLORS.primaryRed
-                                          : 'transparent'
+                                            ? COLORS.tableOrange
+                                            : cellData === 'Document Rejected'
+                                              ? COLORS.primaryRed
+                                              : 'transparent'
                                         : 'transparent',
                                   },
                                 ]}>
@@ -149,8 +148,8 @@ const TableComponentDoc = ({
                     textStyle={[
                       styles.text,
                       haveTotal &&
-                        index === tableData.length - 1 &&
-                        styles.boldText, // Apply boldText only if hasTotal is true
+                      index === tableData.length - 1 &&
+                      styles.boldText, // Apply boldText only if hasTotal is true
                     ]}
                   />
                 ))}
@@ -203,7 +202,7 @@ const TableComponentDoc = ({
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 0},
+  container: { padding: 0 },
   tableWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -238,9 +237,9 @@ const styles = StyleSheet.create({
     color: COLORS.ashBlue,
     fontSize: 13,
   },
-  row: {height: 50},
-  rowGray: {backgroundColor: '#F8F9FA'}, // Light gray row
-  rowWhite: {backgroundColor: '#FFFFFF'}, // White row
+  row: { height: 50 },
+  rowGray: { backgroundColor: '#F8F9FA' }, // Light gray row
+  rowWhite: { backgroundColor: '#FFFFFF' }, // White row
   boldText: {
     fontWeight: 'bold',
     color: COLORS.darkText,

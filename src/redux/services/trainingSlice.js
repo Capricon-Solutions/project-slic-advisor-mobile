@@ -1,16 +1,15 @@
-import {baseApi} from './api';
+import { baseApi } from './api';
 
 export const trainingSlice = baseApi.injectEndpoints({
   endpoints: builder => ({
     getTrainingList: builder.query({
-      query: ({type, userCode}) => {
-        // console.log('Training Type:', type); // Log the type parameter
+      query: ({ type, userCode }) => {
         return `training/getTrainingList/${userCode}?trainType=${type}`;
       },
       providesTags: ['Trainings'],
     }),
     getTrainingListByDate: builder.query({
-      query: ({fromDate, toDate, userCode}) => {
+      query: ({ fromDate, toDate, userCode }) => {
         return `training/getAgentTrainingsByDate/${userCode}?fromDate=${fromDate}&toDate=${toDate}`;
       },
       providesTags: ['Trainings'],
@@ -18,7 +17,7 @@ export const trainingSlice = baseApi.injectEndpoints({
 
     //approveTraining
     approveTraining: builder.mutation({
-      query: ({id, userCode}) => {
+      query: ({ id, userCode }) => {
         const finalUrl = `training/approveTrainingByAgent/${userCode}?trainId=${id}`;
 
         return {

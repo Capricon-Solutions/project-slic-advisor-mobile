@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,45 +9,44 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
 } from '../../../redux/services/contactSlice';
-import {useDispatch} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
-import {Getpath} from '../../../redux/services/NavControllerSlice';
+import { useDispatch } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { Getpath } from '../../../redux/services/NavControllerSlice';
 const window = Dimensions.get('window');
 
-export default function Contacts({navigation}) {
-  const {data: branches, isLoading, error} = useGetBranchesQuery();
-  const {data: departments, isDipLoading, diperror} = useGetDepartmentQuery();
+export default function Contacts({ navigation }) {
+  const { data: branches, isLoading, error } = useGetBranchesQuery();
+  const { data: departments, isDipLoading, diperror } = useGetDepartmentQuery();
   const [SelectedType, setSelectedType] = useState(1);
   const [search, setSearch] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBranches, setFilteredBranches] = useState([]);
   const [filteredDepartments, setFilteredDepartments] = useState([]);
 
-  const renderItem = ({item}) => <ContactListItem item={item} />;
+  const renderItem = ({ item }) => <ContactListItem item={item} />;
 
-  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
+  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
   const dispatch = useDispatch();
 
   useFocusEffect(
     useCallback(() => {
       dispatch(Getpath(0));
       setSearchQuery('');
-      // console.log('test conact');
     }, []),
   );
 
@@ -73,7 +72,6 @@ export default function Contacts({navigation}) {
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase()); // fallback alphabetical
         });
 
-      // console.log('filteredBranches', filtered);
       setFilteredBranches(filtered);
     }
   }, [branches, searchQuery, search]);
@@ -102,7 +100,6 @@ export default function Contacts({navigation}) {
             .localeCompare(b.contactName.toLowerCase()); // fallback alphabetical sort
         });
 
-      // console.log('filteredDepartments', filtered);
       setFilteredDepartments(filtered);
     }
   }, [departments, searchQuery, search]);
@@ -111,8 +108,8 @@ export default function Contacts({navigation}) {
     <View style={Styles.container}>
       <HeaderBackground />
       <Header Title="Contacts" onPress={() => navigation.goBack()} />
-      <View style={{paddingHorizontal: 20}}>
-        <View style={[styles.mainWrap, {marginTop: 5}]}>
+      <View style={{ paddingHorizontal: 20 }}>
+        <View style={[styles.mainWrap, { marginTop: 5 }]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -152,7 +149,7 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
 
-        <View style={[styles.searchWrap, {marginVertical: 12}]}>
+        <View style={[styles.searchWrap, { marginVertical: 12 }]}>
           <TextInput
             style={styles.textInput}
             placeholder="Quick Search"
@@ -166,7 +163,7 @@ export default function Contacts({navigation}) {
           </TouchableOpacity>
         </View>
         {isLoading == true ? (
-          <View style={{height: window.height * 0.6}}>
+          <View style={{ height: window.height * 0.6 }}>
             <LoadingScreen />
           </View>
         ) : (
@@ -182,7 +179,7 @@ export default function Contacts({navigation}) {
                   paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderItem}
-                // keyExtractor={item => item?.id?.toString()}
+              // keyExtractor={item => item?.id?.toString()}
               />
             ) : (
               <FlatList
@@ -194,7 +191,7 @@ export default function Contacts({navigation}) {
                   paddingBottom: window.height * 0.6,
                 }}
                 renderItem={renderDepartmentItem}
-                // keyExtractor={item => item.id.toString()}
+              // keyExtractor={item => item.id.toString()}
               />
             )}
           </View>

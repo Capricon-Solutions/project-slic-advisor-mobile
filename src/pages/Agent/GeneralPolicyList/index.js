@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,10 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import PolicyFilter from '../../../components/PolicyFilter';
@@ -25,14 +25,14 @@ import {
   useSearchPoliciesMutation,
 } from '../../../redux/services/policyListSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
-import {PaperProvider} from 'react-native-paper';
+import { PaperProvider } from 'react-native-paper';
 import SearchParams from '../../../redux/SearchParams';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
 
-export default function GeneralPolicyList({navigation}) {
+export default function GeneralPolicyList({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -50,11 +50,10 @@ export default function GeneralPolicyList({navigation}) {
     BusiRegNo: '',
   });
   const handlePolicyValuesChange = newValues => {
-    // console.log('newValues', newValues);
     setPolicyValues(newValues);
   };
 
-  const [PolicyListResponse, {data: PolicyListData, isLoading, error}] =
+  const [PolicyListResponse, { data: PolicyListData, isLoading, error }] =
     useSearchPoliciesMutation();
 
   const searchData = {
@@ -87,13 +86,11 @@ export default function GeneralPolicyList({navigation}) {
   };
 
   useEffect(() => {
-    // console.log('searchType', searchType);
 
     const selectedSearchParam = {
       ...(searchParamMap[searchType] || SearchParams.AllSearch),
       AgentCode: usertype == 2 ? personalCode : userCode, // override AgentCode
     };
-    // console.log('selectedSearchParam', selectedSearchParam);
     PolicyListResponse(selectedSearchParam)
       .then(response => {
         // console.log('Response:', response);
@@ -103,10 +100,10 @@ export default function GeneralPolicyList({navigation}) {
       });
   }, [searchType]); // include searchData if it's used in 'Filter'
 
-  useEffect(() => {}, [searchType, PolicyListData]);
+  useEffect(() => { }, [searchType, PolicyListData]);
 
   const PolicyList = error ? [] : PolicyListData?.data;
-  const renderPolicyItem = ({item}) => (
+  const renderPolicyItem = ({ item }) => (
     <PolicyItem item={item} navigation={navigation} />
   );
   const menuItems = [
@@ -149,7 +146,7 @@ export default function GeneralPolicyList({navigation}) {
 
   return (
     <PaperProvider>
-      <View style={[Styles.container, {paddingHorizontal: 0}]}>
+      <View style={[Styles.container, { paddingHorizontal: 0 }]}>
         <HeaderBackground />
 
         <View>
@@ -200,7 +197,7 @@ export default function GeneralPolicyList({navigation}) {
                   renderItem={renderPolicyItem}
                   maxToRenderPerBatch={50}
                   initialNumToRender={20}
-                  // keyExtractor={item => item.id.toString()}
+                // keyExtractor={item => item.id.toString()}
                 />
               ) : (
                 <View
@@ -210,7 +207,7 @@ export default function GeneralPolicyList({navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text style={{color: COLORS.grayText}}>
+                  <Text style={{ color: COLORS.grayText }}>
                     Policies not available yet.!
                   </Text>
                 </View>

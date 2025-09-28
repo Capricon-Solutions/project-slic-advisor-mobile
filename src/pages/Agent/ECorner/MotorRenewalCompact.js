@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,21 +11,21 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Feather from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
-import {API_KEY} from '@env';
+import { API_KEY } from '@env';
 import {
   useGetBranchesQuery,
   useGetDepartmentQuery,
@@ -38,14 +38,14 @@ import ELetterItems from '../../../components/ELetterItems';
 import TableComponent from '../../../components/TableComponent';
 import TableComponentEC from '../../../components/TableComponentEC';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import {useGetmotorRenewalsListQuery} from '../../../redux/services/policyRenewalsSlice';
+import { useGetmotorRenewalsListQuery } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
-import {showToast} from '../../../components/ToastMessage';
+import { useSelector } from 'react-redux';
+import { showToast } from '../../../components/ToastMessage';
 import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
-export default function MotorRenewalCompact({navigation}) {
+export default function MotorRenewalCompact({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -71,12 +71,7 @@ export default function MotorRenewalCompact({navigation}) {
     toDate: toDate,
   });
   const motorRenewalsResponse = motorRenewalsList?.data?.motorRenewals;
-  useEffect(() => {
-    // console.log('test', motorRenewalsList);
-  }, [motorRenewalsList]);
-  useEffect(() => {
-    // console.log('test isFetching');
-  }, [isFetching]);
+
 
   const tableHead = [
     'Due Date',
@@ -97,15 +92,15 @@ export default function MotorRenewalCompact({navigation}) {
     item?.ncbPerc?.toString() ?? '',
     item?.sumInsured != null
       ? Number(item.sumInsured).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : '0.00',
     item?.premiumAmount != null
       ? Number(item.premiumAmount).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : '0.00',
     item?.policyStatus?.toString() ?? '',
   ]);
@@ -117,7 +112,6 @@ export default function MotorRenewalCompact({navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      // console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -143,7 +137,6 @@ export default function MotorRenewalCompact({navigation}) {
   };
 
   const downloadAndOpenPDF = async path => {
-    // console.log('test');
     try {
       const hasPermission = await requestStoragePermission();
       if (!hasPermission) {
@@ -176,7 +169,6 @@ export default function MotorRenewalCompact({navigation}) {
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
       const apiKey = API_KEY;
 
-      // console.log('Starting download from:', pdfUrl);
 
       const res = await ReactNativeBlobUtil.config({
         fileCache: true,
@@ -186,13 +178,11 @@ export default function MotorRenewalCompact({navigation}) {
           'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         })
-        .progress({count: 10}, (received, total) => {
+        .progress({ count: 10 }, (received, total) => {
           const progress = received / total;
-          // console.log('progress', progress);
           setDownloadProgress(progress);
         });
 
-      // console.log('Download completed:', res.path());
 
       await FileViewer.open(res.path(), {
         showOpenWithDialog: true,
@@ -200,7 +190,6 @@ export default function MotorRenewalCompact({navigation}) {
         mimeType: 'application/pdf',
       });
 
-      // console.log('PDF opened successfully!');
     } catch (error) {
       console.error('Download/Open error:', error);
       showToast({
@@ -229,9 +218,9 @@ export default function MotorRenewalCompact({navigation}) {
         onPDF={() => downloadAndOpenPDF()}
       />
       <ScrollView>
-        <View style={{paddingHorizontal: 20}}>
+        <View style={{ paddingHorizontal: 20 }}>
           <View
-            style={[styles.searchWrap, {marginHorizontal: 0, marginBottom: 3}]}>
+            style={[styles.searchWrap, { marginHorizontal: 0, marginBottom: 3 }]}>
             <TextInput
               style={styles.textInput}
               value={fromDate + ' - ' + toDate}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -10,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {TextInput, Checkbox} from 'react-native-paper';
-import Svg, {Path} from 'react-native-svg';
+import { TextInput, Checkbox } from 'react-native-paper';
+import Svg, { Path } from 'react-native-svg';
 import Logo from '../../icons/Logo.png'; // Replace with the actual logo path
 import COLORS from '../../theme/colors';
 import SquareTextBox from '../../components/SquareTextBox';
@@ -19,15 +19,15 @@ import Button from '../../components/Button';
 import Fonts from '../../theme/Fonts';
 import HeaderBackground from '../../components/HeaderBackground';
 import AboutModal from '../../components/AboutModal';
-import {styles} from './styles';
+import { styles } from './styles';
 import {
   useChangePasswordMutation,
   useGetHelpQuery,
   useUserLoginMutation,
 } from '../../redux/services/loginSlice';
-import {showToast} from '../../components/ToastMessage';
+import { showToast } from '../../components/ToastMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   GetprofileResponse,
   SetPersonalCode,
@@ -35,13 +35,13 @@ import {
   Settoken,
   SetUserCode,
 } from '../../redux/services/ProfileSlice';
-import {CommonActions} from '@react-navigation/native';
-import {GetuserType, SetagentCode} from '../../redux/services/userTypeSlice';
+import { CommonActions } from '@react-navigation/native';
+import { GetuserType, SetagentCode } from '../../redux/services/userTypeSlice';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 const window = Dimensions.get('window');
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
@@ -50,7 +50,7 @@ const LoginScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const [errorShow, setErrorShow] = useState(false);
-  const {data: help, isLoading, error} = useGetHelpQuery();
+  const { data: help, isLoading, error } = useGetHelpQuery();
 
   useEffect(() => {
     const loadUsername = async () => {
@@ -58,7 +58,6 @@ const LoginScreen = ({navigation}) => {
         const storedUsername = await AsyncStorage.getItem('username');
         const storedPassword = await AsyncStorage.getItem('password');
 
-        // console.log('username', storedUsername);
         if (storedUsername) {
           setUsername(storedUsername);
           setPassword(storedPassword);
@@ -74,14 +73,14 @@ const LoginScreen = ({navigation}) => {
     loadUsername();
   }, []);
 
-  const [userLogin, {isLoading: loginLoading, error: loginError, data}] =
+  const [userLogin, { isLoading: loginLoading, error: loginError, data }] =
     useUserLoginMutation();
 
   function navigator() {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{name: 'NavigateToAppStack'}],
+        routes: [{ name: 'NavigateToAppStack' }],
         // The name of the Stack.Screen
       }),
     );
@@ -116,11 +115,9 @@ const LoginScreen = ({navigation}) => {
       Username: username,
       Password: password,
     };
-    // console.log('Request body:', body);
 
     try {
       const response = await userLogin(body).unwrap();
-      // console.log('Login successful! Response:', response?.user);
       dispatch(Setprofile(response));
       savePassword(response);
     } catch (err) {
@@ -137,10 +134,8 @@ const LoginScreen = ({navigation}) => {
   async function savePassword(response) {
     try {
       if (!rememberMe) {
-        // console.log("save password"),
         await AsyncStorage.removeItem('username');
         await AsyncStorage.removeItem('password');
-        // navigation.navigate('TypeTest');
 
         userManagement(response);
       } else {
@@ -182,7 +177,7 @@ const LoginScreen = ({navigation}) => {
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
       {/* <Text>{username}</Text> */}
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         {/* <SquareTextBox
           Title={'Username'}
           value={username}
@@ -205,7 +200,7 @@ const LoginScreen = ({navigation}) => {
         />
       </View>
 
-      <View style={{marginVertical: 5, width: '100%'}}>
+      <View style={{ marginVertical: 5, width: '100%' }}>
         <SquareTextBox
           Title={'Enter Password '}
           Secure={true}
@@ -226,7 +221,7 @@ const LoginScreen = ({navigation}) => {
             setRememberMe(!rememberMe);
           }}
           style={styles.rememberMe}>
-          <View style={{position: 'relative'}}>
+          <View style={{ position: 'relative' }}>
             {Platform.OS === 'ios' && (
               <View
                 style={{
@@ -238,7 +233,7 @@ const LoginScreen = ({navigation}) => {
                   position: 'absolute',
                   alignSelf: 'center',
                   top: '50%',
-                  transform: [{translateY: -10.5}],
+                  transform: [{ translateY: -10.5 }],
                 }}></View>
             )}
 
@@ -260,7 +255,7 @@ const LoginScreen = ({navigation}) => {
       </View>
 
       {/* Login Button */}
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{ width: '100%', alignItems: 'center' }}>
         <Button
           isLoading={loginLoading}
           onPress={() => handleSubmit()}
