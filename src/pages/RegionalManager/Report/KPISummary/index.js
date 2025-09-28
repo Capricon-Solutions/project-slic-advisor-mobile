@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput,
   Dimensions,
   ScrollView,
 } from 'react-native';
@@ -19,10 +17,7 @@ import * as Progress from 'react-native-progress';
 import {FlatList} from 'react-native';
 import {styles} from './styles';
 import LoadingScreen from '../../../../components/LoadingScreen';
-import {
-  useKpiSummeryQuery,
-  useRegionalSummeryQuery,
-} from '../../../../redux/services/SummeryApiSlice';
+import {useKpiSummeryQuery} from '../../../../redux/services/SummeryApiSlice';
 import LoaderKit from 'react-native-loader-kit';
 import {useSelector} from 'react-redux';
 import moment from 'moment';

@@ -2,14 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput,
   Dimensions,
-  ScrollView,
   StatusBar,
-  Platform,
 } from 'react-native';
 import {Styles} from '../../../theme/Styles';
 import {FlatList} from 'react-native';
@@ -20,27 +16,16 @@ import Fonts from '../../../theme/Fonts';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import Orientation from 'react-native-orientation-locker';
-import Orientation, {
-  PORTRAIT,
-  LANDSCAPE_LEFT,
-  LANDSCAPE_RIGHT,
-} from 'react-native-orientation-locker';
+import Orientation from 'react-native-orientation-locker';
 import Header from '../../../components/Header';
-import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import LandscapeHeader from '../../../components/LandscapeHeader';
 import Building from './../../../icons/Building.png';
 import Rotate from './../../../icons/Rotate.png';
 import HorizontalReportTable from '../../../components/HorizontalReportTable';
-import {
-  useRmReportQuery,
-  useTeamLeaderReportQuery,
-  useTeamMemberReportQuery,
-} from '../../../redux/services/ReportApiSlice';
+import {useTeamMemberReportQuery} from '../../../redux/services/ReportApiSlice';
 import DropdownComponent from '../../../components/DropdownComponent';
 import LoaderKit from 'react-native-loader-kit';
 import OutlinedTextView from '../../../components/OutlinedTextView';
-import ReportFilter from '../../../components/ReportFilter';
 import ReportFilterTM from '../../../components/ReportFilterTM';
 
 const window = Dimensions.get('window');
@@ -56,15 +41,9 @@ const data = [
 ];
 
 export default function TeamMemberGrid({navigation, route}) {
-  const {Title = ''} = route.params || {};
   const userCode = useSelector(state => state.Profile.userCode);
-  const [deviceOrientation, setDeviceOrientation] = useState('PORTRAIT');
 
-  const branchCode = useSelector(
-    state => state.Profile.profile.user.branchCode,
-  );
   const [value, setValue] = useState(1);
-  const [isFocus, setIsFocus] = useState(false);
   const [SelectedType, setSelectedType] = useState('ALL');
   const [SelectedMonth, setSelectedMonth] = useState('00');
   const [modalVisible, setModalVisible] = useState(false);
@@ -86,16 +65,13 @@ export default function TeamMemberGrid({navigation, route}) {
     data: TeamLeaderReport,
     error: TeamLeaderReportError,
     refetch,
-    // isLoading: TeamLeaderReportLoading,
     isFetching: TeamLeaderReportLoading,
   } = useTeamMemberReportQuery({
-    // branch: 26,
     userCode: userCode,
     year: new Date().getFullYear(),
     dept: SelectedType,
     startMonth: SelectedMonth == '00' ? '01' : SelectedMonth,
     endMonth: SelectedMonth == '00' ? '12' : SelectedMonth,
-
     type: value,
   });
 
