@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
      <application
-        android:usesCleartextTraffic="false"
+        android:usesCleartextTraffic="true"
         android:allowBackup="false"
         android:fullBackupContent="false"
         tools:targetApi="28"

@@ -5,18 +5,18 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
   SafeAreaView,
 } from 'react-native-safe-area-context';
 
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import Toast from 'react-native-toast-message';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import LoginScreen from './src/pages/Auth/login';
 import AgentNavigator from './src/pages/Agent/AgentNavigator/AgentNavigator';
 import Profile from './src/pages/Profile/Profile';
@@ -29,8 +29,8 @@ import PremiumHistory from './src/pages/Agent/PremiumHistory';
 import DebitSettlement from './src/pages/Agent/DebitSettlement';
 import ProductPortfolio from './src/pages/Agent/ProductPortfolio';
 import ClubInformation from './src/pages/Agent/ClubInformation';
-import {Provider} from 'react-redux';
-import {store} from './src/redux/services/store';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/services/store';
 import PolicyRenewals from './src/pages/Agent/PolicyRenewals';
 import TrainingList from './src/pages/Agent/TrainingList/TrainingList';
 import IndividualStatistics from './src/pages/Agent/IndividualStatistics';
@@ -73,7 +73,7 @@ import AdvisorReport from './src/pages/RegionalManager/Report/Report/AdvisorRepo
 import DirectReport from './src/pages/RegionalManager/Report/Report/DirectReport';
 import MeReport from './src/pages/RegionalManager/Report/Report/MeReport';
 import TeamLeaderReport from './src/pages/RegionalManager/Report/Report/TeamLeaderReport';
-import {navigationRef} from './src/navigation/RootNavigation';
+import { navigationRef } from './src/navigation/RootNavigation';
 
 const Stack = createNativeStackNavigator();
 // @ts-ignore
@@ -104,7 +104,7 @@ function App(): React.JSX.Element {
 
   const AuthStack = () => (
     // @ts-ignore
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         options={{
           gestureEnabled: true, // Disable swipe back
@@ -115,7 +115,7 @@ function App(): React.JSX.Element {
       />
       <Stack.Screen
         name="NavigateToAppStack"
-        options={{headerShown: false, orientation: 'portrait'}}
+        options={{ headerShown: false, orientation: 'portrait' }}
         component={AppStack}
       />
     </Stack.Navigator>
@@ -124,7 +124,7 @@ function App(): React.JSX.Element {
   // **App Stack (Contains All Screens)**
 
   const AppStack = () => (
-    // @ts-ignore
+
     <Stack.Navigator
       initialRouteName="AgentNavigator"
       screenOptions={{
@@ -134,7 +134,7 @@ function App(): React.JSX.Element {
       }}>
       <Stack.Screen
         name="NavigateToAuthStack"
-        options={{headerShown: false, orientation: 'portrait'}}
+        options={{ headerShown: false, orientation: 'portrait' }}
         component={AuthStack}
       />
 
@@ -150,248 +150,248 @@ function App(): React.JSX.Element {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="Settings"
         component={Settings}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="SalesMeter"
         component={SalesMeter}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="GeneralPolicyList"
         component={GeneralPolicyList}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="PolicyDetails"
         component={PolicyDetails}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ClaimHistory"
         component={ClaimHistory}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="PremiumHistory"
         component={PremiumHistory}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="DebitSettlement"
         component={DebitSettlement}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ProductPortfolio"
         component={ProductPortfolio}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ClubInformation"
         component={ClubInformation}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="PolicyRenewals"
         component={PolicyRenewals}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="TrainingList"
         component={TrainingList}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="IndividualStatistics"
         component={IndividualStatistics}
       />
       <Stack.Screen
         name="PPWCancellation"
         component={PPWCancellation}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="Notification"
         component={Notification}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="PDFViewer"
         component={PDFViewer}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetails}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="MyselfPerformance"
         component={MyselfPerformance}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="TeamStatistics"
         component={TeamStatistics}
       />
       <Stack.Screen
-        options={{orientation: 'landscape'}}
+        options={{ orientation: 'landscape' }}
         name="TeamPerformance"
         component={TeamPerformance}
       />
       <Stack.Screen
         name="TeamMemberGrid"
         component={TeamMemberGrid}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="BPlanner"
         component={BPlanner}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="LeadSearch"
         component={LeadSearch}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="LeadCreation"
         component={LeadCreation}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="MonthlyPlan"
         component={MonthlyPlan}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ActivityDetails"
         component={ActivityDetails}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="Report"
         component={Report}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="ECorner"
         component={ECorner}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="KPISummary"
         component={KPISummary}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="DUESSummary"
         component={DUESSummary}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ClassSummary"
         component={ClassSummary}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="RegionSummary"
         component={RegionSummary}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="BranchSummary"
         component={BranchSummary}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="Competition"
         component={Competition}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="LeadInformation"
         component={LeadInformation}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="MotorRenewal"
         component={MotorRenewal}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="EDocument"
         component={EDocument}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="MotorRenewalLetter"
         component={MotorRenewalLetter}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="AdvisorReport"
         // options={{orientation: 'landscape'}}
         component={AdvisorReport}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="DirectReport"
         component={DirectReport}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="MeReport"
         component={MeReport}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="TeamLeaderReport"
         component={TeamLeaderReport}
-        options={{orientation: 'all'}}
+        options={{ orientation: 'all' }}
       />
       <Stack.Screen
         name="CommissionStatement"
         component={CommissionStatement}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="MotorRenewalCompact"
         component={MotorRenewalCompact}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="NonMotorRenewalCompact"
         component={NonMotorRenewalCompact}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="PendingClaims"
         component={PendingClaims}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ClaimDetails"
         component={ClaimDetails}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="DebitSettlementRenewal"
         component={DebitSettlementRenewal}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
       <Stack.Screen
         name="ReportSwitch"
         component={ReportSwitch}
-        options={{orientation: 'portrait'}}
+        options={{ orientation: 'portrait' }}
       />
     </Stack.Navigator>
   );
@@ -400,7 +400,7 @@ function App(): React.JSX.Element {
     const insets = useSafeAreaInsets();
     // @ts-ignore
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {/* <HeaderBackground Title={undefined} /> */}
 
         <SafeAreaView
@@ -413,7 +413,7 @@ function App(): React.JSX.Element {
           <Provider store={store}>
             <NavigationContainer ref={navigationRef}>
               {/* @ts-ignore */}
-              <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="AuthStack" component={AuthStack} />
               </Stack.Navigator>
             </NavigationContainer>
@@ -425,7 +425,7 @@ function App(): React.JSX.Element {
   }
   return (
     <SafeAreaProvider>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <SafeAreaViewWithInsets />
       </View>
     </SafeAreaProvider>
