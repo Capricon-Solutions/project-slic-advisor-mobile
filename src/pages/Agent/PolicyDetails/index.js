@@ -30,7 +30,6 @@ const window = Dimensions.get('window');
 
 export default function PolicyDetails({ navigation, route }) {
   const { policyNo } = route.params; // Extract item from params
-  // console.log('policyNo', policyNo);
   const {
     data: PolicyDetails,
     error,
@@ -38,7 +37,6 @@ export default function PolicyDetails({ navigation, route }) {
   } = useGetPolicyDetailsQuery({
     id: policyNo, // Dynamic ID
   });
-  // console.log('PolicyDetails', PolicyDetails);
   const policyDetailsResponse = PolicyDetails?.data;
 
   const id = policyDetailsResponse?.id;
@@ -62,7 +60,6 @@ export default function PolicyDetails({ navigation, route }) {
   const isCancelled = policyDetailsResponse?.isCancelled;
   const capacity = policyDetailsResponse?.engineCapacity;
 
-  // console.log('PolicyDetails', PolicyDetails);
 
   const DetailLine = ({ Title, detail }) => {
     return (

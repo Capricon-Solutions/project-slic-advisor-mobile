@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,18 +10,18 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Feather from 'react-native-vector-icons/Feather';
-import {styles} from './styles';
+import { styles } from './styles';
 import LoadingScreen from '../../../components/LoadingScreen';
 import TableComponent from '../../../components/TableComponent';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
-import {useGetBranchesQuery} from '../../../redux/services/contactSlice';
-import {useSelector} from 'react-redux';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import { useGetBranchesQuery } from '../../../redux/services/contactSlice';
+import { useSelector } from 'react-redux';
 import {
   useGetPPWCanceledListQuery,
   useGetPPWReminderListQuery,
@@ -34,7 +34,7 @@ import DropdownFilled from '../../../components/DropdownFilled';
 
 const window = Dimensions.get('window');
 
-export default function PPWCancellation({navigation}) {
+export default function PPWCancellation({ navigation }) {
   // const {data: branches, isLoading, error} = useGetBranchesQuery();
   const [selectedItem, setSelectedItem] = useState();
   const [selectedValue, setSelectedValue] = useState('M');
@@ -84,13 +84,11 @@ export default function PPWCancellation({navigation}) {
   const columnWidths2 = [180, 150, 110, 110, 130, 110, 120, 110];
   const [selectedDate, setSelectedDate] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
-  // console.log('personalCode', personalCode);
   const lastMonthStart = moment()
     .subtract(2, 'month')
     .startOf('month')
     .format('YYYY-MM-DD');
   const currentMonthEnd = moment().endOf('month').format('YYYY-MM-DD');
-  // console.log('currentMonthEnd', currentMonthEnd);
   const [fromDate, toDate] = selectedDate
     ? selectedDate.split(' to ')
     : [lastMonthStart, currentMonthEnd];
@@ -116,12 +114,11 @@ export default function PPWCancellation({navigation}) {
     fromDate: fromDate,
     toDate: toDate,
   });
-  // console.log('PPWReminderList', PPWReminderList);
   const handleSelect = value => {
     setSelectedValue(value);
   };
 
-  useEffect(() => {}, [PPWCanceledList, PPWReminderList, error, errorC]);
+  useEffect(() => { }, [PPWCanceledList, PPWReminderList, error, errorC]);
 
   const tableData = PPWReminderList?.data?.map(item => [
     item?.policyNo?.toString() ?? 'N/A',
@@ -152,8 +149,8 @@ export default function PPWCancellation({navigation}) {
         onClose={() => setPickerVisible(false)}
         onSelect={v => setSelectedDate(v)}
       />
-      <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
-        <View style={[styles.mainWrap, {marginTop: 5}]}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+        <View style={[styles.mainWrap, { marginTop: 5 }]}>
           <TouchableOpacity
             onPress={() => setSelectedType(1)}
             style={{
@@ -201,7 +198,7 @@ export default function PPWCancellation({navigation}) {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={[styles.searchWrap, {flex: 0.59, marginVertical: 12}]}>
+          <View style={[styles.searchWrap, { flex: 0.59, marginVertical: 12 }]}>
             <TextInput
               value={fromDate + ' - ' + toDate}
               readOnly
@@ -213,7 +210,7 @@ export default function PPWCancellation({navigation}) {
               <Feather name="calendar" color={COLORS.white} size={20} />
             </TouchableOpacity>
           </View>
-          <View style={{flex: 0.41, paddingLeft: 2}}>
+          <View style={{ flex: 0.41, paddingLeft: 2 }}>
             {/* <AutocompleteDropdown
               clearOnFocus={true}
               closeOnBlur={true}
@@ -237,8 +234,8 @@ export default function PPWCancellation({navigation}) {
               placeholder={'Select Type'}
               onSelect={handleSelect} // Pass the handleSelect function as a prop
               dropdownData={[
-                {label: 'Motor', value: 'M'},
-                {label: 'Non-Motor', value: 'G'},
+                { label: 'Motor', value: 'M' },
+                { label: 'Non-Motor', value: 'G' },
               ]}
             />
           </View>

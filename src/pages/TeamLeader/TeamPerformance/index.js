@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,22 +10,22 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import LoaderKit from 'react-native-loader-kit';
 
 import HorizontalMargedTableComponent from '../../../components/HorizontalMargedTableComponent';
@@ -35,7 +35,7 @@ import {
 } from '../../../redux/services/IndividualPerfSlice';
 const window = Dimensions.get('window');
 
-export default function TeamPerformance({navigation}) {
+export default function TeamPerformance({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'New', 'Renewals', 'Total'];
@@ -49,7 +49,6 @@ export default function TeamPerformance({navigation}) {
   } = useGetteamCurrentPerfMonthQuery({
     id: userCode, // Dynamic ID
   });
-  console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const {
     data: CurrentPerformanceYear,
     error: yearError,
@@ -57,7 +56,6 @@ export default function TeamPerformance({navigation}) {
   } = useGetteamCurrentPerfYearQuery({
     id: userCode, // Dynamic ID
   });
-  console.log('CurrentPerformanceMonth', CurrentPerformanceMonth);
   const IndividualStatResponse = useSelector(
     state => state.teamStat.teamStatResponse.data,
   );
@@ -91,21 +89,17 @@ export default function TeamPerformance({navigation}) {
       }),
     },
   ]);
-  console.log('tableData', tableData);
-  const renderItem = ({item}) => <ContactListItem item={item} />;
+  const renderItem = ({ item }) => <ContactListItem item={item} />;
 
-  const renderDepartmentItem = ({item}) => <DepartmentItem item={item} />;
+  const renderDepartmentItem = ({ item }) => <DepartmentItem item={item} />;
 
-  const handleLoad = (from, to) => {
-    console.log('Selected From:', from);
-    console.log('Selected To:', to);
-  };
+
 
   return (
     <View style={Styles.container}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <LandscapeHeader
           haveSearch={false}
           Title="Current Performance"
@@ -116,7 +110,7 @@ export default function TeamPerformance({navigation}) {
       <View
         style={[
           styles.mainWrap,
-          {marginTop: 1, backgroundColor: COLORS.background},
+          { marginTop: 1, backgroundColor: COLORS.background },
         ]}>
         <TouchableOpacity
           onPress={() => setSelectedType(1)}
@@ -157,7 +151,7 @@ export default function TeamPerformance({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             flex: 1,
@@ -186,7 +180,7 @@ export default function TeamPerformance({navigation}) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{width: 50, height: 50}}
+            style={{ width: 50, height: 50 }}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />

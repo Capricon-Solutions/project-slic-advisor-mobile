@@ -1,26 +1,24 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {baseApi} from './api';
+import { createSlice } from '@reduxjs/toolkit';
+import { baseApi } from './api';
 
 export const IndividualPerfApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     GetindividualPerf: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         const finalUrl = `agent/getAgentPerfomanceByDate/${id}?fromDate=${fromDate}&toDate=${toDate}`;
-        // console.log('Final URL:', finalUrl);
 
         return finalUrl;
       },
     }),
     GetteamPerf: builder.query({
-      query: ({id, fromDate, toDate}) => {
+      query: ({ id, fromDate, toDate }) => {
         const finalUrl = `agent/getTeamPerfomanceByMonth/${id}?fromDate=${fromDate}&toDate=${toDate}`;
-        // console.log('Final URL:', finalUrl);
         return finalUrl;
       },
     }),
 
     GetteamCurrentPerfMonth: builder.query({
-      query: ({id}) => {
+      query: ({ id }) => {
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth(); // 0-indexed
@@ -32,15 +30,13 @@ export const IndividualPerfApi = baseApi.injectEndpoints({
         const toDate = lastDay.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
         const finalUrl = `agent/getAgentsPerfomanceByMonth/${id}?fromDate=${fromDate}&toDate=${toDate}`;
-        // console.log('Final URL:', finalUrl);
 
         return finalUrl;
       },
     }),
     GetteamCurrentPerfYear: builder.query({
-      query: ({id}) => {
+      query: ({ id }) => {
         const finalUrl = `agent/getAgentsPerfomanceByYear/${id}`;
-        // console.log('Final URL:', finalUrl);
         return finalUrl;
       },
     }),

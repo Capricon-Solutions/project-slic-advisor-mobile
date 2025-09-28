@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,18 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import {
   useDebitSettlementQuery,
   useDebitSettlementSmsMutation,
@@ -32,7 +32,7 @@ import {
 } from '../../../redux/services/policyDetailsSlice';
 import moment from 'moment';
 import LoaderKit from 'react-native-loader-kit';
-import {showToast} from '../../../components/ToastMessage';
+import { showToast } from '../../../components/ToastMessage';
 import SquareTextBoxOutlinedDate from '../../../components/SquareTextBoxOutlinedDate';
 import DropdownFilled from '../../../components/DropdownFilled';
 import DropdownFilledDebit from '../../../components/DropdownFilledDebit';
@@ -41,10 +41,10 @@ import DropdownFilledDebit from '../../../components/DropdownFilledDebit';
 
 const window = Dimensions.get('window');
 
-export default function DebitSettlement({navigation, route}) {
+export default function DebitSettlement({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const {policyNo} = route.params;
-  const {phone} = route.params;
+  const { policyNo } = route.params;
+  const { phone } = route.params;
   const [mobileNo, setMobileNo] = useState(null);
   const [amount, setAmount] = useState(null);
   const [selectedItem, setSelectedItem] = useState('');
@@ -63,7 +63,6 @@ export default function DebitSettlement({navigation, route}) {
   );
 
   useEffect(() => {
-    // console.log('DebitSettlement', DebitSettlement);
     if (phone) setMobileNo(phone);
     if (
       DebitSettlement?.data?.premiumNetValue &&
@@ -81,7 +80,7 @@ export default function DebitSettlement({navigation, route}) {
     DebitSettlement?.data?.paymentType,
   ]);
 
-  const [debitSettlementSms, {isLoading, error}] =
+  const [debitSettlementSms, { isLoading, error }] =
     useDebitSettlementSmsMutation();
 
   function formatWithCommas(str) {
@@ -118,7 +117,6 @@ export default function DebitSettlement({navigation, route}) {
 
     try {
       const response = await debitSettlementSms(body).unwrap();
-      // console.log('response', response);
       if (response?.success == true) {
         showToast({
           type: 'success',
@@ -131,7 +129,6 @@ export default function DebitSettlement({navigation, route}) {
         }, 800);
       }
     } catch (err) {
-      // console.log('err', err);
       showToast({
         type: 'error',
         text1: 'Failed',
@@ -188,7 +185,7 @@ export default function DebitSettlement({navigation, route}) {
         haveMenu={false}
         onButton={() => setModalVisible(true)}
       />
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <View style={styles.card}>
           <Text
             style={{
@@ -208,8 +205,8 @@ export default function DebitSettlement({navigation, route}) {
             Color={COLORS.textInputBackground}
             value={selectedItem}
             dropdownData={[
-              {label: 'Debit Settlement', value: 'Debit Settlement'},
-              {label: 'Payment', value: 'Payment'},
+              { label: 'Debit Settlement', value: 'Debit Settlement' },
+              { label: 'Payment', value: 'Payment' },
             ]}
           />
 
@@ -252,7 +249,7 @@ export default function DebitSettlement({navigation, route}) {
             keyboardType="numeric"
             value={date}
           />
-          <View style={{marginTop: 15}}>
+          <View style={{ marginTop: 15 }}>
             <Button
               onPress={handleSendPaymentLink}
               Title={'Send Payment Link'}
@@ -271,7 +268,7 @@ export default function DebitSettlement({navigation, route}) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{width: 50, height: 50}}
+            style={{ width: 50, height: 50 }}
             name={'LineScalePulseOutRapid'} // Optional: see list of animations below
             color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
           />

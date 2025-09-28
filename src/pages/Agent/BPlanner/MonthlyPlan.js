@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -24,14 +24,14 @@ import {
   useGetMonthlyPlanQuery,
   useMonthlyCreationMutation,
 } from '../../../redux/services/plannerSlice';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {showToast} from '../../../components/ToastMessage';
+import { showToast } from '../../../components/ToastMessage';
 
-export default function MonthlyPlan({navigation}) {
+export default function MonthlyPlan({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [currentStep, setCurrentStep] = useState(1);
-  const [MonthlyCreate, {data: newActivity, isLoading, error}] =
+  const [MonthlyCreate, { data: newActivity, isLoading, error }] =
     useMonthlyCreationMutation();
   const [meetings, setmeetings] = useState('');
   const [presentations, setPresentations] = useState('');
@@ -81,27 +81,27 @@ export default function MonthlyPlan({navigation}) {
     const newErrors = {};
 
     if (!meetings || meetings === '') {
-      setFormError({...formError, meetings: 'Meetings is required'});
+      setFormError({ ...formError, meetings: 'Meetings is required' });
       newErrors.meetings = 'Meetings is required';
     }
     if (!presentations || presentations === '') {
-      setFormError({...formError, presentations: 'Presentations is required'});
+      setFormError({ ...formError, presentations: 'Presentations is required' });
       newErrors.presentations = 'Presentations is required';
     }
     if (!quotations || quotations === '') {
-      setFormError({...formError, quotations: 'Quotations is required'});
+      setFormError({ ...formError, quotations: 'Quotations is required' });
       newErrors.quotations = 'Quotations is required';
     }
     if (!proposals || proposals === '') {
-      setFormError({...formError, proposals: 'Proposals is required'});
+      setFormError({ ...formError, proposals: 'Proposals is required' });
       newErrors.proposals = 'Proposals is required';
     }
     if (!closed || closed === '') {
-      setFormError({...formError, closed: 'Closed is required'});
+      setFormError({ ...formError, closed: 'Closed is required' });
       newErrors.closed = 'Closed is required';
     }
     if (!leads || leads === '') {
-      setFormError({...formError, leads: 'Leads is required'});
+      setFormError({ ...formError, leads: 'Leads is required' });
       newErrors.leads = 'Leads is required';
     }
 
@@ -126,17 +126,14 @@ export default function MonthlyPlan({navigation}) {
     }
 
     try {
-      const response = await MonthlyCreate({body, userCode});
-      // console.log('Activity Created:', response);
+      const response = await MonthlyCreate({ body, userCode });
 
       if (response?.error?.status == '500') {
-        // console.log('something went wrong', response?.error);
         showToast({
           type: 'error',
           text1: 'Monthly Plan Not Created',
           text2: response?.error?.data?.message || 'Something went wrong',
         });
-        // Alert.alert('something went wrong', 'Unsuccessfull');
       } else {
         showToast({
           type: 'success',
@@ -151,10 +148,10 @@ export default function MonthlyPlan({navigation}) {
   };
 
   const StepperItems = [
-    {id: 1, Title: 'Policy Info'},
-    {id: 2, Title: 'Vehicle Info'},
-    {id: 3, Title: 'Customer Basic Info'},
-    {id: 4, Title: 'Customer Contact Info'},
+    { id: 1, Title: 'Policy Info' },
+    { id: 2, Title: 'Vehicle Info' },
+    { id: 3, Title: 'Customer Basic Info' },
+    { id: 4, Title: 'Customer Contact Info' },
   ];
 
   const handleNext = () => {
@@ -178,7 +175,7 @@ export default function MonthlyPlan({navigation}) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
         style={{}}>
         <Text
           style={{
@@ -202,7 +199,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setmeetings(filteredText);
-              setFormError({...formError, meetings: ''});
+              setFormError({ ...formError, meetings: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.meetings}
@@ -220,7 +217,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setPresentations(filteredText);
-              setFormError({...formError, presentations: ''});
+              setFormError({ ...formError, presentations: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.presentations}
@@ -238,7 +235,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setQuotations(filteredText);
-              setFormError({...formError, quotations: ''});
+              setFormError({ ...formError, quotations: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.quotations}
@@ -257,7 +254,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setProposals(filteredText);
-              setFormError({...formError, proposals: ''});
+              setFormError({ ...formError, proposals: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.proposals}
@@ -275,7 +272,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setClosed(filteredText);
-              setFormError({...formError, closed: ''});
+              setFormError({ ...formError, closed: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.closed}
@@ -293,7 +290,7 @@ export default function MonthlyPlan({navigation}) {
                 filteredText = filteredText.slice(0, 3);
               }
               setLeads(filteredText);
-              setFormError({...formError, leads: ''});
+              setFormError({ ...formError, leads: '' });
             }}
             borderColor={COLORS.warmGray}
             errorMessage={formError.leads}

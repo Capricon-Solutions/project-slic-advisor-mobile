@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,25 +10,25 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import TableComponent from '../../../components/TableComponent';
 import DateRangePicker from '../../../components/DateRangePicker';
 import HorizontalTableComponent from '../../../components/HorizontalTableComponent';
 import LandscapeHeader from '../../../components/LandscapeHeader';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import moment from 'moment';
-import {useGetindividualPerfQuery} from '../../../redux/services/IndividualPerfSlice';
+import { useGetindividualPerfQuery } from '../../../redux/services/IndividualPerfSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import LoaderKit from 'react-native-loader-kit';
 import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
@@ -38,7 +38,7 @@ import Orientation from 'react-native-orientation-locker';
 
 const window = Dimensions.get('window');
 
-export default function IndividualStatistics({navigation}) {
+export default function IndividualStatistics({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [SelectedType, setSelectedType] = useState(1);
   const tableHead = ['', 'Renewals', 'New', 'Refunds', 'Endorsements', 'Total'];
@@ -87,7 +87,6 @@ export default function IndividualStatistics({navigation}) {
       setSelectedYearName(yearName);
     }
   }, [selectedDate]);
-  // console.log('selectedMonthName', selectedMonthName);
   const formatNumber = value => Number(value || 0).toLocaleString();
 
   const tableData = [
@@ -170,7 +169,7 @@ export default function IndividualStatistics({navigation}) {
       />
 
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <LandscapeHeader
           haveSearch={true}
           calenderClick={() => setPickerVisible(true)}
@@ -181,7 +180,7 @@ export default function IndividualStatistics({navigation}) {
         />
       </View>
 
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View
           style={{
             flex: 1,
@@ -209,7 +208,7 @@ export default function IndividualStatistics({navigation}) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{width: 50, height: 50}}
+            style={{ width: 50, height: 50 }}
             name={'LineScalePulseOutRapid'} // Optional: see list of animations below
             color={COLORS.grayText} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
           />

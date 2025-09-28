@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -22,21 +22,21 @@ import ELetterItems from '../../../components/ELetterItems';
 import DropdownFilled from '../../../components/DropdownFilled';
 import Button from '../../../components/Button';
 import AlertButton from '../../../components/AlertButton';
-import {useGetcommissionStatementMutation} from '../../../redux/services/eCornerSlice';
-import {Linking} from 'react-native';
+import { useGetcommissionStatementMutation } from '../../../redux/services/eCornerSlice';
+import { Linking } from 'react-native';
 import RNFS from 'react-native-fs'; // File system for downloads
 import MonthYearPicker from '../../../components/MonthYearPicker';
 import MonthYearPickerSingle from '../../../components/MonthYearPickerSingle';
 import moment from 'moment';
 import FileViewer from 'react-native-file-viewer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import {API_KEY} from '@env';
-import {showToast} from '../../../components/ToastMessage';
-import {useSelector} from 'react-redux';
+import { API_KEY } from '@env';
+import { showToast } from '../../../components/ToastMessage';
+import { useSelector } from 'react-redux';
 import MonthYearPickerSinglePast from '../../../components/MonthYearPickerSinglePast';
 const window = Dimensions.get('window');
 
-export default function CommissionStatement({navigation}) {
+export default function CommissionStatement({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [Progress, setProgress] = useState(0);
   const [isPickerVisible, setPickerVisible] = useState(false);
@@ -47,7 +47,7 @@ export default function CommissionStatement({navigation}) {
 
   const [
     GetCommissionStatement,
-    {data: newActivity, isLoading, error: errorEvents},
+    { data: newActivity, isLoading, error: errorEvents },
   ] = useGetcommissionStatementMutation();
 
   const handleType = value => {
@@ -59,15 +59,12 @@ export default function CommissionStatement({navigation}) {
 
   const handlegetCommission = async () => {
     try {
-      // console.log('test values', {selectedDate, selectedType, selectedCode});
       const response = await GetCommissionStatement({
         selectedDate,
         selectedType,
         selectedCode,
       });
-      // console.log('response?.data?.success ', response);
       if (response?.data?.success == false) {
-        // Alert.alert('Error', response?.data?.message || 'Something went wrong');
         showToast({
           type: 'error',
           text1: 'Failed',
@@ -85,7 +82,6 @@ export default function CommissionStatement({navigation}) {
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
-      // console.log('Requesting storage permission...');
       try {
         if (Platform.Version < 29) {
           const granted = await PermissionsAndroid.request(
@@ -99,7 +95,6 @@ export default function CommissionStatement({navigation}) {
           );
           return granted === PermissionsAndroid.RESULTS.GRANTED;
         } else {
-          // Android 10+ doesn't require explicit permission for private storage
           return true;
         }
       } catch (err) {
@@ -112,7 +107,6 @@ export default function CommissionStatement({navigation}) {
 
   const openDocument = async url => {
     try {
-      // console.log('Opening document from URL:', url);
       if (!url) return;
 
       let fileName = url.split('/').pop() || 'document.pdf';
@@ -159,13 +153,11 @@ export default function CommissionStatement({navigation}) {
           'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         })
-        .progress({count: 10}, (received, total) => {
+        .progress({ count: 10 }, (received, total) => {
           const percent = (received / total) * 100;
-          // console.log(`Download progress: ${percent.toFixed(2)}%`);
           setProgress(percent);
         });
 
-      // console.log('Download completed:', res.path());
 
       await FileViewer.open(res.path(), {
         showOpenWithDialog: true,
@@ -174,7 +166,6 @@ export default function CommissionStatement({navigation}) {
         mimeType: 'application/pdf',
       });
 
-      // console.log('File opened successfully');
     } catch (err) {
       console.error('openDocument error:', err);
 
@@ -217,7 +208,7 @@ export default function CommissionStatement({navigation}) {
         onSelectText={v => setSelectedDate(v)}
       />
 
-      <View style={{paddingHorizontal: 20}}>
+      <View style={{ paddingHorizontal: 20 }}>
         <View
           style={{
             backgroundColor: COLORS.white,
@@ -312,9 +303,9 @@ export default function CommissionStatement({navigation}) {
             onSelect={handleCode}
             value={selectedCode}
             dropdownData={[
-              {label: '360115', value: '360115'},
-              {label: '905717', value: '905717'},
-              {label: '71482', value: '71482'},
+              { label: '360115', value: '360115' },
+              { label: '905717', value: '905717' },
+              { label: '71482', value: '71482' },
             ]}
           />
 
@@ -334,11 +325,11 @@ export default function CommissionStatement({navigation}) {
             onSelect={handleType} // Pass the handleSelect function as a prop
             value={selectedType}
             dropdownData={[
-              {label: 'General Cash', value: 'general_cash'},
-              {label: 'General Orc', value: 'general_orc'},
+              { label: 'General Cash', value: 'general_cash' },
+              { label: 'General Orc', value: 'general_orc' },
             ]}
           />
-          <View style={{marginTop: 20}}>
+          <View style={{ marginTop: 20 }}>
             <AlertButton
               disabledButton={
                 loading || !selectedDate || !selectedType || !selectedCode

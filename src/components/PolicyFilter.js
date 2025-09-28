@@ -18,10 +18,10 @@ import AlertButton from './AlertButton';
 import Fonts from '../theme/Fonts';
 import COLORS from '../theme/colors';
 import SquareTextBoxOutlinedDate from './SquareTextBoxOutlinedDate';
-import {showToast} from './ToastMessage';
+import { showToast } from './ToastMessage';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
-import {validateSriLankanNIC} from '../utils/nicValidation';
+import { validateSriLankanNIC } from '../utils/nicValidation';
 
 const window = Dimensions.get('window');
 
@@ -117,7 +117,7 @@ export default function PolicyFilter({
     onPressSearch();
   };
   React.useEffect(() => {
-    // console.log('VehicleNumber', VehicleNumber);
+
 
     handlePolicyValuesChange({
       BusinessType,
@@ -255,9 +255,9 @@ export default function PolicyFilter({
             placeholder="Select Business Type"
             onSelect={value => setSelectedBType(value)}
             dropdownData={[
-              {label: 'All', value: 'A'},
-              {label: 'Motor', value: 'M'},
-              {label: 'Non-Motor', value: 'G'},
+              { label: 'All', value: 'A' },
+              { label: 'Motor', value: 'M' },
+              { label: 'Non-Motor', value: 'G' },
             ]}
           />
           <Text
@@ -279,10 +279,10 @@ export default function PolicyFilter({
             initialValue={status}
             onSelect={value => setStatus(value)}
             dropdownData={[
-              {label: 'Premium Pending', value: 'P'},
-              {label: 'Debit Outstanding', value: 'D'},
-              {label: 'Claim Pending', value: 'C'},
-              {label: 'Reminders Set Policies', value: 'F'},
+              { label: 'Premium Pending', value: 'P' },
+              { label: 'Debit Outstanding', value: 'D' },
+              { label: 'Claim Pending', value: 'C' },
+              { label: 'Reminders Set Policies', value: 'F' },
             ]}
           />
           <SquareTextBoxOutlined
@@ -378,7 +378,7 @@ export default function PolicyFilter({
             />
           </View>
           {formError.VehicleNumber && (
-            <Text style={{color: 'red', fontSize: 12}}>
+            <Text style={{ color: 'red', fontSize: 12 }}>
               {formError.VehicleNumber}
             </Text>
           )}
@@ -389,7 +389,7 @@ export default function PolicyFilter({
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{flex: 0.45}}>
+            <View style={{ flex: 0.45 }}>
               <SquareTextBoxOutlinedDate
                 Label="Start Date"
                 ref={sDateRef}
@@ -415,7 +415,7 @@ export default function PolicyFilter({
               To
             </Text>
 
-            <View style={{flex: 0.45}}>
+            <View style={{ flex: 0.45 }}>
               <SquareTextBoxOutlinedDate
                 ref={eDateRef}
                 Label="End Date"
@@ -474,7 +474,7 @@ export default function PolicyFilter({
             }}
           />
           {formError.mobile && (
-            <Text style={{color: 'red', fontSize: 12}}>{formError.mobile}</Text>
+            <Text style={{ color: 'red', fontSize: 12 }}>{formError.mobile}</Text>
           )}
           <SquareTextBoxOutlined
             Title={NicNumber}
@@ -501,7 +501,7 @@ export default function PolicyFilter({
             }}
           />
           {formError.nic && (
-            <Text style={{color: 'red', fontSize: 12}}>{formError.nic}</Text>
+            <Text style={{ color: 'red', fontSize: 12 }}>{formError.nic}</Text>
           )}
           <SquareTextBoxOutlined
             Title={BusiRegNo}
@@ -532,15 +532,15 @@ export default function PolicyFilter({
               onPress={handleSearch}
               disabledColor={Boolean(
                 formError.VehicleNumber ||
-                  formError.mobile ||
-                  formError.nic ||
-                  formError.VehicleNumber,
+                formError.mobile ||
+                formError.nic ||
+                formError.VehicleNumber,
               )}
               disabledButton={Boolean(
                 formError.VehicleNumber ||
-                  formError.mobile ||
-                  formError.nic ||
-                  formError.VehicleNumber,
+                formError.mobile ||
+                formError.nic ||
+                formError.VehicleNumber,
               )}
               Title="Search"
             />

@@ -81,6 +81,7 @@ const LoginScreen = ({ navigation }) => {
       CommonActions.reset({
         index: 0,
         routes: [{ name: 'NavigateToAppStack' }],
+        // The name of the Stack.Screen
       }),
     );
   }
@@ -174,7 +175,17 @@ const LoginScreen = ({ navigation }) => {
       <Text style={styles.subText}>
         Your dashboard is ready, and your updates {'\n'}are waiting.
       </Text>
+      {/* <Text>{username}</Text> */}
       <View style={{ marginVertical: 5, width: '100%' }}>
+        {/* <SquareTextBox
+          Title={'Username'}
+          value={username}
+          errorBorder={errorShow}
+          setValue={text => {
+            setUsername(text);
+
+            setErrorShow(false);
+          }}></SquareTextBox> */}
         <SquareTextBox
           Title={'Username'}
           value={username}

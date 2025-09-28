@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Styles} from '../../../../theme/Styles';
-import {FlatList} from 'react-native';
-import {styles} from './styles';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useSelector} from 'react-redux';
+import { Styles } from '../../../../theme/Styles';
+import { FlatList } from 'react-native';
+import { styles } from './styles';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useSelector } from 'react-redux';
 import HorizontalTeamMemberTable from '../../../../components/HorizontalTeamMemberTable';
 import DropdownComponent from '../../../../components/DropdownComponent';
 import SmallButton from '../../../../components/SmallButton';
@@ -37,22 +37,22 @@ import {
 import ReportFilter from '../../../../components/ReportFilter';
 import LoaderKit from 'react-native-loader-kit';
 import OutlinedTextView from '../../../../components/OutlinedTextView';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const window = Dimensions.get('window');
 const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
+  { label: 'Item 1', value: '1' },
+  { label: 'Item 2', value: '2' },
+  { label: 'Item 3', value: '3' },
+  { label: 'Item 4', value: '4' },
+  { label: 'Item 5', value: '5' },
+  { label: 'Item 6', value: '6' },
+  { label: 'Item 7', value: '7' },
+  { label: 'Item 8', value: '8' },
 ];
 
-export default function TeamLeaderReport({navigation, route}) {
-  const {Title = ''} = route.params || {};
+export default function TeamLeaderReport({ navigation, route }) {
+  const { Title = '' } = route.params || {};
 
   const [value, setValue] = useState(1);
   const [SelectedType, setSelectedType] = useState('ALL');
@@ -92,7 +92,6 @@ export default function TeamLeaderReport({navigation, route}) {
     type: SelectedType,
     value: value,
   });
-  console.log('TeamLeaderReport', TeamLeaderReport);
 
   const tableData = TeamLeaderReport?.data?.map(item => [
     item?.teamLeader?.toString() ?? '',
@@ -118,19 +117,19 @@ export default function TeamLeaderReport({navigation, route}) {
 
     value == 1
       ? (
-          item?.renewal +
-          item?.refundPpw +
-          item?.nb +
-          item?.refundOther +
-          item?.endorsement
-        ).toLocaleString() ?? ''
+        item?.renewal +
+        item?.refundPpw +
+        item?.nb +
+        item?.refundOther +
+        item?.endorsement
+      ).toLocaleString() ?? ''
       : (
-          item?.nopRenewal +
-          item?.nopPpw +
-          item?.nopNew +
-          item?.nopOtherRefund +
-          item?.nopEndorsements
-        ).toLocaleString() ?? '',
+        item?.nopRenewal +
+        item?.nopPpw +
+        item?.nopNew +
+        item?.nopOtherRefund +
+        item?.nopEndorsements
+      ).toLocaleString() ?? '',
   ]);
   useFocusEffect(
     React.useCallback(() => {
@@ -162,12 +161,12 @@ export default function TeamLeaderReport({navigation, route}) {
   const agentList =
     TeamLeaderReport && TeamLeaderReport.data
       ? TeamLeaderReport.data.map(item => ({
-          label: item.teamLeader,
-          value: item.teamLeader,
-        }))
+        label: item.teamLeader,
+        value: item.teamLeader,
+      }))
       : [];
 
-  const dropdownOptions = [{label: 'All', value: 'All'}, ...agentList];
+  const dropdownOptions = [{ label: 'All', value: 'All' }, ...agentList];
   useEffect(() => {
     const isValid = dropdownOptions.some(option => option.value === branch);
     if (!isValid && branch !== '') {
@@ -202,7 +201,7 @@ export default function TeamLeaderReport({navigation, route}) {
       />
 
       {/* <HeaderBackground /> */}
-      <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
+      <View style={{ paddingHorizontal: isLandscape ? 20 : 0 }}>
         {isLandscape == true ? (
           <LandscapeHeader
             haveSearch={false}
@@ -236,9 +235,9 @@ export default function TeamLeaderReport({navigation, route}) {
           paddingRight: 20,
         }}>
         {isLandscape == false && (
-          <View style={{alignItems: 'flex-end', marginHorizontal: 20}}>
+          <View style={{ alignItems: 'flex-end', marginHorizontal: 20 }}>
             <TouchableOpacity
-              style={{flexDirection: 'row', gap: 5}}
+              style={{ flexDirection: 'row', gap: 5 }}
               onPress={() => setModalVisible(true)}>
               <Text
                 style={{
@@ -258,7 +257,7 @@ export default function TeamLeaderReport({navigation, route}) {
         )}
         <TouchableOpacity
           onPress={toggleOrientation}
-          style={{flexDirection: 'row', gap: 5}}>
+          style={{ flexDirection: 'row', gap: 5 }}>
           <Text
             style={{
               color: COLORS.textColor,
@@ -291,7 +290,7 @@ export default function TeamLeaderReport({navigation, route}) {
               flexDirection: 'row',
               justifyContent: 'flex-end',
             }}>
-            <View style={{flex: 0.19, marginHorizontal: 2}}>
+            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'View Details'}
                 mode={'modal'}
@@ -300,12 +299,12 @@ export default function TeamLeaderReport({navigation, route}) {
                 nonClearable={true}
                 onValueChange={setValue}
                 dropdownData={[
-                  {label: 'Value', value: 1},
-                  {label: 'NOP', value: 2},
+                  { label: 'Value', value: 1 },
+                  { label: 'NOP', value: 2 },
                 ]}
               />
             </View>
-            <View style={{flex: 0.2, marginHorizontal: 2}}>
+            <View style={{ flex: 0.2, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Type'}
                 mode={'modal'}
@@ -322,12 +321,12 @@ export default function TeamLeaderReport({navigation, route}) {
                   // 👈 If value is null, use 'ALL'
                 }}
                 dropdownData={[
-                  {label: 'General Cumulative', value: 'G'},
-                  {label: 'Motor Monthly', value: 'M'},
+                  { label: 'General Cumulative', value: 'G' },
+                  { label: 'Motor Monthly', value: 'M' },
                 ]}
               />
             </View>
-            <View style={{flex: 0.18, marginHorizontal: 2}}>
+            <View style={{ flex: 0.18, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
@@ -342,40 +341,40 @@ export default function TeamLeaderReport({navigation, route}) {
                 dropdownData={
                   SelectedType == 'M'
                     ? [
-                        {label: 'January', value: '01'},
-                        {label: 'February', value: '02'},
-                        {label: 'March', value: '03'},
-                        {label: 'April', value: '04'},
-                        {label: 'May', value: '05'},
-                        {label: 'June', value: '06'},
-                        {label: 'July', value: '07'},
-                        {label: 'August', value: '08'},
-                        {label: 'September', value: '09'},
-                        {label: 'October', value: '10'},
-                        {label: 'November', value: '11'},
-                        {label: 'December', value: '12'},
-                      ]
+                      { label: 'January', value: '01' },
+                      { label: 'February', value: '02' },
+                      { label: 'March', value: '03' },
+                      { label: 'April', value: '04' },
+                      { label: 'May', value: '05' },
+                      { label: 'June', value: '06' },
+                      { label: 'July', value: '07' },
+                      { label: 'August', value: '08' },
+                      { label: 'September', value: '09' },
+                      { label: 'October', value: '10' },
+                      { label: 'November', value: '11' },
+                      { label: 'December', value: '12' },
+                    ]
                     : SelectedType == 'G'
-                    ? [{label: 'Cumulative', value: '00'}]
-                    : [
-                        {label: 'Cumulative', value: '00'},
-                        {label: 'January', value: '01'},
-                        {label: 'February', value: '02'},
-                        {label: 'March', value: '03'},
-                        {label: 'April', value: '04'},
-                        {label: 'May', value: '05'},
-                        {label: 'June', value: '06'},
-                        {label: 'July', value: '07'},
-                        {label: 'August', value: '08'},
-                        {label: 'September', value: '09'},
-                        {label: 'October', value: '10'},
-                        {label: 'November', value: '11'},
-                        {label: 'December', value: '12'},
+                      ? [{ label: 'Cumulative', value: '00' }]
+                      : [
+                        { label: 'Cumulative', value: '00' },
+                        { label: 'January', value: '01' },
+                        { label: 'February', value: '02' },
+                        { label: 'March', value: '03' },
+                        { label: 'April', value: '04' },
+                        { label: 'May', value: '05' },
+                        { label: 'June', value: '06' },
+                        { label: 'July', value: '07' },
+                        { label: 'August', value: '08' },
+                        { label: 'September', value: '09' },
+                        { label: 'October', value: '10' },
+                        { label: 'November', value: '11' },
+                        { label: 'December', value: '12' },
                       ]
                 }
               />
             </View>
-            <View style={{flex: 0.19, marginHorizontal: 2}}>
+            <View style={{ flex: 0.19, marginHorizontal: 2 }}>
               <DropdownComponent
                 label={'Agent'}
                 mode={'modal'}
@@ -384,7 +383,7 @@ export default function TeamLeaderReport({navigation, route}) {
                 onValueChange={value => setBranch(value)} // ✅ Captures selection
               />
             </View>
-            <View style={{flex: 0.13, marginHorizontal: 10}}>
+            <View style={{ flex: 0.13, marginHorizontal: 10 }}>
               <Button Title={'Apply'} />
             </View>
           </View>
@@ -420,7 +419,7 @@ export default function TeamLeaderReport({navigation, route}) {
           data={TeamLeaderReport?.data}
           initialNumToRender={2}
           keyExtractor={item => item.id}
-          contentContainerStyle={{padding: 10}}
+          contentContainerStyle={{ padding: 10 }}
           ListEmptyComponent={
             <View
               style={{
@@ -440,7 +439,7 @@ export default function TeamLeaderReport({navigation, route}) {
               )}
             </View>
           }
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View
               style={{
                 borderRadius: 15,
@@ -455,10 +454,10 @@ export default function TeamLeaderReport({navigation, route}) {
                 margin: 10,
                 padding: 15,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
-                  style={{height: 17, width: 17}}
+                  style={{ height: 17, width: 17 }}
                   source={Building}></Image>
                 <Text
                   style={{
@@ -479,77 +478,77 @@ export default function TeamLeaderReport({navigation, route}) {
                   gap: 10,
                   width: '100%',
                 }}>
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'Renewal'}
                     value={
                       value == 1
                         ? item?.renewal != null
                           ? Number(item.renewal).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopRenewal != null
-                        ? Number(item.nopRenewal).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopRenewal).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'NB'}
                     value={
                       value == 1
                         ? item?.nb != null
                           ? Number(item.nb).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopNew != null
-                        ? Number(item.nopNew).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopNew).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
               </View>
 
               {/* Second Row */}
-              <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'PPW'}
                     value={
                       value == 1
                         ? item?.refundPpw != null
                           ? Number(item.refundPpw).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopPpw != null
-                        ? Number(item.nopPpw).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopPpw).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
 
-                <View style={{flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <OutlinedTextView
                     Title={'Others'}
                     value={
                       value == 1
                         ? item?.refundOther != null
                           ? Number(item.refundOther).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                           : ''
                         : item?.nopOtherRefund != null
-                        ? Number(item.nopOtherRefund).toLocaleString('en-US')
-                        : ''
+                          ? Number(item.nopOtherRefund).toLocaleString('en-US')
+                          : ''
                     }
                   />
                 </View>
@@ -563,13 +562,13 @@ export default function TeamLeaderReport({navigation, route}) {
                     value == 1
                       ? item?.endorsement != null
                         ? Number(item.endorsement).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
                         : ''
                       : item?.nopEndorsements != null
-                      ? Number(item.nopEndorsements).toLocaleString('en-US')
-                      : ''
+                        ? Number(item.nopEndorsements).toLocaleString('en-US')
+                        : ''
                   }
                 />
               </View>
@@ -580,15 +579,15 @@ export default function TeamLeaderReport({navigation, route}) {
                   value={Number(
                     value == 1
                       ? (item?.renewal ?? 0) +
-                          (item?.nb ?? 0) +
-                          (item?.refundPpw ?? 0) +
-                          (item?.refundOther ?? 0) +
-                          (item?.endorsement ?? 0)
+                      (item?.nb ?? 0) +
+                      (item?.refundPpw ?? 0) +
+                      (item?.refundOther ?? 0) +
+                      (item?.endorsement ?? 0)
                       : (item?.nopRenewal ?? 0) +
-                          (item?.nopPpw ?? 0) +
-                          (item?.nopNew ?? 0) +
-                          (item?.nopOtherRefund ?? 0) +
-                          (item?.nopEndorsements ?? 0),
+                      (item?.nopPpw ?? 0) +
+                      (item?.nopNew ?? 0) +
+                      (item?.nopOtherRefund ?? 0) +
+                      (item?.nopEndorsements ?? 0),
                   ).toLocaleString('en-US', {
                     minimumFractionDigits: value == 1 ? 2 : 0,
                     maximumFractionDigits: value == 1 ? 2 : 0,
@@ -610,7 +609,7 @@ export default function TeamLeaderReport({navigation, route}) {
             height: '100%',
           }}>
           <LoaderKit
-            style={{width: 50, height: 50}}
+            style={{ width: 50, height: 50 }}
             name={'LineScalePulseOutRapid'}
             color={COLORS.grayText}
           />

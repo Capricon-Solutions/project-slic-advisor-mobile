@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,18 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
+import { styles } from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
 import PolicyItem from '../../../components/PolicyItem';
 import Button from '../../../components/Button';
 import SmallButton from '../../../components/SmallButton';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import SquareTextBox from '../../../components/SquareTextBox';
 import SendPaymentLink from '../../../components/SendPaymentLink';
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import OutlinedTextBox from '../../../components/OutlinedTextBox';
 import TableComponent from '../../../components/TableComponent';
 import clubInfoImg from '../../../icons/clubInfo.png';
@@ -34,7 +34,7 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   useGetClubQuery,
   useGetNextClubQuery,
@@ -45,7 +45,7 @@ import OutlinedTextView from '../../../components/OutlinedTextView';
 
 const window = Dimensions.get('window');
 
-export default function ClubInformation({navigation}) {
+export default function ClubInformation({ navigation }) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -72,9 +72,9 @@ export default function ClubInformation({navigation}) {
     item?.year?.toString() ?? '',
     item?.amount != null
       ? Number(item.amount).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : '0.00',
   ]);
 
@@ -85,9 +85,9 @@ export default function ClubInformation({navigation}) {
   const currentClublimit =
     clubInfoResponse?.currentLimit != null
       ? Number(clubInfoResponse.currentLimit).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : 'Unavailable';
 
   // clubInfoResponse?.currentLimit || 'Unavailable';
@@ -96,9 +96,9 @@ export default function ClubInformation({navigation}) {
   const generalPersistency = clubInfoResponse?.genPersistancy || 'Unavailable';
   const last5YearAverage = clubInfoResponse?.last5YearAvg
     ? Number(clubInfoResponse.last5YearAvg).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
     : '0.00';
   const nextClub = clubInfoResponse?.nextClub || 'Unavailable';
   const platinumClub = clubInfoResponse?.platinumClub || 'Unavailable';
@@ -107,16 +107,15 @@ export default function ClubInformation({navigation}) {
   const nextLimit =
     clubInfoResponse?.nextLimit != null
       ? Number(clubInfoResponse.nextLimit).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
       : 'Unavailable';
 
   const annualIncomeUpto = tableData?.[0]?.[1] || '0.00';
-  // console.log('clubInfoResponse', clubInfoResponse);
   return (
     <PaperProvider>
-      <View style={[Styles.container, {paddingHorizontal: 10}]}>
+      <View style={[Styles.container, { paddingHorizontal: 10 }]}>
         <HeaderBackground />
 
         <SendPaymentLink
@@ -137,9 +136,9 @@ export default function ClubInformation({navigation}) {
         ) : (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{paddingHorizontal: 0}}>
-            <View style={{paddingHorizontal: 6}}>
-              <View style={[styles.card, {alignItems: 'center'}]}>
+            style={{ paddingHorizontal: 0 }}>
+            <View style={{ paddingHorizontal: 6 }}>
+              <View style={[styles.card, { alignItems: 'center' }]}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -150,7 +149,7 @@ export default function ClubInformation({navigation}) {
                     marginBottom: 5,
                   }}>
                   <Image
-                    style={{height: 26, width: 26}}
+                    style={{ height: 26, width: 26 }}
                     source={clubInfoImg}></Image>
                   <Text
                     style={{
@@ -161,14 +160,14 @@ export default function ClubInformation({navigation}) {
                     Club Year {clubYear?.toString() ?? ''}
                   </Text>
                 </View>
-                <View style={{marginBottom: 20}}>
+                <View style={{ marginBottom: 20 }}>
                   <View
                     style={{
                       flexDirection: 'row',
                       gap: 10,
                       width: '100%',
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       {/* <OutlinedTextBox
                       Title={'Current Club'}
                       readOnly={true}
@@ -187,7 +186,7 @@ export default function ClubInformation({navigation}) {
                       </Tooltip>
                     </View>
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       {/* <OutlinedTextBox
                       Title={'Current Club’s Limit'}
                       readOnly={true}
@@ -206,7 +205,7 @@ export default function ClubInformation({navigation}) {
                       gap: 10,
                       width: '100%',
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       {/* <OutlinedTextBox
                       Title={'General Appt. Date'}
                       readOnly={true}
@@ -218,7 +217,7 @@ export default function ClubInformation({navigation}) {
                       />
                     </View>
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <OutlinedTextView
                         Title={'Gen. Persistency'}
                         value={generalPersistency?.toString() ?? ''}
@@ -238,7 +237,7 @@ export default function ClubInformation({navigation}) {
                       gap: 10,
                       width: '100%',
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <Tooltip
                         enterTouchDelay={1}
                         leaveTouchDelay={1000}
@@ -251,7 +250,7 @@ export default function ClubInformation({navigation}) {
                       </Tooltip>
                     </View>
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <OutlinedTextView
                         Title={"Next Club's Limit"}
                         // readOnly={true}
@@ -277,7 +276,7 @@ export default function ClubInformation({navigation}) {
                   )}
                 </View>
                 {tableData ? (
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <TableComponent
                       haveTotal={false}
                       tableHead={tableHead}

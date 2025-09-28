@@ -1,5 +1,5 @@
 // loginApi.ts
-import {baseApi} from './api';
+import { baseApi } from './api';
 
 const LOGIN_BASE_URL = 'https://salesloginapi.slicgeneral.com/api/auth';
 
@@ -12,7 +12,6 @@ export const loginApi = baseApi.injectEndpoints({
     userLogin: builder.mutation({
       query: body => {
         const finalUrl = `${LOGIN_BASE_URL}/login`;
-        // console.log(`Final URL for userLogin: ${finalUrl}`);
 
         return {
           url: finalUrl,
@@ -25,7 +24,6 @@ export const loginApi = baseApi.injectEndpoints({
     changePassword: builder.mutation({
       query: body => {
         const finalUrl = `${LOGIN_BASE_URL}/change-password`;
-        // console.log(`Final URL for changePassword: ${finalUrl}`);
 
         return {
           url: finalUrl,
@@ -38,7 +36,6 @@ export const loginApi = baseApi.injectEndpoints({
     getBusinessAdvisor: builder.query({
       query: token => {
         const finalUrl = `${LOGIN_BASE_URL}/b-advisor?token=${token}`;
-        // console.log(`Final URL for getBusinessAdvisor: ${finalUrl}`);
         return {
           url: finalUrl,
           method: 'GET',

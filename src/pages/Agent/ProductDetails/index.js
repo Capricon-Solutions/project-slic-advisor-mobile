@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,46 +10,44 @@ import {
   ScrollView,
   Linking,
 } from 'react-native';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import {styles} from './styles';
+import { styles } from './styles';
 import ProductListItem from '../../../components/ProductListItem';
 import Motorplus from '../../../icons/Motorplus.png'; // Replace with the actual logo path
 import MotorLady from '../../../icons/MotorLady.png'; // Replace with the actual logo path
 import OtherListItem from '../../../components/OtherListItem';
-import {useGetProductListQuery} from '../../../redux/services/productSlice';
+import { useGetProductListQuery } from '../../../redux/services/productSlice';
 import LoadingScreen from '../../../components/LoadingScreen';
 import Logo from '../../../icons/Logo.png'; // Replace with the actual logo path
 import youtube from '../../../icons/youtubeIcons.png'; // Replace with the actual logo path
 
 import ReadMore from 'react-native-read-more-text';
-import {Modal, PaperProvider} from 'react-native-paper';
+import { Modal, PaperProvider } from 'react-native-paper';
 
 const window = Dimensions.get('window');
 
-export default function ProductDetails({navigation, route}) {
-  const {item} = route.params; // Extract item from params
+export default function ProductDetails({ navigation, route }) {
+  const { item } = route.params; // Extract item from params
 
-  // console.log('itemvvvvvv', item);
   const [SelectedType, setSelectedType] = useState(1);
-  const {data: products, isLoading, error} = useGetProductListQuery();
+  const { data: products, isLoading, error } = useGetProductListQuery();
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
 
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(productList);
   const [brochureList, setBrochureList] = useState([]);
 
-  const renderItem = ({item}) => <ProductListItem item={item} />;
+  const renderItem = ({ item }) => <ProductListItem item={item} />;
 
-  const renderDepartmentItem = ({item}) => <OtherListItem item={item} />;
-  // console.log('item?.imageUrl', item?.imageUrl);
+  const renderDepartmentItem = ({ item }) => <OtherListItem item={item} />;
 
   useEffect(() => {
     const list = [];
@@ -95,8 +93,7 @@ export default function ProductDetails({navigation, route}) {
     if (searchText === '') {
       setFilteredData(products?.data || []); // Reset to show all products
     } else {
-      // console.log('searchText', searchText);
-      // return;
+
       const filtered = products?.data?.filter(item =>
         item.productName.toLowerCase().includes(searchText.toLowerCase()),
       );
@@ -108,12 +105,12 @@ export default function ProductDetails({navigation, route}) {
   const productList = filteredData?.filter(item => !item.documentUrl);
 
   const renderTruncatedFooter = handlePress => (
-    <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
+    <Text style={{ color: COLORS.primary, marginTop: 5 }} onPress={handlePress}>
       Show more
     </Text>
   );
   const renderRevealedFooter = handlePress => (
-    <Text style={{color: COLORS.primary, marginTop: 5}} onPress={handlePress}>
+    <Text style={{ color: COLORS.primary, marginTop: 5 }} onPress={handlePress}>
       Show less
     </Text>
   );
@@ -130,7 +127,7 @@ export default function ProductDetails({navigation, route}) {
           onButton={() => console.log('Button Pressed', item)}
           ButtonTitle={'Download'}
         />
-        <ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
           <View
             style={{
               alignItems: 'center',
@@ -145,7 +142,7 @@ export default function ProductDetails({navigation, route}) {
                 borderRadius: 17,
                 objectFit: 'contain',
               }}
-              source={item?.imageUrl ? {uri: item.imageUrl} : Logo}></Image>
+              source={item?.imageUrl ? { uri: item.imageUrl } : Logo}></Image>
             {/* <TouchableOpacity
               onPress={() => Linking.openURL(item.englishUrl)}
               style={{
@@ -165,7 +162,7 @@ export default function ProductDetails({navigation, route}) {
                   alignSelf: 'center',
                 }}>
                 <Image
-                  style={{height: 70, width: 70, resizeMode: 'contain'}}
+                  style={{ height: 70, width: 70, resizeMode: 'contain' }}
                   source={youtube}
                 />
               </TouchableOpacity>
@@ -210,7 +207,7 @@ export default function ProductDetails({navigation, route}) {
             Benefits:
           </Text>
 
-          <View style={{marginBottom: 20}}>
+          <View style={{ marginBottom: 20 }}>
             <ReadMore
               numberOfLines={5}
               renderTruncatedFooter={renderTruncatedFooter}
@@ -269,16 +266,16 @@ export default function ProductDetails({navigation, route}) {
               Select a Language
             </Text>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
               {item?.englishUrl && (
                 <TouchableOpacity
-                  style={{alignItems: 'center'}}
+                  style={{ alignItems: 'center' }}
                   onPress={() => {
                     Linking.openURL(item.englishUrl);
                     setShowLanguageOptions(false);
                   }}>
                   <Image
-                    style={{height: 50, width: 50, resizeMode: 'contain'}}
+                    style={{ height: 50, width: 50, resizeMode: 'contain' }}
                     source={youtube}
                   />
                   <Text
@@ -295,13 +292,13 @@ export default function ProductDetails({navigation, route}) {
 
               {item?.tamilUrl && (
                 <TouchableOpacity
-                  style={{alignItems: 'center'}}
+                  style={{ alignItems: 'center' }}
                   onPress={() => {
                     Linking.openURL(item.tamilUrl);
                     setShowLanguageOptions(false);
                   }}>
                   <Image
-                    style={{height: 50, width: 50, resizeMode: 'contain'}}
+                    style={{ height: 50, width: 50, resizeMode: 'contain' }}
                     source={youtube}
                   />
                   <Text
@@ -318,13 +315,13 @@ export default function ProductDetails({navigation, route}) {
 
               {item?.sinhalaUrl && (
                 <TouchableOpacity
-                  style={{alignItems: 'center'}}
+                  style={{ alignItems: 'center' }}
                   onPress={() => {
                     Linking.openURL(item.sinhalaUrl);
                     setShowLanguageOptions(false);
                   }}>
                   <Image
-                    style={{height: 50, width: 50, resizeMode: 'contain'}}
+                    style={{ height: 50, width: 50, resizeMode: 'contain' }}
                     source={youtube}
                   />
                   <Text

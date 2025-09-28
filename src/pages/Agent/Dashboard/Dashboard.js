@@ -139,7 +139,6 @@ export default function Dashboard({ navigation }) {
       }).promise;
       if (response.statusCode === 200) {
         dispatch(SetdefaultImageUrl(`file://${filePath}`));
-      } else {
       }
     } catch (error) {
       console.error('Error fetching image:', error);
@@ -414,6 +413,7 @@ export default function Dashboard({ navigation }) {
             loading={RMSummeryLoading}
             islandRank={islandRank}
             Data={RMSummeryData?.data}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 
@@ -427,6 +427,7 @@ export default function Dashboard({ navigation }) {
             loading={RMSummeryLoading}
             islandRank={islandRank}
             Data={RMSummeryData?.data}
+          // onPress={() => {navigation.navigate('SalesMeter'); dispatch(Getpath(0));}}
           />
         )}
 

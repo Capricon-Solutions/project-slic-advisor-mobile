@@ -165,6 +165,7 @@ export default function TrainingCalender({ navigation }) {
       setSelectedTrainings([]);
     }
 
+    // First, clear any existing selections
     const updatedMarkedDates = { ...markedDates };
 
     Object.keys(updatedMarkedDates).forEach(date => {
@@ -479,12 +480,14 @@ export default function TrainingCalender({ navigation }) {
                             training?.statusCode == 0
                               ? false
                               : // : training?.statusCode == 3
+                              // ? true
                               true
                           }
                           disabledColor={
                             training?.statusCode == 0
                               ? false
                               : // : training?.statusCode == 3
+                              // ? true
                               true
                           }
                           onPress={() => {
@@ -495,10 +498,7 @@ export default function TrainingCalender({ navigation }) {
                             })
                               .unwrap()
                               .then(response => {
-                                console.log(
-                                  'response.success',
-                                  response.success,
-                                );
+
                                 if (response.success) {
                                   showToast({
                                     type: 'success',
@@ -510,7 +510,9 @@ export default function TrainingCalender({ navigation }) {
                                       i === index ? { ...t, statusCode: 1 } : t,
                                     ),
                                   );
+                                  // Optionally remove the approved training from list
                                 } else {
+
                                   showToast({
                                     type: 'error',
                                     text1: 'Failed',

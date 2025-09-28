@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,11 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import {Styles} from '../../../theme/Styles';
+import { Styles } from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import HeaderBackground from '../../../components/HeaderBackground';
-import {styles} from './styles';
-import {useSelector} from 'react-redux';
+import { styles } from './styles';
+import { useSelector } from 'react-redux';
 import {
   useGetClaimHistoryQuery,
   useGetPendingHistoryQuery,
@@ -29,7 +29,7 @@ import moment from 'moment';
 // import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 const window = Dimensions.get('window');
-export default function PendingClaims({navigation, route}) {
+export default function PendingClaims({ navigation, route }) {
   const tableHead = ['Document', 'Status'];
   const Data = [
     {
@@ -45,7 +45,7 @@ export default function PendingClaims({navigation, route}) {
   ];
   const columnWidths = [138, 138];
 
-  const {policyNo} = route.params;
+  const { policyNo } = route.params;
 
   const {
     data: ClaimHistory,
@@ -56,9 +56,8 @@ export default function PendingClaims({navigation, route}) {
   });
   const claimHistoryResponse = ClaimHistory?.data;
 
-  // console.log('PendingClaims test', ClaimHistory);
 
-  const DetailLine = ({Title, detail}) => {
+  const DetailLine = ({ Title, detail }) => {
     return (
       <View
         style={{
@@ -76,13 +75,13 @@ export default function PendingClaims({navigation, route}) {
           <Text style={styles.detailText}>:</Text>
         </View>
 
-        <View style={{flex: 0.6}}>
+        <View style={{ flex: 0.6 }}>
           <Text style={styles.detailText}>{detail}</Text>
         </View>
       </View>
     );
   };
-  const DetailLineBold = ({Title, detail}) => {
+  const DetailLineBold = ({ Title, detail }) => {
     return (
       <View
         style={{
@@ -100,14 +99,14 @@ export default function PendingClaims({navigation, route}) {
           <Text style={styles.detailTextBold}>:</Text>
         </View>
 
-        <View style={{flex: 0.6}}>
+        <View style={{ flex: 0.6 }}>
           <Text style={styles.detailTextBold}>{detail}</Text>
         </View>
       </View>
     );
   };
 
-  const Card = ({item}) => {
+  const Card = ({ item }) => {
     const [expanded, setExpanded] = useState(false);
     const tableData = item?.claimDocuments?.map(item => [
       item.documentTypeName,
@@ -116,7 +115,7 @@ export default function PendingClaims({navigation, route}) {
     return (
       <View style={styles.card}>
         <TouchableOpacity
-          style={{marginBottom: 2}}
+          style={{ marginBottom: 2 }}
           // onPress={() => setExpanded(!expanded)}
           onPress={() => setExpanded(!expanded)}>
           <View
@@ -145,8 +144,8 @@ export default function PendingClaims({navigation, route}) {
             detail={
               item.dateOfLoss
                 ? moment(item.dateOfLoss, 'MM/DD/YYYY HH:mm:ss').format(
-                    'DD MMM YYYY',
-                  )
+                  'DD MMM YYYY',
+                )
                 : 'N/A'
             }
           />
@@ -155,8 +154,8 @@ export default function PendingClaims({navigation, route}) {
             detail={
               item.dateOfIntimation
                 ? moment(item.dateOfIntimation, 'MM/DD/YYYY HH:mm:ss').format(
-                    'DD MMM YYYY',
-                  )
+                  'DD MMM YYYY',
+                )
                 : 'N/A'
             }
           />
@@ -165,8 +164,8 @@ export default function PendingClaims({navigation, route}) {
             detail={
               item.dateOfRegister
                 ? moment(item.dateOfRegister, 'MM/DD/YYYY HH:mm:ss').format(
-                    'DD MMM YYYY',
-                  )
+                  'DD MMM YYYY',
+                )
                 : 'N/A'
             }
           />
@@ -220,9 +219,9 @@ export default function PendingClaims({navigation, route}) {
 
       <ScrollView
         fadingEdgeLength={20}
-        contentContainerStyle={{paddingHorizontal: 18, paddingBottom: 10}}>
+        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 10 }}>
         {isFetching ? (
-          <View style={{height: window.height * 0.7}}>
+          <View style={{ height: window.height * 0.7 }}>
             <LoadingScreen />
           </View>
         ) : (
@@ -231,9 +230,9 @@ export default function PendingClaims({navigation, route}) {
               <FlatList
                 data={claimHistoryResponse}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingHorizontal: 0}}
-                renderItem={({item}) => <Card item={item} />}
-                // keyExtractor={item => item.id.toString()}
+                contentContainerStyle={{ paddingHorizontal: 0 }}
+                renderItem={({ item }) => <Card item={item} />}
+              // keyExtractor={item => item.id.toString()}
               />
             ) : (
               <View
