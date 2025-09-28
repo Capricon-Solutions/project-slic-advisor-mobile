@@ -164,16 +164,6 @@ export default function RMProgressCard({
             </Text>
           </View>
         </View>
-
-        {/* <Text
-          style={{
-            fontSize: window.width * 0.045,
-            marginTop: 5,
-            fontFamily: Fonts.Roboto.Medium,
-            color: COLORS.textColor,
-          }}>
-          Island Rank
-        </Text> */}
       </View>
       <View
         style={{

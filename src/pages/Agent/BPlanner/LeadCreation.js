@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -18,21 +18,21 @@ import Fonts from '../../../theme/Fonts';
 import SmallButton from '../../../components/SmallButton';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponentNoLabel from '../../../components/DropdownComponentNoLabel';
-import { styles } from './styles';
+import {styles} from './styles';
 import Feather from 'react-native-vector-icons/Feather';
 import MonthYearPicker from '../../../components/MonthYearPicker';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {
   useGetEventsAndActivitiessQuery,
   useLeadCreationMutation,
 } from '../../../redux/services/plannerSlice';
-import { showToast } from '../../../components/ToastMessage';
-import { validateSriLankanNIC } from '../../../utils/nicValidation';
+import {showToast} from '../../../components/ToastMessage';
+import {validateSriLankanNIC} from '../../../utils/nicValidation';
 
-export default function LeadCreation({ navigation, route }) {
-  const { eventDate } = route.params;
+export default function LeadCreation({navigation, route}) {
+  const {eventDate} = route.params;
   const userCode = useSelector(state => state.Profile.userCode);
   const agentCode = useSelector(state => state.Profile.agentCode);
   const usertype = useSelector(state => state.userType.userType);
@@ -53,7 +53,7 @@ export default function LeadCreation({ navigation, route }) {
   useEffect(() => {
     if (dropdownArray?.length && dropdownData.length === 0) {
       setDropdownData(
-        dropdownArray.map(({ eventDesc, eventId }) => ({
+        dropdownArray.map(({eventDesc, eventId}) => ({
           label: eventDesc,
           value: eventId.toString(),
         })),
@@ -61,7 +61,7 @@ export default function LeadCreation({ navigation, route }) {
     }
   }, [dropdownArray]); // Runs only when dropdownArray changes
 
-  const [leadCreate, { data: newActivity, isLoading, error: errorEvents }] =
+  const [leadCreate, {data: newActivity, isLoading, error: errorEvents}] =
     useLeadCreationMutation();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -103,10 +103,10 @@ export default function LeadCreation({ navigation, route }) {
   }, [date]);
 
   const StepperItems = [
-    { id: 1, Title: 'Policy Info' },
-    { id: 2, Title: 'Vehicle Info' },
-    { id: 3, Title: 'Customer Basic Info' },
-    { id: 4, Title: 'Customer Contact Info' },
+    {id: 1, Title: 'Policy Info'},
+    {id: 2, Title: 'Vehicle Info'},
+    {id: 3, Title: 'Customer Basic Info'},
+    {id: 4, Title: 'Customer Contact Info'},
   ];
 
   const validateYOM = yearString => {
@@ -139,7 +139,6 @@ export default function LeadCreation({ navigation, route }) {
   const handleNext = () => {
     // return;
     if (currentStep < StepperItems.length) {
-
       if (currentStep === 1) {
         if (leadType === 'G') {
           setVehicleNo(null);
@@ -436,7 +435,7 @@ export default function LeadCreation({ navigation, route }) {
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
-              style={{ backgroundColor: 'red' }}
+              style={{backgroundColor: 'red'}}
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
@@ -450,14 +449,14 @@ export default function LeadCreation({ navigation, route }) {
                 fontFamily: Fonts.Roboto.Medium,
                 color: COLORS.ashBlue,
               }}>
-              Lead Type <Text style={{ color: COLORS.red }}>*</Text>
+              Lead Type <Text style={{color: COLORS.red}}>*</Text>
             </Text>
             <DropdownComponentNoLabel
               onSelect={value => setLeadType(value)}
               value={leadType}
               dropdownData={[
-                { label: 'Motor', value: 'M' },
-                { label: 'Non-Motor', value: 'G' },
+                {label: 'Motor', value: 'M'},
+                {label: 'Non-Motor', value: 'G'},
               ]}
             />
             <SquareTextBoxOutlined
@@ -488,7 +487,7 @@ export default function LeadCreation({ navigation, route }) {
                 setPremium(numericText);
               }}
             />
-            <View style={{ flexDirection: 'row', position: 'relative' }}>
+            <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
                 readOnly={true}
@@ -590,13 +589,9 @@ export default function LeadCreation({ navigation, route }) {
               }}
             />
             {formError.vehicleNo && (
-              <Text style={{ color: 'red' }}>{formError.vehicleNo}</Text>
+              <Text style={{color: 'red'}}>{formError.vehicleNo}</Text>
             )}
-            {/* {(vehicleNo.length < 5 && vehicleNo.length > 0) && (
-              <Text style={{color: 'red'}}>
-                Vehicle number must be between 5 and 8 characters
-              </Text>
-            )} */}
+
             <SquareTextBoxOutlined
               mediumFont={true}
               Label={'Vehicle Type *'}
@@ -661,7 +656,7 @@ export default function LeadCreation({ navigation, route }) {
             <DateTimePickerModal
               isVisible={isDatePickerVisible2}
               mode="date"
-              style={{ backgroundColor: 'red' }}
+              style={{backgroundColor: 'red'}}
               datePickerModeAndorid={'spinner'}
               onConfirm={handleConfirm2}
               onCancel={hideDatePicker2}
@@ -694,7 +689,7 @@ export default function LeadCreation({ navigation, route }) {
                 }
               }}
             />
-            <View style={{ flexDirection: 'row', position: 'relative' }}>
+            <View style={{flexDirection: 'row', position: 'relative'}}>
               <SquareTextBoxOutlined
                 mediumFont={true}
                 Label={'Date Of Birth'}
@@ -832,7 +827,7 @@ export default function LeadCreation({ navigation, route }) {
       />
       <HeaderBackground />
       <Header Title="Lead Creation" onPress={() => navigation.goBack()} />
-      <View style={{ paddingHorizontal: 15, flex: 1 }}>
+      <View style={{paddingHorizontal: 15, flex: 1}}>
         {/* Select Event card */}
         <View
           style={{
@@ -848,14 +843,14 @@ export default function LeadCreation({ navigation, route }) {
               height: 3,
             },
           }}>
-          <Text style={{ color: COLORS.textColor }}>Select Event</Text>
+          <Text style={{color: COLORS.textColor}}>Select Event</Text>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <View style={{ flex: 0.63 }}>
+            <View style={{flex: 0.63}}>
               <DropdownComponentNoLabel
                 ref={eventRef}
                 label="Select Event"
@@ -863,7 +858,7 @@ export default function LeadCreation({ navigation, route }) {
                 dropdownData={dropdownData}
               />
             </View>
-            <View style={{ flex: 0.35 }}>
+            <View style={{flex: 0.35}}>
               <SmallButton
                 disabledButton={event ? false : true}
                 disabledColor={event ? false : true}
@@ -875,8 +870,8 @@ export default function LeadCreation({ navigation, route }) {
         </View>
 
         {/* Stepper */}
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <View style={{ flex: 0.45 }}>
+        <View style={{flexDirection: 'row', marginTop: 20}}>
+          <View style={{flex: 0.45}}>
             <Text
               style={{
                 fontSize: 12,
@@ -925,9 +920,8 @@ export default function LeadCreation({ navigation, route }) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{ paddingHorizontal: 0, marginTop: 3 }}>
-          {/* <TextInput autoFocus placeholder="svsv" /> */}
-          <View style={{ marginBottom: 20 }}>{renderStepContent()}</View>
+          contentContainerStyle={{paddingHorizontal: 0, marginTop: 3}}>
+          <View style={{marginBottom: 20}}>{renderStepContent()}</View>
         </ScrollView>
         {/* Navigation Buttons */}
         <View
@@ -948,7 +942,7 @@ export default function LeadCreation({ navigation, route }) {
             Title={currentStep == StepperItems.length ? 'Submit' : 'Next'}
             onPress={handleNext}
             disabledButton={Boolean(formError.vehicleNo)}
-          // disabledColor={Boolean(formError.vehicleNo)}
+            // disabledColor={Boolean(formError.vehicleNo)}
           />
         </View>
       </View>

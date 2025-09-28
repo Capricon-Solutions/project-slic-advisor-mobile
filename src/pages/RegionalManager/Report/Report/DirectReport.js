@@ -188,7 +188,6 @@ export default function DirectReport({navigation, route}) {
         onBranchChange={value => setBranch(value)}
       />
 
-      {/* <HeaderBackground /> */}
       <View style={{paddingHorizontal: isLandscape ? 20 : 0}}>
         {isLandscape == true ? (
           <LandscapeHeader
@@ -315,31 +314,6 @@ export default function DirectReport({navigation, route}) {
               />
             </View>
             <View style={{flex: 0.18, marginHorizontal: 2}}>
-              {/* <DropdownComponent
-                label={'Month'}
-                mode={'modal'}
-                value={selectedMonth}
-                nonClearable={true}
-                // onValueChange={setSelectedMonth}
-                onValueChange={value => {
-                  setSelectedmonth(value ?? '00'); // 👈 If value is null, use 'ALL'
-                }}
-                dropdownData={[
-                  {label: 'Cumulative', value: '00'},
-                  {label: 'January', value: '01'},
-                  {label: 'February', value: '02'},
-                  {label: 'March', value: '03'},
-                  {label: 'April', value: '04'},
-                  {label: 'May', value: '05'},
-                  {label: 'June', value: '06'},
-                  {label: 'July', value: '07'},
-                  {label: 'August', value: '08'},
-                  {label: 'September', value: '09'},
-                  {label: 'October', value: '10'},
-                  {label: 'November', value: '11'},
-                  {label: 'December', value: '12'},
-                ]}
-              /> */}
               <DropdownComponent
                 label={'Month'}
                 mode={'modal'}
@@ -449,7 +423,6 @@ export default function DirectReport({navigation, route}) {
                 padding: 15,
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                {/* <Fontisto color={COLORS.primaryGreen} name="person" size={23} /> */}
                 <Image
                   style={{height: 17, width: 17}}
                   source={Building}></Image>

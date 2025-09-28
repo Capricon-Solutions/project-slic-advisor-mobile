@@ -243,7 +243,6 @@ export default function PolicyRenewals({navigation}) {
             </View>
           )}
         </ScrollView>
-        {/* )} */}
       </View>
     </SafeAreaView>
   );

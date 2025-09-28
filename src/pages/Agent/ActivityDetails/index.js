@@ -54,11 +54,6 @@ export default function ActivityDetails({navigation, route}) {
     skip: !item?.leadId, // Prevent query if leadId is not available
   });
 
-  useEffect(() => {
-    if (item?.leadId) {
-    }
-  }, [item?.leadId]);
-
   const leadInfo = leadData?.data;
 
   const DetailLine = ({Title, detail}) => {
@@ -125,10 +120,7 @@ export default function ActivityDetails({navigation, route}) {
             <View>
               <DetailLine Title={'Event ID'} detail={item?.eventId} />
               <DetailLine Title={'Description'} detail={item?.eventDesc} />
-              {/* <DetailLine
-                Title={'Event'}
-                detail={'LKR 45,000.00 no data in api'}
-              /> */}
+
               <DetailLine
                 Title={'Event Date'}
                 detail={
@@ -148,14 +140,6 @@ export default function ActivityDetails({navigation, route}) {
                     : ''
                 }
               />
-              {/* <DetailLine
-                Title={'Activity Time'}
-                detail={
-                  item?.activityDate
-                    ? moment(item.activityDate).format('hh:mm A')
-                    : ''
-                }
-              /> */}
             </View>
           )}
         </View>

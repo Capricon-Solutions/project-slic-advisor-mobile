@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../../theme/colors';
 import Fonts from '../../../theme/Fonts';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import Header from '../../../components/Header';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import {
@@ -38,10 +38,10 @@ import IndividualModal from '../../../components/IndividualModal';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AboutModal from '../../../components/AboutModal';
 import TableComponent from '../../../components/TableComponent';
-import { styles } from './styles';
+import {styles} from './styles';
 import SetTargetModal from '../../../components/SetTargetModal';
-import { useSelector } from 'react-redux';
-import { useGetDepartmentMutation } from '../../../redux/services/setTargetSlice';
+import {useSelector} from 'react-redux';
+import {useGetDepartmentMutation} from '../../../redux/services/setTargetSlice';
 import {
   useGetAgentCurrentMonthAchievementQuery,
   useGetAgentCurrentMonthIncomeQuery,
@@ -53,7 +53,7 @@ import SalesTableComponent from '../../../components/SalesTableComponent';
 
 const window = Dimensions.get('window');
 
-export default function SalesMeter({ navigation }) {
+export default function SalesMeter({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -99,57 +99,57 @@ export default function SalesMeter({ navigation }) {
   const tableData =
     type == 'M'
       ? CurrentMonthIncome?.data?.monthly.map(item => [
-        item?.cashDebit,
-        item?.totalPremium?.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-        item?.totalCommission?.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-      ])
+          item?.cashDebit,
+          item?.totalPremium?.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
+          item?.totalCommission?.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
+        ])
       : CurrentMonthIncome?.data?.cumulative.map(item => [
-        item?.cashDebit,
-        item?.totalPremium?.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-        item?.totalCommission?.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-      ]);
+          item?.cashDebit,
+          item?.totalPremium?.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
+          item?.totalCommission?.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
+        ]);
 
   const totalPremiumSum =
     type == 'M'
       ? CurrentMonthIncome?.data?.monthly
-        .reduce((sum, item) => sum + (item.totalPremium || 0), 0)
-        .toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+          .reduce((sum, item) => sum + (item.totalPremium || 0), 0)
+          .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
       : CurrentMonthIncome?.data?.cumulative
-        .reduce((sum, item) => sum + (item.totalPremium || 0), 0)
-        .toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
+          .reduce((sum, item) => sum + (item.totalPremium || 0), 0)
+          .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
 
   const totalCommissionSum =
     type == 'M'
       ? CurrentMonthIncome?.data?.monthly
-        .reduce((sum, item) => sum + (item.totalCommission || 0), 0)
-        .toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })
+          .reduce((sum, item) => sum + (item.totalCommission || 0), 0)
+          .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
       : CurrentMonthIncome?.data?.cumulative
-        .reduce((sum, item) => sum + (item.totalCommission || 0), 0)
-        .toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
+          .reduce((sum, item) => sum + (item.totalCommission || 0), 0)
+          .toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
 
   tableData?.push(['Total', totalPremiumSum || 0, totalCommissionSum || 0]);
   const columnWidths = [80, 125, 125];
@@ -163,7 +163,7 @@ export default function SalesMeter({ navigation }) {
   });
   const lastYearAchievement = filterdData?.totalPremium.toLocaleString(
     'en-US',
-    { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+    {minimumFractionDigits: 2, maximumFractionDigits: 2},
   );
   const currentYearAchivement = filterdData?.achievement;
   const lastYearTarget = filterdData?.totalTarget.toLocaleString('en-US', {
@@ -179,7 +179,6 @@ export default function SalesMeter({ navigation }) {
   const lastYear = salesMeterResponse.lastYear;
   const currentYear = salesMeterResponse.currentYear;
   const [visible, setVisible] = React.useState(false);
-
 
   const menuItems = [
     {
@@ -198,7 +197,7 @@ export default function SalesMeter({ navigation }) {
   const closeMenu = () => setVisible(false);
 
   return (
-    <View style={[Styles.container, { paddingHorizontal: 0 }]}>
+    <View style={[Styles.container, {paddingHorizontal: 0}]}>
       <HeaderBackground />
       <PaperProvider>
         <SetTargetModal
@@ -222,7 +221,7 @@ export default function SalesMeter({ navigation }) {
         ) : (
           <ScrollView
             fadingEdgeLength={20}
-            contentContainerStyle={{ paddingHorizontal: 10 }}>
+            contentContainerStyle={{paddingHorizontal: 10}}>
             <View
               style={{
                 // backgroundColor: 'rgba(246, 246, 246, 1)', // Wrap RGBA in quotes
@@ -241,18 +240,14 @@ export default function SalesMeter({ navigation }) {
                     <Text style={styles.monthlyText}>
                       {type == 'M' ? 'Monthly' : 'Cumulative'}
                     </Text>
-                    {/* <Octicons
-                        name={'chevron-down'}
-                        color={COLORS.white}
-                        size={20}
-                      /> */}
+
                     <Menu
                       visible={visible}
                       onDismiss={() => setVisible(false)}
                       anchor={
                         <TouchableOpacity
                           onPress={() => setVisible(true)}
-                          style={{ marginLeft: 5 }}>
+                          style={{marginLeft: 5}}>
                           <View style={{}}>
                             <Octicons
                               name={'chevron-down'}
@@ -277,7 +272,7 @@ export default function SalesMeter({ navigation }) {
                     </Menu>
                   </TouchableOpacity>
                   <View
-                    style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    style={{alignItems: 'center', justifyContent: 'center'}}>
                     <CircularProgress
                       value={monthlySalePercentage || 0}
                       radius={63}
@@ -296,7 +291,7 @@ export default function SalesMeter({ navigation }) {
                       // title={'Progress'}
                       valueSuffix={'%'}
                       // titleColor={'red'}
-                      titleStyle={{ fontWeight: 'bold' }}
+                      titleStyle={{fontWeight: 'bold'}}
                     />
                   </View>
 
@@ -360,7 +355,7 @@ export default function SalesMeter({ navigation }) {
                           <Text
                             style={[
                               styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
+                              {fontFamily: Fonts.Roboto.SemiBold},
                             ]}>
                             2025
                           </Text>
@@ -404,7 +399,7 @@ export default function SalesMeter({ navigation }) {
                           <Text
                             style={[
                               styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
+                              {fontFamily: Fonts.Roboto.SemiBold},
                             ]}>
                             2025
                           </Text>
@@ -452,7 +447,7 @@ export default function SalesMeter({ navigation }) {
                           <Text
                             style={[
                               styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
+                              {fontFamily: Fonts.Roboto.SemiBold},
                             ]}>
                             2025
                           </Text>
@@ -497,7 +492,7 @@ export default function SalesMeter({ navigation }) {
                           <Text
                             style={[
                               styles.cardText,
-                              { fontFamily: Fonts.Roboto.SemiBold },
+                              {fontFamily: Fonts.Roboto.SemiBold},
                             ]}>
                             2025
                           </Text>
@@ -514,9 +509,8 @@ export default function SalesMeter({ navigation }) {
               </View>
             </View>
 
-            {/* <Table headers={headers} data={data} /> */}
             {tableData && (
-              <View style={{ alignItems: 'center', flex: 1 }}>
+              <View style={{alignItems: 'center', flex: 1}}>
                 <SalesTableComponent
                   haveTotal={true}
                   tableHead={tableHead}

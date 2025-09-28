@@ -72,12 +72,7 @@ export default function RMGrid({
           <Image style={Styles.gridIcon} source={Competition}></Image>
           <Text style={Styles.gridText}>Competition</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={Styles.iconGrid}
-          onPress={onProductPortfolioClick}>
-          <Image style={Styles.gridIcon} source={PRODUCT_PORTFOLIO}></Image>
-          <Text style={Styles.gridText}>PRODUCT PORTFOLIO</Text>
-        </TouchableOpacity> */}
+
         <View
           style={[
             Styles.iconGrid,

@@ -145,11 +145,6 @@ export default function Competition({navigation}) {
               }}>
               {item.title}
             </Text>
-            {/* <MaterialCommunityIcons
-              name="close"
-              color={COLORS.primaryGreen}
-              size={20}
-            /> */}
           </View>
           <View style={{paddingRight: 20}}>
             <Text

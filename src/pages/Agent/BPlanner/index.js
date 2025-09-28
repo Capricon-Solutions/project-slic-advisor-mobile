@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -17,7 +17,7 @@ import Fonts from '../../../theme/Fonts';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import LoaderKit from 'react-native-loader-kit';
-import { styles } from './styles';
+import {styles} from './styles';
 
 import {
   Calendar,
@@ -45,8 +45,8 @@ import {
 } from '../../../redux/services/plannerSlice';
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
-import { showToast } from '../../../components/ToastMessage';
-import { useSelector } from 'react-redux';
+import {showToast} from '../../../components/ToastMessage';
+import {useSelector} from 'react-redux';
 
 const window = Dimensions.get('window');
 
@@ -94,7 +94,7 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-export default function BPlanner({ navigation }) {
+export default function BPlanner({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const [selectedItem, setSelectedItem] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -145,9 +145,9 @@ export default function BPlanner({ navigation }) {
     date,
     userCode: usertype == 2 ? personalCode : userCode,
   });
-  const { data: Leads } = useGetLeadsQuery(
-    { date, userCode: usertype == 2 ? personalCode : userCode },
-    { refetchOnMountOrArgChange: false },
+  const {data: Leads} = useGetLeadsQuery(
+    {date, userCode: usertype == 2 ? personalCode : userCode},
+    {refetchOnMountOrArgChange: false},
   );
   useEffect(() => {
     refetch();
@@ -155,12 +155,12 @@ export default function BPlanner({ navigation }) {
 
   const [
     DeleteActivity,
-    { data: newActivity, isLoading: isDeleting, error: deleteError },
+    {data: newActivity, isLoading: isDeleting, error: deleteError},
   ] = useActivityDeleteMutation();
 
   const [
     DeleteEvent,
-    { data, isLoading: isEventDeleting, error: deleteEventError },
+    {data, isLoading: isEventDeleting, error: deleteEventError},
   ] = useEventDeleteMutation();
 
   const [LeadList, setLeadList] = useState([]);
@@ -202,10 +202,10 @@ export default function BPlanner({ navigation }) {
       prev.map((item, i) => {
         if (i === index) {
           // Toggle the clicked item
-          return { ...item, checked: !item.checked };
+          return {...item, checked: !item.checked};
         } else {
           // Uncheck all other items
-          return { ...item, checked: false };
+          return {...item, checked: false};
         }
       }),
     );
@@ -238,10 +238,6 @@ export default function BPlanner({ navigation }) {
           });
         }
       } else {
-        const response = await DeleteActivity({
-          activityId: checkedActivities[0].activityId,
-          userCode: usertype == 2 ? personalCode : userCode,
-        });
         showToast({
           type: 'success',
           text1: 'Deleted',
@@ -262,7 +258,7 @@ export default function BPlanner({ navigation }) {
       id: 1,
       title: 'Lead Creation',
       onPress: () =>
-        navigation.navigate('LeadCreation', { eventDate: selectedDate }),
+        navigation.navigate('LeadCreation', {eventDate: selectedDate}),
     },
     {
       id: 1,
@@ -325,7 +321,7 @@ export default function BPlanner({ navigation }) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           fadingEdgeLength={20}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 10 }}
+          contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 10}}
           style={{}}>
           {calenderVisible && (
             <View
@@ -379,34 +375,20 @@ export default function BPlanner({ navigation }) {
               marginTop: 5,
             }}>
             <View>
-              {/* <SmallButton Title={'View Training List'} /> */}
               <TouchableOpacity
                 style={styles.smallButton}
                 onPress={() => setEventModalVisible(true)}>
-                {/* <MaterialCommunityIcons
-                    name="plus"
-                    color={COLORS.white}
-                    size={20}
-                  /> */}
                 <Text style={styles.smallButtonText}>Event Creation</Text>
               </TouchableOpacity>
             </View>
             <View>
-              {/* <SmallButton Title={'View Training List'} /> */}
               <TouchableOpacity
                 style={styles.smallButton}
                 onPress={() => setActivityModalVisible(true)}>
-                {/* <MaterialCommunityIcons
-                    name="plus"
-                    color={COLORS.white}
-                    size={20}
-                  /> */}
                 <Text style={styles.smallButtonText}>Activity Creation</Text>
               </TouchableOpacity>
             </View>
-            {/* {isAnyItemSelected && ( */}
             <View>
-              {/* <SmallButton Title={'View Training List'} /> */}
               <TouchableOpacity
                 disabled={!isAnyItemSelected}
                 style={
@@ -422,10 +404,8 @@ export default function BPlanner({ navigation }) {
                 />
               </TouchableOpacity>
             </View>
-            {/* )} */}
 
             <View>
-              {/* <SmallButton Title={'View Training List'} /> */}
               <TouchableOpacity
                 style={styles.orangeButton}
                 onPress={() => setCalenderVisible(!calenderVisible)}>
@@ -446,7 +426,6 @@ export default function BPlanner({ navigation }) {
                 fontSize: 14,
                 marginVertical: 10,
               }}>
-              {/* Monday, 22/January/2025 */}
               {moment(selectedDate, 'YYYY-MM-DD').format('dddd, DD/MMMM/YYYY')}
             </Text>
           </View>
@@ -461,7 +440,7 @@ export default function BPlanner({ navigation }) {
                 justifyContent: 'center',
               }}>
               <LoaderKit
-                style={{ width: 35, height: 35 }}
+                style={{width: 35, height: 35}}
                 name={'BallPulse'} // Optional: see list of animations below
                 color={COLORS.warmGray} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
               />
@@ -485,7 +464,7 @@ export default function BPlanner({ navigation }) {
                   ))}
                 </View>
               ) : (
-                <View style={{ alignItems: 'center', marginTop: 40 }}>
+                <View style={{alignItems: 'center', marginTop: 40}}>
                   <Text
                     style={{
                       color: COLORS.grayText,
@@ -500,7 +479,6 @@ export default function BPlanner({ navigation }) {
             </View>
           )}
         </ScrollView>
-        {/* </View> */}
       </View>
     </PaperProvider>
   );

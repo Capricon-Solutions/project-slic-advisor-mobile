@@ -104,7 +104,6 @@ export default function ReportSwitch({navigation}) {
 
   return (
     <View style={Styles.container}>
-      {/* <StatusBar backgroundColor={COLORS.primary} barStyle="dark-content" /> */}
       <ReportBottomModal
         Name={'Select your type'}
         ButtonList={ReportModal}
@@ -112,7 +111,6 @@ export default function ReportSwitch({navigation}) {
         setModalVisible={setModalVisible}
         navigation={navigation}
       />
-      {/* <HeaderBackground /> */}
     </View>
   );
 }

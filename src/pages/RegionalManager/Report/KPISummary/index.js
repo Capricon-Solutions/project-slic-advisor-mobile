@@ -165,7 +165,6 @@ export default function KPISummary({navigation}) {
                     color: COLORS.textColor,
                   }}>
                   Region KPI Summary
-                  {/* ({selectedType === 'monthly' ? 'Monthly' : 'Cumulative'}) */}
                 </Text>
               </View>
             </View>
@@ -222,9 +221,6 @@ export default function KPISummary({navigation}) {
                         item.progress >= 1 ? COLORS.primary : COLORS.primary
                       }
                     />
-                    {/* <Text style={{fontSize: 10, marginTop: 4}}>
-                      Growth: {item.growthPercentage}% (LY: {item.lastYear})
-                    </Text> */}
                   </View>
                 </View>
               )}

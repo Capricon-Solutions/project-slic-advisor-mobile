@@ -112,7 +112,6 @@ export default function IndividualModal({modalVisible, setModalVisible}) {
               marginVertical: 10,
             }}>
             <View style={{flex: 0.15, alignItems: 'center'}}>
-              {/* <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} /> */}
               <Image
                 source={individualPerforamance}
                 style={{height: 20, width: 20, resizeMode: 'contain'}}

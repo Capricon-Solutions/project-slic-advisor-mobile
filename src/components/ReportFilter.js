@@ -129,11 +129,9 @@ export default function ReportFilter({
           <DropdownComponent
             label={'View Details'}
             mode={'modal'}
-            // value={viewDetails}
             search={false}
             nonClearable={true}
             value={viewDetails}
-            // selectedValue={viewDetails}
             onValueChange={setViewDetails}
             dropdownData={[
               {label: 'Value', value: 1},
@@ -141,20 +139,6 @@ export default function ReportFilter({
             ]}
           />
 
-          {/* <DropdownComponent
-            label={'Type'}
-            mode={'modal'}
-            search={false}
-            nonClearable={type == 'ALL' ? true : false}
-            value={type}
-            onValueChange={value => {
-              setType(value ?? 'ALL'); // 👈 If value is null, use 'ALL'
-            }}
-            dropdownData={[
-              {label: 'General Cumulative', value: 'G'},
-              {label: 'Motor Monthly', value: 'M'},
-            ]}
-          /> */}
           <DropdownComponent
             label={'Type'}
             mode={'modal'}

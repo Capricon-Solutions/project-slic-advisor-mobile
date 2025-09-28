@@ -43,27 +43,28 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
         <View style={{alignItems: 'flex-end'}}>
           <TouchableOpacity onPress={() => handleCheckboxToggle(index)}>
             <View style={{transform: [{scale: 1.2}]}}>
-                <View style={{ position: 'relative' }}>
-            {Platform.OS === 'ios' &&
-              <View style={{
-                width: 21,
-                height: 21,
-                borderRadius: 2.5,
-                borderWidth: 2.2,
-                borderColor: activity?.checked ? COLORS.primary : COLORS.subtext,
-                position: 'absolute',
-                alignSelf: 'center',
-                top: '50%',
-                transform: [{ translateY: -10.5 }],
-              }}>
-
-              </View>
-            }
-              <Checkbox
-                uncheckedColor={COLORS.warmGray}
-                color={COLORS.primary}
-                status={activity?.checked ? 'checked' : 'unchecked'}
-              />
+              <View style={{position: 'relative'}}>
+                {Platform.OS === 'ios' && (
+                  <View
+                    style={{
+                      width: 21,
+                      height: 21,
+                      borderRadius: 2.5,
+                      borderWidth: 2.2,
+                      borderColor: activity?.checked
+                        ? COLORS.primary
+                        : COLORS.subtext,
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      top: '50%',
+                      transform: [{translateY: -10.5}],
+                    }}></View>
+                )}
+                <Checkbox
+                  uncheckedColor={COLORS.warmGray}
+                  color={COLORS.primary}
+                  status={activity?.checked ? 'checked' : 'unchecked'}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -85,7 +86,6 @@ const ActivityCard = ({activity, index, handleCheckboxToggle, onPress}) => {
               fontSize: 13,
               marginLeft: 5,
             }}>
-            {/* {activity?.activityDate} */}
             {activity?.type == 'Event'
               ? moment(activity.eventDate).format('YYYY-MM-DD')
               : moment(activity.activityDate).format('YYYY-MM-DD')}

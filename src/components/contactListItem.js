@@ -31,7 +31,6 @@ export default function ContactListItem({item}) {
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View>
-            {/* <Octicons name="search" color={COLORS.primary} size={20} /> */}
             <MaterialCommunityIcons
               name="office-building"
               color={COLORS.primary}

@@ -91,8 +91,6 @@ export default function ClaimDetails({navigation, route}) {
             marginBottom: 20,
             paddingTop: 10,
           }}>
-          {/* <TextInput autoFocus placeholder="svsv" /> */}
-
           {/* Customer Basic Info */}
           {Data?.length > 0 && (
             <View style={styles.leadInfoCard}>
@@ -184,7 +182,6 @@ export default function ClaimDetails({navigation, route}) {
               )}
             </View>
           )}
-          {/* expanded !== 1 ? setExpanded(1) : setExpanded(0) */}
           {/* policy Info */}
           {salvageItems?.length > 0 && (
             <View style={styles.leadInfoCard}>

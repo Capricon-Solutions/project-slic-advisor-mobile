@@ -83,8 +83,6 @@ export default function LeadInformation({navigation, route}) {
             marginBottom: 20,
             paddingTop: 10,
           }}>
-          {/* <TextInput autoFocus placeholder="svsv" /> */}
-
           {/* Event and Lead Details */}
 
           <View style={styles.leadInfoCard}>

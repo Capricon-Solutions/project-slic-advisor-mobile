@@ -155,9 +155,6 @@ export default function ClassSummary({navigation}) {
       </View>
       <ScrollView
         contentContainerStyle={{paddingHorizontal: 20, paddingBottom: 20}}>
-        {/* {isLoading == true ? (
-          <LoadingScreen />
-        ) : ( */}
         <View>
           <View
             style={{

@@ -136,9 +136,7 @@ const MonthYearPicker = ({visible, onClose, onSelect}) => {
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeText}>Close</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
-              <Text style={styles.doneText}>Done</Text>
-            </TouchableOpacity> */}
+
             <TouchableOpacity
               style={[
                 styles.doneButton,

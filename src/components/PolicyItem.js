@@ -45,7 +45,6 @@ export default function PolicyItem({item, navigation}) {
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View>
-            {/* <Octicons name="search" color={COLORS.primary} size={20} /> */}
             <FontAwesome5
               name={item.department == 'M' ? 'car' : 'shield-alt'}
               color={COLORS.primary}
@@ -79,43 +78,10 @@ export default function PolicyItem({item, navigation}) {
             paddingBottom: 5,
             paddingTop: 0,
           }}>
-          {/* <TextInput
-            mode="outlined"
-            label="Insured Name"
-            readOnly
-            style={{marginVertical: 3}}
-            theme={Styles.customTheme}
-            textColor={COLORS.ashBlue}
-            outlineStyle={{borderRadius: 10}}
-            outlineColor={COLORS.lightBorder}
-            value={item.customerName}
-          /> */}
           <OutlinedTextView Title={'Insured Name'} value={item.customerName} />
 
-          {/* <TextInput
-            mode="outlined"
-            label="Policy Number"
-            readOnly
-            theme={Styles.customTheme}
-            style={{marginVertical: 3}}
-            textColor={COLORS.ashBlue}
-            outlineStyle={{borderRadius: 10}}
-            outlineColor={COLORS.lightBorder}
-            value={item.policyNo}
-          /> */}
-
           <OutlinedTextView Title={'Policy Number'} value={item.policyNo} />
-          {/* <TextInput
-            mode="outlined"
-            label="Vehicle Number"
-            readOnly
-            theme={Styles.customTheme}
-            style={{marginVertical: 3}}
-            textColor={COLORS.ashBlue}
-            outlineStyle={{borderRadius: 10}}
-            outlineColor={COLORS.lightBorder}
-            value={item.vehicleNo}
-          /> */}
+
           {item.department == 'M' && (
             <OutlinedTextView Title={'Vehicle Number'} value={item.vehicleNo} />
           )}

@@ -116,7 +116,6 @@ export default function teamModal({modalVisible, setModalVisible}) {
               marginVertical: 10,
             }}>
             <View style={{flex: 0.15, alignItems: 'center'}}>
-              {/* <MaterialCommunityIcons name="close" color={COLORS.primaryGreen} size={20} /> */}
               <Image
                 source={individualPerforamance}
                 style={{height: 20, width: 20, resizeMode: 'contain'}}
@@ -211,12 +210,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     elevation: 25,
-      shadowOpacity: 0.2, // add opacity
-            shadowRadius: 3,  // add blur radius
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
+    shadowOpacity: 0.2, // add opacity
+    shadowRadius: 3, // add blur radius
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
     borderWidth: 1,
     borderColor: COLORS.lightBorder,
   },
