@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import { Styles } from '../../../theme/Styles';
+import {Styles} from '../../../theme/Styles';
 import HeaderBackground from '../../../components/HeaderBackground';
 import Header from '../../../components/Header';
 import COLORS from '../../../theme/colors';
@@ -24,11 +24,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import Feather from 'react-native-vector-icons/Feather';
-import { FlatList } from 'react-native';
+import {FlatList} from 'react-native';
 import ContactListItem from '../../../components/contactListItem';
 import DepartmentItem from '../../../components/DepartmentItem';
-import { styles } from './styles';
-import { API_KEY } from '@env';
+import {styles} from './styles';
+import {API_KEY} from '@env';
 import LoadingScreen from '../../../components/LoadingScreen';
 import {
   useGetBranchesQuery,
@@ -36,7 +36,7 @@ import {
 } from '../../../redux/services/contactSlice';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import SquareTextBoxOutlined from '../../../components/SquareTextBoxOutlined';
 import DropdownComponent from '../../../components/DropdownComponent';
 import DropdownComponentNoLabelDashboard from '../../../components/DropdownComponentNoLabelDashboard';
@@ -51,12 +51,12 @@ import {
   useGetprintMotorRenewalsListQuery,
 } from '../../../redux/services/policyRenewalsSlice';
 import moment from 'moment';
-import { downloadFile } from 'react-native-fs';
-import { showToast } from '../../../components/ToastMessage';
+import {downloadFile} from 'react-native-fs';
+import {showToast} from '../../../components/ToastMessage';
 import DownloadScreen from '../../../components/DownloadScreen';
 const window = Dimensions.get('window');
 
-export default function MotorRenewal({ navigation }) {
+export default function MotorRenewal({navigation}) {
   const userCode = useSelector(state => state.Profile.userCode);
   const usertype = useSelector(state => state.userType.userType);
   const personalCode = useSelector(state => state.Profile.personalCode);
@@ -90,17 +90,17 @@ export default function MotorRenewal({ navigation }) {
     refetch;
   }, [fromDate]);
 
-  const dropdownData = Array.from({ length: currentYear - 2019 }, (_, i) => ({
+  const dropdownData = Array.from({length: currentYear - 2019}, (_, i) => ({
     label: (2020 + i).toString(),
     value: (2020 + i).toString(),
   }));
 
   const renewalData = [
-    { id: '1', name: 'Renewal Item 1' },
-    { id: '2', name: 'Renewal Item 2' },
-    { id: '3', name: 'Renewal Item 3' },
-    { id: '4', name: 'Renewal Item 4' },
-    { id: '5', name: 'Renewal Item 5' },
+    {id: '1', name: 'Renewal Item 1'},
+    {id: '2', name: 'Renewal Item 2'},
+    {id: '3', name: 'Renewal Item 3'},
+    {id: '4', name: 'Renewal Item 4'},
+    {id: '5', name: 'Renewal Item 5'},
   ];
 
   const [downloadProgress, setDownloadProgress] = React.useState(0);
@@ -164,7 +164,6 @@ export default function MotorRenewal({ navigation }) {
       const localFilePath = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/${fileName}`;
       const apiKey = API_KEY;
 
-
       const res = await ReactNativeBlobUtil.config({
         fileCache: true,
         path: localFilePath,
@@ -173,11 +172,10 @@ export default function MotorRenewal({ navigation }) {
           'x-api-key': apiKey,
           Authorization: `Bearer ${token}`,
         })
-        .progress({ count: 10 }, (received, total) => {
+        .progress({count: 10}, (received, total) => {
           const progress = received / total;
           setDownloadProgress(progress);
         });
-
 
       await FileViewer.open(res.path(), {
         showOpenWithDialog: true, // chooser if more than one app
@@ -185,7 +183,6 @@ export default function MotorRenewal({ navigation }) {
         displayName: 'Your PDF Report',
         mimeType: 'application/pdf',
       });
-
     } catch (error) {
       console.error('Download/Open error:', error);
       showToast({
@@ -213,7 +210,7 @@ export default function MotorRenewal({ navigation }) {
         onPDF={() => downloadAndOpenPDF()}
       />
 
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{paddingHorizontal: 15}}>
         <View style={styles.searchWrap}>
           <TextInput
             style={styles.textInput}
@@ -318,10 +315,10 @@ export default function MotorRenewal({ navigation }) {
         ) : (
           <FlatList
             data={motorRenewalsList?.data?.motorRenewals}
-            keyExtractor={item => item.id}
+            // keyExtractor={item => item.id}
             initialNumToRender={10}
-            maxToRenderPerBatch={10}
-            renderItem={({ item }) => <ECMotorRenewal item={item} />}
+            // maxToRenderPerBatch={10}
+            renderItem={({item}) => <ECMotorRenewal item={item} />}
             contentContainerStyle={{
               paddingBottom: window.height * 0.5,
             }}
